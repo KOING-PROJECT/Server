@@ -94,7 +94,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Do-re API Document")
+                .title("KOING API Document")
                 .description("KOING")
                 .version("1.0.0")
                 .build();

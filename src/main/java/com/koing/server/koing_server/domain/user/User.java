@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "USER_TABLE")
 public class User extends AuditingTimeEntity {
 
     @Builder
