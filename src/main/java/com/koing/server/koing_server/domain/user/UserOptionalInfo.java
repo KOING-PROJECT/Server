@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class UserOptionalInfo {
 
     @Id
-    @Column(name = "userOptionalInfoId")
+    @Column(name = "user_optional_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
