@@ -1,45 +1,66 @@
 package com.koing.server.koing_server.config.security;
 
+import com.koing.server.koing_server.common.filter.JwtAuthenticationFilter;
+import com.koing.server.koing_server.common.util.JwtTokenUtil;
+import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static org.hibernate.cfg.AvailableSettings.USER;
 
 // WebSecurityConfigurerAdapter 어떤 필터를 적용하여 필터체인을 구성할건지
 //@Order(1) // 두개 이상의 security 필터를 사용할때 순서 정해주기
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    private final UserService userService;
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenUtil jwtTokenUtil;
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userService);
-//    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable() // rest api 이므로 disable
-                .csrf().disable() // rest api 이므로 disable
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // rest api 이므로 session 필요없음
+        return httpSecurity
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    .authorizeRequests((requests) -> requests
-                        .antMatchers("/**").permitAll()
-                        .anyRequest().authenticated());
+                .authorizeRequests((requests) -> requests
+                        .antMatchers("/users", "/swagger-ui.html").permitAll()
+                        .antMatchers("/guide/**").hasRole("GUIDE")
+                        .antMatchers("/tourist/**").hasRole("TOURIST")
+                )
+                .formLogin().disable()
+//                .cors().disable()
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                .and().build();
+//                .authenticationEntryPoint(((request, response, authException) -> {
+//                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                    objectMapper.writeValue(
+//                            response.getOutputStream(),
+//                            ExceptionResponse.of(ExceptionCode.FAIL_AUTHENTICATION)
+//                    );
+//                }))
+//                .accessDeniedHandler(((request, response, accessDeniedException) -> {
+//                    response.setStatus(HttpStatus.FORBIDDEN.value());
+//                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                    objectMapper.writeValue(
+//                            response.getOutputStream(),
+//                            ExceptionResponse.of(ExceptionCode.FAIL_AUTHORIZATION)
+//                    );
+//                })).and().build();
     }
-
 
 }
