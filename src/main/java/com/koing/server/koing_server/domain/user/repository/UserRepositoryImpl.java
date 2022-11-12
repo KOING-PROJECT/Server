@@ -21,4 +21,15 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                         user.enabled.eq(true)
                 ).fetch();
     }
+
+    @Override
+    public User loadUserByUserEmail(String email, boolean enabled) {
+        return jpqlQueryFactory
+                .selectFrom(user)
+                .where(
+                        user.email.eq(email),
+                        user.enabled.eq(enabled)
+                )
+                .fetchOne();
+    }
 }

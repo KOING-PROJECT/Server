@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.common.config.swagger;
+package com.koing.server.koing_server.config.swagger;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -2,12 +2,17 @@ package com.koing.server.koing_server.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Data
@@ -19,13 +24,14 @@ public class User extends AuditingTimeEntity {
     @Builder
     public User(String email, String password
             , String phoneNumber, String name, String birthDate
-            , String country, GenderType gender, int age, boolean enabled, UserOptionalInfo userOptionalInfo) {
+            , String country, GenderType gender, int age, boolean enabled, List<String> roles, UserOptionalInfo userOptionalInfo) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.name = name;
         this.birthDate = birthDate;
         this.country = country;
+        this.roles = roles;
         this.gender = gender;
         this.age = age;
         this.enabled = enabled;
@@ -55,6 +61,11 @@ public class User extends AuditingTimeEntity {
     @Column(length = 50, nullable = false)
     private String country;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    @Column(length = 10, nullable = false, name = "roles")
+    private List<String> roles = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
     private GenderType gender;
@@ -73,9 +84,13 @@ public class User extends AuditingTimeEntity {
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
 
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+    }
+
 
     public static User newInstance(String email, String password, String phoneNumber,
-            String name, String birthDate, String country, GenderType gender, int age, boolean enabled) {
+            String name, String birthDate, String country, GenderType gender, int age, List<String> roles, boolean enabled) {
         return User.builder()
                 .email(email)
                 .password(password)
@@ -83,6 +98,7 @@ public class User extends AuditingTimeEntity {
                 .name(name)
                 .birthDate(birthDate)
                 .country(country)
+                .roles(roles)
                 .gender(gender)
                 .age(age)
                 .enabled(enabled)

@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.common.config.swagger;
+package com.koing.server.koing_server.config.swagger;
 
 import com.fasterxml.classmate.TypeResolver;
 import lombok.RequiredArgsConstructor;

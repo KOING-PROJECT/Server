@@ -8,4 +8,6 @@ public interface UserRepositoryCustom {
 
     List<User> findAllUserByEnabled(boolean enabled);
 
+    User loadUserByUserEmail(String email, boolean enabled); // 추후에 UserNotFoundException 만들어서 throw 해주기
+
 }

@@ -24,5 +24,12 @@ public class UserService {
         return users;
     }
 
+    @Transactional
+    public User loadUserByUserEmail(String email) {
+        User user = userRepositoryImpl.loadUserByUserEmail(email, true);
+
+        return user;
+    }
+
 
 }
