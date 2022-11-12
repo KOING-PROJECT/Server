@@ -1,5 +1,9 @@
 package com.koing.server.koing_server.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import lombok.*;
 
@@ -9,6 +13,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_TABLE")
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class User extends AuditingTimeEntity {
 
     @Builder
@@ -35,6 +40,7 @@ public class User extends AuditingTimeEntity {
     private String email;
 
     @Column(length = 16, nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(length = 30)
