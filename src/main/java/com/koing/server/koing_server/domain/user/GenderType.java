@@ -5,7 +5,8 @@ import com.koing.server.koing_server.common.model.EnumModel;
 public enum GenderType implements EnumModel {
 
     Man,
-    WOMAN;
+    WOMAN,
+    UNKNOWN;
 
     @Override
     public String getGender() {

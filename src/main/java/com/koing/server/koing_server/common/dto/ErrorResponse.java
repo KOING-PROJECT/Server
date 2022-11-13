@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class ErrorResponse {
+public class ErrorResponse extends SuperResponse {
 
     private int status;
     private boolean success;
@@ -20,4 +20,9 @@ public class ErrorResponse {
     public static ErrorResponse error(ErrorCode errorCode, String message) {
         return new ErrorResponse(errorCode.getStatus(), false, message);
     }
+
+//    @Override
+//    public Object getDate() {
+//        return null;
+//    }
 }

@@ -13,6 +13,7 @@ public enum ErrorStatusCode {
      */
     BAD_REQUEST(400),
     UNAUTHORIZED(401),
+    DB_HANDLE_FAIL(402),
     FORBIDDEN(403),
     NOT_FOUND(404),
     METHOD_NOT_ALLOWED(405),

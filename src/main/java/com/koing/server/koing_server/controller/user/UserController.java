@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.controller.user;
 
 import com.koing.server.koing_server.common.dto.SuccessResponse;
+import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.success.SuccessStatusCode;
 import com.koing.server.koing_server.domain.user.User;
@@ -32,7 +33,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/users")
-    public SuccessResponse<List<User>> getUser() {
+    public SuperResponse getUser() {
 
         List<User> users = userService.getUsers();
         return SuccessResponse.success(SuccessCode.GET_USERS_SUCCESS, users);

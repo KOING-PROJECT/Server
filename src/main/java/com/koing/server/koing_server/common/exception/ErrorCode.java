@@ -27,6 +27,11 @@ public enum ErrorCode {
     UNAUTHORIZED_INVALID_TOKEN_EXCEPTION(UNAUTHORIZED, "유효하지 않은 토큰입니다."),
 
     /**
+     * 402 DB Fail
+     */
+    SIGN_UP_FAIL_EXCEPTION(DB_HANDLE_FAIL, "회원가입 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+
+    /**
      * 403 Forbidden
      */
     FORBIDDEN_EXCEPTION(FORBIDDEN, "허용하지 않는 요청입니다."),
@@ -39,8 +44,7 @@ public enum ErrorCode {
     NOT_FOUND_EXCEPTION(NOT_FOUND, "존재하지 않습니다."),
     NOT_FOUND_USER_EXCEPTION(NOT_FOUND, "탈퇴했거나 존재하지 않는 유저입니다."),
     NOT_FOUND_REFRESH_TOKEN_EXCEPTION(NOT_FOUND, "만료된 리프레시 토큰입니다."),
-    NOT_FOUND_ONBOARDING_EXCEPTION(NOT_FOUND, "유저의 온보딩 정보가 존재하지 않습니다."),
-    NOT_FOUND_HELP_EXCEPTION(NOT_FOUND, "존재하지 않는 Help 입니다."),
+    NOT_FOUND_WRONG_PASSWORD_EXCEPTION(NOT_FOUND, "잘못된 비밀번호 입니다."),
 
     /**
      * 405 Method Not Allowed

@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests((requests) -> requests
-                        .antMatchers("/users", "/swagger-ui.html").permitAll()
+                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                         .antMatchers("/guide/**").hasRole("GUIDE")
                         .antMatchers("/tourist/**").hasRole("TOURIST")
                 )

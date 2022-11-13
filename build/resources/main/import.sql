@@ -1,7 +1,7 @@
 -- call next value for hibernate_sequence;
-insert into user_table (id, email, password, phone_number, name, birth_date, country, gender, age, enabled, created_at, updated_at) values (1, 'steve@naver.com', '1111', '12341234', 'steve', '19950315', 'america','Man', '24', TRUE , now(), now());
-
-insert into user_table (id, email, password, phone_number, name, birth_date, country, gender, age, enabled, created_at, updated_at) values (2, 'steve1@naver.com', '1111', '12341234', 'steve', '19950315', 'america','Man', '24', FALSE , now(), now());
+-- insert into user_table (id, email, password, phone_number, name, birth_date, country, gender, age, enabled, created_at, updated_at) values (1, 'steve@naver.com', '1111', '12341234', 'steve', '19950315', 'america','Man', '24', TRUE , now(), now());
+--
+-- insert into user_table (id, email, password, phone_number, name, birth_date, country, gender, age, enabled, created_at, updated_at) values (2, 'steve1@naver.com', '1111', '12341234', 'steve', '19950315', 'america','Man', '24', FALSE , now(), now());
 
 -- insert into user (`id`, `name`, `email`, `password`, `student_number`, `major`, `enabled`, `created_at`, `updated_at`) values (2, 'tom', 'tom@naver.com', '2222', '22332211', 'software', 'true', now(), now());
 

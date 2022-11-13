@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,7 +46,7 @@ public class User extends AuditingTimeEntity {
     @Column(length = 30, nullable = false)
     private String email;
 
-    @Column(length = 16, nullable = false)
+    @Column(length = 100, nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
@@ -62,9 +63,9 @@ public class User extends AuditingTimeEntity {
     private String country;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    @Column(length = 10, nullable = false, name = "roles")
-    private List<String> roles = new ArrayList<>();
+//    @Builder.Default
+    @Column(length = 20, nullable = false, name = "roles")
+    private List<String> roles;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
@@ -88,8 +89,7 @@ public class User extends AuditingTimeEntity {
         return getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
     }
 
-
-    public static User newInstance(String email, String password, String phoneNumber,
+    public static User newUser(String email, String password, String phoneNumber,
             String name, String birthDate, String country, GenderType gender, int age, List<String> roles, boolean enabled) {
         return User.builder()
                 .email(email)
