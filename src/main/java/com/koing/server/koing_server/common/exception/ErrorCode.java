@@ -59,7 +59,7 @@ public enum ErrorCode {
     /**
      * 409 Conflict
      */
-    CONFLICT_EXCEPTION(CONFLICT, "이미 존재합니다."),
+    CONFLICT_EMAIL_EXCEPTION(CONFLICT, "이미 존재하는 이메일 입니다."),
     CONFLICT_USER_EXCEPTION(CONFLICT, "이미 해당 계정으로 회원가입하셨습니다.\n로그인 해주세요."),
 
     /**

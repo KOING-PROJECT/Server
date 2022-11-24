@@ -11,4 +11,6 @@ public interface UserRepositoryCustom {
 
     User loadUserByUserEmail(String email, boolean enabled) throws NotFoundException;
 
+    Boolean isExistUserByUserEmail(String email);
+
 }

@@ -32,4 +32,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 )
                 .fetchOne();
     }
+
+    @Override
+    public Boolean isExistUserByUserEmail(String email) {
+        User existUser = jpqlQueryFactory.selectFrom(user)
+                .where(
+                        user.email.eq(email)
+                )
+                .fetchOne();
+
+        if (existUser != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+
 }

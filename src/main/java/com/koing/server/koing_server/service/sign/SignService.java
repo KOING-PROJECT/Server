@@ -3,6 +3,7 @@ package com.koing.server.koing_server.service.sign;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.exception.ConflictEmailException;
 import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
@@ -39,6 +40,12 @@ public class SignService {
 
         String role = "ROLE_" + signUpRequestDto.getRole().toUpperCase(Locale.ROOT);
         GenderType genderType = GenderType.UNKNOWN;
+        String email = signUpRequestDto.getEmail();
+
+        if (userRepositoryImpl.isExistUserByUserEmail(email)) {
+            // 서버쪽에서 email 중복 검사를 한번 더 실행
+            return ErrorResponse.error(ErrorCode.CONFLICT_EMAIL_EXCEPTION);
+        }
 
         if (signUpRequestDto.getGender().equalsIgnoreCase("MAN")) {
             genderType = GenderType.Man;
@@ -48,7 +55,7 @@ public class SignService {
         }
 
         User user = User.builder()
-                .email(signUpRequestDto.getEmail())
+                .email(email)
                 .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
                 .name(signUpRequestDto.getName())
                 .phoneNumber(signUpRequestDto.getPhoneNumber())
@@ -64,18 +71,21 @@ public class SignService {
         User savedUser = userRepository.save(user);
         LOGGER.info("[signUp] 회원가입 완료");
 
-        SuperResponse signUpResponse;
-
         if (!savedUser.getEmail().isEmpty()) {
             LOGGER.info("[signUp] 회원가입 정상 처리완료");
-            signUpResponse = SuccessResponse.success(SuccessCode.SIGN_UP_SUCCESS, null);
-        }
-        else {
-            LOGGER.info("[signUp] 회원가입 정상 처리완료");
-            signUpResponse = ErrorResponse.error(ErrorCode.SIGN_UP_FAIL_EXCEPTION);
+            return SuccessResponse.success(SuccessCode.SIGN_UP_SUCCESS, null);
         }
 
-        return signUpResponse;
+        LOGGER.info("[signUp] 회원가입 실패");
+        return  ErrorResponse.error(ErrorCode.SIGN_UP_FAIL_EXCEPTION);
+    }
+
+    public SuperResponse signUpEmailCheck(String email) {
+        if (userRepositoryImpl.isExistUserByUserEmail(email)) {
+            return SuccessResponse.success(SuccessCode.SIGN_UP_EMAIL_CHECK_SUCCESS, null);
+        }
+
+        return ErrorResponse.error(ErrorCode.CONFLICT_EMAIL_EXCEPTION);
     }
 
     public SuperResponse signIn(SignInRequestDto signInRequestDto) {

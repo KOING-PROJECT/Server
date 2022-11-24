@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import static com.koing.server.koing_server.common.success.SuccessStatusCode.CREATED;
 import static com.koing.server.koing_server.common.success.SuccessStatusCode.OK;
+import static com.koing.server.koing_server.common.success.SuccessStatusCode.ACCEPTED;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -17,21 +18,22 @@ public enum SuccessCode {
     SUCCESS(OK, "성공입니다."),
 
     // 인증
-    LOGIN_SUCCESS(OK, "Sign-in : 로그인 성공입니다."),
+    LOGIN_SUCCESS(OK, "sign-in : 로그인 성공입니다."),
 //    REISSUE_TOKEN_SUCCESS(OK, "토큰 갱신 성공입니다."),
 
-    GET_USER_SUCCESS(OK, "User : 유저 조회 성공입니다."),
-    GET_USERS_SUCCESS(OK, "User : 유저 리스트 조회 성공입니다."),
+    GET_USER_SUCCESS(OK, "user : 유저 조회 성공입니다."),
+    GET_USERS_SUCCESS(OK, "user : 유저 리스트 조회 성공입니다."),
 
     /**
      * 201 CREATED
      */
-    SIGN_UP_SUCCESS(CREATED, "Sign-up : 회원가입 성공입니다.")
+    SIGN_UP_SUCCESS(CREATED, "sign-up : 회원가입 성공입니다."),
 
 
     /**
      * 202 ACCEPTED
      */
+    SIGN_UP_EMAIL_CHECK_SUCCESS(ACCEPTED, "sign-up/email-check : 사용가능한 이메일 입니다.")
 
     /**
      * 204 NO_CONTENT
