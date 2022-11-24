@@ -18,12 +18,12 @@ public class SignUpRequestDto {
     private String role;
     private String gender;
     private int age;
-    private boolean enabeld;
+    private boolean enabled;
 
     public SignUpRequestDto newSignUpRequestDto(
             String email, String password, String name, String birthDate,
             String phoneNumber, String country, String role, String gender,
-            int age ,boolean enabeld) {
+            int age ,boolean enabled) {
 
         return SignUpRequestDto.builder()
                 .email(email)
@@ -35,7 +35,7 @@ public class SignUpRequestDto {
                 .role(role)
                 .gender(gender)
                 .age(age)
-                .enabeld(enabeld)
+                .enabled(enabled)
                 .build();
     }
 }

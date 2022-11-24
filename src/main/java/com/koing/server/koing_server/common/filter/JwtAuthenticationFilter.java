@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.common.filter;
 
+import com.koing.server.koing_server.common.model.JwtValidateEnum;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         LOGGER.info(String.format("[doFilter] token 값 추출 완료 token = %s", token));
 
-        if(token != null && jwtTokenUtil.validationToken(token)) {
+        if(token != null && jwtTokenUtil.validationToken(token, (HttpServletRequest) servletRequest)) {
             Authentication authentication = jwtTokenUtil.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
 

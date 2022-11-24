@@ -18,6 +18,10 @@ spring:
     # create -> 실행 전에 drop하고 create / create-drop -> create 하고 종료시 drop
     # update -> schema에 적용 / validate -> schema 하고 내용 다르면 오류 발생
 
+  redis:
+    host: localhost
+    port: 6379
+
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/book_manager
 #    username: root

@@ -17,45 +17,42 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.*;
-
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenUtil {
+public class JwtRefreshTokenUtil {
 
-    private final Logger LOGGER = (Logger) LoggerFactory.getLogger(JwtTokenUtil.class);
+    private final Logger LOGGER = (Logger) LoggerFactory.getLogger(JwtRefreshTokenUtil.class);
     private final UserService userService;
 
 //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 6; // 1000 ms = 1초, 1시간 * 6
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60; // 1000 ms = 1초, 1시간 * 6
-//    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 48; // 1시간 * 48 = 2일 / refresh token
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 48; // 1시간 * 48 = 2일 / refresh token
 
 
     @Value("${springboot.jwt.secret}")
     private String secretKey = "BaseSecretKey"; // springboot.jwt.secret에서 key를 가져오지 못하면 기본키 적용
 
-    private Key SECRET_KEY;
-
     @PostConstruct
     void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
-        SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createJwtToken(String email, List<String> roles) {
-        LOGGER.info("[init] JwtTokenUtil createJwtToken 토큰 생성 시작");
+    public String createJwtRefreshToken(String email, List<String> roles) {
+        LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken Refresh토큰 생성 시작");
 
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
         Date now = new Date();
 
-//        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         String jwtToken = Jwts.builder()
                 .setClaims(claims) // 데이터
                 .setIssuedAt(now) // 토큰 발행일자
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
+                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
                 .compact();
 
@@ -77,26 +74,24 @@ public class JwtTokenUtil {
         return request.getHeader("Authorization");
     }
 
-    public Boolean validationToken(String token, HttpServletRequest httpServletRequest) {
+    public JwtValidateEnum validationToken(String token, HttpServletRequest httpServletRequest) {
         LOGGER.info("[init] JwtTokenUtil validationToken 토큰 유효성 체크 시작");
         try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
 
-            return !claimsJws.getBody().getExpiration().before(new Date());
-//            return JwtValidateEnum.ACCESS;
+//            return !claimsJws.getBody().getExpiration().before(new Date());
+            return JwtValidateEnum.ACCESS;
         } catch (ExpiredJwtException e) {
             LOGGER.info("[init] JwtTokenUtil validationToken 토큰 만료!");
-            httpServletRequest.setAttribute("JwtTokenException", JwtValidateEnum.EXPIRE);
-            return false;
+            return JwtValidateEnum.EXPIRE;
         } catch (JwtException | IllegalArgumentException e) {
             LOGGER.info("[init] JwtTokenUtil validationToken 토큰 유효성 체크 예외 발생");
-            httpServletRequest.setAttribute("JwtTokenException", JwtValidateEnum.DENIED);
-            return false;
+            return JwtValidateEnum.DENIED;
         }
     }
 
     public String getUserEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
 }
