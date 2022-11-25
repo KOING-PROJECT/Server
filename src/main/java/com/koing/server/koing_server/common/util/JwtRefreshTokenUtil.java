@@ -43,26 +43,23 @@ public class JwtRefreshTokenUtil {
     public String createJwtRefreshToken(String email, List<String> roles) {
         LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken Refresh토큰 생성 시작");
 
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("roles", roles);
         Date now = new Date();
 
         Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
-        String jwtToken = Jwts.builder()
-                .setClaims(claims) // 데이터
+        String jwtRefreshToken = Jwts.builder()
                 .setIssuedAt(now) // 토큰 발행일자
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
                 .compact();
 
-        LOGGER.info("[init] JwtTokenUtil createJwtToken 토큰 생성 완료");
+        LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken 토큰 생성 완료");
 
-        return jwtToken;
+        return jwtRefreshToken;
     }
 
     public Authentication getAuthentication(String token) {
-        LOGGER.info("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 시작");
+        LOGGER.info("[init] JwtRefreshTokenUtil getAuthentication refresh토큰 인증 정보 조회 시작");
         User user = userService.loadUserByUserEmail(getUserEmail(token));
 
         LOGGER.info(String.format("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 완료, User email = %s", getUserEmail(token)));
