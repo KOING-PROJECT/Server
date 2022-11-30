@@ -8,6 +8,8 @@ import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.config.security.CustomPasswordEncoder;
+import com.koing.server.koing_server.domain.JwtToken.JwtToken;
+import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepository;
 import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
@@ -31,6 +33,7 @@ public class SignService {
 
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
+    private final JwtTokenRepository jwtTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -71,7 +74,14 @@ public class SignService {
         User savedUser = userRepository.save(user);
         LOGGER.info("[signUp] 회원가입 완료");
 
-        if (!savedUser.getEmail().isEmpty()) {
+        JwtToken jwtToken = JwtToken.InitBuilder()
+                .userEmail(email)
+                .build();
+
+        JwtToken savedJwtToken = jwtTokenRepository.save(jwtToken);
+        LOGGER.info("[signUp] JwtToken init 완료");
+
+        if (!savedUser.getEmail().isEmpty() && !savedJwtToken.getUserEmail().isEmpty()) {
             LOGGER.info("[signUp] 회원가입 정상 처리완료");
             return SuccessResponse.success(SuccessCode.SIGN_UP_SUCCESS, null);
         }

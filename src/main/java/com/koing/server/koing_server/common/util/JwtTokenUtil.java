@@ -28,8 +28,8 @@ public class JwtTokenUtil {
     private final UserService userService;
 
 //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 6; // 1000 ms = 1초, 1시간 * 6
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60; // 1000 ms = 1초, 1시간 * 6
-//    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 48; // 1시간 * 48 = 2일 / refresh token
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60; // 1000 ms = 1초, 1분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 48; // 1시간 * 48 = 2일 / refresh token
 
 
     @Value("${springboot.jwt.secret}")
@@ -62,6 +62,24 @@ public class JwtTokenUtil {
         LOGGER.info("[init] JwtTokenUtil createJwtToken 토큰 생성 완료");
 
         return jwtToken;
+    }
+
+    public String createJwtRefreshToken(String email, List<String> roles) {
+        LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken Refresh토큰 생성 시작");
+
+        Date now = new Date();
+
+//        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+
+        String jwtRefreshToken = Jwts.builder()
+                .setIssuedAt(now) // 토큰 발행일자
+                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
+                .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
+                .compact();
+
+        LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken 토큰 생성 완료");
+
+        return jwtRefreshToken;
     }
 
     public Authentication getAuthentication(String token) {

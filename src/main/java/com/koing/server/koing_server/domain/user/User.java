@@ -43,7 +43,7 @@ public class User extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 30, nullable = false)
+    @Column(length = 30, unique = true, nullable = false)
     private String email;
 
     @Column(length = 100, nullable = false)
