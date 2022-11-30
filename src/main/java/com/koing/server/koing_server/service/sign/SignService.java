@@ -5,15 +5,18 @@ import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.exception.ConflictEmailException;
 import com.koing.server.koing_server.common.exception.ErrorCode;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.config.security.CustomPasswordEncoder;
 import com.koing.server.koing_server.domain.JwtToken.JwtToken;
 import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepository;
+import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepositoryImpl;
 import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.JwtTokenService.dto.JwtTokenDto;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,7 @@ public class SignService {
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
     private final JwtTokenRepository jwtTokenRepository;
+    private final JwtTokenRepositoryImpl jwtTokenRepositoryImpl;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
@@ -87,7 +91,7 @@ public class SignService {
         }
 
         LOGGER.info("[signUp] 회원가입 실패");
-        return  ErrorResponse.error(ErrorCode.SIGN_UP_FAIL_EXCEPTION);
+        return ErrorResponse.error(ErrorCode.SIGN_UP_FAIL_EXCEPTION);
     }
 
     public SuperResponse signUpEmailCheck(String email) {
@@ -106,18 +110,34 @@ public class SignService {
 
         User user = userRepositoryImpl.loadUserByUserEmail(userEmail, true);
 
-        LOGGER.info(String.format("[signIp] Email = %s", userEmail));
+        LOGGER.info(String.format("[signIn] Email = %s", userEmail));
 
         if (!passwordEncoder.matches(signInRequestDto.getPassword(), user.getPassword())) {
-            LOGGER.info("[signIp] Password 오류");
+            LOGGER.info("[signIn] Password 오류");
             return ErrorResponse.error(ErrorCode.NOT_FOUND_WRONG_PASSWORD_EXCEPTION);
         }
-        LOGGER.info("[signIp] Password 일치");
+        LOGGER.info("[signIn] Password 일치");
 
-        String jwtToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles());
-        LOGGER.info(String.format("[signIp] JWT 토큰 생성 성공, Token = %s", jwtToken));
+        String accessToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles());
+        String refreshToken = jwtTokenUtil.createJwtRefreshToken();
+        LOGGER.info(String.format("[signIn] JWT 토큰 생성 성공, Token = %s", accessToken));
 
-        return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, jwtToken);
+        JwtToken jwtToken;
+        try {
+            jwtToken = jwtTokenRepositoryImpl.findJwtTokenByUserEmail(userEmail);
+        } catch (NotFoundException e) {
+            JwtToken initJwtToken = JwtToken.InitBuilder().userEmail(userEmail).build();
+            jwtToken = jwtTokenRepository.save(initJwtToken);
+        }
+        jwtToken.setAccessToken(accessToken);
+        jwtToken.setRefreshToken(refreshToken);
+
+        JwtToken savedJwtToken = jwtTokenRepository.save(jwtToken);
+        LOGGER.info(String.format("[signIn] JWT 토큰 업데이트 성공, jwtToken = %s", savedJwtToken));
+
+        JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+
+        return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, jwtTokenDto);
     }
 
 

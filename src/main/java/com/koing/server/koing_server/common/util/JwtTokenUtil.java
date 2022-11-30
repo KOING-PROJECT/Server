@@ -64,7 +64,7 @@ public class JwtTokenUtil {
         return jwtToken;
     }
 
-    public String createJwtRefreshToken(String email, List<String> roles) {
+    public String createJwtRefreshToken() {
         LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken Refresh토큰 생성 시작");
 
         Date now = new Date();

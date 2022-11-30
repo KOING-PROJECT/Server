@@ -64,6 +64,15 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             return;
         }
 
+        if(attribute.equals(JwtValidateEnum.NOT_MATCHED.getStatus())) {
+            entryPointErrorResponse.setMsg("Request의 Access token과 Server의 Access token이 일치하지 않습니다.");
+
+            response.setStatus(ErrorStatusCode.NOT_MATCHED_ACCESS_TOKEN.getStatus());
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            return;
+        }
+
         entryPointErrorResponse.setMsg("예상치 못한 에러가 발생했습니다.");
         response.setStatus(500);
         response.setContentType("application/json");

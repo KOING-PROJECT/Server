@@ -2,7 +2,9 @@ package com.koing.server.koing_server.config.security;
 
 import com.koing.server.koing_server.common.filter.JwtAuthenticationFilter;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
+import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.service.JwtTokenService.JwtTokenService;
 import com.koing.server.koing_server.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +26,7 @@ import static org.hibernate.cfg.AvailableSettings.USER;
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenService jwtTokenService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,7 +45,8 @@ public class SecurityConfig {
                 )
                 .formLogin().disable()
 //                .cors().disable()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtTokenService)
+                        , UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())

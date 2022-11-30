@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 public enum JwtValidateEnum {
     ACCESS("ACCESS"),
     EXPIRE("EXPIRE"),
-    DENIED("DENIED");
+    DENIED("DENIED"),
+    NOT_MATCHED("NOT_MATCHED");
 
     private final String status;
 }
