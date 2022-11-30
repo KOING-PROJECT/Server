@@ -8,13 +8,11 @@
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/util/JwtRefreshTokenUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/util/JwtRefreshTokenUtil.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/util/JwtTokenUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/util/JwtTokenUtil.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/config/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/config/security/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/sign/SignController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/sign/SignController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/user/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/user/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/util/JwtRefreshTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/util/JwtRefreshTokenUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/config/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/config/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/user/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/util/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/util/JwtTokenUtil.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,8 +39,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Enum" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -113,7 +111,7 @@
       <workItem from="1669190703963" duration="17867000" />
       <workItem from="1669277610597" duration="1312000" />
       <workItem from="1669278961972" duration="515000" />
-      <workItem from="1669279523130" duration="1005000" />
+      <workItem from="1669279523130" duration="11555000" />
     </task>
     <servers />
   </component>

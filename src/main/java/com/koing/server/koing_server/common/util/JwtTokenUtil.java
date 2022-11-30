@@ -66,9 +66,11 @@ public class JwtTokenUtil {
 
     public Authentication getAuthentication(String token) {
         LOGGER.info("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 시작");
-        User user = userService.loadUserByUserEmail(getUserEmail(token));
+//        User user = userService.loadUserByUserEmail(getUserEmail(token));
+        User user = userService.loadUserByUserEmail(getUserEmailFromJwt(token));
 
-        LOGGER.info(String.format("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 완료, User email = %s", getUserEmail(token)));
+//        LOGGER.info(String.format("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 완료, User email = %s", getUserEmail(token)));
+        LOGGER.info(String.format("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 완료, User email = %s", getUserEmailFromJwt(token)));
 
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
@@ -95,8 +97,21 @@ public class JwtTokenUtil {
         }
     }
 
-    public String getUserEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody().getSubject();
+//    public String getUserEmail(String token) {
+//        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody().getSubject();
+//    }
+
+    // 추가
+    public String getUserEmailFromJwt(String accessToken) {
+        return parseClaims(accessToken).getSubject();
+    }
+
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(accessToken).getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 
 }

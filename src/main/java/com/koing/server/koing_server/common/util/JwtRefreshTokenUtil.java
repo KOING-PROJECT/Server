@@ -35,19 +35,24 @@ public class JwtRefreshTokenUtil {
     @Value("${springboot.jwt.secret}")
     private String secretKey = "BaseSecretKey"; // springboot.jwt.secret에서 key를 가져오지 못하면 기본키 적용
 
+    private Key SECRET_KEY;
+
     @PostConstruct
     void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes(StandardCharsets.UTF_8));
+        SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     }
+
 
     public String createJwtRefreshToken(String email, List<String> roles) {
         LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken Refresh토큰 생성 시작");
 
         Date now = new Date();
 
-        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+//        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         String jwtRefreshToken = Jwts.builder()
+                .setId(email)
                 .setIssuedAt(now) // 토큰 발행일자
                 .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
@@ -74,7 +79,7 @@ public class JwtRefreshTokenUtil {
     public JwtValidateEnum validationToken(String token, HttpServletRequest httpServletRequest) {
         LOGGER.info("[init] JwtTokenUtil validationToken 토큰 유효성 체크 시작");
         try {
-            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token);
 
 //            return !claimsJws.getBody().getExpiration().before(new Date());
             return JwtValidateEnum.ACCESS;
@@ -88,7 +93,7 @@ public class JwtRefreshTokenUtil {
     }
 
     public String getUserEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+        return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(token).getBody().getSubject();
     }
 
 }
