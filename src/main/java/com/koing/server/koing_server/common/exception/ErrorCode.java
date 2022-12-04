@@ -23,8 +23,10 @@ public enum ErrorCode {
     /**
      * 401 UnAuthorized
      */
-    UNAUTHORIZED_EXCEPTION(UNAUTHORIZED, "토큰이 만료되었습니다. 다시 로그인 해주세요."),
+    UNAUTHORIZED_EXCEPTION(UNAUTHORIZED, "토큰이 존재하지 않습니다. 다시 로그인 해주세요."),
     UNAUTHORIZED_INVALID_TOKEN_EXCEPTION(UNAUTHORIZED, "유효하지 않은 토큰입니다."),
+    UNAUTHORIZED_TOKEN_NOT_MATCH_WITH_SERVER_EXCEPTION(UNAUTHORIZED, "Request의 Access token과 Server의 Access token이 일치하지 않습니다."),
+    UNAUTHORIZED_EXPIRE_TOKEN_EXCEPTION(UNAUTHORIZED, "토큰이 만료되었습니다."),
 
     /**
      * 402 DB Fail
@@ -45,6 +47,7 @@ public enum ErrorCode {
     NOT_FOUND_USER_EXCEPTION(NOT_FOUND, "탈퇴했거나 존재하지 않는 유저입니다."),
     NOT_FOUND_REFRESH_TOKEN_EXCEPTION(NOT_FOUND, "만료된 리프레시 토큰입니다."),
     NOT_FOUND_WRONG_PASSWORD_EXCEPTION(NOT_FOUND, "잘못된 비밀번호 입니다."),
+    TOKEN_NOT_FOUND_EXCEPTION(NOT_FOUND, "Server에 저장된 token이 없습니다. 회원가입을 먼저 진행해주세요."),
 
     /**
      * 405 Method Not Allowed

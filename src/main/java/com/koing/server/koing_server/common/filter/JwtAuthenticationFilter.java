@@ -1,11 +1,11 @@
 package com.koing.server.koing_server.common.filter;
 
-import com.koing.server.koing_server.common.model.JwtValidateEnum;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.koing.server.koing_server.common.dto.ErrorResponse;
+import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.domain.JwtToken.JwtToken;
-import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepositoryImpl;
 import com.koing.server.koing_server.service.JwtTokenService.JwtTokenService;
-import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -14,6 +14,7 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthenticationFilter extends GenericFilterBean {
@@ -39,12 +40,22 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
             LOGGER.info("[doFilter] Request의 Access token과 Server의 Access token 비교 시작");
             String userEmail = jwtTokenUtil.getUserEmailFromJwt(token);
+
+            LOGGER.info("[doFilter] 받은 access token에서 email 추출 %s = " + userEmail);
             JwtToken serverJwtAccessToken = jwtTokenService.findJwtTokenByUserEmail(userEmail);
 
-            if (!serverJwtAccessToken.equals(token)) {
+            LOGGER.info("[doFilter] serverJwtAccessToken %s = " + serverJwtAccessToken);
+
+            if (serverJwtAccessToken == null) {
+                LOGGER.info("[doFilter] server에서 token을 찾을 수 없습니다. 회원가입을 먼저 진행해주세요.");
+                setErrorResponse((HttpServletResponse) servletResponse, ErrorCode.TOKEN_NOT_FOUND_EXCEPTION);
+                return;
+            }
+
+            if (!serverJwtAccessToken.getAccessToken().equals(token)) {
                 LOGGER.info("[doFilter] Request의 Access token과 Server의 Access token이 일치하지 않습니다.");
-                servletRequest.setAttribute("JwtTokenException", JwtValidateEnum.NOT_MATCHED);
-                throw new JwtException("Request의 Access token과 Server의 Access token이 일치하지 않습니다.");
+                setErrorResponse((HttpServletResponse) servletResponse, ErrorCode.UNAUTHORIZED_TOKEN_NOT_MATCH_WITH_SERVER_EXCEPTION);
+                return;
             }
             LOGGER.info("[doFilter] Request의 Access token과 Server의 Access token 동일 확인");
 
@@ -55,5 +66,21 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         }
 
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private void setErrorResponse(
+            HttpServletResponse response,
+            ErrorCode errorCode
+    ){
+        ObjectMapper objectMapper = new ObjectMapper();
+        response.setStatus(errorCode.getStatus());
+        response.setContentType("application/json");
+        response.setCharacterEncoding("utf-8");
+        ErrorResponse errorResponse = ErrorResponse.error(errorCode);
+        try{
+            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

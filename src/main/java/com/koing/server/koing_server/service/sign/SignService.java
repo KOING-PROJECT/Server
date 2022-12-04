@@ -110,7 +110,10 @@ public class SignService {
 
         User user = userRepositoryImpl.loadUserByUserEmail(userEmail, true);
 
-        LOGGER.info(String.format("[signIn] Email = %s", userEmail));
+        if (user == null) {
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_EXCEPTION);
+        }
+        LOGGER.info(String.format("[signIn] Email = %s", user.getEmail()));
 
         if (!passwordEncoder.matches(signInRequestDto.getPassword(), user.getPassword())) {
             LOGGER.info("[signIn] Password 오류");

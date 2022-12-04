@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface UserRepositoryCustom {
 
-    List<User> findAllUserByEnabled(boolean enabled)  throws NotFoundException;
+    List<User> findAllUserByEnabled(boolean enabled) throws NotFoundException;
 
     User loadUserByUserEmail(String email, boolean enabled) throws NotFoundException;
 
