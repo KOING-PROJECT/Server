@@ -15,6 +15,7 @@ import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.jwt.dto.JwtDto;
+import com.koing.server.koing_server.service.jwt.dto.JwtResponseDto;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -140,7 +141,7 @@ public class SignService {
 
         JwtDto jwtDto = JwtDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 
-        return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, jwtDto);
+        return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, new JwtResponseDto(jwtDto));
     }
 
 

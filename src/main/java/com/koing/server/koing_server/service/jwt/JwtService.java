@@ -80,7 +80,11 @@ public class JwtService {
         JwtToken updatedJwtToken = jwtTokenRepository.save(serverJwtToken);
         LOGGER.info("[JwtService] 토큰 재발급 성공");
 
-        return SuccessResponse.success(SuccessCode.RE_ISSUE_TOKEN_SUCCESS, new JwtResponseDto(updatedJwtToken));
+        return SuccessResponse.success(SuccessCode.RE_ISSUE_TOKEN_SUCCESS,
+                new JwtResponseDto(
+                        JwtDto.builder()
+                        .accessToken(updatedJwtToken.getAccessToken())
+                                .refreshToken(updatedJwtToken.getRefreshToken()).build()));
     }
 
 }

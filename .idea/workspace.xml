@@ -12,39 +12,12 @@
       <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/exception/ErrorCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/exception/ErrorCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/filter/JwtAuthenticationFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/filter/JwtAuthenticationFilter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/success/SuccessCode.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/success/SuccessCode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/util/JwtTokenUtil.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/common/util/JwtTokenUtil.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/config/security/SecurityConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/config/security/SecurityConfig.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/sign/SignController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/sign/SignController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/user/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/controller/user/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/domain/JwtToken/JwtToken$JwtTokenBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/domain/JwtToken/JwtToken.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/domain/JwtToken/QJwtToken.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/domain/JwtToken/repository/JwtTokenRepository.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/domain/JwtToken/repository/JwtTokenRepositoryCustom.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/domain/JwtToken/repository/JwtTokenRepositoryImpl.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/JwtTokenService/JwtTokenService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/JwtTokenService/dto/JwtTokenDto$JwtTokenDtoBuilder.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/JwtTokenService/dto/JwtTokenDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/jwt/JwtService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/jwt/JwtService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/jwt/dto/JwtResponseDto.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/jwt/dto/JwtResponseDto.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/sign/SignService.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/com/koing/server/koing_server/service/sign/SignService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/generated/querydsl/com/koing/server/koing_server/domain/JwtToken/QJwtToken.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/exception/ErrorCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/exception/ErrorCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/filter/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/filter/JwtAuthenticationFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/success/SuccessCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/success/SuccessCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/util/JwtTokenUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/common/util/JwtTokenUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/config/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/config/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/sign/SignController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/sign/SignController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/token/TokenController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/user/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/JwtToken/JwtToken.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/Jwt/JwtToken.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/JwtToken/repository/JwtTokenRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/Jwt/repository/JwtTokenRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/JwtToken/repository/JwtTokenRepositoryCustom.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/Jwt/repository/JwtTokenRepositoryCustom.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/JwtToken/repository/JwtTokenRepositoryImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/domain/Jwt/repository/JwtTokenRepositoryImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/JwtTokenService/JwtTokenService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/jwt/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/JwtTokenService/dto/JwtTokenDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/jwt/dto/JwtDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/jwt/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/jwt/JwtService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/jwt/dto/JwtResponseDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/jwt/dto/JwtResponseDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/sign/SignService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/sign/SignService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -230,7 +203,7 @@
       <workItem from="1669278961972" duration="515000" />
       <workItem from="1669279523130" duration="11555000" />
       <workItem from="1669812920462" duration="14404000" />
-      <workItem from="1670076869351" duration="13132000" />
+      <workItem from="1670076869351" duration="13834000" />
     </task>
     <servers />
   </component>
