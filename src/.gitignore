@@ -38,6 +38,6 @@ out/
 
 
 ### application.yml ###
-src/main/resources/application.yml
-src/main/resources/application.properties
-src/main/resources/import.sql
+main/resources/application.yml
+main/resources/application.properties
+main/resources/import.sql
