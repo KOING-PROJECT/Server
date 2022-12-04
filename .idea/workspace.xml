@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4e9905d-89d0-46bd-a303-ca5550330416" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/dependencies-accessors/dependencies-accessors.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/dependencies-accessors/dependencies-accessors.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/7.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-    </list>
+    <list default="true" id="c4e9905d-89d0-46bd-a303-ca5550330416" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -202,7 +195,7 @@
       <workItem from="1669278961972" duration="515000" />
       <workItem from="1669279523130" duration="11555000" />
       <workItem from="1669812920462" duration="14404000" />
-      <workItem from="1670076869351" duration="16034000" />
+      <workItem from="1670076869351" duration="16428000" />
     </task>
     <servers />
   </component>
