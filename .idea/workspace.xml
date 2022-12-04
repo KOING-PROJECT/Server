@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4e9905d-89d0-46bd-a303-ca5550330416" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-    </list>
+    <list default="true" id="c4e9905d-89d0-46bd-a303-ca5550330416" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -109,13 +107,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Gamsagwa/Gamsagwa-Spring" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\SonMinGyu\KOING\Server\src" />
+      <recent name="C:\Users\SonMinGyu\KOING\Server" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.koing.server.koing_server.common.exception" />
     </key>
@@ -190,7 +192,7 @@
       <workItem from="1669278961972" duration="515000" />
       <workItem from="1669279523130" duration="11555000" />
       <workItem from="1669812920462" duration="14404000" />
-      <workItem from="1670076869351" duration="14434000" />
+      <workItem from="1670076869351" duration="14864000" />
     </task>
     <servers />
   </component>
