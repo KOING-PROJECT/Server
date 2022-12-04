@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.domain.JwtToken;
+package com.koing.server.koing_server.domain.Jwt;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,7 +15,7 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QJwtToken extends EntityPathBase<JwtToken> {
 
-    private static final long serialVersionUID = 491227872L;
+    private static final long serialVersionUID = 1991940935L;
 
     public static final QJwtToken jwtToken = new QJwtToken("jwtToken");
 

@@ -3,20 +3,18 @@ package com.koing.server.koing_server.service.sign;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
-import com.koing.server.koing_server.common.exception.ConflictEmailException;
 import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
-import com.koing.server.koing_server.config.security.CustomPasswordEncoder;
-import com.koing.server.koing_server.domain.JwtToken.JwtToken;
-import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepository;
-import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepositoryImpl;
+import com.koing.server.koing_server.domain.Jwt.JwtToken;
+import com.koing.server.koing_server.domain.Jwt.repository.JwtTokenRepository;
+import com.koing.server.koing_server.domain.Jwt.repository.JwtTokenRepositoryImpl;
 import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.JwtTokenService.dto.JwtTokenDto;
+import com.koing.server.koing_server.service.jwt.dto.JwtDto;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -127,8 +125,10 @@ public class SignService {
 
         JwtToken jwtToken;
         try {
+            // 재로그인 시
             jwtToken = jwtTokenRepositoryImpl.findJwtTokenByUserEmail(userEmail);
         } catch (NotFoundException e) {
+            // 처음 로그인 할 때, signUp하면서 만들긴 하지만 한번 더 예외처리
             JwtToken initJwtToken = JwtToken.InitBuilder().userEmail(userEmail).build();
             jwtToken = jwtTokenRepository.save(initJwtToken);
         }
@@ -138,9 +138,9 @@ public class SignService {
         JwtToken savedJwtToken = jwtTokenRepository.save(jwtToken);
         LOGGER.info(String.format("[signIn] JWT 토큰 업데이트 성공, jwtToken = %s", savedJwtToken));
 
-        JwtTokenDto jwtTokenDto = JwtTokenDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        JwtDto jwtDto = JwtDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
 
-        return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, jwtTokenDto);
+        return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, jwtDto);
     }
 
 

@@ -2,21 +2,15 @@ package com.koing.server.koing_server.config.security;
 
 import com.koing.server.koing_server.common.filter.JwtAuthenticationFilter;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
-import com.koing.server.koing_server.domain.JwtToken.repository.JwtTokenRepositoryImpl;
-import com.koing.server.koing_server.domain.user.User;
-import com.koing.server.koing_server.service.JwtTokenService.JwtTokenService;
-import com.koing.server.koing_server.service.user.UserService;
+import com.koing.server.koing_server.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import static org.hibernate.cfg.AvailableSettings.USER;
 
 // WebSecurityConfigurerAdapter 어떤 필터를 적용하여 필터체인을 구성할건지
 //@Order(1) // 두개 이상의 security 필터를 사용할때 순서 정해주기
@@ -26,7 +20,7 @@ import static org.hibernate.cfg.AvailableSettings.USER;
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtTokenUtil;
-    private final JwtTokenService jwtTokenService;
+    private final JwtService jwtService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -38,14 +32,15 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests((requests) -> requests
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
-                        .antMatchers("/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
-                        .antMatchers("/users").authenticated()
+                        .antMatchers("/swagger-ui.html", "/sign/**").permitAll()
+                        .antMatchers("/jwt/reIssue").authenticated()
+                        .antMatchers("/user/**").authenticated()
                         .antMatchers("/guide/**").hasRole("GUIDE")
                         .antMatchers("/tourist/**").hasRole("TOURIST")
                 )
                 .formLogin().disable()
 //                .cors().disable()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtTokenService)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
                         , UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())

@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
-import com.koing.server.koing_server.domain.JwtToken.JwtToken;
-import com.koing.server.koing_server.service.JwtTokenService.JwtTokenService;
+import com.koing.server.koing_server.domain.Jwt.JwtToken;
+import com.koing.server.koing_server.service.jwt.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -21,11 +21,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
     private final Logger LOGGER = (Logger) LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private final JwtTokenUtil jwtTokenUtil;
-    private final JwtTokenService jwtTokenService;
+    private final JwtService jwtService;
 
-    public JwtAuthenticationFilter(JwtTokenUtil jwtTokenUtil, JwtTokenService jwtTokenService) {
+    public JwtAuthenticationFilter(JwtTokenUtil jwtTokenUtil, JwtService jwtService) {
         this.jwtTokenUtil = jwtTokenUtil;
-        this.jwtTokenService = jwtTokenService;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -42,13 +42,13 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             String userEmail = jwtTokenUtil.getUserEmailFromJwt(token);
 
             LOGGER.info("[doFilter] 받은 access token에서 email 추출 %s = " + userEmail);
-            JwtToken serverJwtAccessToken = jwtTokenService.findJwtTokenByUserEmail(userEmail);
+            JwtToken serverJwtAccessToken = jwtService.findJwtTokenByUserEmail(userEmail);
 
             LOGGER.info("[doFilter] serverJwtAccessToken %s = " + serverJwtAccessToken);
 
             if (serverJwtAccessToken == null) {
                 LOGGER.info("[doFilter] server에서 token을 찾을 수 없습니다. 회원가입을 먼저 진행해주세요.");
-                setErrorResponse((HttpServletResponse) servletResponse, ErrorCode.TOKEN_NOT_FOUND_EXCEPTION);
+                setErrorResponse((HttpServletResponse) servletResponse, ErrorCode.NOT_FOUND_TOKEN_EXCEPTION);
                 return;
             }
 

@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.domain.JwtToken;
+package com.koing.server.koing_server.domain.Jwt;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;

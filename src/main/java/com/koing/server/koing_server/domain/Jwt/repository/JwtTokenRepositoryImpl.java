@@ -1,12 +1,10 @@
-package com.koing.server.koing_server.domain.JwtToken.repository;
+package com.koing.server.koing_server.domain.Jwt.repository;
 
-import com.koing.server.koing_server.common.exception.NotFoundException;
-import com.koing.server.koing_server.domain.JwtToken.JwtToken;
+import com.koing.server.koing_server.domain.Jwt.JwtToken;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 
-import static com.koing.server.koing_server.domain.JwtToken.QJwtToken.jwtToken;
-import static com.koing.server.koing_server.domain.user.QUser.user;
+import static com.koing.server.koing_server.domain.Jwt.QJwtToken.jwtToken;
 
 @RequiredArgsConstructor
 public class JwtTokenRepositoryImpl implements JwtTokenRepositoryCustom {

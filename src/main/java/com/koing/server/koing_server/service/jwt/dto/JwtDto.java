@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.service.JwtTokenService.dto;
+package com.koing.server.koing_server.service.jwt.dto;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder
-public class JwtTokenDto {
+public class JwtDto {
 
     private String accessToken;
     private String refreshToken;

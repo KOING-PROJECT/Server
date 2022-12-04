@@ -15,10 +15,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
 @Api(tags = "Sign")
+@RequestMapping("/sign")
 @RestController
 @RequiredArgsConstructor
 public class SignController {
@@ -26,7 +28,7 @@ public class SignController {
     private final Logger LOGGER = (Logger) LoggerFactory.getLogger(SignController.class);
     private final SignService signService;
 
-    @ApiOperation("sign-up : 회원가입을 합니다.")
+    @ApiOperation("signUp : 회원가입을 합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "sign-up : 회원가입 성공"),
             @ApiResponse(code = 402, message = "회원가입 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
@@ -34,7 +36,7 @@ public class SignController {
             @ApiResponse(code = 409, message = "이미 존재하는 이메일 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/sign-up")
+    @PostMapping("/signUp")
     public SuperResponse signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
         LOGGER.info("[SignController] 회원가입 시도");
         SuperResponse signUpResponse = signService.signUp(signUpRequestDto);
@@ -44,13 +46,13 @@ public class SignController {
     }
 
 
-    @ApiOperation("sign-up/email-check : 이메일 중복검사를 합니다.")
+    @ApiOperation("signUp/email-check : 이메일 중복검사를 합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "sign-in : 이메일 중복없음 확인"),
             @ApiResponse(code = 409, message = "이미 존재하는 이메일 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/sign-up/email-check")
+    @PostMapping("/signUp/email-check")
     public SuperResponse signUpEmailCheck(@RequestBody String email) {
         LOGGER.info("[SignController] 이메일 중복 검사");
 
@@ -65,13 +67,13 @@ public class SignController {
 
 
 
-    @ApiOperation("sign-in : 로그인을 합니다.")
+    @ApiOperation("signIn : 로그인을 합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "sign-in : 로그인 성공"),
             @ApiResponse(code = 404, message = "잘못된 비밀번호 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/sign-in")
+    @PostMapping("/signIn")
     public SuperResponse signIn(@RequestBody SignInRequestDto signInRequestDto) {
         LOGGER.info("[SignController] 로그인 시도");
 

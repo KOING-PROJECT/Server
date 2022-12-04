@@ -44,7 +44,7 @@ public class JwtTokenUtil {
     }
 
     public String createJwtToken(String email, List<String> roles) {
-        LOGGER.info("[init] JwtTokenUtil createJwtToken 토큰 생성 시작");
+        LOGGER.info("[init] JwtTokenUtil access 토큰 생성 시작");
 
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
@@ -59,13 +59,13 @@ public class JwtTokenUtil {
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
                 .compact();
 
-        LOGGER.info("[init] JwtTokenUtil createJwtToken 토큰 생성 완료");
+        LOGGER.info("[init] JwtTokenUtil access 토큰 생성 완료");
 
         return jwtToken;
     }
 
     public String createJwtRefreshToken() {
-        LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken Refresh토큰 생성 시작");
+        LOGGER.info("[init] JwtTokenUtil Refresh 토큰 생성 시작");
 
         Date now = new Date();
 
@@ -77,7 +77,7 @@ public class JwtTokenUtil {
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
                 .compact();
 
-        LOGGER.info("[init] JwtRefreshTokenUtil createJwtRefreshToken 토큰 생성 완료");
+        LOGGER.info("[init] JwtTokenUtil RefreshToken 토큰 생성 완료");
 
         return jwtRefreshToken;
     }
