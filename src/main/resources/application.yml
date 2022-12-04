@@ -14,8 +14,7 @@ spring:
         format_sql: true
     generate-ddl: true # 자동으로 db table 생성(mysql)
     hibernate:
-      ddl-auto: create
-#      ddl-auto: create-drop # 임베이디드 db 사용할 경우 자동으로 create-drop으로 설정 (mysql)
+      ddl-auto: create-drop # 임베이디드 db 사용할 경우 자동으로 create-drop으로 설정 (mysql)
     # create -> 실행 전에 drop하고 create / create-drop -> create 하고 종료시 drop
     # update -> schema에 적용 / validate -> schema 하고 내용 다르면 오류 발생
 
