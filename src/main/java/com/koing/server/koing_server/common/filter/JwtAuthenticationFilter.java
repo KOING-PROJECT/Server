@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
-import com.koing.server.koing_server.domain.Jwt.JwtToken;
+import com.koing.server.koing_server.domain.jwt.JwtToken;
 import com.koing.server.koing_server.service.jwt.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
