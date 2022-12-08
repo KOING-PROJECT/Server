@@ -87,8 +87,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="jwt-refresh" />
-                    <option name="lastUsedInstant" value="1669191192" />
+                    <option name="branchName" value="tour_model" />
+                    <option name="lastUsedInstant" value="1670218975" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="master" />
@@ -112,6 +112,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RequestMappingsPanelOrder0" value="0" />
     <property name="RequestMappingsPanelOrder1" value="1" />
     <property name="RequestMappingsPanelWidth0" value="75" />
@@ -119,7 +120,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$USER_HOME$/2022-2-DatabaseDesign/netflix/demo" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -134,6 +135,7 @@
       <recent name="C:\Users\SonMinGyu\KOING\Server\src\main\resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.koing.server.koing_server.domain.tour" />
       <recent name="com.koing.server.koing_server.common.exception" />
     </key>
   </component>
@@ -207,7 +209,13 @@
       <workItem from="1669278961972" duration="515000" />
       <workItem from="1669279523130" duration="11555000" />
       <workItem from="1669812920462" duration="14404000" />
+<<<<<<< HEAD
       <workItem from="1670076869351" duration="22066000" />
+=======
+      <workItem from="1670076869351" duration="17734000" />
+      <workItem from="1670172156803" duration="14443000" />
+      <workItem from="1670310756050" duration="5491000" />
+>>>>>>> tour_model
     </task>
     <servers />
   </component>
@@ -224,5 +232,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
