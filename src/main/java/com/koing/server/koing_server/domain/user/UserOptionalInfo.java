@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,16 +20,24 @@ public class UserOptionalInfo {
     @Column(length = 300)
     private String imageUrl;
 
+    @Column(length = 300)
+    private String description;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 20, nullable = false, name = "languages")
+    private List<String> languages;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(length = 20, name = "areas")
+    private List<String> areas;
+
     @Column(length = 20)
     private String job;
 
     @Column(length = 50)
-    private String jobArea;
+    private String universityEmail;
 
     @Column(length = 50)
-    private String universityAndMajor;
-
-    @Column(length = 100)
-    private String address;
+    private String company;
 
 }
