@@ -1,6 +1,6 @@
 package com.koing.server.koing_server.common.dto;
 
-import com.koing.server.koing_server.common.exception.ErrorCode;
+import com.koing.server.koing_server.common.error.ErrorCode;
 import lombok.*;
 
 @ToString

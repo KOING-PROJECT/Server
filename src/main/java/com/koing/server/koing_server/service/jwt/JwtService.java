@@ -3,7 +3,7 @@ package com.koing.server.koing_server.service.jwt;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
-import com.koing.server.koing_server.common.exception.ErrorCode;
+import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.domain.jwt.JwtToken;

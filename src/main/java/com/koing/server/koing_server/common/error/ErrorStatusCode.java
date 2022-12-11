@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.common.exception;
+package com.koing.server.koing_server.common.error;
 
 import lombok.AccessLevel;
 import lombok.Getter;

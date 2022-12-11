@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,11 +26,11 @@ public class UserOptionalInfo {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(length = 20, nullable = false, name = "languages")
-    private List<String> languages;
+    private Set<String> languages;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(length = 20, name = "areas")
-    private List<String> areas;
+    private Set<String> areas;
 
     @Column(length = 20)
     private String job;

@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.cryptogram;
 
+import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Cryptogram {
+public class Cryptogram extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,14 +27,6 @@ public class Cryptogram {
 
     private String targetEmail;
 
-    private LocalDateTime createdAt;
-
     private boolean verified;
-
-    public CryptogramResponse toCryptogramResponse() {
-        return CryptogramResponse.builder()
-                .verified(isVerified())
-                .build();
-    }
 
 }

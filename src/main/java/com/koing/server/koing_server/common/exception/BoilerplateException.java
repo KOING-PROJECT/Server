@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.common.exception;
 
+import com.koing.server.koing_server.common.error.ErrorCode;
 import lombok.Getter;
 
 @Getter

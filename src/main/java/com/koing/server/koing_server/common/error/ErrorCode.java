@@ -1,10 +1,10 @@
-package com.koing.server.koing_server.common.exception;
+package com.koing.server.koing_server.common.error;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static com.koing.server.koing_server.common.exception.ErrorStatusCode.*;
+import static com.koing.server.koing_server.common.error.ErrorStatusCode.*;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -27,11 +27,16 @@ public enum ErrorCode {
     UNAUTHORIZED_INVALID_TOKEN_EXCEPTION(UNAUTHORIZED, "유효하지 않은 토큰입니다."),
     UNAUTHORIZED_TOKEN_NOT_MATCH_WITH_SERVER_EXCEPTION(UNAUTHORIZED, "Request의 token과 Server의 token이 일치하지 않습니다."),
     UNAUTHORIZED_EXPIRE_TOKEN_EXCEPTION(UNAUTHORIZED, "토큰이 만료되었습니다."),
+    UNAUTHORIZED_CRYPTOGRAM_NOT_MATCH_EXCEPTION(UNAUTHORIZED, "Cryptogram이 일치하지 않습니다."),
+    UNAUTHORIZED_CRYPTOGRAM_EXPIRE_EXCEPTION(UNAUTHORIZED, "Cryptogram이 만료되었습니다."),
 
     /**
      * 402 DB Fail
      */
-    SIGN_UP_FAIL_EXCEPTION(DB_HANDLE_FAIL, "회원가입 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_EXCEPTION(DB_HANDLE_FAIL, "DB처리 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_SIGN_UP_FAIL_EXCEPTION(DB_HANDLE_FAIL, "회원가입 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
     /**
      * 403 Forbidden
@@ -48,6 +53,7 @@ public enum ErrorCode {
     NOT_FOUND_REFRESH_TOKEN_EXCEPTION(NOT_FOUND, "만료된 리프레시 토큰입니다."),
     NOT_FOUND_WRONG_PASSWORD_EXCEPTION(NOT_FOUND, "잘못된 비밀번호 입니다."),
     NOT_FOUND_TOKEN_EXCEPTION(NOT_FOUND, "Server에 저장된 token이 없습니다. 회원가입을 먼저 진행해주세요."),
+    NOT_FOUND_CRYPTOGRAM_EXCEPTION(NOT_FOUND, "요청된 이메일 요청이 없습니다. 이메일 인증을 요청해주세요."),
 
     /**
      * 405 Method Not Allowed

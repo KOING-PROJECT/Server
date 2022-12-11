@@ -1,5 +1,7 @@
 package com.koing.server.koing_server.common.exception;
 
+import com.koing.server.koing_server.common.error.ErrorCode;
+
 public class InternalServerException extends BoilerplateException {
 
     public InternalServerException(String message) {

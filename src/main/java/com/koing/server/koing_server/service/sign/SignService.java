@@ -3,7 +3,7 @@ package com.koing.server.koing_server.service.sign;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
-import com.koing.server.koing_server.common.exception.ErrorCode;
+import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
@@ -90,7 +90,7 @@ public class SignService {
         }
 
         LOGGER.info("[signUp] 회원가입 실패");
-        return ErrorResponse.error(ErrorCode.SIGN_UP_FAIL_EXCEPTION);
+        return ErrorResponse.error(ErrorCode.DB_FAIL_SIGN_UP_FAIL_EXCEPTION);
     }
 
     public SuperResponse signUpEmailCheck(String email) {

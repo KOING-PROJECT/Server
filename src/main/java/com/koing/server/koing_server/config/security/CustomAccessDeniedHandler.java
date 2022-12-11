@@ -1,6 +1,6 @@
 package com.koing.server.koing_server.config.security;
 
-import com.koing.server.koing_server.common.exception.ErrorStatusCode;
+import com.koing.server.koing_server.common.error.ErrorStatusCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;

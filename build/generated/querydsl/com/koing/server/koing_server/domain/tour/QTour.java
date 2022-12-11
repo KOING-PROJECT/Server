@@ -1,0 +1,60 @@
+package com.koing.server.koing_server.domain.tour;
+
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
+import com.querydsl.core.types.dsl.*;
+
+import com.querydsl.core.types.PathMetadata;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
+
+
+/**
+ * QTour is a Querydsl query type for Tour
+ */
+@Generated("com.querydsl.codegen.DefaultEntitySerializer")
+public class QTour extends EntityPathBase<Tour> {
+
+    private static final long serialVersionUID = 1965583040L;
+
+    public static final QTour tour = new QTour("tour");
+
+    public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
+    public final StringPath description = createString("description");
+
+    public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final BooleanPath isLevy = createBoolean("isLevy");
+
+    public final NumberPath<Integer> participant = createNumber("participant", Integer.class);
+
+    public final StringPath thumbnail = createString("thumbnail");
+
+    public final StringPath title = createString("title");
+
+    public final ListPath<Category, QCategory> tourCategories = this.<Category, QCategory>createList("tourCategories", Category.class, QCategory.class, PathInits.DIRECT2);
+
+    public final NumberPath<Integer> tourPrice = createNumber("tourPrice", Integer.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
+
+    public QTour(String variable) {
+        super(Tour.class, forVariable(variable));
+    }
+
+    public QTour(Path<? extends Tour> path) {
+        super(path.getType(), path.getMetadata());
+    }
+
+    public QTour(PathMetadata metadata) {
+        super(Tour.class, metadata);
+    }
+
+}
+

@@ -1,8 +1,6 @@
 package com.koing.server.koing_server.controller.sign;
 
-import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
-import com.koing.server.koing_server.common.exception.ErrorCode;
 import com.koing.server.koing_server.service.sign.SignService;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;

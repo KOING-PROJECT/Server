@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,7 +20,11 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public static final QUserOptionalInfo userOptionalInfo = new QUserOptionalInfo("userOptionalInfo");
 
-    public final StringPath address = createString("address");
+    public final SetPath<String, StringPath> areas = this.<String, StringPath>createSet("areas", String.class, StringPath.class, PathInits.DIRECT2);
+
+    public final StringPath company = createString("company");
+
+    public final StringPath description = createString("description");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -27,9 +32,9 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public final StringPath job = createString("job");
 
-    public final StringPath jobArea = createString("jobArea");
+    public final SetPath<String, StringPath> languages = this.<String, StringPath>createSet("languages", String.class, StringPath.class, PathInits.DIRECT2);
 
-    public final StringPath universityAndMajor = createString("universityAndMajor");
+    public final StringPath universityEmail = createString("universityEmail");
 
     public QUserOptionalInfo(String variable) {
         super(UserOptionalInfo.class, forVariable(variable));

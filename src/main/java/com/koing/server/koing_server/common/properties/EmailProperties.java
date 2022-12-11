@@ -1,8 +1,10 @@
 package com.koing.server.koing_server.common.properties;
 
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.NotFound;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
@@ -20,10 +22,10 @@ public class EmailProperties {
     public void initEmailProperties() {
         try {
             // PC버전 경로
-            FileReader resources= new FileReader("C:/Users/MinGyu/DeskTop/Programming/PCRoomBooking_config/email_config.properties");
+//            FileReader resources= new FileReader("C:/Users/MinGyu/DeskTop/Programming/PCRoomBooking_config/email_config.properties");
 
             // 노트북 버전 경로
-//            FileReader resources= new FileReader("C:/Users/littl/IdeaProjects/pcRoomBooking_config/email_config.properties");
+            FileReader resources= new FileReader("C:/Users/littl/KOING/server/src/main/resources/email_config.properties");
             Properties properties = new Properties();
 
             properties.load(resources);
@@ -32,7 +34,7 @@ public class EmailProperties {
 
         } catch (Exception e) {
             System.out.println("email_config file read error");
-            throw new UsernameNotFoundException("not found file");
+            throw new NotFoundException("Email property를 찾을 수 없습니다.");
             // exception 발생 시키기
         }
     }

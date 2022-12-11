@@ -6,8 +6,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -16,5 +15,10 @@ import javax.persistence.Table;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TourCategory {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String category;
 
 }

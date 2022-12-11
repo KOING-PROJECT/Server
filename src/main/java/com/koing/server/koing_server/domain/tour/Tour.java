@@ -48,7 +48,7 @@ public class Tour extends AuditingTimeEntity {
     @Column(length = 300, nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Category> tourCategories = new ArrayList<>();
 
     @Column(length = 30, nullable = false)
