@@ -2,6 +2,7 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
@@ -63,5 +64,8 @@ public class Tour extends AuditingTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "additional_price")
     private Set<HashMap<String, List>> additionalPrice;
+
+    @Column(nullable = false)
+    private TourStatus tourStatus;
 
 }

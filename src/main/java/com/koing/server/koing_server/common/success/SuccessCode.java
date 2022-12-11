@@ -23,6 +23,7 @@ public enum SuccessCode {
     GET_USERS_SUCCESS(OK, "user : 유저 리스트 조회 성공입니다."),
     RE_ISSUE_TOKEN_SUCCESS(OK, "reIssue : 토큰 재발급 성공입니다."),
     CRYPTOGRAM_CERTIFICATION_SUCCESS(OK, "cryptogram : 이메일 인증 성공입니다."),
+    GET_TOURS_SUCCESS(OK, "tour : 투어 리스트 조회 성공입니다."),
 
     /**
      * 201 CREATED

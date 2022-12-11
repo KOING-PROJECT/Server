@@ -10,12 +10,12 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-public class GetUsersResponse {
+public class UserListResponseDto {
 
     private List<User> users;
 
-    public static GetUsersResponse of(List<User> users) {
-        return GetUsersResponse.builder()
+    public static UserListResponseDto of(List<User> users) {
+        return UserListResponseDto.builder()
                 .users(users)
                 .build();
     }

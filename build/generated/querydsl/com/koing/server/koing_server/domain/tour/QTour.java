@@ -43,6 +43,8 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final NumberPath<Integer> tourPrice = createNumber("tourPrice", Integer.class);
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
