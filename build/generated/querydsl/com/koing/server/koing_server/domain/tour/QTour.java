@@ -22,14 +22,16 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
 
+    public final SetPath<java.util.Map<String, java.util.List<?>>, SimplePath<java.util.Map<String, java.util.List<?>>>> additionalPrice = this.<java.util.Map<String, java.util.List<?>>, SimplePath<java.util.Map<String, java.util.List<?>>>>createSet("additionalPrice", java.util.Map.class, SimplePath.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final StringPath description = createString("description");
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final BooleanPath hasLevy = createBoolean("hasLevy");
 
-    public final BooleanPath isLevy = createBoolean("isLevy");
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> participant = createNumber("participant", Integer.class);
 
@@ -37,7 +39,7 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final StringPath title = createString("title");
 
-    public final ListPath<Category, QCategory> tourCategories = this.<Category, QCategory>createList("tourCategories", Category.class, QCategory.class, PathInits.DIRECT2);
+    public final ListPath<TourCategory, QTourCategory> tourCategories = this.<TourCategory, QTourCategory>createList("tourCategories", TourCategory.class, QTourCategory.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> tourPrice = createNumber("tourPrice", Integer.class);
 

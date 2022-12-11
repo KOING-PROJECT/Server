@@ -7,23 +7,31 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "TOUR_CATEGORY_TABLE")
+@Table(name = "TOUR_SCHEDULE_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourCategory {
+public class TourDetailSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String categoryName;
+    @Column(length = 10, nullable = false)
+    private String startTime;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(length = 20, nullable = false, name = "detail_type")
-    private Set<String> detailType;
+    @Column(length = 10, nullable = false)
+    private String endTime;
+
+    @Column(length = 50, nullable = false)
+    private String locationName;
+
+    @Column(nullable = false)
+    private Long longitude;
+
+    @Column(nullable = false)
+    private Long latitude;
 
 }

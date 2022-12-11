@@ -13,9 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -27,15 +25,15 @@ public class Tour extends AuditingTimeEntity {
 
     @Builder
     public Tour(String title, String description
-            , List<Category> tourCategories, String thumbnail, int participant
-            , int tourPrice, boolean isLevy) {
+            , List<TourCategory> tourCategories, String thumbnail, int participant
+            , int tourPrice, boolean hasLevy) {
         this.title = title;
         this.description = description;
         this.tourCategories = tourCategories;
         this.thumbnail = thumbnail;
         this.participant = participant;
         this.tourPrice = tourPrice;
-        this.isLevy = isLevy;
+        this.hasLevy = hasLevy;
     }
 
     @Id
@@ -49,7 +47,7 @@ public class Tour extends AuditingTimeEntity {
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Category> tourCategories = new ArrayList<>();
+    private List<TourCategory> tourCategories = new ArrayList<>();
 
     @Column(length = 30, nullable = false)
     private String thumbnail;
@@ -60,6 +58,10 @@ public class Tour extends AuditingTimeEntity {
     @Column(nullable = false)
     private int tourPrice;
 
-    private boolean isLevy;
+    private boolean hasLevy;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "additional_price")
+    private Set<HashMap<String, List>> additionalPrice;
 
 }

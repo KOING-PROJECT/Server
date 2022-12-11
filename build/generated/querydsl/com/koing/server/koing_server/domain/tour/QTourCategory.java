@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,7 +20,9 @@ public class QTourCategory extends EntityPathBase<TourCategory> {
 
     public static final QTourCategory tourCategory = new QTourCategory("tourCategory");
 
-    public final StringPath category = createString("category");
+    public final StringPath categoryName = createString("categoryName");
+
+    public final SetPath<String, StringPath> detailType = this.<String, StringPath>createSet("detailType", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
