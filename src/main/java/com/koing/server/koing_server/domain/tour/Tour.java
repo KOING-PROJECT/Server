@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.user.GenderType;
+import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,21 +26,27 @@ import java.util.stream.Collectors;
 public class Tour extends AuditingTimeEntity {
 
     @Builder
-    public Tour(String title, String description
-            , List<TourCategory> tourCategories, String thumbnail, int participant
-            , int tourPrice, boolean hasLevy) {
+    public Tour(String title, User createUser, String description
+            , Set<TourCategory> tourCategories, String thumbnail, int participant
+            , int tourPrice, boolean hasLevy, TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice) {
         this.title = title;
+        this.createUser = createUser;
         this.description = description;
         this.tourCategories = tourCategories;
         this.thumbnail = thumbnail;
         this.participant = participant;
         this.tourPrice = tourPrice;
         this.hasLevy = hasLevy;
+        this.tourStatus = tourStatus;
+        this.additionalPrice = additionalPrice;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    private User createUser;
 
     @Column(length = 30, unique = true, nullable = false)
     private String title;
@@ -48,7 +55,7 @@ public class Tour extends AuditingTimeEntity {
     private String description;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<TourCategory> tourCategories = new ArrayList<>();
+    private Set<TourCategory> tourCategories;
 
     @Column(length = 30, nullable = false)
     private String thumbnail;
@@ -67,5 +74,8 @@ public class Tour extends AuditingTimeEntity {
 
     @Column(nullable = false)
     private TourStatus tourStatus;
+
+    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+    private TourApplication tourApplication;
 
 }

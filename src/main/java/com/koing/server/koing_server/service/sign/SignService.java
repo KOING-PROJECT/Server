@@ -25,7 +25,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +50,9 @@ public class SignService {
         GenderType genderType = GenderType.UNKNOWN;
         String email = signUpRequestDto.getEmail();
 
+        Set<String> roles = new HashSet<>();
+        roles.add(role);
+
         if (userRepositoryImpl.isExistUserByUserEmail(email)) {
             // 서버쪽에서 email 중복 검사를 한번 더 실행
             return ErrorResponse.error(ErrorCode.CONFLICT_EMAIL_EXCEPTION);
@@ -67,11 +72,13 @@ public class SignService {
                 .phoneNumber(signUpRequestDto.getPhoneNumber())
                 .birthDate(signUpRequestDto.getBirthDate())
                 .country(signUpRequestDto.getCountry())
-                .roles(Collections.singletonList(role))
+                .roles(roles)
                 .gender(genderType)
                 .age(signUpRequestDto.getAge())
                 .enabled(true)
                 .userOptionalInfo(null)
+                .tourApplication(null)
+                .createTours(null)
                 .build();
 
         User savedUser = userRepository.save(user);

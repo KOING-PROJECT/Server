@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +15,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -25,7 +28,12 @@ public class User extends AuditingTimeEntity {
     @Builder
     public User(String email, String password
             , String phoneNumber, String name, String birthDate
-            , String country, GenderType gender, int age, boolean enabled, List<String> roles, UserOptionalInfo userOptionalInfo) {
+            , String country, GenderType gender, int age,
+                boolean enabled, Set<String> roles,
+                UserOptionalInfo userOptionalInfo,
+                Set<TourApplication> tourApplication,
+                Set<Tour> createTours
+                ) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
@@ -36,7 +44,9 @@ public class User extends AuditingTimeEntity {
         this.gender = gender;
         this.age = age;
         this.enabled = enabled;
-        this.userOptionalInfo = null;
+        this.userOptionalInfo = userOptionalInfo;
+        this.tourApplication = tourApplication;
+        this.createTours = createTours;
     }
 
     @Id
@@ -65,7 +75,7 @@ public class User extends AuditingTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
 //    @Builder.Default
     @Column(length = 20, nullable = false, name = "roles")
-    private List<String> roles;
+    private Set<String> roles;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "gender")
@@ -82,6 +92,14 @@ public class User extends AuditingTimeEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private UserOptionalInfo userOptionalInfo;
 
+    // 신청한 투어
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    private Set<TourApplication> tourApplication;
+
+    // 생성한 투어
+    @OneToMany(mappedBy = "createUser", fetch = FetchType.EAGER)
+    private Set<Tour> createTours;
+
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
 
@@ -90,7 +108,7 @@ public class User extends AuditingTimeEntity {
     }
 
     public static User newUser(String email, String password, String phoneNumber,
-            String name, String birthDate, String country, GenderType gender, int age, List<String> roles, boolean enabled) {
+            String name, String birthDate, String country, GenderType gender, int age, Set<String> roles, boolean enabled) {
         return User.builder()
                 .email(email)
                 .password(password)

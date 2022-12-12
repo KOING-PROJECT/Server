@@ -33,6 +33,8 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final SetPath<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour> createTours = this.<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour>createSet("createTours", com.koing.server.koing_server.domain.tour.Tour.class, com.koing.server.koing_server.domain.tour.QTour.class, PathInits.DIRECT2);
+
     public final StringPath email = createString("email");
 
     public final BooleanPath enabled = createBoolean("enabled");
@@ -47,7 +49,9 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath phoneNumber = createString("phoneNumber");
 
-    public final ListPath<String, StringPath> roles = this.<String, StringPath>createList("roles", String.class, StringPath.class, PathInits.DIRECT2);
+    public final SetPath<String, StringPath> roles = this.<String, StringPath>createSet("roles", String.class, StringPath.class, PathInits.DIRECT2);
+
+    public final SetPath<com.koing.server.koing_server.domain.tour.TourApplication, com.koing.server.koing_server.domain.tour.QTourApplication> tourApplication = this.<com.koing.server.koing_server.domain.tour.TourApplication, com.koing.server.koing_server.domain.tour.QTourApplication>createSet("tourApplication", com.koing.server.koing_server.domain.tour.TourApplication.class, com.koing.server.koing_server.domain.tour.QTourApplication.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
