@@ -22,7 +22,7 @@ public class QTourCategory extends EntityPathBase<TourCategory> {
 
     public final StringPath categoryName = createString("categoryName");
 
-    public final SetPath<String, StringPath> detailType = this.<String, StringPath>createSet("detailType", String.class, StringPath.class, PathInits.DIRECT2);
+    public final SetPath<String, StringPath> detailTypes = this.<String, StringPath>createSet("detailTypes", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

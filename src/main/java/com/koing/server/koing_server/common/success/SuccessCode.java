@@ -32,6 +32,7 @@ public enum SuccessCode {
     CRYPTOGRAM_CREATE_SUCCESS(CREATED, "cryptogram-create : Cryptogram 생성 성공입니다."),
     CRYPTOGRAM_UPDATE_SUCCESS(CREATED, "cryptogram-update : Cryptogram 업데이트 성공입니다."),
     EMAIL_SEND_SUCCESS(CREATED, "eamil-send : Email send 성공입니다."),
+    TOUR_CATEGORY_CREATE_SUCCESS(CREATED, "tour-category : 투어 카테고리 생성 성공입니다."),
 
 
     /**
