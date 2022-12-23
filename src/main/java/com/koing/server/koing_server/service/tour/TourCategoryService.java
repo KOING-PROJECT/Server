@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,17 @@ public class TourCategoryService {
     private final Logger LOGGER = LoggerFactory.getLogger(TourCategoryService.class);
     private final TourCategoryRepository tourCategoryRepository;
     private final TourCategoryRepositoryImpl tourCategoryRepositoryImpl;
+
+    public SuperResponse getTourCategories() {
+
+        LOGGER.info("[TourCategoryService] TourCategory 리스트 조회 시도");
+
+        List<TourCategory> tourCategories = tourCategoryRepositoryImpl.findAll();
+
+        LOGGER.info("[TourCategoryService] TourCategory 리스트 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_TOUR_CATEGORIES_SUCCESS, tourCategories);
+    }
 
     public SuperResponse createTourCategory(TourCategoryDto tourCategoryDto) {
 
@@ -32,6 +46,7 @@ public class TourCategoryService {
         if (savedTourCategory.getCategoryName() == null) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_CATEGORY_FAIL_EXCEPTION);
         }
+        LOGGER.info("[TourCategoryService] TourCategory 생성 성공");
 
         return SuccessResponse.success(SuccessCode.TOUR_CATEGORY_CREATE_SUCCESS, savedTourCategory);
     }

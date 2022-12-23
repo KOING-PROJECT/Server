@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.tour;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.collect.Sets;
@@ -10,7 +11,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
-
 @Entity
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +24,10 @@ public class TourCategory {
 
     private String categoryName;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "tourCategories", fetch = FetchType.LAZY)
+    private Set<Tour> categorizedTours;
+
+    @ElementCollection(fetch = FetchType.LAZY)
     @Column(length = 20, nullable = false, name = "detail_type")
     private Set<String> detailTypes;
 

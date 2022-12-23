@@ -45,6 +45,8 @@ public class TourApplicationService {
             return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
 
+        LOGGER.info("[TourApplicationService] TourId로 tour 찾기 성공 = " + tour);
+
         TourApplication tourApplication = new TourApplication();
         tourApplication.setTour(tour);
         //////////////////////////////////////////////
@@ -55,6 +57,7 @@ public class TourApplicationService {
         if (savedTourApplication.getId() == null) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
         }
+        LOGGER.info("[TourApplicationService] TourApplication update 성공 = " + savedTourApplication);
 
         tour.setTourApplication(savedTourApplication);
         Tour savedTour = tourRepository.save(tour);
@@ -63,7 +66,7 @@ public class TourApplicationService {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourApplicationService] 투어에 TourApplication 업데이트 성공 = " + tour);
+        LOGGER.info("[TourApplicationService] 투어에 TourApplication 업데이트 성공 = " + savedTour);
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_CREATE_SUCCESS, savedTourApplication);
     }

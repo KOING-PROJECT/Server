@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.tour;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -54,7 +55,8 @@ public class Tour extends AuditingTimeEntity {
     @Column(length = 300, nullable = false)
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<TourCategory> tourCategories;
 
     @Column(length = 30, nullable = false)
@@ -76,6 +78,7 @@ public class Tour extends AuditingTimeEntity {
     private TourStatus tourStatus;
 
     @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonIgnore
     private TourApplication tourApplication;
 
 }
