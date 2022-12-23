@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_APPLICATION_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TourApplication extends AuditingTimeEntity {
@@ -35,9 +34,14 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(nullable = false)
     private TourStatus tourStatus;
 
-    public TourApplication(Tour tour) {
-        this.tour = tour;
+    public TourApplication() {
+        this.tour = null;
         this.users = null;
         this.tourStatus = TourStatus.RECRUITMENT;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
+        tour.setTourApplication(this);
     }
 }

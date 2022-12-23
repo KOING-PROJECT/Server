@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.tour;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.TourStatus;
@@ -7,10 +8,7 @@ import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -19,7 +17,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -45,7 +44,8 @@ public class Tour extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    //    @JsonManagedReference
+    @ManyToOne // 연관관계 주인
     private User createUser;
 
     @Column(length = 30, unique = true, nullable = false)
@@ -54,7 +54,7 @@ public class Tour extends AuditingTimeEntity {
     @Column(length = 300, nullable = false)
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     private Set<TourCategory> tourCategories;
 
     @Column(length = 30, nullable = false)

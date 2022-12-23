@@ -37,6 +37,7 @@ public class TourController {
         return getTourListResponse;
     }
 
+
     @ApiOperation("Tour - 투어를 생성합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Tour - 투어 리스트 가져오기 성공"),
@@ -50,6 +51,21 @@ public class TourController {
         SuperResponse createTourResponse = tourService.createTour(tourDto);
         LOGGER.info("[TourController] 투어 생성 성공");
         return createTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 투어를 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 삭제 성공"),
+            @ApiResponse(code = 401, message = "삭제할 Tour가 존재하지 않습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/{tourId}")
+    public SuperResponse deleteTour(@PathVariable("tourId") Long tourId) {
+        LOGGER.info("[TourController] 투어 삭제 시도");
+        SuperResponse deleteTourResponse = tourService.deleteTour(tourId);
+        LOGGER.info("[TourController] 투어 삭제 성공");
+        return deleteTourResponse;
     }
 
 }

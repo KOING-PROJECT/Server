@@ -64,6 +64,23 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, savedTour);
     }
 
+    public SuperResponse deleteTour(Long tourId) {
+
+        LOGGER.info("[TourService] Tour 삭제 시도");
+
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+
+        if(tour == null) {
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+        LOGGER.info("[TourService] 삭제할 Tour 조회 성공");
+
+        tourRepository.delete(tour);
+        LOGGER.info("[TourService] Tour 삭제 성공");
+
+        return SuccessResponse.success(SuccessCode.DELETE_TOURS_SUCCESS, null);
+    }
+
     private Tour buildTour(TourDto tourDto) {
         Tour tour = Tour.builder()
                 .createUser(getCreatUser(tourDto.getCreateUserEmail()))

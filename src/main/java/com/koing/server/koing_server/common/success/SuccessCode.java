@@ -24,6 +24,7 @@ public enum SuccessCode {
     RE_ISSUE_TOKEN_SUCCESS(OK, "reIssue : 토큰 재발급 성공입니다."),
     CRYPTOGRAM_CERTIFICATION_SUCCESS(OK, "cryptogram : 이메일 인증 성공입니다."),
     GET_TOURS_SUCCESS(OK, "tour : 투어 리스트 조회 성공입니다."),
+    DELETE_TOURS_SUCCESS(OK, "tour : 투어 삭제 성공입니다."),
 
     /**
      * 201 CREATED
@@ -35,6 +36,7 @@ public enum SuccessCode {
     TOUR_CATEGORY_CREATE_SUCCESS(CREATED, "tour-category : 투어 카테고리 생성 성공입니다."),
     TOUR_CREATE_SUCCESS(CREATED, "tour : 투어 생성 성공입니다."),
     TOUR_APPLICATION_CREATE_SUCCESS(CREATED, "tour-application : 투어 신청서 생성 성공입니다."),
+    TOUR_APPLICATION_UPDATE_SUCCESS(CREATED, "tour-application : 투어 신청서 업데이트 성공입니다."),
 
 
     /**

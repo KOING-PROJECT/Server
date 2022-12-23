@@ -15,6 +15,15 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
     private final JPQLQueryFactory jpqlQueryFactory;
 
     @Override
+    public Tour findTourByTourId(Long id) {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .where(
+                        tour.id.eq(id)
+                ).fetchOne();
+    }
+
+    @Override
     public List<Tour> findTourByStatusRecruitmentAndStandby() {
         return jpqlQueryFactory
                 .selectFrom(tour)

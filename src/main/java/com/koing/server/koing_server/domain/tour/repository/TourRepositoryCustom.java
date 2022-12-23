@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface TourRepositoryCustom {
 
+    Tour findTourByTourId(Long id);
+
     List<Tour> findTourByStatusRecruitmentAndStandby();
 
 }

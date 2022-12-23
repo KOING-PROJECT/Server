@@ -1,5 +1,7 @@
 package com.koing.server.koing_server.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -19,7 +21,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
@@ -97,6 +100,8 @@ public class User extends AuditingTimeEntity {
     private Set<TourApplication> tourApplication;
 
     // 생성한 투어
+//    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy = "createUser", fetch = FetchType.EAGER)
     private Set<Tour> createTours;
 

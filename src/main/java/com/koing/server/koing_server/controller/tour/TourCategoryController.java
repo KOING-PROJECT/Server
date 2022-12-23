@@ -29,7 +29,7 @@ public class TourCategoryController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
-    public SuperResponse getTours(@RequestBody TourCategoryDto tourCategoryDto) {
+    public SuperResponse createTourCategory(@RequestBody TourCategoryDto tourCategoryDto) {
         LOGGER.info("[TourCategoryController] 투어 카테고리 생성 시도");
         SuperResponse createTourCategoryResponse = tourCategoryService.createTourCategory(tourCategoryDto);
         LOGGER.info("[TourCategoryController] 투어 카테고리 생성 성공");
