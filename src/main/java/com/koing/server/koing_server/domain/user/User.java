@@ -75,8 +75,8 @@ public class User extends AuditingTimeEntity {
     @Column(length = 50, nullable = false)
     private String country;
 
-    @ElementCollection(fetch = FetchType.EAGER)
 //    @Builder.Default
+    @ElementCollection(fetch = FetchType.LAZY)
     @Column(length = 20, nullable = false, name = "roles")
     private Set<String> roles;
 
@@ -96,13 +96,14 @@ public class User extends AuditingTimeEntity {
     private UserOptionalInfo userOptionalInfo;
 
     // 신청한 투어
-    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<TourApplication> tourApplication;
 
     // 생성한 투어
 //    @JsonBackReference
+    // jsonignore 하고 user가 만든 tour가 필요하면 dto로 전달해주자
     @JsonIgnore
-    @OneToMany(mappedBy = "createUser", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "createUser", fetch = FetchType.LAZY)
     private Set<Tour> createTours;
 
 //    소셜 로그인시 사용

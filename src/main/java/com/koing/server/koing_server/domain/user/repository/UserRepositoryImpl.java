@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.koing.server.koing_server.domain.tour.QTour.tour;
+import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.user.QUser.user;
+import static com.koing.server.koing_server.domain.user.QUserOptionalInfo.userOptionalInfo;
 
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {
@@ -17,19 +20,38 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     public List<User> findAllUserByEnabled(boolean enabled) {
         return jpqlQueryFactory
                 .selectFrom(user)
+                .leftJoin(user.roles)
+                .fetchJoin()
+                .leftJoin(user.createTours, tour)
+                .fetchJoin()
+                .leftJoin(user.tourApplication, tourApplication)
+                .fetchJoin()
+                .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
                 .where(
                         user.enabled.eq(true)
-                ).fetch();
+                )
+                .distinct()
+                .fetch();
     }
 
     @Override
     public User loadUserByUserEmail(String email, boolean enabled) {
         return jpqlQueryFactory
                 .selectFrom(user)
+                .leftJoin(user.roles)
+                .fetchJoin()
+                .leftJoin(user.createTours, tour)
+                .fetchJoin()
+                .leftJoin(user.tourApplication, tourApplication)
+                .fetchJoin()
+                .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
                 .where(
                         user.email.eq(email),
                         user.enabled.eq(enabled)
                 )
+                .distinct()
                 .fetchOne();
     }
 

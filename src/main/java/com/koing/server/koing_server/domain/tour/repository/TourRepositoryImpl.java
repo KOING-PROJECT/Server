@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
+import static com.koing.server.koing_server.domain.user.QUser.user;
 
 @RequiredArgsConstructor
 public class TourRepositoryImpl implements TourRepositoryCustom {
@@ -27,9 +28,13 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
     public List<Tour> findTourByStatusRecruitmentAndStandby() {
         return jpqlQueryFactory
                 .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
                 .where(
                         tour.tourStatus.eq(TourStatus.RECRUITMENT)
                                 .or(tour.tourStatus.eq(TourStatus.STANDBY))
-                ).fetch();
+                )
+                .distinct()
+                .fetch();
     }
 }

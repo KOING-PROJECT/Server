@@ -16,15 +16,16 @@ public enum SuccessCode {
      * 200 OK
      */
     SUCCESS(OK, "성공입니다."),
+    GET_USER_SUCCESS(OK, "user : 유저 조회 성공입니다."),
+    GET_USERS_SUCCESS(OK, "user : 유저 리스트 조회 성공입니다."),
+    GET_TOURS_SUCCESS(OK, "tour : 투어 리스트 조회 성공입니다."),
+    DELETE_TOURS_SUCCESS(OK, "tour : 투어 삭제 성공입니다."),
+    GET_TOUR_CATEGORIES_SUCCESS(OK, "tour : 투어 카테고리 리스트 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
-    GET_USER_SUCCESS(OK, "user : 유저 조회 성공입니다."),
-    GET_USERS_SUCCESS(OK, "user : 유저 리스트 조회 성공입니다."),
     RE_ISSUE_TOKEN_SUCCESS(OK, "reIssue : 토큰 재발급 성공입니다."),
     CRYPTOGRAM_CERTIFICATION_SUCCESS(OK, "cryptogram : 이메일 인증 성공입니다."),
-    GET_TOURS_SUCCESS(OK, "tour : 투어 리스트 조회 성공입니다."),
-    DELETE_TOURS_SUCCESS(OK, "tour : 투어 삭제 성공입니다."),
 
     /**
      * 201 CREATED

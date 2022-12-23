@@ -23,7 +23,7 @@ spring:
   datasource:
 #    url: jdbc:mysql://localhost:3306/koing?characterEncoding=UTF-8&serverTimezone=UTC
     url: jdbc:mysql://localhost:3306/koing?createDatabaseIfNotExist=true
-    username: root
+    username: koing
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 

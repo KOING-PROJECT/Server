@@ -22,7 +22,22 @@ public class TourCategoryController {
     private final Logger LOGGER = LoggerFactory.getLogger(TourCategoryController.class);
     private final TourCategoryService tourCategoryService;
 
-    @ApiOperation("TourCategory - 투어 카테고리를 생성합니다..")
+
+    @ApiOperation("TourCategories - 투어 카테고리 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "TourCategories - 투어 카테고리 리스트 조회 성공"),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("")
+    public SuperResponse getTourCategories() {
+        LOGGER.info("[TourCategoryController] 투어 카테고리 리스트 조회 시도");
+        SuperResponse getTourCategoriesResponse = tourCategoryService.getTourCategories();
+        LOGGER.info("[TourCategoryController] 투어 카테고리 리스트 조회 성공");
+        return getTourCategoriesResponse;
+    }
+
+
+    @ApiOperation("TourCategory - 투어 카테고리를 생성합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "TourCategory - 투어 카테고리 생성 성공"),
             @ApiResponse(code = 402, message = "투어 카테고리 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
