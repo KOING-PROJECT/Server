@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,30 +18,45 @@ public class QTourDetailSchedule extends EntityPathBase<TourDetailSchedule> {
 
     private static final long serialVersionUID = 649565416L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QTourDetailSchedule tourDetailSchedule = new QTourDetailSchedule("tourDetailSchedule");
+
+    public final StringPath description = createString("description");
 
     public final StringPath endTime = createString("endTime");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Long> latitude = createNumber("latitude", Long.class);
+    public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
 
     public final StringPath locationName = createString("locationName");
 
-    public final NumberPath<Long> longitude = createNumber("longitude", Long.class);
+    public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
     public final StringPath startTime = createString("startTime");
 
+    public final QTourSchedule tourSchedule;
+
     public QTourDetailSchedule(String variable) {
-        super(TourDetailSchedule.class, forVariable(variable));
+        this(TourDetailSchedule.class, forVariable(variable), INITS);
     }
 
     public QTourDetailSchedule(Path<? extends TourDetailSchedule> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QTourDetailSchedule(PathMetadata metadata) {
-        super(TourDetailSchedule.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QTourDetailSchedule(PathMetadata metadata, PathInits inits) {
+        this(TourDetailSchedule.class, metadata, inits);
+    }
+
+    public QTourDetailSchedule(Class<? extends TourDetailSchedule> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.tourSchedule = inits.isInitialized("tourSchedule") ? new QTourSchedule(forProperty("tourSchedule"), inits.get("tourSchedule")) : null;
     }
 
 }

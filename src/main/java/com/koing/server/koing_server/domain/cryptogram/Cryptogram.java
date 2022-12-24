@@ -27,6 +27,6 @@ public class Cryptogram extends AuditingTimeEntity {
 
     private String targetEmail;
 
-    private boolean verified;
+    private boolean verified = false;
 
 }

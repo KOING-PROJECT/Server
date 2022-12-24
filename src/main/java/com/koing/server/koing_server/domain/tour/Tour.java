@@ -26,9 +26,11 @@ import java.util.stream.Collectors;
 public class Tour extends AuditingTimeEntity {
 
     @Builder
-    public Tour(String title, User createUser, String description
-            , Set<TourCategory> tourCategories, String thumbnail, int participant
-            , int tourPrice, boolean hasLevy, TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice) {
+    public Tour(String title, User createUser, String description,
+                Set<TourCategory> tourCategories, String thumbnail,
+                int participant, int tourPrice, boolean hasLevy,
+                TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice
+                ) {
         this.title = title;
         this.createUser = createUser;
         this.description = description;
@@ -77,7 +79,7 @@ public class Tour extends AuditingTimeEntity {
     @Column(nullable = false)
     private TourStatus tourStatus;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour",orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour", orphanRemoval = true)
     @JsonIgnore
     private Set<TourApplication> tourApplications;
 
@@ -86,5 +88,10 @@ public class Tour extends AuditingTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private TourSchedule tourSchedule;
+
+    public void setTourSchedule(TourSchedule tourSchedule) {
+        this.tourSchedule = tourSchedule;
+        tourSchedule.setTour(this);
+    }
 
 }

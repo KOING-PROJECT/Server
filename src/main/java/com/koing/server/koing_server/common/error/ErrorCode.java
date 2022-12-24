@@ -41,6 +41,9 @@ public enum ErrorCode {
     DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_UPDATE_USER_FAIL_EXCEPTION(DB_HANDLE_FAIL, "유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_CREATE_TOUR_DETAIL_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_UPDATE_TOUR_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 스케줄 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 

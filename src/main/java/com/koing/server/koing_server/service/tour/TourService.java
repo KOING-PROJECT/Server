@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.tour;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
@@ -7,7 +8,9 @@ import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourCategory;
+import com.koing.server.koing_server.domain.tour.TourSchedule;
 import com.koing.server.koing_server.domain.tour.repository.TourCategoryRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourRepositoryImpl;
@@ -22,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.*;
 import java.util.*;
 
 @Service
@@ -92,8 +96,8 @@ public class TourService {
                 .participant(tourDto.getParticipant())
                 .tourPrice(tourDto.getTourPrice())
                 .hasLevy(tourDto.isHasLevy())
-                .tourStatus(TourStatus.RECRUITMENT)
                 .additionalPrice(buildAdditionalPrice(tourDto.getAdditionalPrice()))
+                .tourStatus(TourStatus.RECRUITMENT)
                 .build();
 
         return tour;

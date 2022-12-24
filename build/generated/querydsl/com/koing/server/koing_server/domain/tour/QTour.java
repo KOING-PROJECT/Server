@@ -77,7 +77,7 @@ public class QTour extends EntityPathBase<Tour> {
     public QTour(Class<? extends Tour> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.createUser = inits.isInitialized("createUser") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("createUser"), inits.get("createUser")) : null;
-        this.tourSchedule = inits.isInitialized("tourSchedule") ? new QTourSchedule(forProperty("tourSchedule")) : null;
+        this.tourSchedule = inits.isInitialized("tourSchedule") ? new QTourSchedule(forProperty("tourSchedule"), inits.get("tourSchedule")) : null;
     }
 
 }

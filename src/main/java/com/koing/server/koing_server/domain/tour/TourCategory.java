@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.collect.Sets;
+import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.service.tour.dto.TourCategoryDto;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_CATEGORY_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourCategory {
+public class TourCategory extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
