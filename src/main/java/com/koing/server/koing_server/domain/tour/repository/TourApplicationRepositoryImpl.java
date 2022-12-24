@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
+import static com.koing.server.koing_server.domain.tour.QTourCategory.tourCategory;
 import static com.koing.server.koing_server.domain.user.QUser.user;
 
 @RequiredArgsConstructor
@@ -19,6 +20,8 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
         return jpqlQueryFactory
                 .selectFrom(tourApplication)
                 .leftJoin(tourApplication.tour, tour)
+                .fetchJoin()
+                .leftJoin(tourApplication.tour.tourCategories, tourCategory)
                 .fetchJoin()
                 .leftJoin(tourApplication.participants, user)
                 .fetchJoin()

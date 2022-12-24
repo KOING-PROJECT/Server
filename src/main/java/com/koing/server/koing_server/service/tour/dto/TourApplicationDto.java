@@ -1,13 +1,18 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.domain.tour.Tour;
 import lombok.Getter;
-
-import java.util.Set;
 
 @Getter
 public class TourApplicationDto {
 
-    private Long tourId;
-    private Set<String> tourDates;
+    public TourApplicationDto(Tour tour) {
+    this.tourTitle = tour.getTitle();
+    this.guideName = tour.getCreateUser().getName();
+    this.tourThumbnail = tour.getThumbnail();
+}
 
+    private String tourTitle;
+    private String guideName;
+    private String tourThumbnail;
 }

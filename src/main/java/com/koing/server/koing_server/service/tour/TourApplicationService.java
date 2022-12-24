@@ -14,12 +14,14 @@ import com.koing.server.koing_server.domain.tour.repository.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -36,9 +38,10 @@ public class TourApplicationService {
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
 
-    public SuperResponse createTourApplication(TourApplicationDto tourApplicationDto) {
+    @Transactional
+    public SuperResponse createTourApplication(TourApplicationCreateDto tourApplicationCreateDto) {
 
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourApplicationDto.getTourId());
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourApplicationCreateDto.getTourId());
 
         if (tour == null) {
             return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
@@ -71,7 +74,9 @@ public class TourApplicationService {
 
         LOGGER.info("[TourApplicationService] 투어에 TourApplication 업데이트 성공 = " + savedTour);
 
-        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_CREATE_SUCCESS, tour.getTourApplications());
+        TourApplicationDto tourApplicationDto = new TourApplicationDto(savedTour);
+
+        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_CREATE_SUCCESS, tourApplicationDto);
     }
 
     public SuperResponse participateTour(TourApplicationParticipateDto tourApplicationParticipateDto) {
