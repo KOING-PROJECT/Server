@@ -36,7 +36,7 @@ public class TourSchedule extends AuditingTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private Tour tour;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(length = 20, nullable = false, name = "tour_dates")
     private Set<String> tourDates;
 

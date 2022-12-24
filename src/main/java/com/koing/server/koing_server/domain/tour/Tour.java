@@ -77,6 +77,7 @@ public class Tour extends AuditingTimeEntity {
     private Set<HashMap<String, List>> additionalPrice;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TourStatus tourStatus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour", orphanRemoval = true)

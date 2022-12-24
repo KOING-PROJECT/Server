@@ -1,5 +1,7 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.domain.tour.Tour;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +21,14 @@ public class TourListDto {
     private String guideThumbnail;
     private Set<String> tourDates;
 
+    public TourListDto(Tour tour) {
+        this.tourTitle = tour.getTitle();
+        this.maxParticipant = tour.getParticipant();
+        this.thumbnail = tour.getThumbnail();
+        this.guideName = tour.getCreateUser().getName();
+        if (tour.getCreateUser().getUserOptionalInfo() != null) {
+            this.guideThumbnail = tour.getCreateUser().getUserOptionalInfo().getImageUrl();
+        }
+        this.tourDates = tour.getTourSchedule().getTourDates();
+    }
 }

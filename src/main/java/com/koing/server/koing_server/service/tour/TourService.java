@@ -43,8 +43,13 @@ public class TourService {
         LOGGER.info("[TourService] Tour list 요청");
 
         // 모집중이거나 모집이 완료되었지만 아직 시작안한(대기 가능하게) tour list 반환
-        List<TourListDto> tourListDtos = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
+        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
         LOGGER.info("[TourService] Tour list 요청 완료");
+
+        List<TourListDto> tourListDtos = new ArrayList<>();
+        for (Tour tour : tours) {
+            tourListDtos.add(new TourListDto(tour));
+        }
 
         TourListResponseDto tourListResponseDto = new TourListResponseDto(tourListDtos);
 

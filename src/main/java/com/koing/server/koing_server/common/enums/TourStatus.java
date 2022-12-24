@@ -2,19 +2,21 @@ package com.koing.server.koing_server.common.enums;
 
 public enum TourStatus {
 
-    RECRUITMENT(1),
-    STANDBY(2),
-    ONGOING(3),
-    FINISH(4),
+    RECRUITMENT("RECRUITMENT", 1),
+    STANDBY("STANDBY", 2),
+    ONGOING("ONGOING", 3),
+    FINISH("FINISH", 4),
     ;
 
-    private int status;
+    private String status;
+    private int statusNumber;
 
-    TourStatus(int status) {
+    TourStatus(String status, int statusNumber) {
         this.status = status;
+        this.statusNumber = statusNumber;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 

@@ -33,6 +33,7 @@ public class TourApplication extends AuditingTimeEntity {
     private List<User> participants;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TourStatus tourStatus;
 
     private int maxParticipant;

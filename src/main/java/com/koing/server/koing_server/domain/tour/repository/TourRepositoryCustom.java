@@ -9,6 +9,6 @@ public interface TourRepositoryCustom {
 
     Tour findTourByTourId(Long id);
 
-    List<TourListDto> findTourByStatusRecruitmentAndStandby();
+    List<Tour> findTourByStatusRecruitmentAndStandby();
 
 }
