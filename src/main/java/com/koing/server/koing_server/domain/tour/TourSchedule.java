@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -20,13 +21,14 @@ public class TourSchedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 20)
-    private String tourDate;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Column(length = 20, nullable = false, name = "tour_dates")
+    private Set<String> tourDates;
 
     @Column(nullable = false)
     private boolean dateNegotiation;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TourDetailSchedule> tourDetailScheduleList;
 
 }

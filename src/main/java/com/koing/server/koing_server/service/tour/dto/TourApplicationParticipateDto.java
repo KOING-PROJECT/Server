@@ -7,5 +7,6 @@ public class TourApplicationParticipateDto {
 
     private Long tourId;
     private String userEmail;
+    private String tourDate;
 
 }

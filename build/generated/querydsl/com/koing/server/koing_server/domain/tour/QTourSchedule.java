@@ -24,7 +24,7 @@ public class QTourSchedule extends EntityPathBase<TourSchedule> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath tourDate = createString("tourDate");
+    public final SetPath<String, StringPath> tourDates = this.<String, StringPath>createSet("tourDates", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final ListPath<TourDetailSchedule, QTourDetailSchedule> tourDetailScheduleList = this.<TourDetailSchedule, QTourDetailSchedule>createList("tourDetailScheduleList", TourDetailSchedule.class, QTourDetailSchedule.class, PathInits.DIRECT2);
 

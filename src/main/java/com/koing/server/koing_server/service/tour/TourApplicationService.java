@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -46,52 +45,50 @@ public class TourApplicationService {
         }
 
         LOGGER.info("[TourApplicationService] TourId로 tour 찾기 성공 = " + tour);
+        int tourMaxParticipant = tour.getParticipant();
 
-        TourApplication tourApplication = new TourApplication();
-        tourApplication.setTour(tour);
-        //////////////////////////////////////////////
-        // 수정필요
-        //
-        TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
+        Set<String> tourDates = tour.getTourSchedule().getTourDates();
 
-        if (savedTourApplication.getId() == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+        for (String tourDate: tourDates) {
+            TourApplication tourApplication = new TourApplication(tourDate, tourMaxParticipant);
+            tourApplication.setTour(tour);
+
+            TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (savedTourApplication.getId() == null) {
+                return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+            }
+
+            LOGGER.info("[TourApplicationService] TourApplication 생성 성공 = " + savedTourApplication);
         }
-        LOGGER.info("[TourApplicationService] TourApplication update 성공 = " + savedTourApplication);
 
-        tour.setTourApplication(savedTourApplication);
+//        tour.setTourApplication(savedTourApplication);
         Tour savedTour = tourRepository.save(tour);
 
-        if (savedTour.getTourApplication() == null) {
+        if (savedTour.getTourApplications().size() != tourDates.size()) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
         }
 
         LOGGER.info("[TourApplicationService] 투어에 TourApplication 업데이트 성공 = " + savedTour);
 
-        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_CREATE_SUCCESS, savedTourApplication);
+        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_CREATE_SUCCESS, tour.getTourApplications());
     }
 
     public SuperResponse participateTour(TourApplicationParticipateDto tourApplicationParticipateDto) {
+        Long tourId = tourApplicationParticipateDto.getTourId();
+        String tourDate = tourApplicationParticipateDto.getTourDate();
 
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourApplicationParticipateDto.getTourId());
-
-        if (tour == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
-        }
-        System.out.println(tour.getId());
-        System.out.println(tour.getDescription());
-        System.out.println(tour.getTourCategories());
-        System.out.println(tour.getTourApplication());
-
-        LOGGER.info("[TourApplicationService] TourId로 투어 조회 성공 %s = " + tour);
-
-//        TourApplication tourApplication = tourApplicationRepositoryImpl.findTourApplicationByTour(tour);
-        TourApplication tourApplication = tour.getTourApplication();
+        TourApplication tourApplication = tourApplicationRepositoryImpl
+                .findTourApplicationByTourIdAndTourDate(
+                        tourId,
+                        tourDate
+                );
 
         if (tourApplication == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_APPLICATION_EXCEPTION);
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
-        LOGGER.info("[TourApplicationService] 투어로 투어 신청서 조회 성공 %s = " + tourApplication);
+
+        LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 성공 = " + tourApplication);
 
         User user = userRepositoryImpl.loadUserByUserEmail(
                 tourApplicationParticipateDto.getUserEmail(), true
@@ -102,28 +99,28 @@ public class TourApplicationService {
         }
         LOGGER.info("[TourApplicationService] userEmail로 user 조회 성공 %s = " + user);
 
-        List<User> participants = tourApplication.getUsers();
+        List<User> participants = tourApplication.getParticipants();
         LOGGER.info("[TourApplicationService] 현재 participants = " + participants);
 
-        participants.add(user);
-        tourApplication.setUsers(participants);
+        Set<TourApplication> beforeUpdateTourApplications = user.getTourApplication();
+        LOGGER.info("[TourApplicationService] 현재 user의 tourApplications = " + beforeUpdateTourApplications.size());
+
+        user.setTourApplication(tourApplication);
 
         TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
-        if (updatedTourApplication.getUsers().size() == participants.size()) {
+        if (updatedTourApplication.getParticipants().size() == participants.size()) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourApplicationService] participants update 성공 = " + updatedTourApplication.getUsers());
-
-        Set<TourApplication> tourApplications = user.getTourApplication();
-        tourApplications.add(updatedTourApplication);
+        LOGGER.info("[TourApplicationService] participants update 성공 = " + updatedTourApplication.getParticipants());
 
         User savedUser = userRepository.save(user);
 
-        if (tourApplications.size() == savedUser.getTourApplication().size()) {
+        if (beforeUpdateTourApplications.size() == savedUser.getTourApplication().size()) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
         }
+        LOGGER.info("[TourApplicationService] user tourApplication update 성공 = " + savedUser.getTourApplication());
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, updatedTourApplication);
     }

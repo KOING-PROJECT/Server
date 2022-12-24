@@ -60,7 +60,7 @@ public class TourController {
             @ApiResponse(code = 401, message = "삭제할 Tour가 존재하지 않습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/{tourId}")
+    @DeleteMapping("/{tourId}")
     public SuperResponse deleteTour(@PathVariable("tourId") Long tourId) {
         LOGGER.info("[TourController] 투어 삭제 시도");
         SuperResponse deleteTourResponse = tourService.deleteTour(tourId);

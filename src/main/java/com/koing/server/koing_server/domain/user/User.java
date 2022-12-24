@@ -1,6 +1,5 @@
 package com.koing.server.koing_server.domain.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -8,15 +7,12 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
-import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -96,7 +92,8 @@ public class User extends AuditingTimeEntity {
     private UserOptionalInfo userOptionalInfo;
 
     // 신청한 투어
-    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "participants_application")
     private Set<TourApplication> tourApplication;
 
     // 생성한 투어
@@ -105,6 +102,11 @@ public class User extends AuditingTimeEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "createUser", fetch = FetchType.LAZY)
     private Set<Tour> createTours;
+
+    // 좋아요 누른 투어
+    @JsonIgnore
+    @ManyToMany(mappedBy = "pressLikeUsers", fetch = FetchType.LAZY)
+    private Set<Tour> pressLikeTours;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
@@ -128,5 +130,10 @@ public class User extends AuditingTimeEntity {
                 .enabled(enabled)
                 .userOptionalInfo(null)
                 .build();
+    }
+
+    public void setTourApplication(TourApplication tourApplication) {
+        this.tourApplication.add(tourApplication);
+        tourApplication.getParticipants().add(this);
     }
 }

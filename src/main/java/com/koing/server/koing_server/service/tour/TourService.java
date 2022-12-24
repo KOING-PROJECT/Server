@@ -15,6 +15,7 @@ import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.tour.dto.TourDto;
+import com.koing.server.koing_server.service.tour.dto.TourListDto;
 import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -38,10 +39,10 @@ public class TourService {
         LOGGER.info("[TourService] Tour list 요청");
 
         // 모집중이거나 모집이 완료되었지만 아직 시작안한(대기 가능하게) tour list 반환
-        List<Tour> tourList = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
+        List<TourListDto> tourListDtos = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
         LOGGER.info("[TourService] Tour list 요청 완료");
 
-        TourListResponseDto tourListResponseDto = new TourListResponseDto(tourList);
+        TourListResponseDto tourListResponseDto = new TourListResponseDto(tourListDtos);
 
         return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, tourListResponseDto);
     }

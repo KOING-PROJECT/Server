@@ -22,6 +22,11 @@ public class TourCategoryRepositoryImpl implements TourCategoryRepositoryCustom 
     public TourCategory findTourCategoryByCategoryName(String categoryName) {
         return jpqlQueryFactory
                 .selectFrom(tourCategory)
+                .leftJoin(tourCategory.categorizedTours, tour)
+                .fetchJoin()
+                .leftJoin(tourCategory.detailTypes)
+                .fetchJoin()
+                .distinct()
                 .where(
                         tourCategory.categoryName.eq(categoryName)
                 ).fetchOne();

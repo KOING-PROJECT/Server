@@ -11,9 +11,9 @@ import java.util.List;
 @Builder(access = AccessLevel.PRIVATE)
 public class TourListResponseDto {
 
-    private List<Tour> tours;
+    private List<TourListDto> tourListDtos;
 
-    public TourListResponseDto(List<Tour> tours) {
-        this.tours = tours;
+    public TourListResponseDto(List<TourListDto> tourListDtos) {
+        this.tourListDtos = tourListDtos;
     }
 }

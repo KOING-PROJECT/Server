@@ -29,14 +29,18 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);
+
+    public final ListPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> participants = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createList("participants", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
+
     public final QTour tour;
+
+    public final StringPath tourDate = createString("tourDate");
 
     public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
-
-    public final ListPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> users = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createList("users", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
 
     public QTourApplication(String variable) {
         this(TourApplication.class, forVariable(variable), INITS);

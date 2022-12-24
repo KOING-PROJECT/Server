@@ -46,6 +46,7 @@ public class Tour extends AuditingTimeEntity {
     private Long id;
 
     //    @JsonManagedReference
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY) // 연관관계 주인
     private User createUser;
 
@@ -56,7 +57,6 @@ public class Tour extends AuditingTimeEntity {
     private String description;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Set<TourCategory> tourCategories;
 
     @Column(length = 30, nullable = false)
@@ -70,15 +70,21 @@ public class Tour extends AuditingTimeEntity {
 
     private boolean hasLevy;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "additional_price")
     private Set<HashMap<String, List>> additionalPrice;
 
     @Column(nullable = false)
     private TourStatus tourStatus;
 
-    @OneToOne(fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour",orphanRemoval = true)
     @JsonIgnore
-    private TourApplication tourApplication;
+    private Set<TourApplication> tourApplications;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> pressLikeUsers;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private TourSchedule tourSchedule;
 
 }

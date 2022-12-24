@@ -39,15 +39,19 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final NumberPath<Integer> participant = createNumber("participant", Integer.class);
 
+    public final SetPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> pressLikeUsers = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createSet("pressLikeUsers", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
+
     public final StringPath thumbnail = createString("thumbnail");
 
     public final StringPath title = createString("title");
 
-    public final QTourApplication tourApplication;
+    public final SetPath<TourApplication, QTourApplication> tourApplications = this.<TourApplication, QTourApplication>createSet("tourApplications", TourApplication.class, QTourApplication.class, PathInits.DIRECT2);
 
     public final SetPath<TourCategory, QTourCategory> tourCategories = this.<TourCategory, QTourCategory>createSet("tourCategories", TourCategory.class, QTourCategory.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> tourPrice = createNumber("tourPrice", Integer.class);
+
+    public final QTourSchedule tourSchedule;
 
     public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
 
@@ -73,7 +77,7 @@ public class QTour extends EntityPathBase<Tour> {
     public QTour(Class<? extends Tour> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.createUser = inits.isInitialized("createUser") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("createUser"), inits.get("createUser")) : null;
-        this.tourApplication = inits.isInitialized("tourApplication") ? new QTourApplication(forProperty("tourApplication"), inits.get("tourApplication")) : null;
+        this.tourSchedule = inits.isInitialized("tourSchedule") ? new QTourSchedule(forProperty("tourSchedule")) : null;
     }
 
 }
