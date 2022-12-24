@@ -2,8 +2,7 @@ package com.koing.server.koing_server.controller.tour;
 
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.service.tour.TourCategoryService;
-import com.koing.server.koing_server.service.tour.TourService;
-import com.koing.server.koing_server.service.tour.dto.TourCategoryDto;
+import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -44,9 +43,9 @@ public class TourCategoryController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
-    public SuperResponse createTourCategory(@RequestBody TourCategoryDto tourCategoryDto) {
+    public SuperResponse createTourCategory(@RequestBody TourCategoryCreateDto tourCategoryCreateDto) {
         LOGGER.info("[TourCategoryController] 투어 카테고리 생성 시도");
-        SuperResponse createTourCategoryResponse = tourCategoryService.createTourCategory(tourCategoryDto);
+        SuperResponse createTourCategoryResponse = tourCategoryService.createTourCategory(tourCategoryCreateDto);
         LOGGER.info("[TourCategoryController] 투어 카테고리 생성 성공");
         return createTourCategoryResponse;
     }

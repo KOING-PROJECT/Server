@@ -7,10 +7,10 @@ import lombok.Getter;
 public class TourApplicationDto {
 
     public TourApplicationDto(Tour tour) {
-    this.tourTitle = tour.getTitle();
-    this.guideName = tour.getCreateUser().getName();
-    this.tourThumbnail = tour.getThumbnail();
-}
+        this.tourTitle = tour.getTitle();
+        this.guideName = tour.getCreateUser().getName();
+        this.tourThumbnail = tour.getThumbnail();
+    }
 
     private String tourTitle;
     private String guideName;

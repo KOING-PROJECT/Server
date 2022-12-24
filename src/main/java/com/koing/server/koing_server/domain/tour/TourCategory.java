@@ -1,11 +1,10 @@
 package com.koing.server.koing_server.domain.tour;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.collect.Sets;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import com.koing.server.koing_server.service.tour.dto.TourCategoryDto;
+import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,8 +31,8 @@ public class TourCategory extends AuditingTimeEntity {
     @Column(length = 20, nullable = false, name = "detail_type")
     private Set<String> detailTypes;
 
-    public TourCategory(TourCategoryDto tourCategoryDto) {
-        this.categoryName = tourCategoryDto.getCategoryName();
-        this.detailTypes = Sets.newHashSet(tourCategoryDto.getDetailTypes());
+    public TourCategory(TourCategoryCreateDto tourCategoryCreateDto) {
+        this.categoryName = tourCategoryCreateDto.getCategoryName();
+        this.detailTypes = Sets.newHashSet(tourCategoryCreateDto.getDetailTypes());
     }
 }
