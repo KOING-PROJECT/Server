@@ -70,5 +70,23 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         return false;
     }
 
+    @Override
+    public User loadUserByUserId(Long userId, boolean enabled) {
+        return jpqlQueryFactory
+                .selectFrom(user)
+                .leftJoin(user.roles)
+                .fetchJoin()
+                .leftJoin(user.createTours, tour)
+                .fetchJoin()
+                .leftJoin(user.tourApplication, tourApplication)
+                .fetchJoin()
+                .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
+                .where(
+                        user.id.eq(userId)
+                )
+                .distinct()
+                .fetchOne();
+    }
 
 }

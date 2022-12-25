@@ -11,10 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "TourApplication")
 @RequestMapping("/tour-application")
@@ -54,6 +51,21 @@ public class TourApplicationController {
         SuperResponse participateTourApplicationResponse = tourApplicationService.participateTour(tourApplicationParticipateDto);
         LOGGER.info("[TourCategoryController] 투어 신청 성공");
         return participateTourApplicationResponse;
+    }
+
+    @ApiOperation("TourApplication - 투어 신청서 리스트를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "TourApplication - 투어 신청서 리스트 조회 성공"),
+            @ApiResponse(code = 402, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 402, message = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/{userId}")
+    public SuperResponse getTourApplications(@PathVariable("userId") Long userId) {
+        LOGGER.info("[TourCategoryController] 투어 신청서 리스트 조회 시도");
+        SuperResponse getTourApplicationResponse = tourApplicationService.getTourApplications(userId);
+        LOGGER.info("[TourCategoryController] 투어 신청 리스트 조회 성공");
+        return getTourApplicationResponse;
     }
 
 }

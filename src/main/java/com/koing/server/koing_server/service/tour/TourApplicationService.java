@@ -17,12 +17,14 @@ import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
+import com.koing.server.koing_server.service.tour.dto.TourApplicationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -133,6 +135,35 @@ public class TourApplicationService {
         TourApplicationDto tourApplicationDto = new TourApplicationDto(updatedTourApplication.getTour());
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
+    }
+
+    public SuperResponse getTourApplications(Long userId) {
+        LOGGER.info("[TourApplicationService] userId로 user 조회 시도");
+
+        User user = userRepositoryImpl.loadUserByUserId(userId, true);
+
+        if (user == null) {
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        LOGGER.info("[TourApplicationService] userId로 user 조회 성공");
+
+        LOGGER.info("[TourApplicationService] user로 tourApplication 조회 시도");
+        List<TourApplication> tourApplications = tourApplicationRepositoryImpl.findTourApplicationsByUser(user);
+
+        if (tourApplications == null) {
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_APPLICATION_EXCEPTION);
+        }
+
+        LOGGER.info("[TourApplicationService] user로 tourApplication 조회 성공 = " + tourApplications);
+
+        List<TourApplicationDto> tourApplicationDtos = new ArrayList<>();
+
+        for (TourApplication tourApplication : tourApplications) {
+            tourApplicationDtos.add(new TourApplicationDto(tourApplication.getTour()));
+        }
+
+        return SuccessResponse.success(SuccessCode.GET_TOUR_APPLICATIONS_SUCCESS, new TourApplicationResponseDto(tourApplicationDtos));
     }
 
 }

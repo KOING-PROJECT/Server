@@ -2,8 +2,11 @@ package com.koing.server.koing_server.domain.tour.repository;
 
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.user.User;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
@@ -29,5 +32,20 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                         tourApplication.tourDate.eq(tourDate)
                 )
                 .fetchOne();
+    }
+
+    @Override
+    public List<TourApplication> findTourApplicationsByUser(User participate) {
+        return jpqlQueryFactory
+                .selectFrom(tourApplication)
+                .leftJoin(tourApplication.tour, tour)
+                .fetchJoin()
+                .leftJoin(tourApplication.participants, user)
+                .fetchJoin()
+                .distinct()
+                .where(
+                        tourApplication.participants.contains(participate)
+                )
+                .fetch();
     }
 }
