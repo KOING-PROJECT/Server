@@ -6,7 +6,8 @@ import lombok.Getter;
 public class TourApplicationParticipateDto {
 
     private Long tourId;
-    private String userEmail;
+//    private String userEmail;
+    private Long userId;
     private String tourDate;
 
 }

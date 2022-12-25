@@ -1,6 +1,5 @@
 package com.koing.server.koing_server.service.tour;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
@@ -8,24 +7,20 @@ import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
-import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourCategory;
-import com.koing.server.koing_server.domain.tour.TourSchedule;
 import com.koing.server.koing_server.domain.tour.repository.TourCategoryRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
-import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.tour.dto.TourCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourDto;
-import com.koing.server.koing_server.service.tour.dto.TourListDto;
 import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
 import java.util.*;
 
 @Service
@@ -46,24 +41,24 @@ public class TourService {
         List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
         LOGGER.info("[TourService] Tour list 요청 완료");
 
-        List<TourListDto> tourListDtos = new ArrayList<>();
+        List<TourDto> tourDtos = new ArrayList<>();
         for (Tour tour : tours) {
-            tourListDtos.add(new TourListDto(tour));
+            tourDtos.add(new TourDto(tour));
         }
 
-        TourListResponseDto tourListResponseDto = new TourListResponseDto(tourListDtos);
+        TourListResponseDto tourListResponseDto = new TourListResponseDto(tourDtos);
 
         return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, tourListResponseDto);
     }
 
-    public SuperResponse createTour(TourDto tourDto) {
+    public SuperResponse createTour(TourCreateDto tourCreateDto) {
 
         LOGGER.info("[TourService] Tour 생성 시도");
 
-        if (!userRepositoryImpl.isExistUserByUserEmail(tourDto.getCreateUserEmail())) {
+        if (!userRepositoryImpl.isExistUserByUserEmail(tourCreateDto.getCreateUserEmail())) {
             return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
         }
-        Tour tour = buildTour(tourDto);
+        Tour tour = buildTour(tourCreateDto);
 
         Tour savedTour = tourRepository.save(tour);
 
@@ -71,7 +66,9 @@ public class TourService {
             return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_FAIL_EXCEPTION);
         }
 
-        return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, savedTour);
+        TourDto tourDto = new TourDto(savedTour);
+
+        return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, tourDto);
     }
 
     public SuperResponse deleteTour(Long tourId) {
@@ -91,17 +88,17 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.DELETE_TOURS_SUCCESS, null);
     }
 
-    private Tour buildTour(TourDto tourDto) {
+    private Tour buildTour(TourCreateDto tourCreateDto) {
         Tour tour = Tour.builder()
-                .createUser(getCreatUser(tourDto.getCreateUserEmail()))
-                .title(tourDto.getTitle())
-                .description(tourDto.getDescription())
-                .tourCategories(buildTourCategories(tourDto.getTourCategoryNames()))
-                .thumbnail(tourDto.getThumbnail())
-                .participant(tourDto.getParticipant())
-                .tourPrice(tourDto.getTourPrice())
-                .hasLevy(tourDto.isHasLevy())
-                .additionalPrice(buildAdditionalPrice(tourDto.getAdditionalPrice()))
+                .createUser(getCreatUser(tourCreateDto.getCreateUserEmail()))
+                .title(tourCreateDto.getTitle())
+                .description(tourCreateDto.getDescription())
+                .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
+                .thumbnail(tourCreateDto.getThumbnail())
+                .participant(tourCreateDto.getParticipant())
+                .tourPrice(tourCreateDto.getTourPrice())
+                .hasLevy(tourCreateDto.isHasLevy())
+                .additionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()))
                 .tourStatus(TourStatus.RECRUITMENT)
                 .build();
 

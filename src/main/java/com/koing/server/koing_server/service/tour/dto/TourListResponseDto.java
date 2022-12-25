@@ -1,6 +1,5 @@
 package com.koing.server.koing_server.service.tour.dto;
 
-import com.koing.server.koing_server.domain.tour.Tour;
 import lombok.*;
 
 import java.util.List;
@@ -11,9 +10,9 @@ import java.util.List;
 @Builder(access = AccessLevel.PRIVATE)
 public class TourListResponseDto {
 
-    private List<TourListDto> tours;
+    private List<TourDto> tours;
 
-    public TourListResponseDto(List<TourListDto> tourListDtos) {
-        this.tours = tourListDtos;
+    public TourListResponseDto(List<TourDto> tourDtos) {
+        this.tours = tourDtos;
     }
 }

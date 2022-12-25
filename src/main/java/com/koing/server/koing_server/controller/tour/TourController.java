@@ -1,9 +1,8 @@
 package com.koing.server.koing_server.controller.tour;
 
-import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.service.tour.TourService;
-import com.koing.server.koing_server.service.tour.dto.TourDto;
+import com.koing.server.koing_server.service.tour.dto.TourCreateDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -46,9 +45,9 @@ public class TourController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
-    public SuperResponse createTour(@RequestBody TourDto tourDto) {
+    public SuperResponse createTour(@RequestBody TourCreateDto tourCreateDto) {
         LOGGER.info("[TourController] 투어 생성 시도");
-        SuperResponse createTourResponse = tourService.createTour(tourDto);
+        SuperResponse createTourResponse = tourService.createTour(tourCreateDto);
         LOGGER.info("[TourController] 투어 생성 성공");
         return createTourResponse;
     }

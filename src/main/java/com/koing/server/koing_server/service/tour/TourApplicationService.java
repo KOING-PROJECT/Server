@@ -98,8 +98,12 @@ public class TourApplicationService {
 
         LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 성공 = " + tourApplication);
 
-        User user = userRepositoryImpl.loadUserByUserEmail(
-                tourApplicationParticipateDto.getUserEmail(), true
+//        User user = userRepositoryImpl.loadUserByUserEmail(
+//                tourApplicationParticipateDto.getUserEmail(), true
+//        );
+
+        User user = userRepositoryImpl.loadUserByUserId(
+                tourApplicationParticipateDto.getUserId(), true
         );
 
         if (user == null) {
