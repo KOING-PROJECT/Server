@@ -21,8 +21,6 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                 .selectFrom(tourApplication)
                 .leftJoin(tourApplication.tour, tour)
                 .fetchJoin()
-                .leftJoin(tourApplication.tour.tourCategories, tourCategory)
-                .fetchJoin()
                 .leftJoin(tourApplication.participants, user)
                 .fetchJoin()
                 .distinct()

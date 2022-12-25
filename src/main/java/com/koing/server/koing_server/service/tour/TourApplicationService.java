@@ -79,6 +79,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_CREATE_SUCCESS, tourApplicationDto);
     }
 
+    @Transactional
     public SuperResponse participateTour(TourApplicationParticipateDto tourApplicationParticipateDto) {
         Long tourId = tourApplicationParticipateDto.getTourId();
         String tourDate = tourApplicationParticipateDto.getTourDate();
@@ -104,17 +105,19 @@ public class TourApplicationService {
         }
         LOGGER.info("[TourApplicationService] userEmail로 user 조회 성공 %s = " + user);
 
-        List<User> participants = tourApplication.getParticipants();
-        LOGGER.info("[TourApplicationService] 현재 participants = " + participants);
+        int participantsSize = tourApplication.getParticipants().size();
+        LOGGER.info("[TourApplicationService] 현재 participantsSize = " + participantsSize);
 
-        Set<TourApplication> beforeUpdateTourApplications = user.getTourApplication();
-        LOGGER.info("[TourApplicationService] 현재 user의 tourApplications = " + beforeUpdateTourApplications.size());
+        int beforeUpdateTourApplications = user.getTourApplication().size();
+        LOGGER.info("[TourApplicationService] 현재 user의 tourApplications = " + beforeUpdateTourApplications);
 
         user.setTourApplication(tourApplication);
 
         TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
-        if (updatedTourApplication.getParticipants().size() == participants.size()) {
+        LOGGER.info("[TourApplicationService] 업데이트 후 participants = " + participantsSize);
+        LOGGER.info("[TourApplicationService] save 후 participants = " + updatedTourApplication.getParticipants().size());
+        if (updatedTourApplication.getParticipants().size() == participantsSize) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
         }
 
@@ -122,13 +125,14 @@ public class TourApplicationService {
 
         User savedUser = userRepository.save(user);
 
-        if (beforeUpdateTourApplications.size() == savedUser.getTourApplication().size()) {
+        if (beforeUpdateTourApplications == savedUser.getTourApplication().size()) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
         }
         LOGGER.info("[TourApplicationService] user tourApplication update 성공 = " + savedUser.getTourApplication());
 
-        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, updatedTourApplication);
-    }
+        TourApplicationDto tourApplicationDto = new TourApplicationDto(updatedTourApplication.getTour());
 
+        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
+    }
 
 }

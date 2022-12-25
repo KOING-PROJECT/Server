@@ -42,7 +42,6 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
     public List<Tour> findTourByStatusRecruitmentAndStandby() {
         return jpqlQueryFactory
                 .selectFrom(tour)
-                .from(tour)
                 .leftJoin(tour.createUser, user)
                 .fetchJoin()
                 .leftJoin(tour.tourCategories, tourCategory)
