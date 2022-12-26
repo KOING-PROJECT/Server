@@ -71,6 +71,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
     }
 
     @Override
+    public Boolean isExistUserByUserId(Long userId) {
+        User existUser = jpqlQueryFactory.selectFrom(user)
+                .where(
+                        user.id.eq(userId)
+                )
+                .fetchOne();
+
+        if (existUser != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public User loadUserByUserId(Long userId, boolean enabled) {
         return jpqlQueryFactory
                 .selectFrom(user)

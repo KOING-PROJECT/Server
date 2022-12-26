@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 public class TourCreateDto {
 
-    private String createUserEmail;
+    private Long createUserId;
     private String title;
     private String description;
     private List<String> tourCategoryNames;

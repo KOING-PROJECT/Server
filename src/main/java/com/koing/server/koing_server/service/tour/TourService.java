@@ -55,9 +55,10 @@ public class TourService {
 
         LOGGER.info("[TourService] Tour 생성 시도");
 
-        if (!userRepositoryImpl.isExistUserByUserEmail(tourCreateDto.getCreateUserEmail())) {
+        if (!userRepositoryImpl.isExistUserByUserId(tourCreateDto.getCreateUserId())) {
             return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
         }
+
         Tour tour = buildTour(tourCreateDto);
 
         Tour savedTour = tourRepository.save(tour);
@@ -90,7 +91,7 @@ public class TourService {
 
     private Tour buildTour(TourCreateDto tourCreateDto) {
         Tour tour = Tour.builder()
-                .createUser(getCreatUser(tourCreateDto.getCreateUserEmail()))
+                .createUser(getCreatUser(tourCreateDto.getCreateUserId()))
                 .title(tourCreateDto.getTitle())
                 .description(tourCreateDto.getDescription())
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
@@ -105,8 +106,8 @@ public class TourService {
         return tour;
     }
 
-    private User getCreatUser(String createUserEmail) {
-        User createUser = userRepositoryImpl.loadUserByUserEmail(createUserEmail, true);
+    private User getCreatUser(Long createUserId) {
+        User createUser = userRepositoryImpl.loadUserByUserId(createUserId, true);
         return createUser;
     }
 

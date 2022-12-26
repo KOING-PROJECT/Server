@@ -13,6 +13,8 @@ public interface UserRepositoryCustom {
 
     Boolean isExistUserByUserEmail(String email);
 
+    Boolean isExistUserByUserId(Long userId);
+
     User loadUserByUserId(Long userId, boolean enabled);
 
 }
