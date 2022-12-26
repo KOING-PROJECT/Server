@@ -29,6 +29,8 @@ public class QTour extends EntityPathBase<Tour> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.CreateStatus> createStatus = createEnum("createStatus", com.koing.server.koing_server.common.enums.CreateStatus.class);
+
     public final com.koing.server.koing_server.domain.user.QUser createUser;
 
     public final StringPath description = createString("description");

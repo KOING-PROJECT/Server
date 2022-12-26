@@ -1,21 +1,16 @@
 package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.User;
-import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -29,7 +24,8 @@ public class Tour extends AuditingTimeEntity {
     public Tour(String title, User createUser, String description,
                 Set<TourCategory> tourCategories, String thumbnail,
                 int participant, int tourPrice, boolean hasLevy,
-                TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice
+                TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
+                CreateStatus createStatus
                 ) {
         this.title = title;
         this.createUser = createUser;
@@ -41,6 +37,7 @@ public class Tour extends AuditingTimeEntity {
         this.hasLevy = hasLevy;
         this.tourStatus = tourStatus;
         this.additionalPrice = additionalPrice;
+        this.createStatus = createStatus;
     }
 
     @Id
@@ -89,6 +86,10 @@ public class Tour extends AuditingTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private TourSchedule tourSchedule;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CreateStatus createStatus;
 
     public void setTourSchedule(TourSchedule tourSchedule) {
         this.tourSchedule = tourSchedule;

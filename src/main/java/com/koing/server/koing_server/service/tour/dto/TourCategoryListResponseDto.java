@@ -10,9 +10,10 @@ import java.util.List;
 @Builder(access = AccessLevel.PRIVATE)
 public class TourCategoryListResponseDto {
 
-    private List<TourCategoryDto> tourCategories;
-
     public TourCategoryListResponseDto(List<TourCategoryDto> tourCategories) {
         this.tourCategories = tourCategories;
     }
+
+    private List<TourCategoryDto> tourCategories;
+
 }

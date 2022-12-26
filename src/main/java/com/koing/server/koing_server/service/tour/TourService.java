@@ -3,6 +3,7 @@ package com.koing.server.koing_server.service.tour;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
@@ -51,15 +52,15 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, tourListResponseDto);
     }
 
-    public SuperResponse createTour(TourCreateDto tourCreateDto) {
-
+    public SuperResponse createTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {
+        // tour create 완료 시 호출
         LOGGER.info("[TourService] Tour 생성 시도");
 
         if (!userRepositoryImpl.isExistUserByUserId(tourCreateDto.getCreateUserId())) {
             return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
         }
 
-        Tour tour = buildTour(tourCreateDto);
+        Tour tour = buildTour(tourCreateDto, createStatus);
 
         Tour savedTour = tourRepository.save(tour);
 
@@ -89,7 +90,7 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.DELETE_TOURS_SUCCESS, null);
     }
 
-    private Tour buildTour(TourCreateDto tourCreateDto) {
+    private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {
         Tour tour = Tour.builder()
                 .createUser(getCreatUser(tourCreateDto.getCreateUserId()))
                 .title(tourCreateDto.getTitle())
@@ -101,8 +102,8 @@ public class TourService {
                 .hasLevy(tourCreateDto.isHasLevy())
                 .additionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()))
                 .tourStatus(TourStatus.RECRUITMENT)
+                .createStatus(createStatus)
                 .build();
-
         return tour;
     }
 

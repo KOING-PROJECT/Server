@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.controller.tour;
 
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.service.tour.TourService;
 import com.koing.server.koing_server.service.tour.dto.TourCreateDto;
 import io.swagger.annotations.Api;
@@ -39,7 +40,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 리스트 가져오기 성공"),
+            @ApiResponse(code = 200, message = "Tour - 생성 성공"),
             @ApiResponse(code = 401, message = "토큰이 없습니다."),
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
@@ -47,8 +48,24 @@ public class TourController {
     @PostMapping("")
     public SuperResponse createTour(@RequestBody TourCreateDto tourCreateDto) {
         LOGGER.info("[TourController] 투어 생성 시도");
-        SuperResponse createTourResponse = tourService.createTour(tourCreateDto);
+        SuperResponse createTourResponse = tourService.createTour(tourCreateDto, CreateStatus.COMPLETE);
         LOGGER.info("[TourController] 투어 생성 성공");
+        return createTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 생성중인 투어를 임시 저장합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 임시 저장 성공"),
+            @ApiResponse(code = 401, message = "토큰이 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/temporary")
+    public SuperResponse createTemporaryTour(@RequestBody TourCreateDto tourCreateDto) {
+        LOGGER.info("[TourController] 생성 중인 투어 임시 저장 시도");
+        SuperResponse createTourResponse = tourService.createTour(tourCreateDto, CreateStatus.CREATING);
+        LOGGER.info("[TourController] 생성 중인 투어 임시 저장 성공");
         return createTourResponse;
     }
 

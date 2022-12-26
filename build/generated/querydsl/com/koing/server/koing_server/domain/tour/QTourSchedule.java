@@ -27,6 +27,8 @@ public class QTourSchedule extends EntityPathBase<TourSchedule> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.CreateStatus> createStatus = createEnum("createStatus", com.koing.server.koing_server.common.enums.CreateStatus.class);
+
     public final BooleanPath dateNegotiation = createBoolean("dateNegotiation");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);

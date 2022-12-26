@@ -14,13 +14,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class TourDto {
 
-    private String tourTitle;
-    private int maxParticipant;
-    private String thumbnail;
-    private String guideName;
-    private String guideThumbnail;
-    private Set<String> tourDates;
-
     public TourDto(Tour tour) {
         this.tourTitle = tour.getTitle();
         this.maxParticipant = tour.getParticipant();
@@ -33,4 +26,12 @@ public class TourDto {
             this.tourDates = tour.getTourSchedule().getTourDates();
         }
     }
+
+    private String tourTitle;
+    private int maxParticipant;
+    private String thumbnail;
+    private String guideName;
+    private String guideThumbnail;
+    private Set<String> tourDates;
+
 }

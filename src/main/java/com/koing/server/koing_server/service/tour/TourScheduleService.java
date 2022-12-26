@@ -3,6 +3,7 @@ package com.koing.server.koing_server.service.tour;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
@@ -12,16 +13,14 @@ import com.koing.server.koing_server.domain.tour.repository.TourDetailScheduleRe
 import com.koing.server.koing_server.domain.tour.repository.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourScheduleRepository;
-import com.koing.server.koing_server.service.tour.dto.TourScheduleDto;
+import com.koing.server.koing_server.service.tour.dto.TourScheduleCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -35,13 +34,13 @@ public class TourScheduleService {
     private final TourRepository tourRepository;
 
     @Transactional
-    public SuperResponse createTourSchedule(TourScheduleDto tourScheduleDto) {
+    public SuperResponse createTourSchedule(TourScheduleCreateDto tourScheduleCreateDto, CreateStatus createStatus) {
 
         LOGGER.info("[TourCategoryService] TourSchedule 생성 시도");
 
-        TourSchedule tourSchedule = new TourSchedule(tourScheduleDto);
+        TourSchedule tourSchedule = new TourSchedule(tourScheduleCreateDto, createStatus);
 
-        HashMap<String, HashMap<String, String>> tourDetailSchedulesHashMaps = tourScheduleDto.getTourDetailScheduleHashMap();
+        HashMap<String, HashMap<String, String>> tourDetailSchedulesHashMaps = tourScheduleCreateDto.getTourDetailScheduleHashMap();
 
         for (Map.Entry<String, HashMap<String, String>> tds : tourDetailSchedulesHashMaps.entrySet()) {
             LOGGER.info("[TourCategoryService] TourDetailSchedule 생성 시도");
@@ -66,13 +65,13 @@ public class TourScheduleService {
 
         LOGGER.info("[TourCategoryService] TourSchedule 생성 성공");
 
-        if (savedTourSchedule.getTourDetailScheduleList() == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
+        if (createStatus.equals(CreateStatus.COMPLETE) && savedTourSchedule.getTourDetailScheduleList() == null) {
+            return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
         }
 
         LOGGER.info("[TourCategoryService] TourSchedule에 tourDetailSchedule update 성공");
 
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourScheduleDto.getTourId());
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourScheduleCreateDto.getTourId());
         tour.setTourSchedule(savedTourSchedule);
 
         LOGGER.info("[TourCategoryService] Tour에 TourSchedule update 시도");
