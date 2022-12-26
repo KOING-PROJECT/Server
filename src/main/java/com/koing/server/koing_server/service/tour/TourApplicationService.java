@@ -174,7 +174,7 @@ public class TourApplicationService {
         List<TourApplicationDto> tourApplicationDtos = new ArrayList<>();
 
         for (TourApplication tourApplication : tourApplications) {
-            tourApplicationDtos.add(new TourApplicationDto(tourApplication.getTour()));
+            tourApplicationDtos.add(new TourApplicationDto(tourApplication));
         }
 
         return SuccessResponse.success(SuccessCode.GET_TOUR_APPLICATIONS_SUCCESS, new TourApplicationResponseDto(tourApplicationDtos));
