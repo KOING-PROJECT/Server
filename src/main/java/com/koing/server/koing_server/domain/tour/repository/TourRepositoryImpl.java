@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.tour.repository;
 
+import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.querydsl.core.types.Projections;
@@ -56,7 +57,8 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .fetchJoin()
                 .where(
                         tour.tourStatus.eq(TourStatus.RECRUITMENT)
-                                .or(tour.tourStatus.eq(TourStatus.STANDBY))
+                                .or(tour.tourStatus.eq(TourStatus.STANDBY)),
+                        tour.createStatus.eq(CreateStatus.COMPLETE)
                 )
                 .distinct()
                 .fetch();
