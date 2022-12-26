@@ -150,6 +150,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
     }
 
+    @Transactional
     public SuperResponse getTourApplications(Long userId) {
         LOGGER.info("[TourApplicationService] userId로 user 조회 시도");
 
