@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
@@ -98,9 +99,16 @@ public class TourApplicationService {
 
         LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 성공 = " + tourApplication);
 
-//        User user = userRepositoryImpl.loadUserByUserEmail(
-//                tourApplicationParticipateDto.getUserEmail(), true
-//        );
+        int currParticipants = tourApplication.getCurrentParticipants();
+        int participantSize = tourApplication.getParticipants().size();
+        LOGGER.info("[TourApplicationService] 현재 currParticipants = " + currParticipants);
+        LOGGER.info("[TourApplicationService] 현재 participantSize = " + participantSize);
+
+        int numberOfParticipants = tourApplicationParticipateDto.getNumberOfParticipants();
+
+        if (currParticipants + numberOfParticipants > tourApplication.getMaxParticipant()) {
+            return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION);
+        }
 
         User user = userRepositoryImpl.loadUserByUserId(
                 tourApplicationParticipateDto.getUserId(), true
@@ -111,20 +119,21 @@ public class TourApplicationService {
         }
         LOGGER.info("[TourApplicationService] userEmail로 user 조회 성공 %s = " + user);
 
-        int participantsSize = tourApplication.getParticipants().size();
-        LOGGER.info("[TourApplicationService] 현재 participantsSize = " + participantsSize);
-
         int beforeUpdateTourApplications = user.getTourApplication().size();
         LOGGER.info("[TourApplicationService] 현재 user의 tourApplications = " + beforeUpdateTourApplications);
 
         user.setTourApplication(tourApplication);
+        tourApplication.setCurrentParticipants(currParticipants + numberOfParticipants);
 
         TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
-        LOGGER.info("[TourApplicationService] 업데이트 후 participants = " + participantsSize);
-        LOGGER.info("[TourApplicationService] save 후 participants = " + updatedTourApplication.getParticipants().size());
-        if (updatedTourApplication.getParticipants().size() == participantsSize) {
+        LOGGER.info("[TourApplicationService] save 후 currParticipants = " + updatedTourApplication.getCurrentParticipants());
+        LOGGER.info("[TourApplicationService] save 후 participantSize = " + updatedTourApplication.getParticipants().size());
+        if (updatedTourApplication.getParticipants().size() == participantSize
+                || updatedTourApplication.getCurrentParticipants() == currParticipants) {
             return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+//            throw new DBFailException("투어 신청서 update 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
+//                    ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
         }
 
         LOGGER.info("[TourApplicationService] participants update 성공 = " + updatedTourApplication.getParticipants());

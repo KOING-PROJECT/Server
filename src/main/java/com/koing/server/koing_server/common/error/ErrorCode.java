@@ -75,6 +75,7 @@ public enum ErrorCode {
      * 406 Not Acceptable
      */
     NOT_ACCEPTABLE_EXCEPTION(NOT_ACCEPTABLE, "Not Acceptable"),
+    NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION(NOT_ACCEPTABLE, "해당 투어의 정원을 초과했습니다."),
 
     /**
      * 409 Conflict

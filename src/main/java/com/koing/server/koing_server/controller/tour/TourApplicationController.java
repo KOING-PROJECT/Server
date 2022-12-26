@@ -43,6 +43,7 @@ public class TourApplicationController {
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(code = 406, message = "해당 투어의 정원을 초과했습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/participate")

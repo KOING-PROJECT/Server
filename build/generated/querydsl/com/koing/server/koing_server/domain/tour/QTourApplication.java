@@ -27,6 +27,8 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final NumberPath<Integer> currentParticipants = createNumber("currentParticipants", Integer.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);

@@ -38,12 +38,15 @@ public class TourApplication extends AuditingTimeEntity {
 
     private int maxParticipant;
 
+    private int currentParticipants;
+
     public TourApplication(String tourDate, int maxParticipant) {
         this.tour = null;
         this.participants = null;
         this.tourDate = tourDate;
         this.maxParticipant = maxParticipant;
         this.tourStatus = TourStatus.RECRUITMENT;
+        this.currentParticipants = 0;
     }
 
     public void setTour(Tour tour) {
