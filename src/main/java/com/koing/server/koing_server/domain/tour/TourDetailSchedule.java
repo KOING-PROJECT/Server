@@ -67,7 +67,7 @@ public class TourDetailSchedule {
     @ManyToOne(fetch = FetchType.LAZY)
     private TourSchedule tourSchedule;
 
-    public void setTourSchedule(TourSchedule tourSchedule) {
+    public void setNewTourSchedule(TourSchedule tourSchedule) {
         this.tourSchedule = tourSchedule;
 
         if (tourSchedule.getTourDetailScheduleList() == null) {
@@ -80,4 +80,7 @@ public class TourDetailSchedule {
         }
     }
 
+    public void deleteTourSchedule() {
+        this.tourSchedule = null;
+    }
 }

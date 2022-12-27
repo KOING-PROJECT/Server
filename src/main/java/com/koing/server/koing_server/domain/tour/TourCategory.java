@@ -18,6 +18,11 @@ import java.util.Set;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TourCategory extends AuditingTimeEntity {
 
+    public TourCategory(TourCategoryCreateDto tourCategoryCreateDto) {
+        this.categoryName = tourCategoryCreateDto.getCategoryName();
+        this.detailTypes = Sets.newHashSet(tourCategoryCreateDto.getDetailTypes());
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,8 +36,16 @@ public class TourCategory extends AuditingTimeEntity {
     @Column(length = 20, nullable = false, name = "detail_type")
     private Set<String> detailTypes;
 
-    public TourCategory(TourCategoryCreateDto tourCategoryCreateDto) {
-        this.categoryName = tourCategoryCreateDto.getCategoryName();
-        this.detailTypes = Sets.newHashSet(tourCategoryCreateDto.getDetailTypes());
+    public void setTour(Tour tour) {
+        if (!this.categorizedTours.contains(tour)) {
+            this.getCategorizedTours().add(tour);
+        }
     }
+
+    public void deleteTour(Tour tour) {
+        if (this.categorizedTours.contains(tour)) {
+            this.getCategorizedTours().remove(tour);
+        }
+    }
+
 }

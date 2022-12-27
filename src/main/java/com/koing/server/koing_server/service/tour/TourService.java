@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -90,6 +91,34 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.DELETE_TOURS_SUCCESS, null);
     }
 
+    @Transactional
+    public SuperResponse updateTour(Long tourId, TourCreateDto tourCreateDto) {
+        // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
+        LOGGER.info("[TourService] Tour update 시도");
+
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+
+        if(tour == null) {
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+
+        System.out.println(tour.getCreateUser().getId());
+        System.out.println(tourCreateDto.getCreateUserId());
+        if (tour.getCreateUser().getId() != tourCreateDto.getCreateUserId()) {
+            return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION);
+        }
+
+        LOGGER.info("[TourService] update할 Tour 조회 성공");
+
+        tour = updateTour(tour, tourCreateDto);
+
+        Tour updatedTour = tourRepository.save(tour);
+        TourDto tourDto = new TourDto(updatedTour);
+
+        LOGGER.info("[TourService] Tour update 성공");
+        return SuccessResponse.success(SuccessCode.TOUR_UPDATE_SUCCESS, tourDto);
+    }
+
     private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {
         Tour tour = Tour.builder()
                 .createUser(getCreatUser(tourCreateDto.getCreateUserId()))
@@ -104,6 +133,22 @@ public class TourService {
                 .tourStatus(TourStatus.RECRUITMENT)
                 .createStatus(createStatus)
                 .build();
+        return tour;
+    }
+
+    public Tour updateTour(Tour tour, TourCreateDto tourCreateDto) {
+        tour.setTitle(tourCreateDto.getTitle());
+        tour.setDescription(tourCreateDto.getDescription());
+
+        Set<TourCategory> beforeTourCategories = tour.getTourCategories();
+        tour.deleteTourCategories(beforeTourCategories);
+        tour.setTourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()));
+        tour.setThumbnail(tourCreateDto.getThumbnail());
+        tour.setParticipant(tourCreateDto.getParticipant());
+        tour.setTourPrice(tourCreateDto.getTourPrice());
+        tour.setHasLevy(tourCreateDto.isHasLevy());
+        tour.setAdditionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()));
+
         return tour;
     }
 

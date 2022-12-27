@@ -84,4 +84,22 @@ public class TourController {
         return deleteTourResponse;
     }
 
+
+    @ApiOperation("Tour - 투어를 업데이트합니다.(완성 tour 혹은 임시저장 tour를 업데이트)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 업데이트 성공"),
+            @ApiResponse(code = 404, message = "update할 투어가 존재하지 않습니다."),
+            @ApiResponse(code = 406, message = "투어 Creator가 아닙니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/{tourId}")
+    public SuperResponse updateTour(
+            @PathVariable("tourId") Long tourId,
+            @RequestBody TourCreateDto tourCreateDto) {
+        LOGGER.info("[TourController] 투어 update 시도");
+        SuperResponse updateTourResponse = tourService.updateTour(tourId, tourCreateDto);
+        LOGGER.info("[TourController] 투어 update 성공");
+        return updateTourResponse;
+    }
+
 }

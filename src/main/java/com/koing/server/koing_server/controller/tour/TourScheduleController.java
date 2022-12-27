@@ -54,4 +54,20 @@ public class TourScheduleController {
         return createTourScheduleResponse;
     }
 
+    @ApiOperation("TourSchedule - 투어 스케줄을 update 합니다.(완성 tourSchedule 혹은 임시저장 tourSchedule를 업데이트)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 update 성공"),
+            @ApiResponse(code = 404, message = "해당 tourSchedule이 존재하지 않습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/{tourId}")
+    public SuperResponse createTemporaryTourSchedule(
+            @PathVariable("tourId") Long tourId,
+            @RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
+        LOGGER.info("[TourScheduleController] 투어 스케줄 update 시도");
+        SuperResponse updateTourScheduleResponse = tourScheduleService.updateTourSchedule(tourId, tourScheduleCreateDto);
+        LOGGER.info("[TourScheduleController] 투어 스케줄 update 성공");
+        return updateTourScheduleResponse;
+    }
+
 }

@@ -65,6 +65,7 @@ public enum ErrorCode {
     NOT_FOUND_CRYPTOGRAM_EXCEPTION(NOT_FOUND, "요청된 이메일 요청이 없습니다. 이메일 인증을 요청해주세요."),
     NOT_FOUND_TOUR_EXCEPTION(NOT_FOUND, "해당 투어를 찾을 수 없습니다."),
     NOT_FOUND_TOUR_APPLICATION_EXCEPTION(NOT_FOUND, "해당 투어 신청서를 찾을 수 없습니다."),
+    NOT_FOUND_TOUR_SCHEDULE_EXCEPTION(NOT_FOUND, "해당 투어 스케줄을 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
@@ -76,6 +77,7 @@ public enum ErrorCode {
      */
     NOT_ACCEPTABLE_EXCEPTION(NOT_ACCEPTABLE, "Not Acceptable"),
     NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION(NOT_ACCEPTABLE, "해당 투어의 정원을 초과했습니다."),
+    NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION(NOT_ACCEPTABLE, "해당 투어의 생성자가 아닙니다."),
 
     /**
      * 409 Conflict

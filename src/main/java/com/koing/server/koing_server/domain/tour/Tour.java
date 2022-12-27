@@ -96,4 +96,18 @@ public class Tour extends AuditingTimeEntity {
         tourSchedule.setTour(this);
     }
 
+    public void setTourCategories(Set<TourCategory> tourCategories) {
+        this.tourCategories = tourCategories;
+        for (TourCategory tourCategory : tourCategories) {
+            tourCategory.setTour(this);
+        }
+    }
+
+    public void deleteTourCategories(Set<TourCategory> tourCategories) {
+        this.tourCategories = null;
+        for (TourCategory tourCategory : tourCategories) {
+            tourCategory.deleteTour(this);
+        }
+    }
+
 }

@@ -37,9 +37,11 @@ public enum SuccessCode {
     EMAIL_SEND_SUCCESS(CREATED, "eamil-send : Email send 성공입니다."),
     TOUR_CATEGORY_CREATE_SUCCESS(CREATED, "tour-category : 투어 카테고리 생성 성공입니다."),
     TOUR_CREATE_SUCCESS(CREATED, "tour : 투어 생성 성공입니다."),
+    TOUR_UPDATE_SUCCESS(CREATED, "tour : 투어 update 성공입니다."),
     TOUR_APPLICATION_CREATE_SUCCESS(CREATED, "tour-application : 투어 신청서 생성 성공입니다."),
     TOUR_APPLICATION_UPDATE_SUCCESS(CREATED, "tour-application : 투어 신청서 업데이트 성공입니다."),
     TOUR_SCHEDULE_CREATE_SUCCESS(CREATED, "tour-schedule : 투어 스케줄 생성 성공입니다."),
+    TOUR_SCHEDULE_UPDATE_SUCCESS(CREATED, "tour-schedule : 투어 스케줄 update 성공입니다."),
 
 
     /**

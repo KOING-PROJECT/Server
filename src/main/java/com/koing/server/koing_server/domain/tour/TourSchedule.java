@@ -51,15 +51,8 @@ public class TourSchedule extends AuditingTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tourSchedule", orphanRemoval = true)
     private List<TourDetailSchedule> tourDetailScheduleList;
 
-//    public void setTourDetailSchedule(TourDetailSchedule tourDetailSchedule) {
-//        if (this.tourDetailScheduleList == null) {
-//            List<TourDetailSchedule> tourDetailSchedules = new ArrayList<>();
-//            tourDetailSchedules.add(tourDetailSchedule);
-//            this.tourDetailScheduleList = tourDetailSchedules;
-//        }
-//        else {
-//            this.tourDetailScheduleList.add(tourDetailSchedule);
-//        }
-//    }
+    public void deleteTourDetailSchedule() {
+        this.tourDetailScheduleList.clear();
+    }
 
 }
