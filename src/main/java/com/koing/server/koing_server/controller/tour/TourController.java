@@ -96,10 +96,30 @@ public class TourController {
     public SuperResponse updateTour(
             @PathVariable("tourId") Long tourId,
             @RequestBody TourCreateDto tourCreateDto) {
+        // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
         LOGGER.info("[TourController] 투어 update 시도");
-        SuperResponse updateTourResponse = tourService.updateTour(tourId, tourCreateDto);
+        SuperResponse updateTourResponse = tourService.updateTour(tourId, tourCreateDto, null);
         LOGGER.info("[TourController] 투어 update 성공");
         return updateTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 투어를 complete 합니다.(임시저장 tour를 완성)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 complete 성공"),
+            @ApiResponse(code = 404, message = "complete할 투어가 존재하지 않습니다."),
+            @ApiResponse(code = 406, message = "투어 Creator가 아닙니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/complete/{tourId}")
+    public SuperResponse completeTour(
+            @PathVariable("tourId") Long tourId,
+            @RequestBody TourCreateDto tourCreateDto) {
+        // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
+        LOGGER.info("[TourController] 투어 complete 시도");
+        SuperResponse completeTourResponse = tourService.updateTour(tourId, tourCreateDto, CreateStatus.COMPLETE);
+        LOGGER.info("[TourController] 투어 complete 성공");
+        return completeTourResponse;
     }
 
 }

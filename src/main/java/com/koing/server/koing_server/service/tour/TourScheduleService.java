@@ -87,8 +87,7 @@ public class TourScheduleService {
     }
 
     @Transactional
-    public SuperResponse updateTourSchedule(Long tourId, TourScheduleCreateDto tourScheduleCreateDto) {
-        // 완성 된 tourSchedule를 수정하거나, 임시 저장 중인 tourSchedule를 다시 임시 저장 할 때 사용
+    public SuperResponse updateTourSchedule(Long tourId, TourScheduleCreateDto tourScheduleCreateDto, CreateStatus createStatus) {
         LOGGER.info("[TourCategoryService] TourSchedule update 시도");
 
         TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
@@ -125,6 +124,9 @@ public class TourScheduleService {
             System.out.println("getTourDetailScheduleList = " + tourSchedule.getTourDetailScheduleList().size());
         }
 
+        if (CreateStatus.COMPLETE.equals(createStatus)) {
+            tourSchedule.setCreateStatus(createStatus);
+        }
         tourSchedule.setTourDates(tourScheduleCreateDto.getTourDates());
         tourSchedule.setDateNegotiation(tourScheduleCreateDto.isDateNegotiation());
 

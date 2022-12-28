@@ -92,8 +92,7 @@ public class TourService {
     }
 
     @Transactional
-    public SuperResponse updateTour(Long tourId, TourCreateDto tourCreateDto) {
-        // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
+    public SuperResponse updateTour(Long tourId, TourCreateDto tourCreateDto, CreateStatus createStatus) {
         LOGGER.info("[TourService] Tour update 시도");
 
         Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
@@ -110,7 +109,7 @@ public class TourService {
 
         LOGGER.info("[TourService] update할 Tour 조회 성공");
 
-        tour = updateTour(tour, tourCreateDto);
+        tour = updateTour(tour, tourCreateDto, createStatus);
 
         Tour updatedTour = tourRepository.save(tour);
         TourDto tourDto = new TourDto(updatedTour);
@@ -136,10 +135,9 @@ public class TourService {
         return tour;
     }
 
-    public Tour updateTour(Tour tour, TourCreateDto tourCreateDto) {
+    public Tour updateTour(Tour tour, TourCreateDto tourCreateDto, CreateStatus createStatus) {
         tour.setTitle(tourCreateDto.getTitle());
         tour.setDescription(tourCreateDto.getDescription());
-
         Set<TourCategory> beforeTourCategories = tour.getTourCategories();
         tour.deleteTourCategories(beforeTourCategories);
         tour.setTourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()));
@@ -148,7 +146,9 @@ public class TourService {
         tour.setTourPrice(tourCreateDto.getTourPrice());
         tour.setHasLevy(tourCreateDto.isHasLevy());
         tour.setAdditionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()));
-
+        if (CreateStatus.COMPLETE.equals(createStatus)) {
+            tour.setCreateStatus(createStatus);
+        }
         return tour;
     }
 

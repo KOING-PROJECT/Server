@@ -38,6 +38,7 @@ public class TourScheduleController {
         return createTourScheduleResponse;
     }
 
+
     @ApiOperation("TourSchedule - 생성 중인 투어 스케줄을 임시 저장 생성합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 임시 저장 성공"),
@@ -54,6 +55,7 @@ public class TourScheduleController {
         return createTourScheduleResponse;
     }
 
+
     @ApiOperation("TourSchedule - 투어 스케줄을 update 합니다.(완성 tourSchedule 혹은 임시저장 tourSchedule를 업데이트)")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 update 성공"),
@@ -61,13 +63,34 @@ public class TourScheduleController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/{tourId}")
-    public SuperResponse createTemporaryTourSchedule(
+    public SuperResponse updateTourSchedule(
             @PathVariable("tourId") Long tourId,
             @RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
+        // 완성 된 tourSchedule를 수정하거나, 임시 저장 중인 tourSchedule를 다시 임시 저장 할 때 사용
         LOGGER.info("[TourScheduleController] 투어 스케줄 update 시도");
-        SuperResponse updateTourScheduleResponse = tourScheduleService.updateTourSchedule(tourId, tourScheduleCreateDto);
+        SuperResponse updateTourScheduleResponse = tourScheduleService.updateTourSchedule(
+                tourId, tourScheduleCreateDto, null);
         LOGGER.info("[TourScheduleController] 투어 스케줄 update 성공");
         return updateTourScheduleResponse;
+    }
+
+
+    @ApiOperation("TourSchedule - 투어 스케줄을 complete 합니다.(임시저장 tourSchedule를 완성)")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 complete 성공"),
+            @ApiResponse(code = 404, message = "해당 tourSchedule이 존재하지 않습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/complete/{tourId}")
+    public SuperResponse completeTourSchedule(
+            @PathVariable("tourId") Long tourId,
+            @RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
+        // 임시 저장 중인 tourSchedule를 complete 할 때 사용
+        LOGGER.info("[TourScheduleController] 투어 스케줄 complete 시도");
+        SuperResponse completeTourScheduleResponse = tourScheduleService.updateTourSchedule(
+                tourId, tourScheduleCreateDto, CreateStatus.COMPLETE);
+        LOGGER.info("[TourScheduleController] 투어 스케줄 complete 성공");
+        return completeTourScheduleResponse;
     }
 
 }

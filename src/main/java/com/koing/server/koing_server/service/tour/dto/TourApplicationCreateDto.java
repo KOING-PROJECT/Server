@@ -8,6 +8,5 @@ import java.util.Set;
 public class TourApplicationCreateDto {
 
     private Long tourId;
-    private Set<String> tourDates;
 
 }
