@@ -33,8 +33,10 @@ public class TourScheduleService {
     private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
 
     @Transactional
-    public SuperResponse createTourSchedule(TourScheduleCreateDto tourScheduleCreateDto, CreateStatus createStatus) {
-
+    public SuperResponse createTourSchedule(
+            TourScheduleCreateDto tourScheduleCreateDto,
+            CreateStatus createStatus
+    ) {
         LOGGER.info("[TourCategoryService] TourSchedule 생성 시도");
 
         TourSchedule tourSchedule = new TourSchedule(tourScheduleCreateDto, createStatus);
@@ -71,6 +73,9 @@ public class TourScheduleService {
         LOGGER.info("[TourCategoryService] TourSchedule에 tourDetailSchedule update 성공");
 
         Tour tour = tourRepositoryImpl.findTourByTourId(tourScheduleCreateDto.getTourId());
+        if (tour == null) {
+            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
         tour.setTourSchedule(savedTourSchedule);
 
         LOGGER.info("[TourCategoryService] Tour에 TourSchedule update 시도");

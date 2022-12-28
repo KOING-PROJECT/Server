@@ -1,9 +1,14 @@
 package com.koing.server.koing_server.controller.tour;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.service.tour.TourApplicationService;
+import com.koing.server.koing_server.service.tour.TourScheduleService;
 import com.koing.server.koing_server.service.tour.TourService;
-import com.koing.server.koing_server.service.tour.dto.TourCreateDto;
+import com.koing.server.koing_server.service.tour.dto.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -11,6 +16,7 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "Tour")
@@ -21,6 +27,8 @@ public class TourController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TourController.class);
     private final TourService tourService;
+    private final TourScheduleService tourScheduleService;
+    private final TourApplicationService tourApplicationService;
 
     @ApiOperation("Tour - 투어 리스트를 가져옵니다.")
     @ApiResponses(value = {
@@ -95,7 +103,8 @@ public class TourController {
     @PatchMapping("/{tourId}")
     public SuperResponse updateTour(
             @PathVariable("tourId") Long tourId,
-            @RequestBody TourCreateDto tourCreateDto) {
+            @RequestBody TourCreateDto tourCreateDto
+    ) {
         // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
         LOGGER.info("[TourController] 투어 update 시도");
         SuperResponse updateTourResponse = tourService.updateTour(tourId, tourCreateDto, null);
@@ -114,12 +123,49 @@ public class TourController {
     @PatchMapping("/complete/{tourId}")
     public SuperResponse completeTour(
             @PathVariable("tourId") Long tourId,
-            @RequestBody TourCreateDto tourCreateDto) {
+            @RequestBody TourCreateDto tourCreateDto
+    ) {
         // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
         LOGGER.info("[TourController] 투어 complete 시도");
         SuperResponse completeTourResponse = tourService.updateTour(tourId, tourCreateDto, CreateStatus.COMPLETE);
         LOGGER.info("[TourController] 투어 complete 성공");
         return completeTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 투어, 투어 스케줄, 투어 신청서를 생성 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어, 투어 스케줄, 투어 신청서 생성 성공"),
+            @ApiResponse(code = 401, message = "토큰이 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/set")
+    @Transactional
+    public SuperResponse createTourSet(@RequestBody TourSetCreateDto tourSetCreateDto) {
+        // 전체 tour set(투어, 투어 스케줄, 투어 신청서)을 생성
+        LOGGER.info("[TourController] 투어 세트 생성 시도");
+
+        TourCreateDto tourCreateDto = new TourCreateDto(tourSetCreateDto);
+        LOGGER.info("[TourController] 투어 createDto 생성");
+        SuperResponse tourResponse = tourService.createTour(tourCreateDto, CreateStatus.COMPLETE);
+        if (!(tourResponse.getData() instanceof TourDto)) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        Long tourId = ((TourDto) tourResponse.getData()).getTourId();
+
+        TourScheduleCreateDto tourScheduleCreateDto = new TourScheduleCreateDto(tourId, tourSetCreateDto);
+        LOGGER.info("[TourController] 투어 createScheduleDto 생성");
+        SuperResponse tourSchedule = tourScheduleService.createTourSchedule(
+                tourScheduleCreateDto, CreateStatus.COMPLETE
+        );
+
+        TourApplicationCreateDto tourApplicationCreateDto = new TourApplicationCreateDto(tourId);
+        LOGGER.info("[TourController] 투어 createApplicationDto 생성");
+        SuperResponse tourApplication = tourApplicationService.createTourApplication(tourApplicationCreateDto);
+
+        LOGGER.info("[TourController] 투어 세트 생성 성공");
+        return tourResponse;
     }
 
 }

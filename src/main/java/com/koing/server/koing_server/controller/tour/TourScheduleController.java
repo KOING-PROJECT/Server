@@ -33,7 +33,9 @@ public class TourScheduleController {
     public SuperResponse createTourSchedule(@RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
         LOGGER.info("[TourScheduleController] 투어 스케줄 생성 시도");
         SuperResponse createTourScheduleResponse = tourScheduleService.createTourSchedule(
-                tourScheduleCreateDto, CreateStatus.COMPLETE);
+                tourScheduleCreateDto,
+                CreateStatus.COMPLETE
+        );
         LOGGER.info("[TourScheduleController] 투어 스케줄 생성 성공");
         return createTourScheduleResponse;
     }
@@ -50,7 +52,9 @@ public class TourScheduleController {
     public SuperResponse createTemporaryTourSchedule(@RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
         LOGGER.info("[TourScheduleController] 생성 중인 투어 스케줄 임시 저장 시도");
         SuperResponse createTourScheduleResponse = tourScheduleService.createTourSchedule(
-                tourScheduleCreateDto, CreateStatus.CREATING);
+                tourScheduleCreateDto,
+                CreateStatus.CREATING
+        );
         LOGGER.info("[TourScheduleController] 생성 중인 투어 스케줄 임시 저장 성공");
         return createTourScheduleResponse;
     }

@@ -10,7 +10,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -51,7 +53,14 @@ public class TourApplication extends AuditingTimeEntity {
 
     public void setTour(Tour tour) {
         this.tour = tour;
-        tour.getTourApplications().add(this);
+        if (tour.getTourApplications() == null) {
+            Set<TourApplication> tourApplications = new HashSet<>();
+            tourApplications.add(this);
+            tour.setTourApplications(tourApplications);
+        }
+        else {
+            tour.getTourApplications().add(this);
+        }
 //        Set<TourApplication> tourApplications = tour.getTourApplications();
 //        tourApplications.add(this);
 //        tour.setTourApplications(tourApplications);

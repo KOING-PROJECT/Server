@@ -70,7 +70,11 @@ public class TourService {
         }
 
         TourDto tourDto = new TourDto(savedTour);
+        LOGGER.info("[TourService] Tour 생성 성공");
 
+//        if (isSet) {
+//            return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, savedTour.getId());
+//        }
         return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, tourDto);
     }
 

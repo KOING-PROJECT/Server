@@ -15,6 +15,7 @@ import java.util.Set;
 public class TourDto {
 
     public TourDto(Tour tour) {
+        this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
         this.maxParticipant = tour.getParticipant();
         this.thumbnail = tour.getThumbnail();
@@ -27,6 +28,7 @@ public class TourDto {
         }
     }
 
+    private Long tourId;
     private String tourTitle;
     private int maxParticipant;
     private String thumbnail;
