@@ -2,7 +2,9 @@ package com.koing.server.koing_server.service.tour.dto;
 
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.tour.TourCategory;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@NoArgsConstructor
 public class TourCreateDto {
 
     public TourCreateDto(TourSetCreateDto tourSetCreateDto) {

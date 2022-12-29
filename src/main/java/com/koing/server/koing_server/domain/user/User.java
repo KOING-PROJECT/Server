@@ -92,8 +92,7 @@ public class User extends AuditingTimeEntity {
     private UserOptionalInfo userOptionalInfo;
 
     // 신청한 투어
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "participants_application")
+    @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
     private Set<TourApplication> tourApplication;
 
     // 생성한 투어

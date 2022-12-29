@@ -31,7 +31,10 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(length = 20)
     private String tourDate;
 
-    @ManyToMany(mappedBy = "tourApplication", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "participants_application",
+            joinColumns = @JoinColumn(name = "tour_application_id"),
+            inverseJoinColumns = @JoinColumn(name = "participants_id"))
     private List<User> participants;
 
     @Column(nullable = false)
