@@ -67,11 +67,8 @@ public class TourApplication extends AuditingTimeEntity {
     }
 
     public void deleteTour(Tour tour) {
-        System.out.println("111111111111111111111");
         if (tour.getTourApplications() != null) {
-            System.out.println("-----------------------------");
             if (tour.getTourApplications().contains(this)) {
-                System.out.println("2222222222222222222");
                 tour.getTourApplications().remove(this);
             }
         }
