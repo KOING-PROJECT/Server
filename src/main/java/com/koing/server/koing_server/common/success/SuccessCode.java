@@ -19,7 +19,7 @@ public enum SuccessCode {
     GET_USER_SUCCESS(OK, "user : 유저 조회 성공입니다."),
     GET_USERS_SUCCESS(OK, "user : 유저 리스트 조회 성공입니다."),
     GET_TOURS_SUCCESS(OK, "tour : 투어 리스트 조회 성공입니다."),
-    DELETE_TOURS_SUCCESS(OK, "tour : 투어 삭제 성공입니다."),
+    DELETE_TOUR_SUCCESS(OK, "tour : 투어 삭제 성공입니다."),
     GET_TOUR_CATEGORIES_SUCCESS(OK, "tour : 투어 카테고리 리스트 조회 성공입니다."),
     GET_TOUR_APPLICATIONS_SUCCESS(OK, "tour-application : 투어 신청서 리스트 조회 성공입니다."),
 
@@ -42,6 +42,11 @@ public enum SuccessCode {
     TOUR_APPLICATION_UPDATE_SUCCESS(CREATED, "tour-application : 투어 신청서 업데이트 성공입니다."),
     TOUR_SCHEDULE_CREATE_SUCCESS(CREATED, "tour-schedule : 투어 스케줄 생성 성공입니다."),
     TOUR_SCHEDULE_UPDATE_SUCCESS(CREATED, "tour-schedule : 투어 스케줄 update 성공입니다."),
+    TOUR_SET_CREATE_SUCCESS(CREATED, "tour-set : 투어 set 생성 성공입니다."),
+    TOUR_SET_UPDATE_SUCCESS(CREATED, "tour-set : 투어 set 업데이트 성공입니다."),
+    TEMPORARY_TOUR_SET_COMPLETE_SUCCESS(CREATED, "tour-set : 임시 저장한 투어 set complete 성공입니다."),
+    TEMPORARY_TOUR_TOUR_SCHEDULE_CREATE_SUCCESS(CREATED, "tour-set : 투어, 투어 스케줄 임시 저장 성공입니다."),
+    TEMPORARY_TOUR_TOUR_SCHEDULE_UPDATE_SUCCESS(CREATED, "tour-set : 임시 저장한 투어, 투어 스케줄 update 성공입니다."),
 
 
     /**

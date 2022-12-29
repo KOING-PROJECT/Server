@@ -8,10 +8,8 @@ import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
-import com.koing.server.koing_server.domain.tour.repository.TourApplicationRepository;
-import com.koing.server.koing_server.domain.tour.repository.TourApplicationRepositoryImpl;
-import com.koing.server.koing_server.domain.tour.repository.TourRepository;
-import com.koing.server.koing_server.domain.tour.repository.TourRepositoryImpl;
+import com.koing.server.koing_server.domain.tour.TourSchedule;
+import com.koing.server.koing_server.domain.tour.repository.*;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
@@ -40,6 +38,7 @@ public class TourApplicationService {
     private final TourRepositoryImpl tourRepositoryImpl;
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
+    private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
 
     @Transactional
     public SuperResponse createTourApplication(TourApplicationCreateDto tourApplicationCreateDto) {
@@ -178,6 +177,107 @@ public class TourApplicationService {
         }
 
         return SuccessResponse.success(SuccessCode.GET_TOUR_APPLICATIONS_SUCCESS, new TourApplicationResponseDto(tourApplicationDtos));
+    }
+
+    @Transactional
+    public boolean checkDateExistParticipant(Long tourId, Set<String> newTourDates) {
+
+        TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
+
+        List<String> removedDates = new ArrayList<>();
+
+        Set<String> beforeDates = tourSchedule.getTourDates();
+        for (String beforeDate : beforeDates) {
+            if (!newTourDates.contains(beforeDate)) {
+                removedDates.add(beforeDate);
+            }
+        }
+
+        for (String removedDate : removedDates) {
+            TourApplication tourApplication = tourApplicationRepositoryImpl.findTourApplicationByTourIdAndTourDate(
+                    tourId,
+                    removedDate
+            );
+
+            if (tourApplication.getParticipants().size() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public SuperResponse updateTourApplication(Long tourId, Set<String> newTourDates, int newMaxParticitpant) {
+
+        LOGGER.info("[TourApplicationService] TourApplication 업데이트 시도");
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+
+        Set<String> originalTourDates = tour.getTourSchedule().getTourDates();
+
+        List<String> removedDates = new ArrayList<>();
+        List<String> createDates = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
+
+        for (String originalTourDate : originalTourDates) {
+            if (!newTourDates.contains(originalTourDate)) {
+                removedDates.add(originalTourDate);
+            }
+        }
+
+        for (String newDate : newTourDates) {
+            if (!originalTourDates.contains(newDate)) {
+                createDates.add(newDate);
+            }
+            else {
+                dates.add(newDate);
+            }
+        }
+
+        for (String removedDate : removedDates) {
+            LOGGER.info("[TourApplicationService] 변경된 날짜 TourApplication 삭제 시도");
+            TourApplication tourApplication =
+                    tourApplicationRepositoryImpl.findTourApplicationByTourIdAndTourDate(
+                            tourId,
+                            removedDate
+                    );
+
+            tourApplication.deleteTour(tour);
+            tourApplicationRepository.delete(tourApplication);
+            LOGGER.info("[TourApplicationService] 변경된 날짜 TourApplication 삭제 성공 = " + removedDate);
+        }
+
+        for (String createDate: createDates) {
+            LOGGER.info("[TourApplicationService] 새로운 TourApplication 생성 시도");
+            TourApplication tourApplication = new TourApplication(createDate, newMaxParticitpant);
+            tourApplication.setTour(tour);
+
+            TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (savedTourApplication.getId() == null) {
+                return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+            }
+
+            LOGGER.info("[TourApplicationService] 새로운 TourApplication 생성 성공 = " + savedTourApplication);
+        }
+
+        for (String date : dates) {
+            TourApplication tourApplication =
+                    tourApplicationRepositoryImpl.findTourApplicationByTourIdAndTourDate(
+                            tourId,
+                            date
+                    );
+            tourApplication.setMaxParticipant(newMaxParticitpant);
+            tourApplicationRepository.save(tourApplication);
+        }
+
+        LOGGER.info("tour = " + tour.getTourApplications());
+        Tour savedTour = tourRepository.save(tour);
+
+        LOGGER.info("[TourApplicationService] TourApplication 업데이트 성공 = " + savedTour);
+        TourApplicationDto tourApplicationDto = new TourApplicationDto(savedTour);
+
+        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
     }
 
 }

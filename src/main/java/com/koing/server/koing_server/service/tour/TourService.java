@@ -92,7 +92,7 @@ public class TourService {
         tourRepository.delete(tour);
         LOGGER.info("[TourService] Tour 삭제 성공");
 
-        return SuccessResponse.success(SuccessCode.DELETE_TOURS_SUCCESS, null);
+        return SuccessResponse.success(SuccessCode.DELETE_TOUR_SUCCESS, null);
     }
 
     @Transactional
@@ -105,8 +105,6 @@ public class TourService {
             return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
 
-        System.out.println(tour.getCreateUser().getId());
-        System.out.println(tourCreateDto.getCreateUserId());
         if (tour.getCreateUser().getId() != tourCreateDto.getCreateUserId()) {
             return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION);
         }

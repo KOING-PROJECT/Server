@@ -132,40 +132,4 @@ public class TourController {
         return completeTourResponse;
     }
 
-
-    @ApiOperation("Tour - 투어, 투어 스케줄, 투어 신청서를 생성 합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어, 투어 스케줄, 투어 신청서 생성 성공"),
-            @ApiResponse(code = 401, message = "토큰이 없습니다."),
-            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
-    })
-    @PostMapping("/set")
-    @Transactional
-    public SuperResponse createTourSet(@RequestBody TourSetCreateDto tourSetCreateDto) {
-        // 전체 tour set(투어, 투어 스케줄, 투어 신청서)을 생성
-        LOGGER.info("[TourController] 투어 세트 생성 시도");
-
-        TourCreateDto tourCreateDto = new TourCreateDto(tourSetCreateDto);
-        LOGGER.info("[TourController] 투어 createDto 생성");
-        SuperResponse tourResponse = tourService.createTour(tourCreateDto, CreateStatus.COMPLETE);
-        if (!(tourResponse.getData() instanceof TourDto)) {
-            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
-        }
-        Long tourId = ((TourDto) tourResponse.getData()).getTourId();
-
-        TourScheduleCreateDto tourScheduleCreateDto = new TourScheduleCreateDto(tourId, tourSetCreateDto);
-        LOGGER.info("[TourController] 투어 createScheduleDto 생성");
-        SuperResponse tourSchedule = tourScheduleService.createTourSchedule(
-                tourScheduleCreateDto, CreateStatus.COMPLETE
-        );
-
-        TourApplicationCreateDto tourApplicationCreateDto = new TourApplicationCreateDto(tourId);
-        LOGGER.info("[TourController] 투어 createApplicationDto 생성");
-        SuperResponse tourApplication = tourApplicationService.createTourApplication(tourApplicationCreateDto);
-
-        LOGGER.info("[TourController] 투어 세트 생성 성공");
-        return tourResponse;
-    }
-
 }

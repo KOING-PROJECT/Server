@@ -44,6 +44,7 @@ public enum ErrorCode {
     DB_FAIL_CREATE_TOUR_DETAIL_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_UPDATE_TOUR_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 스케줄 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_DELETE_TOUR_APPLICATION_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 삭제 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -78,6 +79,7 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_EXCEPTION(NOT_ACCEPTABLE, "Not Acceptable"),
     NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION(NOT_ACCEPTABLE, "해당 투어의 정원을 초과했습니다."),
     NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION(NOT_ACCEPTABLE, "해당 투어의 생성자가 아닙니다."),
+    NOT_ACCEPTABLE_TOUR_APPLICATION_HAVE_PARTICIPANT_EXCEPTION(NOT_ACCEPTABLE, "신청자가 있는 투어는 날짜 변경이 불가능 합니다."),
 
     /**
      * 409 Conflict
