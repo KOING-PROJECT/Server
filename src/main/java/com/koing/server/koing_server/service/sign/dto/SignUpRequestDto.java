@@ -9,6 +9,18 @@ import lombok.*;
 @Builder
 public class SignUpRequestDto {
 
+    public SignUpRequestDto(SignUpSetCreateDto signUpSetCreateDto) {
+        this.email = signUpSetCreateDto.getEmail();
+        this.password = signUpSetCreateDto.getPassword();
+        this.name = signUpSetCreateDto.getName();
+        this.phoneNumber = signUpSetCreateDto.getPhoneNumber();
+        this.birthDate = signUpSetCreateDto.getBirthDate();
+        this.country = signUpSetCreateDto.getCountry();
+        this.role = signUpSetCreateDto.getRole();
+        this.gender = signUpSetCreateDto.getGender();
+        this.age = signUpSetCreateDto.getAge();
+    }
+
     private String email;
     private String password;
     private String name;
@@ -18,24 +30,5 @@ public class SignUpRequestDto {
     private String role;
     private String gender;
     private int age;
-    private boolean enabled;
 
-    public SignUpRequestDto newSignUpRequestDto(
-            String email, String password, String name, String birthDate,
-            String phoneNumber, String country, String role, String gender,
-            int age ,boolean enabled) {
-
-        return SignUpRequestDto.builder()
-                .email(email)
-                .password(password)
-                .name(name)
-                .phoneNumber(phoneNumber)
-                .birthDate(birthDate)
-                .country(country)
-                .role(role)
-                .gender(gender)
-                .age(age)
-                .enabled(enabled)
-                .build();
-    }
 }

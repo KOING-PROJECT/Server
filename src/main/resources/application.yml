@@ -1,49 +1,49 @@
 spring:
 #  ###
-# h2 DB
-  h2:
-    console:
-      enabled: true
-
-  datasource:
-    url: jdbc:h2:~/test
-
-  jpa:
-    defer-datasource-initialization: true # version up 으로 인한 추가(h2 db)
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    generate-ddl: true # 자동으로 db table 생성(mysql)
-    hibernate:
-      ddl-auto: create-drop # 임베이디드 db 사용할 경우 자동으로 create-drop으로 설정 (mysql)
-    # create -> 실행 전에 drop하고 create / create-drop -> create 하고 종료시 drop
-    # update -> schema에 적용 / validate -> schema 하고 내용 다르면 오류 발생
-  ###
-
-## mysql DB
+## h2 DB
+#  h2:
+#    console:
+#      enabled: true
+#
 #  datasource:
-##    url: jdbc:mysql://localhost:3306/koing?characterEncoding=UTF-8&serverTimezone=UTC
-#    url: jdbc:mysql://localhost:3306/koing?createDatabaseIfNotExist=true
-#    username: koing
-#    password:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:h2:~/test
 #
 #  jpa:
+#    defer-datasource-initialization: true # version up 으로 인한 추가(h2 db)
 #    show-sql: true
-#    database: mysql
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-#    open-in-view: false
-#    generate-ddl: true
 #    properties:
-#      show_sql: true
 #      hibernate:
 #        format_sql: true
-#        ddl-auto: update
-#
-#  redis:
-#    host: localhost
-#    port: 6379
+#    generate-ddl: true # 자동으로 db table 생성(mysql)
+#    hibernate:
+#      ddl-auto: create-drop # 임베이디드 db 사용할 경우 자동으로 create-drop으로 설정 (mysql)
+#    # create -> 실행 전에 drop하고 create / create-drop -> create 하고 종료시 drop
+#    # update -> schema에 적용 / validate -> schema 하고 내용 다르면 오류 발생
+#  ###
+
+# mysql DB
+  datasource:
+#    url: jdbc:mysql://localhost:3306/koing?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/koing?createDatabaseIfNotExist=true
+    username: koing
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    generate-ddl: true
+    properties:
+      show_sql: true
+      hibernate:
+        format_sql: true
+        ddl-auto: update
+
+  redis:
+    host: localhost
+    port: 6379
 
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/book_manager

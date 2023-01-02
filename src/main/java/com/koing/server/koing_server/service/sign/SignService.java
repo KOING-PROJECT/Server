@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -42,6 +44,7 @@ public class SignService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
 
+    @Transactional
     public SuperResponse signUp(SignUpRequestDto signUpRequestDto) {
 
         LOGGER.info("[signUp] 회원가입 요청");
@@ -91,13 +94,13 @@ public class SignService {
         JwtToken savedJwtToken = jwtTokenRepository.save(jwtToken);
         LOGGER.info("[signUp] JwtToken init 완료");
 
-        if (!savedUser.getEmail().isEmpty() && !savedJwtToken.getUserEmail().isEmpty()) {
-            LOGGER.info("[signUp] 회원가입 정상 처리완료");
-            return SuccessResponse.success(SuccessCode.SIGN_UP_SUCCESS, null);
+        if (savedUser == null || savedJwtToken.getUserEmail().isEmpty()) {
+            LOGGER.info("[signUp] 회원가입 실패");
+            throw new DBFailException("회원가입에 실패하였습니다.", ErrorCode.DB_FAIL_SIGN_UP_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[signUp] 회원가입 실패");
-        return ErrorResponse.error(ErrorCode.DB_FAIL_SIGN_UP_FAIL_EXCEPTION);
+        LOGGER.info("[signUp] 회원가입 정상 처리완료");
+        return SuccessResponse.success(SuccessCode.SIGN_UP_SUCCESS, savedUser.getId());
     }
 
     public SuperResponse signUpEmailCheck(String email) {

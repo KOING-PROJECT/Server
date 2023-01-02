@@ -1,6 +1,9 @@
 package com.koing.server.koing_server.controller.sign;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.sign.SignService;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
@@ -34,10 +37,17 @@ public class SignController {
             @ApiResponse(code = 409, message = "이미 존재하는 이메일 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public SuperResponse signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
         LOGGER.info("[SignController] 회원가입 시도");
-        SuperResponse signUpResponse = signService.signUp(signUpRequestDto);
+        SuperResponse signUpResponse;
+        try {
+            signUpResponse = signService.signUp(signUpRequestDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info(String.format("[SignController] 회원가입 성공, Email = %s , Name = %s", signUpRequestDto.getEmail(), signUpRequestDto.getName()));
 
         return signUpResponse;
@@ -50,7 +60,7 @@ public class SignController {
             @ApiResponse(code = 409, message = "이미 존재하는 이메일 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/signUp/email-check")
+    @PostMapping("/sign-up/email-check")
     public SuperResponse signUpEmailCheck(@RequestBody String email) {
         LOGGER.info("[SignController] 이메일 중복 검사");
 
@@ -71,7 +81,7 @@ public class SignController {
             @ApiResponse(code = 404, message = "잘못된 비밀번호 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/signIn")
+    @PostMapping("/sign-in")
     public SuperResponse signIn(@RequestBody SignInRequestDto signInRequestDto) {
         LOGGER.info("[SignController] 로그인 시도");
 
