@@ -47,7 +47,7 @@ public class UserOptionalInfoService {
         if (savedUserOptionalInfo == null) {
             throw new DBFailException("userOptionalInfo를 저장하는데 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_USER_OPTIONAL_INFO_FAIL_EXCEPTION);
         }
-        
+
         LOGGER.info("[UserOptionalInfoService] UserOptionalInfo 생성 성공");
 
         user.setUserOptionalInfo(savedUserOptionalInfo);
