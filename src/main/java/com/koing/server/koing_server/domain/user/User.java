@@ -135,4 +135,8 @@ public class User extends AuditingTimeEntity {
         this.tourApplication.add(tourApplication);
         tourApplication.getParticipants().add(this);
     }
+
+    public void setUserOptionalInfo(UserOptionalInfo userOptionalInfo) {
+        this.userOptionalInfo = userOptionalInfo;
+    }
 }

@@ -30,6 +30,8 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public final StringPath imageUrl = createString("imageUrl");
 
+    public final BooleanPath isCertified = createBoolean("isCertified");
+
     public final StringPath job = createString("job");
 
     public final SetPath<String, StringPath> languages = this.<String, StringPath>createSet("languages", String.class, StringPath.class, PathInits.DIRECT2);

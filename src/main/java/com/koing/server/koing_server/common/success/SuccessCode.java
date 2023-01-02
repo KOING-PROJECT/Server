@@ -47,6 +47,7 @@ public enum SuccessCode {
     TEMPORARY_TOUR_SET_COMPLETE_SUCCESS(CREATED, "tour-set : 임시 저장한 투어 set complete 성공입니다."),
     TEMPORARY_TOUR_TOUR_SCHEDULE_CREATE_SUCCESS(CREATED, "tour-set : 투어, 투어 스케줄 임시 저장 성공입니다."),
     TEMPORARY_TOUR_TOUR_SCHEDULE_UPDATE_SUCCESS(CREATED, "tour-set : 임시 저장한 투어, 투어 스케줄 update 성공입니다."),
+    USER_OPTIONAL_INFO_CREATE_SUCCESS(CREATED, "user-optional-info : 유저 선택정보 생성 성공입니다."),
 
 
     /**
