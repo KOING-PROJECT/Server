@@ -6,17 +6,18 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourCategory;
+import com.koing.server.koing_server.domain.tour.TourSchedule;
 import com.koing.server.koing_server.domain.tour.repository.TourCategory.TourCategoryRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
+import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.tour.dto.TourCreateDto;
-import com.koing.server.koing_server.service.tour.dto.TourDto;
-import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
+import com.koing.server.koing_server.service.tour.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,7 @@ public class TourService {
     private final TourRepositoryImpl tourRepositoryImpl;
     private final TourCategoryRepositoryImpl tourCategoryRepositoryImpl;
     private final UserRepositoryImpl userRepositoryImpl;
+    private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
 
     public SuperResponse getTours() {
 
@@ -118,6 +120,32 @@ public class TourService {
 
         LOGGER.info("[TourService] Tour update 성공");
         return SuccessResponse.success(SuccessCode.TOUR_UPDATE_SUCCESS, tourDto);
+    }
+
+    @Transactional
+    public SuperResponse getTourDetailInfo(Long tourId, Long userId) {
+        LOGGER.info("[TourService] 투어 세부 정보 조회 시도");
+
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+        TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
+
+        if (tour == null) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+        LOGGER.info("[TourService] 투어 세부 정보 조회 성공");
+
+        TourDetailDto tourDetailDto = new TourDetailDto(userId, tour, tourSchedule);
+        LOGGER.info("[TourService] 투어 세부 정보 dto 생성 성공");
+
+        User user = userRepositoryImpl.loadUserByUserId(userId, true);
+
+        if (tour.getPressLikeUsers().contains(user)) {
+            // 같은 유저
+            System.out.println("같은 유저");
+            tourDetailDto.setUserPressTourLike(true);
+        }
+
+        return SuccessResponse.success(SuccessCode.GET_TOUR_DETAIL_INFO_SUCCESS, new TourDetailResponseDto(tourDetailDto));
     }
 
     private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {

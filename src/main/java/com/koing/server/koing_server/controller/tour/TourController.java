@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.service.tour.TourApplicationService;
 import com.koing.server.koing_server.service.tour.TourScheduleService;
@@ -130,6 +131,31 @@ public class TourController {
         SuperResponse completeTourResponse = tourService.updateTour(tourId, tourCreateDto, CreateStatus.COMPLETE);
         LOGGER.info("[TourController] 투어 complete 성공");
         return completeTourResponse;
+    }
+
+    @ApiOperation("Tour - 투어 세부 정보를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 세부 정보 가져오기 성공"),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/{tourId}/{userId}")
+    public SuperResponse getTourDetailInfo(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("userId") Long userId
+    ) {
+        LOGGER.info("[TourController] 투어 세부 정보 조회 시도");
+        SuperResponse getTourDetailInfoResponse;
+        try {
+            getTourDetailInfoResponse = tourService.getTourDetailInfo(tourId, userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourController] 투어 세부 정보 조회 성공");
+        return getTourDetailInfoResponse;
     }
 
 }
