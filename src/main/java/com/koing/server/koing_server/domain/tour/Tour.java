@@ -87,6 +87,9 @@ public class Tour extends AuditingTimeEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private TourSchedule tourSchedule;
 
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    private TourSurvey tourSurvey;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CreateStatus createStatus;
@@ -108,6 +111,10 @@ public class Tour extends AuditingTimeEntity {
         for (TourCategory tourCategory : tourCategories) {
             tourCategory.deleteTour(this);
         }
+    }
+
+    public void setTourSurvey(TourSurvey tourSurvey) {
+        this.tourSurvey = tourSurvey;
     }
 
 }

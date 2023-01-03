@@ -21,5 +21,8 @@ public class TourSetCreateDto {
     private Set<String> tourDates;
     private boolean dateNegotiation;
     private HashMap<String, HashMap<String, String>> tourDetailScheduleHashMap;
+    private String style;
+    private String type;
+    private boolean movingSupport;
 
 }

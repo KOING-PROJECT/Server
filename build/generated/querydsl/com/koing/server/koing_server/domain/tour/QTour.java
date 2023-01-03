@@ -57,6 +57,8 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
 
+    public final QTourSurvey tourSurvey;
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
@@ -80,6 +82,7 @@ public class QTour extends EntityPathBase<Tour> {
         super(type, metadata, inits);
         this.createUser = inits.isInitialized("createUser") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("createUser"), inits.get("createUser")) : null;
         this.tourSchedule = inits.isInitialized("tourSchedule") ? new QTourSchedule(forProperty("tourSchedule"), inits.get("tourSchedule")) : null;
+        this.tourSurvey = inits.isInitialized("tourSurvey") ? new QTourSurvey(forProperty("tourSurvey")) : null;
     }
 
 }

@@ -9,7 +9,11 @@ import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourDetailSchedule;
 import com.koing.server.koing_server.domain.tour.TourSchedule;
-import com.koing.server.koing_server.domain.tour.repository.*;
+import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
+import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
+import com.koing.server.koing_server.domain.tour.repository.TourDetailSchedule.TourDetailScheduleRepository;
+import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepository;
+import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepositoryImpl;
 import com.koing.server.koing_server.service.tour.dto.TourScheduleCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -18,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Service
