@@ -158,4 +158,54 @@ public class TourController {
         return getTourDetailInfoResponse;
     }
 
+
+    @ApiOperation("Tour - 투어 좋아요를 누릅니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 좋아요 누르기 성공"),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/press-like/{tourId}/{userId}")
+    public SuperResponse pressLikeTour(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("userId") Long userId
+    ) {
+        LOGGER.info("[TourController] 투어 좋아요 업데이트 시도");
+        SuperResponse pressLikeTourResponse;
+        try {
+            pressLikeTourResponse = tourService.pressLikeTour(tourId, userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourController] 투어 좋아요 업데이트 성공");
+        return pressLikeTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 좋아요 누른 투어 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 좋아요 누른 투어 리스트를 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/like-tours/{userId}")
+    public SuperResponse pressLikeTour(@PathVariable("userId") Long userId) {
+        LOGGER.info("[TourController] 좋아요 누른 투어 리스트 조회 시도");
+        SuperResponse getLikeTourListResponse;
+        try {
+            getLikeTourListResponse = tourService.getLikeTours(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourController] 좋아요 누른 투어 리스트 조회 성공");
+        return getLikeTourListResponse;
+    }
+
 }

@@ -80,8 +80,10 @@ public class SignService {
                 .age(signUpRequestDto.getAge())
                 .enabled(true)
                 .userOptionalInfo(null)
-                .tourApplication(null)
-                .createTours(null)
+                .tourApplication(new HashSet<>())
+                .createTours(new HashSet<>())
+                .pressLikeTours(new HashSet<>())
+                .pressLikeUsers(new HashSet<>())
                 .build();
 
         User savedUser = userRepository.save(user);

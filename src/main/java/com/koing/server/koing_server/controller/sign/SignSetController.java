@@ -67,6 +67,8 @@ public class SignSetController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
+            System.out.println(exception);
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[SignController] 유저 선택정보 생성 성공");

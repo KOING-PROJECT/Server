@@ -23,6 +23,7 @@ public enum SuccessCode {
     GET_TOUR_CATEGORIES_SUCCESS(OK, "tour : 투어 카테고리 리스트 조회 성공입니다."),
     GET_TOUR_APPLICATIONS_SUCCESS(OK, "tour-application : 투어 신청서 리스트 조회 성공입니다."),
     GET_TOUR_DETAIL_INFO_SUCCESS(OK, "tour-detail-info : 투어 세부 정보 조회 성공입니다."),
+    GET_LIKE_TOURS_SUCCESS(OK, "like-tours : 좋아요 누른 투어 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
@@ -53,6 +54,7 @@ public enum SuccessCode {
     USER_OPTIONAL_INFO_CREATE_SUCCESS(CREATED, "user-optional-info : 유저 선택정보 생성 성공입니다."),
     TOUR_SURVEY_CREATE_SUCCESS(CREATED, "tour-survey : 투어 설문 생성 성공입니다."),
     TOUR_SURVEY_UPDATE_SUCCESS(CREATED, "tour-survey : 투어 설문 업데이트 성공입니다."),
+    PRESS_LIKE_TOUR_UPDATE_SUCCESS(CREATED, "tour-survey : 투어 좋아요 업데이트 성공입니다."),
 
     /**
      * 202 ACCEPTED

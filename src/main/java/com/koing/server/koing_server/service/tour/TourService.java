@@ -6,6 +6,7 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
@@ -16,6 +17,7 @@ import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.tour.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class TourService {
     private final TourCategoryRepositoryImpl tourCategoryRepositoryImpl;
     private final UserRepositoryImpl userRepositoryImpl;
     private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
+    private final UserRepository userRepository;
 
     public SuperResponse getTours() {
 
@@ -146,6 +149,86 @@ public class TourService {
         }
 
         return SuccessResponse.success(SuccessCode.GET_TOUR_DETAIL_INFO_SUCCESS, new TourDetailResponseDto(tourDetailDto));
+    }
+
+    @Transactional
+    public SuperResponse pressLikeTour(Long tourId, Long userId) {
+        LOGGER.info("[TourService] 투어 좋아요 업데이트 시도");
+
+        Tour tour = getTour(tourId);
+        LOGGER.info("[TourService] 해당 투어 조회 성공");
+
+        int beforeTourLikeUser;
+
+        if (tour.getPressLikeUsers() == null) {
+            beforeTourLikeUser = 0;
+        }
+        else {
+            beforeTourLikeUser = tour.getPressLikeUsers().size();
+        }
+
+        User user = getUser(userId);
+        LOGGER.info("[TourService] 해당 유저 조회 성공");
+        int beforeUserLikeTour;
+
+        if (user.getPressLikeTours() == null) {
+            beforeUserLikeTour = 0;
+        }
+        else {
+            beforeUserLikeTour = user.getPressLikeTours().size();
+        }
+
+        tour.pressLikeUsers(user);
+
+        Tour updatedTour = tourRepository.save(tour);
+        User updatedUser = userRepository.save(user);
+
+        if (beforeTourLikeUser == updatedTour.getPressLikeUsers().size()) {
+            throw new DBFailException("좋아요 처리과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_LIKE_TOUR_FAIL_EXCEPTION);
+        }
+
+        if (beforeUserLikeTour == updatedUser.getPressLikeTours().size()) {
+            throw new DBFailException("좋아요 처리과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_LIKE_TOUR_FAIL_EXCEPTION);
+        }
+
+        LOGGER.info("[TourService] 투어 좋아요 업데이트 성공");
+        return SuccessResponse.success(SuccessCode.PRESS_LIKE_TOUR_UPDATE_SUCCESS, new TourDto(updatedTour));
+    }
+
+    @Transactional
+    public SuperResponse getLikeTours(Long userId) {
+        LOGGER.info("[TourService] 좋아요 누른 투어 조회 시도");
+
+        User user = getUser(userId);
+        LOGGER.info("[TourService] 해당 유저 조회 성공");
+
+        Set<Tour> pressLikeTours = user.getPressLikeTours();
+
+        List<TourDto> tourDtos = new ArrayList<>();
+        for (Tour pressLikeTour : pressLikeTours) {
+            tourDtos.add(new TourDto(pressLikeTour));
+        }
+        LOGGER.info("[TourService] 좋아요 누른 투어 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_LIKE_TOURS_SUCCESS, new TourListResponseDto(tourDtos));
+    }
+
+    private Tour getTour(Long tourId) {
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+        if (tour == null) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+
+        return tour;
+    }
+
+    private User getUser(Long userId) {
+        User user = userRepositoryImpl.loadUserByUserId(userId, true);
+        if (user == null) {
+            throw new NotFoundException("해당 유저를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        return user;
     }
 
     private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {

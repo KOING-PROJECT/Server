@@ -28,6 +28,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
                 .fetchJoin()
+                .leftJoin(user.pressLikeTours, tour)
+                .fetchJoin()
                 .where(
                         user.enabled.eq(true)
                 )
@@ -46,6 +48,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .leftJoin(user.tourApplication, tourApplication)
                 .fetchJoin()
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
+                .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
                 .where(
                         user.email.eq(email),
@@ -96,6 +100,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .leftJoin(user.tourApplication, tourApplication)
                 .fetchJoin()
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
+                .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
                 .where(
                         user.id.eq(userId)

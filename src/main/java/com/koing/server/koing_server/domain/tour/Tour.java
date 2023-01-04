@@ -81,7 +81,10 @@ public class Tour extends AuditingTimeEntity {
     @JsonIgnore
     private Set<TourApplication> tourApplications;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "like_tour_table",
+            joinColumns = @JoinColumn(name = "tour_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> pressLikeUsers;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -115,6 +118,37 @@ public class Tour extends AuditingTimeEntity {
 
     public void setTourSurvey(TourSurvey tourSurvey) {
         this.tourSurvey = tourSurvey;
+    }
+
+    public void pressLikeUsers(User user) {
+        if (this.pressLikeUsers == null || !(this.pressLikeUsers.contains(user))) {
+            addLikeUsers(user);
+        }
+        else {
+            deleteLikeUsers(user);
+        }
+
+    }
+
+    private void addLikeUsers(User user) {
+        if (this.pressLikeUsers == null) {
+            this.pressLikeUsers = new HashSet<>();
+        }
+        this.pressLikeUsers.add(user);
+
+        if (user.getPressLikeTours() == null) {
+            Set<Tour> pressListTours = new HashSet<>();
+            user.setPressLikeTours(pressListTours);
+        }
+        user.getPressLikeTours().add(this);
+    }
+
+    private void deleteLikeUsers(User user) {
+        this.pressLikeUsers.remove(user);
+
+        if (user.getPressLikeTours() != null) {
+            user.getPressLikeTours().remove(this);
+        }
     }
 
 }

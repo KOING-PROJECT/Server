@@ -31,7 +31,9 @@ public class User extends AuditingTimeEntity {
                 boolean enabled, Set<String> roles,
                 UserOptionalInfo userOptionalInfo,
                 Set<TourApplication> tourApplication,
-                Set<Tour> createTours
+                Set<Tour> createTours,
+                Set<Tour> pressLikeTours,
+                Set<User> pressLikeUsers
                 ) {
         this.email = email;
         this.password = password;
@@ -46,6 +48,8 @@ public class User extends AuditingTimeEntity {
         this.userOptionalInfo = userOptionalInfo;
         this.tourApplication = tourApplication;
         this.createTours = createTours;
+        this.pressLikeTours = pressLikeTours;
+        this.pressLikeUsers = pressLikeUsers;
     }
 
     @Id
@@ -106,6 +110,13 @@ public class User extends AuditingTimeEntity {
     @JsonIgnore
     @ManyToMany(mappedBy = "pressLikeUsers", fetch = FetchType.LAZY)
     private Set<Tour> pressLikeTours;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "like_guide_table",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "guide_id"))
+    private Set<User> pressLikeUsers;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
