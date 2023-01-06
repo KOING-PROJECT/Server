@@ -39,6 +39,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final BooleanPath enabled = createBoolean("enabled");
 
+    public final SetPath<User, QUser> follower = this.<User, QUser>createSet("follower", User.class, QUser.class, PathInits.DIRECT2);
+
+    public final SetPath<User, QUser> following = this.<User, QUser>createSet("following", User.class, QUser.class, PathInits.DIRECT2);
+
     public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -50,8 +54,6 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath phoneNumber = createString("phoneNumber");
 
     public final SetPath<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour> pressLikeTours = this.<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour>createSet("pressLikeTours", com.koing.server.koing_server.domain.tour.Tour.class, com.koing.server.koing_server.domain.tour.QTour.class, PathInits.DIRECT2);
-
-    public final SetPath<User, QUser> pressLikeUsers = this.<User, QUser>createSet("pressLikeUsers", User.class, QUser.class, PathInits.DIRECT2);
 
     public final SetPath<String, StringPath> roles = this.<String, StringPath>createSet("roles", String.class, StringPath.class, PathInits.DIRECT2);
 

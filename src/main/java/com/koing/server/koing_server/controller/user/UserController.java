@@ -1,9 +1,13 @@
 package com.koing.server.koing_server.controller.user;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.success.SuccessStatusCode;
+import com.koing.server.koing_server.controller.tour.TourSurveyController;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.user.UserService;
 import io.swagger.annotations.Api;
@@ -11,10 +15,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
 
     @ApiOperation("User - 유저 정보를 가져옵니다.")
@@ -44,4 +48,55 @@ public class UserController {
         return SuccessResponse.success(SuccessCode.GET_USERS_SUCCESS, users);
     }
 
+
+    @ApiOperation("User - 유저를 팔로우를 누릅니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - 유저 팔로우 누르기 성공"),
+            @ApiResponse(code = 402, message = "팔로우 처리과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/press-follow/{targetUserId}/{loginUserId}")
+    public SuperResponse pressFollowUser(
+            @PathVariable("targetUserId") Long targetUserId,
+            @PathVariable("loginUserId") Long loginUserId
+    ) {
+        LOGGER.info("[UserController] 유저 팔로우 업데이트 시도");
+        SuperResponse pressFollowUserResponse;
+        try {
+            pressFollowUserResponse = userService.pressFollow(targetUserId, loginUserId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] 유저 팔로우 업데이트 성공");
+
+        return pressFollowUserResponse;
+    }
+
+
+    @ApiOperation("User - 팔로우한 유저 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - 팔로우한 유저 리스트를 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/follow-users/{userId}")
+    public SuperResponse pressLikeTour(@PathVariable("userId") Long userId) {
+        LOGGER.info("[UserController] 팔로우한 유저 리스트 조회 시도");
+        SuperResponse getFollowUserListResponse;
+        try {
+            getFollowUserListResponse = userService.getFollowing(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] 팔로우한 유저 리스트 조회 성공");
+
+        return getFollowUserListResponse;
+    }
 }

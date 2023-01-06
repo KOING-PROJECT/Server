@@ -120,14 +120,13 @@ public class Tour extends AuditingTimeEntity {
         this.tourSurvey = tourSurvey;
     }
 
-    public void pressLikeUsers(User user) {
+    public void pressLikeTour(User user) {
         if (this.pressLikeUsers == null || !(this.pressLikeUsers.contains(user))) {
             addLikeUsers(user);
         }
         else {
             deleteLikeUsers(user);
         }
-
     }
 
     private void addLikeUsers(User user) {

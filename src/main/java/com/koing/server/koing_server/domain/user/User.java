@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,8 @@ public class User extends AuditingTimeEntity {
                 Set<TourApplication> tourApplication,
                 Set<Tour> createTours,
                 Set<Tour> pressLikeTours,
-                Set<User> pressLikeUsers
+                Set<User> following,
+                Set<User> follower
                 ) {
         this.email = email;
         this.password = password;
@@ -49,7 +51,8 @@ public class User extends AuditingTimeEntity {
         this.tourApplication = tourApplication;
         this.createTours = createTours;
         this.pressLikeTours = pressLikeTours;
-        this.pressLikeUsers = pressLikeUsers;
+        this.following = following;
+        this.follower = follower;
     }
 
     @Id
@@ -92,7 +95,7 @@ public class User extends AuditingTimeEntity {
 
     // orphanRemoval = true 이므로 부모 entity에서 자식 entity를 삭제하면 자식 entity가 삭제됨.
     @JoinColumn(name = "user_optional_info_id")
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     private UserOptionalInfo userOptionalInfo;
 
     // 신청한 투어
@@ -112,34 +115,21 @@ public class User extends AuditingTimeEntity {
     private Set<Tour> pressLikeTours;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "like_guide_table",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "guide_id"))
-    private Set<User> pressLikeUsers;
+    private Set<User> following;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY)
+    private Set<User> follower;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
-
-    public static User newUser(String email, String password, String phoneNumber,
-            String name, String birthDate, String country, GenderType gender, int age, Set<String> roles, boolean enabled) {
-        return User.builder()
-                .email(email)
-                .password(password)
-                .phoneNumber(phoneNumber)
-                .name(name)
-                .birthDate(birthDate)
-                .country(country)
-                .roles(roles)
-                .gender(gender)
-                .age(age)
-                .enabled(enabled)
-                .userOptionalInfo(null)
-                .build();
     }
 
     public void setTourApplication(TourApplication tourApplication) {
@@ -149,5 +139,35 @@ public class User extends AuditingTimeEntity {
 
     public void setUserOptionalInfo(UserOptionalInfo userOptionalInfo) {
         this.userOptionalInfo = userOptionalInfo;
+    }
+
+    public void pressFollow(User targetUser) {
+        if (this.following == null || !(this.following.contains(targetUser))) {
+            addFollow(targetUser);
+        }
+        else {
+            deleteFollow(targetUser);
+        }
+    }
+
+    private void addFollow(User targetUser) {
+        if (this.following == null) {
+            this.following = new HashSet<>();
+        }
+        this.following.add(targetUser);
+
+        if (targetUser.getFollower() == null) {
+            Set<User> follower = new HashSet<>();
+            targetUser.setFollower(follower);
+        }
+        targetUser.getFollower().add(this);
+    }
+
+    private void deleteFollow(User targetUser) {
+        this.following.remove(targetUser);
+
+        if (targetUser.getFollower() != null) {
+            targetUser.getFollower().remove(this);
+        }
     }
 }

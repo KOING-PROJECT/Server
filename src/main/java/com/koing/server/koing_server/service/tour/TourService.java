@@ -129,12 +129,10 @@ public class TourService {
     public SuperResponse getTourDetailInfo(Long tourId, Long userId) {
         LOGGER.info("[TourService] 투어 세부 정보 조회 시도");
 
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+        Tour tour = getTour(tourId);
+
         TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
 
-        if (tour == null) {
-            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
-        }
         LOGGER.info("[TourService] 투어 세부 정보 조회 성공");
 
         TourDetailDto tourDetailDto = new TourDetailDto(userId, tour, tourSchedule);
@@ -178,7 +176,7 @@ public class TourService {
             beforeUserLikeTour = user.getPressLikeTours().size();
         }
 
-        tour.pressLikeUsers(user);
+        tour.pressLikeTour(user);
 
         Tour updatedTour = tourRepository.save(tour);
         User updatedUser = userRepository.save(user);

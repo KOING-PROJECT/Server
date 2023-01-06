@@ -83,7 +83,8 @@ public class SignService {
                 .tourApplication(new HashSet<>())
                 .createTours(new HashSet<>())
                 .pressLikeTours(new HashSet<>())
-                .pressLikeUsers(new HashSet<>())
+                .following(new HashSet<>())
+                .follower(new HashSet<>())
                 .build();
 
         User savedUser = userRepository.save(user);
