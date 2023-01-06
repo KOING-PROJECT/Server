@@ -57,7 +57,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PatchMapping("/press-follow/{targetUserId}/{loginUserId}")
+    @PatchMapping("/follow/{targetUserId}/{loginUserId}")
     public SuperResponse pressFollowUser(
             @PathVariable("targetUserId") Long targetUserId,
             @PathVariable("loginUserId") Long loginUserId
@@ -84,7 +84,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @GetMapping("/follow-users/{userId}")
+    @GetMapping("/follow/{userId}")
     public SuperResponse pressLikeTour(@PathVariable("userId") Long userId) {
         LOGGER.info("[UserController] 팔로우한 유저 리스트 조회 시도");
         SuperResponse getFollowUserListResponse;
@@ -98,5 +98,29 @@ public class UserController {
         LOGGER.info("[UserController] 팔로우한 유저 리스트 조회 성공");
 
         return getFollowUserListResponse;
+    }
+
+
+    @ApiOperation("User - User의 My page를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - Tourist의 My page를 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/mypage/{userId}")
+    public SuperResponse getMyPage(@PathVariable("userId") Long userId) {
+        LOGGER.info("[UserController] My page 조회 시도");
+        SuperResponse getMyPageResponse;
+        try {
+            getMyPageResponse = userService.getMyInfo(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] My page 조회 성공");
+
+        return getMyPageResponse;
     }
 }

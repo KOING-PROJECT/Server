@@ -1,7 +1,9 @@
 package com.koing.server.koing_server.service.user;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
@@ -18,6 +20,8 @@ import com.koing.server.koing_server.service.tour.dto.TourDto;
 import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
 import com.koing.server.koing_server.service.user.dto.UserFollowDto;
 import com.koing.server.koing_server.service.user.dto.UserFollowListResponseDto;
+import com.koing.server.koing_server.service.user.dto.UserGuideMyPageDto;
+import com.koing.server.koing_server.service.user.dto.UserTouristMyPageDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,6 +120,29 @@ public class UserService {
 
         return SuccessResponse.success(SuccessCode.GET_LIKE_TOURS_SUCCESS, new UserFollowListResponseDto(userFollowDtos));
     }
+
+    public SuperResponse getMyInfo(Long userId) {
+        LOGGER.info("[UserService] My page 정보 조회 시도");
+
+        User user = getUser(userId);
+        LOGGER.info("[UserService] 로그인 유저 조회 성공");
+
+        if (user.getRoles().contains(UserRole.ROLE_TOURIST.getRole())) {
+            UserTouristMyPageDto userTouristMyPageDto = new UserTouristMyPageDto(user);
+            LOGGER.info("[UserService] Tourist My page 정보 조회 성공");
+
+            return SuccessResponse.success(SuccessCode.GET_TOURIST_INFO_SUCCESS, userTouristMyPageDto);
+        }
+        else if(user.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
+            UserGuideMyPageDto userGuideMyPageDto = new UserGuideMyPageDto(user);
+            LOGGER.info("[UserService] Guide My page 정보 조회 성공");
+
+            return SuccessResponse.success(SuccessCode.GET_GUIDE_INFO_SUCCESS, userGuideMyPageDto);
+        }
+
+        return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_USER_NOT_HAVE_ROLE_EXCEPTION);
+    }
+
 
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);

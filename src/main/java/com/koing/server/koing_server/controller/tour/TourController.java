@@ -167,7 +167,7 @@ public class TourController {
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PatchMapping("/press-like/{tourId}/{userId}")
+    @PatchMapping("/like/{tourId}/{userId}")
     public SuperResponse pressLikeTour(
             @PathVariable("tourId") Long tourId,
             @PathVariable("userId") Long userId
@@ -193,7 +193,7 @@ public class TourController {
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @GetMapping("/like-tours/{userId}")
+    @GetMapping("/like/{userId}")
     public SuperResponse pressLikeTour(@PathVariable("userId") Long userId) {
         LOGGER.info("[TourController] 좋아요 누른 투어 리스트 조회 시도");
         SuperResponse getLikeTourListResponse;

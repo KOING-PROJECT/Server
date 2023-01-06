@@ -24,6 +24,8 @@ public enum SuccessCode {
     GET_TOUR_APPLICATIONS_SUCCESS(OK, "tour-application : 투어 신청서 리스트 조회 성공입니다."),
     GET_TOUR_DETAIL_INFO_SUCCESS(OK, "tour-detail-info : 투어 세부 정보 조회 성공입니다."),
     GET_LIKE_TOURS_SUCCESS(OK, "like-tours : 좋아요 누른 투어 조회 성공입니다."),
+    GET_TOURIST_INFO_SUCCESS(OK, "My-page : Tourist 마이페이지 정보 조회 성공입니다."),
+    GET_GUIDE_INFO_SUCCESS(OK, "My-page : Guide 마이페이지 정보 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
