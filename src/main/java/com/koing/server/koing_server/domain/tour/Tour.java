@@ -150,4 +150,14 @@ public class Tour extends AuditingTimeEntity {
         }
     }
 
+    public boolean checkCategories(List<String> tourCategories) {
+        for (TourCategory tourCategory : this.tourCategories) {
+            if (tourCategories.contains(tourCategory.getCategoryName())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

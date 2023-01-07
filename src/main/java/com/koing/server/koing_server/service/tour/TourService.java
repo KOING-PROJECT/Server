@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,12 +41,22 @@ public class TourService {
     private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
     private final UserRepository userRepository;
 
-    public SuperResponse getTours() {
+    @Transactional
+    public SuperResponse getTours(List<String> categories) {
 
         LOGGER.info("[TourService] Tour list 요청");
 
         // 모집중이거나 모집이 완료되었지만 아직 시작안한(대기 가능하게) tour list 반환
-        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
+        List<Tour> tours;
+        if (categories.contains("전체")) {
+            tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
+        }
+        else {
+            tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby()
+                    .stream()
+                    .filter(tour -> tour.checkCategories(categories))
+                    .collect(Collectors.toList());
+        }
         LOGGER.info("[TourService] Tour list 요청 완료");
 
         List<TourDto> tourDtos = new ArrayList<>();

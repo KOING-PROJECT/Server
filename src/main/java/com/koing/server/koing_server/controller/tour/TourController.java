@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = "Tour")
 @RequestMapping("/tour")
 @RestController
@@ -39,9 +41,9 @@ public class TourController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("")
-    public SuperResponse getTours() {
+    public SuperResponse getTours(@RequestParam List<String> categories) {
         LOGGER.info("[TourController] 투어 리스트 조회 시도");
-        SuperResponse getTourListResponse = tourService.getTours();
+        SuperResponse getTourListResponse = tourService.getTours(categories);
         LOGGER.info("[TourController] 투어 리스트 조회 성공");
         return getTourListResponse;
     }
