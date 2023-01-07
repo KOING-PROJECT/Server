@@ -9,6 +9,7 @@ import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository;
 import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepositoryImpl;
@@ -18,10 +19,7 @@ import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.tour.TourSurveyService;
 import com.koing.server.koing_server.service.tour.dto.TourDto;
 import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
-import com.koing.server.koing_server.service.user.dto.UserFollowDto;
-import com.koing.server.koing_server.service.user.dto.UserFollowListResponseDto;
-import com.koing.server.koing_server.service.user.dto.UserGuideMyPageDto;
-import com.koing.server.koing_server.service.user.dto.UserTouristMyPageDto;
+import com.koing.server.koing_server.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +39,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
     private final UserOptionalInfoRepositoryImpl userOptionalInfoRepositoryImpl;
+    private final TourRepositoryImpl tourRepositoryImpl;
 
     @Transactional
     public List<User> getUsers() {
@@ -143,6 +142,23 @@ public class UserService {
         return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_USER_NOT_HAVE_ROLE_EXCEPTION);
     }
 
+    public SuperResponse getGuideDetailInfo(Long guideId, Long loginUserId, Long currentTourId) {
+        LOGGER.info("[UserService] 가이드 세부 정보 조회 시도");
+
+        User guide = getUser(guideId);
+        LOGGER.info("[UserService] 가이드 조회 성공");
+
+        User loginUser = getUser(loginUserId);
+        LOGGER.info("[UserService] 로그인 유저 조회 성공");
+
+        Tour currentTour = getTour(currentTourId);
+        LOGGER.info("[UserService] 현재 투어 조회 성공");
+
+        UserGuideDetailInfoDto userGuideDetailInfoDto = new UserGuideDetailInfoDto(guide, loginUser, currentTour);
+        LOGGER.info("[UserService] 가이드 세부 정보 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_TOUR_GUIDE_DETAIL_INFO_SUCCESS, userGuideDetailInfoDto);
+    }
 
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);
@@ -151,6 +167,15 @@ public class UserService {
         }
 
         return user;
+    }
+
+    private Tour getTour(Long tourId) {
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+        if (tour == null) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+
+        return tour;
     }
 
 }

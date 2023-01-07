@@ -123,4 +123,33 @@ public class UserController {
 
         return getMyPageResponse;
     }
+
+
+    @ApiOperation("User - Tour Guide의 세부정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - Tour Guide의 세부정보를 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/{guideId}/{loginUserId}/{tourId}")
+    public SuperResponse getGuideDetailInfo(
+            @PathVariable("guideId") Long guideId,
+            @PathVariable("loginUserId") Long loginUserId,
+            @PathVariable("tourId") Long tourId
+    ) {
+        LOGGER.info("[UserController] 투어 Guide 세부 정보 조회 시도");
+        SuperResponse getGuideDetailInfoResponse;
+        try {
+            getGuideDetailInfoResponse = userService.getGuideDetailInfo(guideId, loginUserId, tourId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] 투어 Guide 세부 정보 조회 성공");
+
+        return getGuideDetailInfoResponse;
+    }
 }
