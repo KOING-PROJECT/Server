@@ -90,6 +90,11 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_USER_NOT_HAVE_ROLE_EXCEPTION(NOT_ACCEPTABLE, "해당 유저의 ROLE이 없습니다."),
 
     /**
+     * 407 PAYMENT_SERVER_ERROR
+     */
+    PAYMENT_SERVER_CONNECT_ERROR(PAYMENT_SERVER_ERROR, "결제 서버와의 통신에서 오류가 발생했습니다."),
+
+    /**
      * 409 Conflict
      */
     CONFLICT_EMAIL_EXCEPTION(CONFLICT, "이미 존재하는 이메일 입니다."),
