@@ -6,6 +6,7 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.sign.SignService;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
+import com.koing.server.koing_server.service.sign.dto.SignUpEmailCheckDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,10 +62,10 @@ public class SignController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/sign-up/email-check")
-    public SuperResponse signUpEmailCheck(@RequestBody String email) {
+    public SuperResponse signUpEmailCheck(@RequestBody SignUpEmailCheckDto signUpEmailCheckDto) {
         LOGGER.info("[SignController] 이메일 중복 검사");
 
-        SuperResponse signUpEmailCheckResponse = signService.signUpEmailCheck(email);
+        SuperResponse signUpEmailCheckResponse = signService.signUpEmailCheck(signUpEmailCheckDto);
 
         if (signUpEmailCheckResponse.getStatus() == 202) {
             LOGGER.info(String.format("[SignController] 사용가능한 이메일"));

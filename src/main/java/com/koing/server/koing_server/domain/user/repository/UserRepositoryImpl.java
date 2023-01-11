@@ -61,16 +61,21 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 
     @Override
     public Boolean isExistUserByUserEmail(String email) {
-        User existUser = jpqlQueryFactory.selectFrom(user)
+        System.out.println(email);
+        User existUser = jpqlQueryFactory
+                .selectFrom(user)
                 .where(
                         user.email.eq(email)
                 )
                 .fetchOne();
 
         if (existUser != null) {
+            System.out.println("존재");
             return true;
         }
-
+//        System.out.println(existUser.getEmail());
+//        System.out.println(existUser.getName());
+        System.out.println("존재하지않음");
         return false;
     }
 

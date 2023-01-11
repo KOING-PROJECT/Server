@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.ConflictEmailException;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
@@ -18,6 +19,7 @@ import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.jwt.dto.JwtDto;
 import com.koing.server.koing_server.service.jwt.dto.JwtResponseDto;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
+import com.koing.server.koing_server.service.sign.dto.SignUpEmailCheckDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -58,7 +60,7 @@ public class SignService {
 
         if (userRepositoryImpl.isExistUserByUserEmail(email)) {
             // 서버쪽에서 email 중복 검사를 한번 더 실행
-            return ErrorResponse.error(ErrorCode.CONFLICT_EMAIL_EXCEPTION);
+            throw new ConflictEmailException("이미 존재하는 이메일 입니다.", ErrorCode.CONFLICT_EMAIL_EXCEPTION);
         }
 
         if (signUpRequestDto.getGender().equalsIgnoreCase("MAN")) {
@@ -106,12 +108,12 @@ public class SignService {
         return SuccessResponse.success(SuccessCode.SIGN_UP_SUCCESS, savedUser.getId());
     }
 
-    public SuperResponse signUpEmailCheck(String email) {
-        if (userRepositoryImpl.isExistUserByUserEmail(email)) {
-            return SuccessResponse.success(SuccessCode.SIGN_UP_EMAIL_CHECK_SUCCESS, null);
+    public SuperResponse signUpEmailCheck(SignUpEmailCheckDto signUpEmailCheckDto) {
+        if (userRepositoryImpl.isExistUserByUserEmail(signUpEmailCheckDto.getEmail())) {
+            return ErrorResponse.error(ErrorCode.CONFLICT_EMAIL_EXCEPTION);
         }
 
-        return ErrorResponse.error(ErrorCode.CONFLICT_EMAIL_EXCEPTION);
+        return SuccessResponse.success(SuccessCode.SIGN_UP_EMAIL_CHECK_SUCCESS, null);
     }
 
     public SuperResponse signIn(SignInRequestDto signInRequestDto) {
