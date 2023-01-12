@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.enums.TourCategoryIndex;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
@@ -222,6 +223,30 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.GET_LIKE_TOURS_SUCCESS, new TourListResponseDto(tourDtos));
     }
 
+    @Transactional
+    public SuperResponse getToursByTourCategory(int categoryIndex) {
+
+        LOGGER.info("[TourService] Home화면 Tour list 조회 시도");
+
+        // 모집중이거나 모집이 완료되었지만 아직 시작안한(대기 가능하게) tour list 반환
+
+        String categoryName = getCategoryName(categoryIndex);
+
+        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby()
+                .stream()
+                .filter(tour -> tour.checkCategories(Arrays.asList(categoryName)))
+                .collect(Collectors.toList());
+
+        LOGGER.info("[TourService] Home화면 Tour list 조회 성공");
+
+        List<TourHomeToursDto> tourHomeToursDtos = new ArrayList<>();
+        for (Tour tour : tours) {
+            tourHomeToursDtos.add(new TourHomeToursDto(tour));
+        }
+
+        return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, new TourHomeToursResponseDto(tourHomeToursDtos));
+    }
+
     private Tour getTour(Long tourId) {
         Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
         if (tour == null) {
@@ -307,6 +332,17 @@ public class TourService {
         }
 
         return hashMaps;
+    }
+
+    private String getCategoryName(int categoryIndex) {
+
+        for (TourCategoryIndex tourCategoryIndex : TourCategoryIndex.values()) {
+            if (tourCategoryIndex.getCategoryIndex() == categoryIndex) {
+                return tourCategoryIndex.getCategoryName();
+            }
+        }
+
+        return "역사";
     }
 
 
