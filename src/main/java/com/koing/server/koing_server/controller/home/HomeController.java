@@ -27,9 +27,7 @@ public class HomeController {
     @ApiOperation("Home : 카테고리별 투어를 가져옵니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Home : 카테고리별 투어 조회 성공"),
-            @ApiResponse(code = 402, message = "회원가입 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
-            @ApiResponse(code = 409, message = "이미 존재하는 이메일 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/tours/{categoryIndex}")
