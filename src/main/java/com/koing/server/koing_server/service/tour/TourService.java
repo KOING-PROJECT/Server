@@ -267,7 +267,7 @@ public class TourService {
 
     private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {
         Tour tour = Tour.builder()
-                .createUser(getCreatUser(tourCreateDto.getCreateUserId()))
+                .createUser(getUser(tourCreateDto.getCreateUserId()))
                 .title(tourCreateDto.getTitle())
                 .description(tourCreateDto.getDescription())
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
@@ -299,11 +299,6 @@ public class TourService {
         return tour;
     }
 
-    private User getCreatUser(Long createUserId) {
-        User createUser = userRepositoryImpl.loadUserByUserId(createUserId, true);
-        return createUser;
-    }
-
     private Set<TourCategory> buildTourCategories(List<String> tourCategoryNames) {
         Set<TourCategory> tourCategories = new HashSet<>();
 
@@ -313,7 +308,6 @@ public class TourService {
 
         return tourCategories;
     }
-
 
     private Set<HashMap<String, List>> buildAdditionalPrice(List<String> additionalPrice) {
 

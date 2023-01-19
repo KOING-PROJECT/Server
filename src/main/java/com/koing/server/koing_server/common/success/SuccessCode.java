@@ -25,9 +25,10 @@ public enum SuccessCode {
     GET_TOUR_DETAIL_INFO_SUCCESS(OK, "tour-detail-info : 투어 세부 정보 조회 성공입니다."),
     GET_TOUR_GUIDE_DETAIL_INFO_SUCCESS(OK, "tour-detail-info : 투어 Guide 세부 정보 조회 성공입니다."),
     GET_LIKE_TOURS_SUCCESS(OK, "like-tours : 좋아요 누른 투어 조회 성공입니다."),
-    GET_TOURIST_INFO_SUCCESS(OK, "My-page : Tourist 마이페이지 정보 조회 성공입니다."),
-    GET_GUIDE_INFO_SUCCESS(OK, "My-page : Guide 마이페이지 정보 조회 성공입니다."),
+    GET_TOURIST_INFO_SUCCESS(OK, "my-page : Tourist 마이페이지 정보 조회 성공입니다."),
+    GET_GUIDE_INFO_SUCCESS(OK, "my-page : Guide 마이페이지 정보 조회 성공입니다."),
     GET_IAMPORT_ACCESS_TOKEN_SUCCESS(OK, "Payment : Iamport AccessToken 가져오기 성공입니다."),
+    GET_CHAT_ROOM_SUCCESS(OK, "chat-room : 채팅방 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
@@ -59,6 +60,8 @@ public enum SuccessCode {
     TOUR_SURVEY_CREATE_SUCCESS(CREATED, "tour-survey : 투어 설문 생성 성공입니다."),
     TOUR_SURVEY_UPDATE_SUCCESS(CREATED, "tour-survey : 투어 설문 업데이트 성공입니다."),
     PRESS_LIKE_TOUR_UPDATE_SUCCESS(CREATED, "tour-survey : 투어 좋아요 업데이트 성공입니다."),
+    CHAT_ROOM_CREATE_SUCCESS(CREATED, "chat-room : 채팅방 생성 성공입니다."),
+    CHAT_MESSAGE_CREATE_SUCCESS(CREATED, "chat-message : 메시지 저장 성공입니다."),
 
     /**
      * 202 ACCEPTED

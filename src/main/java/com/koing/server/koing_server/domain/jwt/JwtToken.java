@@ -3,15 +3,13 @@ package com.koing.server.koing_server.domain.jwt;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "JWT_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

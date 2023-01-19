@@ -64,7 +64,7 @@ public class SignService {
         }
 
         if (signUpRequestDto.getGender().equalsIgnoreCase("MAN")) {
-            genderType = GenderType.Man;
+            genderType = GenderType.MAN;
         }
         else if (signUpRequestDto.getGender().equalsIgnoreCase("WOMAN")) {
             genderType = GenderType.WOMAN;

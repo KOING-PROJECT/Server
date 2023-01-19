@@ -24,9 +24,11 @@ spring:
 # mysql DB
   datasource:
 #    url: jdbc:mysql://localhost:3306/koing?characterEncoding=UTF-8&serverTimezone=UTC
-    url: jdbc:mysql://localhost:3306/koing?createDatabaseIfNotExist=true
-    username: koing
-    password:
+    url: jdbc:mysql://koingserverdb.cwqgoxfrxocu.ap-northeast-2.rds.amazonaws.com:3306/koing?createDatabaseIfNotExist=true
+#    url: jdbc:mysql://localhost:3306/koing?createDatabaseIfNotExist=true
+#    url: jdbc:mysql://db:3306/koing?createDatabaseIfNotExist=true
+    username: admin
+    password: Kkoing1234!
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
