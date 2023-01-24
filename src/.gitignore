@@ -38,6 +38,6 @@
 #
 #
 #### application.yml ###
-main/resources/application.yml
-main/resources/application.properties
+#main/resources/application.yml
+#main/resources/application.properties
 #main/resources/import.sql
