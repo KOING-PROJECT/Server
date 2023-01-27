@@ -98,6 +98,11 @@ public enum ErrorCode {
     PAYMENT_SERVER_CONNECT_ERROR(PAYMENT_SERVER_ERROR, "결제 서버와의 통신에서 오류가 발생했습니다."),
 
     /**
+     * 408 FILE_CONVERT_ERROR
+     */
+    FILE_CONVERT_ERROR(FILE_CONVERTED_ERROR, "파일 변환과정에서 오류가 발생했습니다."),
+
+    /**
      * 409 Conflict
      */
     CONFLICT_EMAIL_EXCEPTION(CONFLICT, "이미 존재하는 이메일 입니다."),

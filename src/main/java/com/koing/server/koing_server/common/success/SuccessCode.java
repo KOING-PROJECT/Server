@@ -29,6 +29,7 @@ public enum SuccessCode {
     GET_GUIDE_INFO_SUCCESS(OK, "my-page : Guide 마이페이지 정보 조회 성공입니다."),
     GET_IAMPORT_ACCESS_TOKEN_SUCCESS(OK, "Payment : Iamport AccessToken 가져오기 성공입니다."),
     GET_CHAT_ROOM_SUCCESS(OK, "chat-room : 채팅방 조회 성공입니다."),
+    UPLOAD_S3_SUCCESS(OK, "s3 : 파일 업로드 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
