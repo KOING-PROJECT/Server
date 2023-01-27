@@ -135,7 +135,7 @@ public class SignService {
         }
         LOGGER.info("[signIn] Password 일치");
 
-        String accessToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles());
+        String accessToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles(), user.getId());
         String refreshToken = jwtTokenUtil.createJwtRefreshToken();
         LOGGER.info(String.format("[signIn] JWT 토큰 생성 성공, Token = %s", accessToken));
 

@@ -69,7 +69,7 @@ public class JwtService {
 
         LOGGER.info("[JwtService] 서버 토큰과 일치!");
         User user = userRepositoryImpl.loadUserByUserEmail(userEmail, true);
-        String newAccessToken = jwtTokenUtil.createJwtToken(user.getEmail(), user.getRoles());
+        String newAccessToken = jwtTokenUtil.createJwtToken(user.getEmail(), user.getRoles(), user.getId());
         String newRefreshToken = jwtTokenUtil.createJwtRefreshToken();
 
         LOGGER.info("[JwtService] newAccessToken = " + newAccessToken);
