@@ -57,7 +57,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<String, StringPath> roles = this.<String, StringPath>createSet("roles", String.class, StringPath.class, PathInits.DIRECT2);
 
-    public final SetPath<com.koing.server.koing_server.domain.tour.TourApplication, com.koing.server.koing_server.domain.tour.QTourApplication> tourApplication = this.<com.koing.server.koing_server.domain.tour.TourApplication, com.koing.server.koing_server.domain.tour.QTourApplication>createSet("tourApplication", com.koing.server.koing_server.domain.tour.TourApplication.class, com.koing.server.koing_server.domain.tour.QTourApplication.class, PathInits.DIRECT2);
+    public final SetPath<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant> tourParticipants = this.<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant>createSet("tourParticipants", com.koing.server.koing_server.domain.tour.TourParticipant.class, com.koing.server.koing_server.domain.tour.QTourParticipant.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

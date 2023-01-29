@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import com.koing.server.koing_server.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,11 +30,8 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(length = 20)
     private String tourDate;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "participants_application",
-            joinColumns = @JoinColumn(name = "tour_application_id"),
-            inverseJoinColumns = @JoinColumn(name = "participants_id"))
-    private List<User> participants;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tourApplication")
+    private List<TourParticipant> tourParticipants;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -46,7 +43,7 @@ public class TourApplication extends AuditingTimeEntity {
 
     public TourApplication(String tourDate, int maxParticipant) {
         this.tour = null;
-        this.participants = null;
+        this.tourParticipants = new ArrayList<>();
         this.tourDate = tourDate;
         this.maxParticipant = maxParticipant;
         this.tourStatus = TourStatus.RECRUITMENT;

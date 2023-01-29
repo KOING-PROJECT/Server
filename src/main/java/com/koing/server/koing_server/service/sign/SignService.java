@@ -82,7 +82,7 @@ public class SignService {
                 .age(signUpRequestDto.getAge())
                 .enabled(true)
                 .userOptionalInfo(null)
-                .tourApplication(new HashSet<>())
+                .tourParticipants(new HashSet<>())
                 .createTours(new HashSet<>())
                 .pressLikeTours(new HashSet<>())
                 .following(new HashSet<>())

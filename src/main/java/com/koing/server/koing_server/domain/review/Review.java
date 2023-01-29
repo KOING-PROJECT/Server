@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -18,9 +19,12 @@ import java.util.List;
 @Table(name = "REVIEW_TABLE")
 public class Review extends AuditingTimeEntity {
 
-    public Review(Long id, String tourReview, String guideReview, int attachment, String totalReview, List<String> photos) {
-        this.tourReview = tourReview;
-        this.guideReview = guideReview;
+    public Review(User sendUser, User receiveUser, Tour relatedTour, Set<String> tourReviews, Set<String> guideReviews, int attachment, String totalReview, Set<String> photos) {
+        this.sendUser = sendUser;
+        this.receiveUser = receiveUser;
+        this.relatedTour = relatedTour;
+        this.tourReviews = tourReviews;
+        this.guideReviews = guideReviews;
         this.attachment = attachment;
         this.totalReview = totalReview;
         this.photos = photos;
@@ -39,11 +43,14 @@ public class Review extends AuditingTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Tour relatedTour;
 
-    @Column(length = 30)
-    private String tourReview;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(nullable = false, name = "tour_reviews")
+    private Set<String> tourReviews;
 
-    @Column(length = 30)
-    private String guideReview;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(nullable = false, name = "guide_reviews")
+    private Set<String> guideReviews;
 
     private int attachment;
 
@@ -52,6 +59,6 @@ public class Review extends AuditingTimeEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false, name = "tour_photos")
-    private List<String> photos;
+    private Set<String> photos;
 
 }

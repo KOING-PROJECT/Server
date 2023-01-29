@@ -77,6 +77,7 @@ public enum ErrorCode {
     NOT_FOUND_TOUR_SCHEDULE_EXCEPTION(NOT_FOUND, "해당 투어 스케줄을 찾을 수 없습니다."),
     NOT_FOUND_TOUR_SURVEY_EXCEPTION(NOT_FOUND, "해당 투어 설문을 찾을 수 없습니다."),
     NOT_FOUND_CHAT_ROOM_EXCEPTION(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
+    NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION(NOT_FOUND, "해당 투어 신청 내용을 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed

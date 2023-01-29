@@ -57,7 +57,7 @@ public class SignController {
 
     @ApiOperation("signUp/email-check : 이메일 중복검사를 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "sign-in : 이메일 중복없음 확인"),
+            @ApiResponse(code = 202, message = "sign-in : 이메일 중복없음 확인"),
             @ApiResponse(code = 409, message = "이미 존재하는 이메일 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })

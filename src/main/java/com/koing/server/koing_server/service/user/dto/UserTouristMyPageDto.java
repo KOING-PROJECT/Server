@@ -2,6 +2,7 @@ package com.koing.server.koing_server.service.user.dto;
 
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.tour.dto.TourHistoryDto;
 import com.koing.server.koing_server.service.tour.dto.TourLikeDto;
@@ -56,7 +57,12 @@ public class UserTouristMyPageDto {
     }
 
     private Set<TourHistoryDto> createTourHistoryDtos(User user) {
-        Set<TourApplication> tourApplications = user.getTourApplication();
+        Set<TourParticipant> tourParticipants = user.getTourParticipants();
+
+        Set<TourApplication> tourApplications = new HashSet<>();
+        for (TourParticipant tourParticipant : tourParticipants) {
+            tourApplications.add(tourParticipant.getTourApplication());
+        }
 
         Set<TourHistoryDto> tourHistoryDtos = new HashSet<>();
         for (TourApplication tourApplication : tourApplications) {

@@ -33,11 +33,11 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);
 
-    public final ListPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> participants = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createList("participants", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
-
     public final QTour tour;
 
     public final StringPath tourDate = createString("tourDate");
+
+    public final ListPath<TourParticipant, QTourParticipant> tourParticipants = this.<TourParticipant, QTourParticipant>createList("tourParticipants", TourParticipant.class, QTourParticipant.class, PathInits.DIRECT2);
 
     public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
 

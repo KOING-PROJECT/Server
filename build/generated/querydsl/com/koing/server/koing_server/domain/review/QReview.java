@@ -29,11 +29,11 @@ public class QReview extends EntityPathBase<Review> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final StringPath guideReview = createString("guideReview");
+    public final SetPath<String, StringPath> guideReviews = this.<String, StringPath>createSet("guideReviews", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final ListPath<String, StringPath> photos = this.<String, StringPath>createList("photos", String.class, StringPath.class, PathInits.DIRECT2);
+    public final SetPath<String, StringPath> photos = this.<String, StringPath>createSet("photos", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final com.koing.server.koing_server.domain.user.QUser receiveUser;
 
@@ -43,7 +43,7 @@ public class QReview extends EntityPathBase<Review> {
 
     public final StringPath totalReview = createString("totalReview");
 
-    public final StringPath tourReview = createString("tourReview");
+    public final SetPath<String, StringPath> tourReviews = this.<String, StringPath>createSet("tourReviews", String.class, StringPath.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

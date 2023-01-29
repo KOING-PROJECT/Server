@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.tour.TourParticipant;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,7 +32,7 @@ public class User extends AuditingTimeEntity {
             , String country, GenderType gender, int age,
                 boolean enabled, Set<String> roles,
                 UserOptionalInfo userOptionalInfo,
-                Set<TourApplication> tourApplication,
+                Set<TourParticipant> tourParticipants,
                 Set<Tour> createTours,
                 Set<Tour> pressLikeTours,
                 Set<User> following,
@@ -48,7 +49,7 @@ public class User extends AuditingTimeEntity {
         this.age = age;
         this.enabled = enabled;
         this.userOptionalInfo = userOptionalInfo;
-        this.tourApplication = tourApplication;
+        this.tourParticipants = tourParticipants;
         this.createTours = createTours;
         this.pressLikeTours = pressLikeTours;
         this.following = following;
@@ -99,8 +100,8 @@ public class User extends AuditingTimeEntity {
     private UserOptionalInfo userOptionalInfo;
 
     // 신청한 투어
-    @ManyToMany(mappedBy = "participants", fetch = FetchType.LAZY)
-    private Set<TourApplication> tourApplication;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "participant")
+    private Set<TourParticipant> tourParticipants;
 
     // 생성한 투어
 //    @JsonBackReference
@@ -130,11 +131,6 @@ public class User extends AuditingTimeEntity {
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-    }
-
-    public void setTourApplication(TourApplication tourApplication) {
-        this.tourApplication.add(tourApplication);
-        tourApplication.getParticipants().add(this);
     }
 
     public void setUserOptionalInfo(UserOptionalInfo userOptionalInfo) {

@@ -4,14 +4,20 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
+import com.koing.server.koing_server.common.exception.NotAcceptableException;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.tour.TourSchedule;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepositoryImpl;
+import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository;
+import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
@@ -42,6 +48,8 @@ public class TourApplicationService {
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
     private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
+    private final TourParticipantRepository tourParticipantRepository;
+    private final TourParticipantRepositoryImpl tourParticipantRepositoryImpl;
 
     @Transactional
     public SuperResponse createTourApplication(TourApplicationCreateDto tourApplicationCreateDto) {
@@ -89,89 +97,68 @@ public class TourApplicationService {
         Long tourId = tourApplicationParticipateDto.getTourId();
         String tourDate = tourApplicationParticipateDto.getTourDate();
 
-        TourApplication tourApplication = tourApplicationRepositoryImpl
-                .findTourApplicationByTourIdAndTourDate(
-                        tourId,
-                        tourDate
-                );
-
-        if (tourApplication == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
-        }
+        LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 시도");
+        TourApplication tourApplication = getTourApplication(tourId, tourDate);
 
         LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 성공 = " + tourApplication);
 
-        int currParticipants = tourApplication.getCurrentParticipants();
-        int participantSize = tourApplication.getParticipants().size();
-        LOGGER.info("[TourApplicationService] 현재 currParticipants = " + currParticipants);
-        LOGGER.info("[TourApplicationService] 현재 participantSize = " + participantSize);
 
+        int currParticipants = tourApplication.getCurrentParticipants();
         int numberOfParticipants = tourApplicationParticipateDto.getNumberOfParticipants();
 
         if (currParticipants + numberOfParticipants > tourApplication.getMaxParticipant()) {
-            return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION);
+            throw new NotAcceptableException("해당 투어의 정원을 초과했습니다.", ErrorCode.NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION);
         }
 
-        User user = userRepositoryImpl.loadUserByUserId(
-                tourApplicationParticipateDto.getUserId(), true
+        LOGGER.info("[TourApplicationService] userId로 tour 신청 유저 조회 시도");
+        User user = getUser(tourApplicationParticipateDto.getUserId());
+
+        LOGGER.info("[TourApplicationService] userId로 tour 신청 유저 조회 성공" + user);
+
+        LOGGER.info("[TourApplicationService] TourParticipant 생성 시도");
+        TourParticipant tourParticipant = new TourParticipant(
+                tourApplication,
+                user,
+                tourApplicationParticipateDto.getNumberOfParticipants()
         );
+        LOGGER.info("[TourApplicationService] TourParticipant 생성 성공");
 
-        if (user == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
-        }
-        LOGGER.info("[TourApplicationService] userEmail로 user 조회 성공 %s = " + user);
-
-        int beforeUpdateTourApplications = user.getTourApplication().size();
-        LOGGER.info("[TourApplicationService] 현재 user의 tourApplications = " + beforeUpdateTourApplications);
-
-        user.setTourApplication(tourApplication);
         tourApplication.setCurrentParticipants(currParticipants + numberOfParticipants);
 
-        TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+        TourApplication updateTourApplication = tourApplicationRepository.save(tourApplication);
+        User updatedUser = userRepository.save(user);
 
-        LOGGER.info("[TourApplicationService] save 후 currParticipants = " + updatedTourApplication.getCurrentParticipants());
-        LOGGER.info("[TourApplicationService] save 후 participantSize = " + updatedTourApplication.getParticipants().size());
-        if (updatedTourApplication.getParticipants().size() == participantSize
-                || updatedTourApplication.getCurrentParticipants() == currParticipants) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
-//            throw new DBFailException("투어 신청서 update 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
-//                    ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+        LOGGER.info("[TourApplicationService] TourParticipant 생성 저장 시도");
+        TourParticipant savedTourParticipant = tourParticipantRepository.save(tourParticipant);
+
+        if (savedTourParticipant == null) {
+            throw new DBFailException(
+                    "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
+                    ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION
+            );
         }
+        LOGGER.info("[TourApplicationService] TourParticipant 생성 저장 성공");
 
-        LOGGER.info("[TourApplicationService] participants update 성공 = " + updatedTourApplication.getParticipants());
-
-        User savedUser = userRepository.save(user);
-
-        if (beforeUpdateTourApplications == savedUser.getTourApplication().size()) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
-        }
-        LOGGER.info("[TourApplicationService] user tourApplication update 성공 = " + savedUser.getTourApplication());
-
-        TourApplicationDto tourApplicationDto = new TourApplicationDto(updatedTourApplication.getTour());
-
-        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
+        return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, null);
     }
 
     @Transactional
     public SuperResponse getTourApplications(Long userId) {
         LOGGER.info("[TourApplicationService] userId로 user 조회 시도");
 
-        User user = userRepositoryImpl.loadUserByUserId(userId, true);
-
-        if (user == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
-        }
-
+        User user = getUser(userId);
         LOGGER.info("[TourApplicationService] userId로 user 조회 성공");
 
-        LOGGER.info("[TourApplicationService] user로 tourApplication 조회 시도");
-        List<TourApplication> tourApplications = tourApplicationRepositoryImpl.findTourApplicationsByUser(user);
+        LOGGER.info("[TourApplicationService] user로 tourParticiapnts 조회 시도");
+        List<TourParticipant> tourParticipants = tourParticipantRepositoryImpl.findTourParticipantByUser(user);
 
-        if (tourApplications == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_APPLICATION_EXCEPTION);
+        LOGGER.info("[TourApplicationService] user로 tourParticiapnts 조회 성공");
+        List<TourApplication> tourApplications = new ArrayList<>();
+
+        for (TourParticipant tourParticipant : tourParticipants) {
+            tourApplications.add(tourParticipant.getTourApplication());
         }
-
-        LOGGER.info("[TourApplicationService] user로 tourApplication 조회 성공 = " + tourApplications);
+        LOGGER.info("[TourApplicationService] tourParticiapnts에서 tourApplication 가져오기 성공 = " + tourApplications);
 
         List<TourApplicationDto> tourApplicationDtos = new ArrayList<>();
 
@@ -202,7 +189,7 @@ public class TourApplicationService {
                     removedDate
             );
 
-            if (tourApplication.getParticipants().size() > 0) {
+            if (tourApplication.getTourParticipants().size() > 0) {
                 return true;
             }
         }
@@ -281,6 +268,24 @@ public class TourApplicationService {
         TourApplicationDto tourApplicationDto = new TourApplicationDto(savedTour);
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
+    }
+
+    private User getUser(Long userId) {
+        User user = userRepositoryImpl.loadUserByUserId(userId, true);
+        if (user == null) {
+            throw new NotFoundException("해당 유저를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        return user;
+    }
+
+    private TourApplication getTourApplication(Long tourId, String tourDate) {
+        TourApplication tourApplication = tourApplicationRepositoryImpl.findTourApplicationByTourIdAndTourDate(tourId, tourDate);
+        if (tourApplication == null) {
+            throw new NotFoundException("해당 투어 신청서를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        return tourApplication;
     }
 
 }

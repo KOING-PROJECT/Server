@@ -1,6 +1,10 @@
 package com.koing.server.koing_server.controller.tour;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.service.tour.TourApplicationService;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
@@ -49,8 +53,16 @@ public class TourApplicationController {
     @PostMapping("/participate")
     public SuperResponse participateTour(@RequestBody TourApplicationParticipateDto tourApplicationParticipateDto) {
         LOGGER.info("[TourCategoryController] 투어 신청 시도");
-        SuperResponse participateTourApplicationResponse = tourApplicationService.participateTour(tourApplicationParticipateDto);
+        SuperResponse participateTourApplicationResponse;
+        try {
+            participateTourApplicationResponse = tourApplicationService.participateTour(tourApplicationParticipateDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourCategoryController] 투어 신청 성공");
+
         return participateTourApplicationResponse;
     }
 
@@ -64,8 +76,17 @@ public class TourApplicationController {
     @GetMapping("/{userId}")
     public SuperResponse getTourApplications(@PathVariable("userId") Long userId) {
         LOGGER.info("[TourCategoryController] 투어 신청서 리스트 조회 시도");
-        SuperResponse getTourApplicationResponse = tourApplicationService.getTourApplications(userId);
+
+        SuperResponse getTourApplicationResponse;
+        try {
+            getTourApplicationResponse = tourApplicationService.getTourApplications(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourCategoryController] 투어 신청 리스트 조회 성공");
+
         return getTourApplicationResponse;
     }
 

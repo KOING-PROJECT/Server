@@ -90,7 +90,14 @@ public class TourController {
     @DeleteMapping("/{tourId}")
     public SuperResponse deleteTour(@PathVariable("tourId") Long tourId) {
         LOGGER.info("[TourController] 투어 삭제 시도");
-        SuperResponse deleteTourResponse = tourService.deleteTour(tourId);
+        SuperResponse deleteTourResponse;
+        try {
+            deleteTourResponse = tourService.deleteTour(tourId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourController] 투어 삭제 성공");
         return deleteTourResponse;
     }

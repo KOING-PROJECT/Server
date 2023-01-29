@@ -10,12 +10,14 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
-import com.koing.server.koing_server.domain.tour.Tour;
-import com.koing.server.koing_server.domain.tour.TourCategory;
-import com.koing.server.koing_server.domain.tour.TourSchedule;
+import com.koing.server.koing_server.domain.tour.*;
+import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository;
+import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourCategory.TourCategoryRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
+import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository;
+import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
@@ -41,6 +43,10 @@ public class TourService {
     private final UserRepositoryImpl userRepositoryImpl;
     private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
     private final UserRepository userRepository;
+    private final TourApplicationRepository tourApplicationRepository;
+    private final TourApplicationRepositoryImpl tourApplicationRepositoryImpl;
+    private final TourParticipantRepository tourParticipantRepository;
+    private final TourParticipantRepositoryImpl tourParticipantRepositoryImpl;
 
     @Transactional
     public SuperResponse getTours(List<String> categories) {
@@ -95,16 +101,28 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, tourDto);
     }
 
+    @Transactional
     public SuperResponse deleteTour(Long tourId) {
 
         LOGGER.info("[TourService] Tour 삭제 시도");
 
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
-
-        if(tour == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
-        }
+        Tour tour = getTour(tourId);
         LOGGER.info("[TourService] 삭제할 Tour 조회 성공");
+
+        List<TourApplication> tourApplications = getTourApplications(tourId);
+        LOGGER.info("[TourService] Tour의 TourApplication 조회");
+
+        for (TourApplication tourApplication : tourApplications) {
+            if (tourApplication.getTourParticipants() != null &&
+                    tourApplication.getTourParticipants().size() > 0) {
+                TourParticipant tourParticipant = getTourParticipant(tourApplication.getId());
+                tourParticipantRepository.delete(tourParticipant);
+            }
+            tourApplication.deleteTour(tour);
+        }
+
+        tourApplicationRepository.deleteAll(tourApplications);
+        LOGGER.info("[TourService] Tour의 TourApplication 삭제 성공");
 
         tourRepository.delete(tour);
         LOGGER.info("[TourService] Tour 삭제 성공");
@@ -263,6 +281,21 @@ public class TourService {
         }
 
         return user;
+    }
+
+    private TourParticipant getTourParticipant(Long tourApplicationId) {
+        TourParticipant tourParticipant = tourParticipantRepositoryImpl.findTourParticipantByTourApplicationId(tourApplicationId);
+        if (tourParticipant == null) {
+            throw new NotFoundException("해당 투어 신청 내용을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION);
+        }
+
+        return tourParticipant;
+    }
+
+    private List<TourApplication> getTourApplications(Long tourId) {
+        List<TourApplication> tourApplications = tourApplicationRepositoryImpl.findTourApplicationsByTourId(tourId);
+
+        return tourApplications;
     }
 
     private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {

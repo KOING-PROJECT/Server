@@ -8,6 +8,7 @@ import java.util.List;
 
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
+import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
 import static com.koing.server.koing_server.domain.user.QUser.user;
 import static com.koing.server.koing_server.domain.user.QUserOptionalInfo.userOptionalInfo;
 
@@ -24,7 +25,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.createTours, tour)
                 .fetchJoin()
-                .leftJoin(user.tourApplication, tourApplication)
+                .leftJoin(user.tourParticipants, tourParticipant)
                 .fetchJoin()
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
                 .fetchJoin()
@@ -45,7 +46,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.createTours, tour)
                 .fetchJoin()
-                .leftJoin(user.tourApplication, tourApplication)
+                .leftJoin(user.tourParticipants, tourParticipant)
                 .fetchJoin()
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
                 .fetchJoin()
@@ -102,7 +103,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.createTours, tour)
                 .fetchJoin()
-                .leftJoin(user.tourApplication, tourApplication)
+                .leftJoin(user.tourParticipants, tourParticipant)
                 .fetchJoin()
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
                 .fetchJoin()
