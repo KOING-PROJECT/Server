@@ -49,7 +49,7 @@ public class Tour extends AuditingTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY) // 연관관계 주인
     private User createUser;
 
-    @Column(length = 30, unique = true, nullable = false)
+    @Column(length = 30, nullable = false)
     private String title;
 
     @Column(length = 300, nullable = false)
