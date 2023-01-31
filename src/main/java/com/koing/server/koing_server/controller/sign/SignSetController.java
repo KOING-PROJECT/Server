@@ -16,10 +16,11 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Api(tags = "SignSet")
 @RequestMapping("/sign-set")
@@ -39,8 +40,12 @@ public class SignSetController {
             @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @PostMapping("/sign-up")
-    public SuperResponse signUpSet(@RequestBody SignUpSetCreateDto signUpSetCreateDto) {
+    @PostMapping(value = "/sign-up",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public SuperResponse signUpSet(
+            @RequestPart("imageFiles") List<MultipartFile> imageFiles,
+            @RequestPart SignUpSetCreateDto signUpSetCreateDto
+    ) {
         LOGGER.info("[SignController] 회원가입 시도");
         SuperResponse signUpResponse;
         try {
@@ -62,7 +67,8 @@ public class SignSetController {
 
         SuperResponse userOptionalInfoResponse;
         try {
-            UserOptionalInfoCreateDto userOptionalInfoCreateDto = new UserOptionalInfoCreateDto(userId, signUpSetCreateDto);
+            UserOptionalInfoCreateDto userOptionalInfoCreateDto =
+                    new UserOptionalInfoCreateDto(userId, signUpSetCreateDto, imageFiles);
             userOptionalInfoResponse = userOptionalInfoService.createUserOptionalInfo(userOptionalInfoCreateDto);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());

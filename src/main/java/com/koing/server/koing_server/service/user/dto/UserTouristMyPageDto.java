@@ -21,7 +21,10 @@ public class UserTouristMyPageDto {
     public UserTouristMyPageDto(User user) {
         this.touristName = user.getName();
         this.roles = user.getRoles();
-        this.imageUrl = user.getUserOptionalInfo().getImageUrl();
+        if (user.getUserOptionalInfo().getImageUrls() != null &&
+                user.getUserOptionalInfo().getImageUrls().size() > 0) {
+            this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
+        }
         this.following = createUserFollowDtos(user);
         this.likeTours = createTourLikeDtos(user);
         this.tourHistories = createTourHistoryDtos(user);

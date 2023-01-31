@@ -28,7 +28,7 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath imageUrl = createString("imageUrl");
+    public final ListPath<String, StringPath> imageUrls = this.<String, StringPath>createList("imageUrls", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final BooleanPath isCertified = createBoolean("isCertified");
 

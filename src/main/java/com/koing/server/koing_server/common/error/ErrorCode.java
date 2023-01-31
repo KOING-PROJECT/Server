@@ -53,6 +53,7 @@ public enum ErrorCode {
     DB_FAIL_PRESS_FOLLOW_USER_FAIL_EXCEPTION(DB_HANDLE_FAIL, "팔로우 처리과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_CREATE_CHAT_ROOM_FAIL_EXCEPTION(DB_HANDLE_FAIL, "채팅방 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_CREATE_CHAT_MESSAGE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "메시지 저장 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "이미지 저장 과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 

@@ -12,7 +12,10 @@ public class ChatMessageDto {
 
     public ChatMessageDto(ChatMessage chatMessage) {
         this.writerName = chatMessage.getWriter().getName();
-        this.writerImageUrl = chatMessage.getWriter().getUserOptionalInfo().getImageUrl();
+        if (chatMessage.getWriter().getUserOptionalInfo().getImageUrls() != null &&
+                chatMessage.getWriter().getUserOptionalInfo().getImageUrls().size() > 0) {
+            this.writerImageUrl = chatMessage.getWriter().getUserOptionalInfo().getImageUrls().get(0);
+        }
         this.message = chatMessage.getMessage();
         this.time = chatMessage.getCreatedAt();
     }

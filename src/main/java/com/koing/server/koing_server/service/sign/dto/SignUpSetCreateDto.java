@@ -3,7 +3,9 @@ package com.koing.server.koing_server.service.sign.dto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,7 +21,8 @@ public class SignUpSetCreateDto {
     private String role;
     private String gender;
     private int age;
-    private String imageUrl;
+//    private String imageUrl;
+    private List<MultipartFile> imageFiles;
     private String description;
     private Set<String> languages;
     private Set<String> areas;

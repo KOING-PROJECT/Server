@@ -14,8 +14,8 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserOptionalInfo {
 
-    public UserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto) {
-        this.imageUrl = userOptionalInfoCreateDto.getImageUrl();
+    public UserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto, List<String> imageUrls) {
+        this.imageUrls = imageUrls;
         this.description = userOptionalInfoCreateDto.getDescription();
         this.languages = userOptionalInfoCreateDto.getLanguages();
         this.areas = userOptionalInfoCreateDto.getAreas();
@@ -29,8 +29,8 @@ public class UserOptionalInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 300)
-    private String imageUrl;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> imageUrls;
 
     @Column(length = 300)
     private String description;

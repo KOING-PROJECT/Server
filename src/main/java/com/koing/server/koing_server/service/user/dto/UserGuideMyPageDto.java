@@ -21,7 +21,10 @@ public class UserGuideMyPageDto {
     public UserGuideMyPageDto(User user) {
         this.guideName = user.getName();
         this.roles = user.getRoles();
-        this.imageUrl = user.getUserOptionalInfo().getImageUrl();
+        if (user.getUserOptionalInfo().getImageUrls() != null &&
+                user.getUserOptionalInfo().getImageUrls().size() > 0) {
+            this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
+        }
         this.myTours = createMyTours(user);
         this.creatingTours = createCreatingTours(user);
         this.createdTours = createCreatedTours(user);

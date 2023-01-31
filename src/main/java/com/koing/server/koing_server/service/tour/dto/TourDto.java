@@ -21,7 +21,10 @@ public class TourDto {
         this.thumbnail = tour.getThumbnail();
         this.guideName = tour.getCreateUser().getName();
         if (tour.getCreateUser().getUserOptionalInfo() != null) {
-            this.guideThumbnail = tour.getCreateUser().getUserOptionalInfo().getImageUrl();
+            if (tour.getCreateUser().getUserOptionalInfo().getImageUrls() != null &&
+                    tour.getCreateUser().getUserOptionalInfo().getImageUrls().size() > 0) {
+                this.guideThumbnail = tour.getCreateUser().getUserOptionalInfo().getImageUrls().get(0);
+            }
         }
         if (tour.getTourSchedule() != null) {
             this.tourDates = tour.getTourSchedule().getTourDates();

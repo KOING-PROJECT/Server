@@ -13,13 +13,19 @@ public class UserFollowDto {
     public UserFollowDto(User followingUser, UserOptionalInfo userOptionalInfo) {
         this.followingUserId = followingUser.getId();
         this.followingUserName = followingUser.getName();
-        this.followingUserThumbnail = userOptionalInfo.getImageUrl();
+        if (userOptionalInfo.getImageUrls() != null &&
+                userOptionalInfo.getImageUrls().size() > 0) {
+            this.followingUserThumbnail = userOptionalInfo.getImageUrls().get(0);
+        }
     }
 
     public UserFollowDto(User followingUser) {
         this.followingUserId = followingUser.getId();
         this.followingUserName = followingUser.getName();
-        this.followingUserThumbnail = followingUser.getUserOptionalInfo().getImageUrl();
+        if (followingUser.getUserOptionalInfo().getImageUrls() != null &&
+                followingUser.getUserOptionalInfo().getImageUrls().size() > 0) {
+            this.followingUserThumbnail = followingUser.getUserOptionalInfo().getImageUrls().get(0);
+        }
     }
 
     private Long followingUserId;

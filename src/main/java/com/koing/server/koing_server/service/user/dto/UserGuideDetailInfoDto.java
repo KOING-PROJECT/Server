@@ -20,7 +20,10 @@ public class UserGuideDetailInfoDto {
     public UserGuideDetailInfoDto(User guide, User loginUser, Tour tour) {
         this.guideName = guide.getName();
         this.roles = guide.getRoles();
-        this.imageUrl = guide.getUserOptionalInfo().getImageUrl();
+        if (guide.getUserOptionalInfo().getImageUrls() != null &&
+                guide.getUserOptionalInfo().getImageUrls().size() > 0) {
+            this.imageUrl = guide.getUserOptionalInfo().getImageUrls().get(0);
+        }
         this.isFollowing = checkFollowing(guide, loginUser);
         this.introduction = guide.getUserOptionalInfo().getDescription();
         this.language = guide.getUserOptionalInfo().getLanguages();

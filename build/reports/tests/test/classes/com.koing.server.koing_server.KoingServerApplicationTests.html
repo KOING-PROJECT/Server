@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.070s</div>
+<div class="counter">0.074s</div>
 <p>duration</p>
 </div>
 </td>
@@ -79,7 +79,7 @@
 </thead>
 <tr>
 <td class="success">contextLoads()</td>
-<td class="success">0.070s</td>
+<td class="success">0.074s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -87,21 +87,21 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>14:09:44.328 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
-14:09:44.334 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
-14:09:44.353 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.koing.server.koing_server.KoingServerApplicationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
-14:09:44.359 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.koing.server.koing_server.KoingServerApplicationTests], using SpringBootContextLoader
-14:09:44.362 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.koing.server.koing_server.KoingServerApplicationTests]: class path resource [com/koing/server/koing_server/KoingServerApplicationTests-context.xml] does not exist
-14:09:44.362 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.koing.server.koing_server.KoingServerApplicationTests]: class path resource [com/koing/server/koing_server/KoingServerApplicationTestsContext.groovy] does not exist
-14:09:44.362 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.koing.server.koing_server.KoingServerApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-14:09:44.362 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.koing.server.koing_server.KoingServerApplicationTests]: KoingServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-14:09:44.387 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.koing.server.koing_server.KoingServerApplicationTests]
-14:09:44.435 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Users\SonMinGyu\KOING\Server\build\classes\java\main\com\koing\server\koing_server\KoingServerApplication.class]
-14:09:44.436 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.koing.server.koing_server.KoingServerApplication for test class com.koing.server.koing_server.KoingServerApplicationTests
-14:09:44.508 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.koing.server.koing_server.KoingServerApplicationTests]: using defaults.
-14:09:44.508 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
-14:09:44.519 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@7e053511, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@60222fd8, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@53bf7094, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@26f1249d, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@710b30ef, org.springframework.test.context.support.DirtiesContextTestExecutionListener@a68df9, org.springframework.test.context.transaction.TransactionalTestExecutionListener@28b576a9, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@7cf7aee, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@2f6bbeb0, org.springframework.test.context.event.EventPublishingTestExecutionListener@1b1637e1, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@18151a14, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@64711bf2, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@169da7f2, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3c1e23ff, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@ceb4bd2, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@60297f36, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@1bf0f6f6]
-14:09:44.522 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@78d50a3c testClass = KoingServerApplicationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@2fb69ff6 testClass = KoingServerApplicationTests, locations = '{}', classes = '{class com.koing.server.koing_server.KoingServerApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@3918c187, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@650eab8, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@53f48368, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@71b3bc45, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@15eebbff, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@6b58b9e9], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+<pre>22:19:06.659 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+22:19:06.666 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+22:19:06.687 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.koing.server.koing_server.KoingServerApplicationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+22:19:06.693 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.koing.server.koing_server.KoingServerApplicationTests], using SpringBootContextLoader
+22:19:06.696 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.koing.server.koing_server.KoingServerApplicationTests]: class path resource [com/koing/server/koing_server/KoingServerApplicationTests-context.xml] does not exist
+22:19:06.696 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.koing.server.koing_server.KoingServerApplicationTests]: class path resource [com/koing/server/koing_server/KoingServerApplicationTestsContext.groovy] does not exist
+22:19:06.697 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.koing.server.koing_server.KoingServerApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+22:19:06.697 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.koing.server.koing_server.KoingServerApplicationTests]: KoingServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+22:19:06.726 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.koing.server.koing_server.KoingServerApplicationTests]
+22:19:06.765 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Users\SonMinGyu\KOING\Server\build\classes\java\main\com\koing\server\koing_server\KoingServerApplication.class]
+22:19:06.766 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.koing.server.koing_server.KoingServerApplication for test class com.koing.server.koing_server.KoingServerApplicationTests
+22:19:06.843 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.koing.server.koing_server.KoingServerApplicationTests]: using defaults.
+22:19:06.844 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+22:19:06.855 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@7e053511, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@60222fd8, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@53bf7094, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@26f1249d, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@710b30ef, org.springframework.test.context.support.DirtiesContextTestExecutionListener@a68df9, org.springframework.test.context.transaction.TransactionalTestExecutionListener@28b576a9, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@7cf7aee, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@2f6bbeb0, org.springframework.test.context.event.EventPublishingTestExecutionListener@1b1637e1, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@18151a14, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@64711bf2, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@169da7f2, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3c1e23ff, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@ceb4bd2, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@60297f36, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@1bf0f6f6]
+22:19:06.858 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@78d50a3c testClass = KoingServerApplicationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@2fb69ff6 testClass = KoingServerApplicationTests, locations = '{}', classes = '{class com.koing.server.koing_server.KoingServerApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@3918c187, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@650eab8, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@53f48368, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@71b3bc45, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@15eebbff, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@6b58b9e9], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -111,28 +111,28 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v2.7.4)
 
-14:09:44.773 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - Starting KoingServerApplicationTests using Java 11.0.16.1 on DESKTOP-AHKHAEQ with PID 6892 (started by SonMinGyu in C:\Users\SonMinGyu\KOING\Server)
-14:09:44.774 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - No active profile set, falling back to 1 default profile: &quot;default&quot;
-14:09:45.395 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-14:09:45.396 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-14:09:45.548 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 147 ms. Found 13 JPA repository interfaces.
-14:09:45.562 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
-14:09:45.564 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-14:09:45.586 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.chat.repository.ChatMessageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.587 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.chat.repository.ChatRoomRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.588 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.cryptogram.repository.CryptogramRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.588 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.589 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.591 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.592 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourCategory.TourCategoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.593 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourDetailSchedule.TourDetailScheduleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.593 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.594 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.594 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourSurvey.TourSurveyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.595 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.595 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.user.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
-14:09:45.595 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 26 ms. Found 0 Redis repository interfaces.
-14:09:45.742 [Test worker] WARN  c.a.i.InstanceMetadataServiceResourceFetcher - Fail to retrieve token 
+22:19:07.123 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - Starting KoingServerApplicationTests using Java 11.0.16.1 on DESKTOP-AHKHAEQ with PID 17160 (started by SonMinGyu in C:\Users\SonMinGyu\KOING\Server)
+22:19:07.124 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - No active profile set, falling back to 1 default profile: &quot;default&quot;
+22:19:07.785 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+22:19:07.786 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+22:19:07.968 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 178 ms. Found 13 JPA repository interfaces.
+22:19:07.984 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+22:19:07.985 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+22:19:08.008 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.chat.repository.ChatMessageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.008 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.chat.repository.ChatRoomRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.009 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.cryptogram.repository.CryptogramRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.009 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.010 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.010 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.011 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourCategory.TourCategoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.011 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourDetailSchedule.TourDetailScheduleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.012 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.012 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.013 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourSurvey.TourSurveyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.013 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.013 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.user.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+22:19:08.013 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 22 ms. Found 0 Redis repository interfaces.
+22:19:08.171 [Test worker] WARN  c.a.i.InstanceMetadataServiceResourceFetcher - Fail to retrieve token 
 com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
 	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
 	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.getToken(InstanceMetadataServiceResourceFetcher.java:91)
@@ -265,7 +265,7 @@ Caused by: java.net.SocketException: Network is unreachable: connect
 	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
 	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
 	... 110 common frames omitted
-14:09:45.745 [Test worker] WARN  com.amazonaws.util.EC2MetadataUtils - Unable to retrieve the requested metadata (/latest/meta-data/instance-id). Failed to connect to service endpoint: 
+22:19:08.173 [Test worker] WARN  com.amazonaws.util.EC2MetadataUtils - Unable to retrieve the requested metadata (/latest/meta-data/instance-id). Failed to connect to service endpoint: 
 com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
 	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
 	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.getToken(InstanceMetadataServiceResourceFetcher.java:91)
@@ -398,118 +398,27 @@ Caused by: java.net.SocketException: Network is unreachable: connect
 	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
 	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
 	... 110 common frames omitted
-14:09:45.957 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#38929da' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-14:09:45.958 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#1b60d324' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-14:09:45.963 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#686b1e2d' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-14:09:45.969 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'credentialsProvider' of type [org.springframework.cloud.aws.core.credentials.CredentialsProviderFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-14:09:45.969 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'credentialsProvider' of type [com.amazonaws.auth.AWSCredentialsProviderChain] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-14:09:46.184 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-14:09:46.457 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-14:09:46.529 [Test worker] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
-14:09:46.563 [Test worker] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.11.Final
-14:09:46.698 [Test worker] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
-14:09:46.773 [Test worker] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-Hibernate: 
-    
-    create table review_guide_reviews (
-       review_id bigint not null,
-        guide_reviews varchar(255) not null,
-        primary key (review_id, guide_reviews)
-    ) engine=InnoDB
-Hibernate: 
-    
-    create table review_photos (
-       review_id bigint not null,
-        tour_photos varchar(255) not null,
-        primary key (review_id, tour_photos)
-    ) engine=InnoDB
-Hibernate: 
-    
-    create table review_table (
-       id bigint not null auto_increment,
-        created_at datetime,
-        updated_at datetime,
-        attachment integer not null,
-        total_review varchar(500),
-        receive_user_id bigint,
-        related_tour_id bigint,
-        send_user_id bigint,
-        primary key (id)
-    ) engine=InnoDB
-Hibernate: 
-    
-    create table review_tour_reviews (
-       review_id bigint not null,
-        tour_reviews varchar(255) not null,
-        primary key (review_id, tour_reviews)
-    ) engine=InnoDB
-Hibernate: 
-    
-    create table tour_participant_table (
-       id bigint not null auto_increment,
-        number_of_participants integer not null,
-        participant_id bigint not null,
-        tour_application_id bigint not null,
-        primary key (id)
-    ) engine=InnoDB
-Hibernate: 
-    
-    alter table review_guide_reviews 
-       add constraint FKgc60ki890rgiv0k0bb2t0xfk5 
-       foreign key (review_id) 
-       references review_table (id)
-Hibernate: 
-    
-    alter table review_photos 
-       add constraint FKbwf08ibmmaayn59hi9t5ai4un 
-       foreign key (review_id) 
-       references review_table (id)
-Hibernate: 
-    
-    alter table review_table 
-       add constraint FKi5dw6y0ls2j8ayreltnm8a69p 
-       foreign key (receive_user_id) 
-       references user_table (id)
-Hibernate: 
-    
-    alter table review_table 
-       add constraint FKclmx6526g2l2ofjw2l4bpmoph 
-       foreign key (related_tour_id) 
-       references tour_table (id)
-Hibernate: 
-    
-    alter table review_table 
-       add constraint FKegqfvkk80py7wdtugqok6s5m6 
-       foreign key (send_user_id) 
-       references user_table (id)
-Hibernate: 
-    
-    alter table review_tour_reviews 
-       add constraint FKba6auwr6n1sd3v2mqksas9066 
-       foreign key (review_id) 
-       references review_table (id)
-Hibernate: 
-    
-    alter table tour_participant_table 
-       add constraint FK2o59cnamsjkmo618slr2ipcb9 
-       foreign key (participant_id) 
-       references user_table (id)
-Hibernate: 
-    
-    alter table tour_participant_table 
-       add constraint FKb5xoy7la5w3obi3yi62iatr17 
-       foreign key (tour_application_id) 
-       references tour_application_table (id)
-14:09:48.777 [Test worker] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-14:09:48.787 [Test worker] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
-14:09:49.980 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+22:19:08.404 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#38929da' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22:19:08.406 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#1b60d324' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22:19:08.411 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#686b1e2d' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22:19:08.417 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'credentialsProvider' of type [org.springframework.cloud.aws.core.credentials.CredentialsProviderFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22:19:08.418 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'credentialsProvider' of type [com.amazonaws.auth.AWSCredentialsProviderChain] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+22:19:08.638 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+22:19:08.930 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+22:19:08.978 [Test worker] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+22:19:09.014 [Test worker] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.11.Final
+22:19:09.151 [Test worker] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+22:19:09.232 [Test worker] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+22:19:10.377 [Test worker] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+22:19:10.398 [Test worker] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+22:19:11.745 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
 
-Using generated security password: 7c00faf4-c298-43e6-8b4a-3ac77e42a745
+Using generated security password: 45be4217-0195-49fa-84df-3debe8b05332
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-14:09:50.096 [Test worker] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@7f0952cf, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@70fe15d, org.springframework.security.web.context.SecurityContextPersistenceFilter@3d4b3b94, org.springframework.security.web.header.HeaderWriterFilter@2bd24c09, org.springframework.security.web.authentication.logout.LogoutFilter@74c3374f, com.koing.server.koing_server.common.filter.JwtAuthenticationFilter@7efcdcde, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3e1596c3, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5ae68d0e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@36f807f5, org.springframework.security.web.session.SessionManagementFilter@5d965dbd, org.springframework.security.web.access.ExceptionTranslationFilter@f4deb35, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@366fd3cb]
-14:09:50.108 [Test worker] WARN  o.s.s.c.a.web.builders.WebSecurity - 
+22:19:11.872 [Test worker] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@42d039ef, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@397ff526, org.springframework.security.web.context.SecurityContextPersistenceFilter@a5f5b96, org.springframework.security.web.header.HeaderWriterFilter@7cad6289, org.springframework.security.web.authentication.logout.LogoutFilter@350a3df3, com.koing.server.koing_server.common.filter.JwtAuthenticationFilter@190a5f74, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4998944b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@39ebf505, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@48d588dd, org.springframework.security.web.session.SessionManagementFilter@568945a9, org.springframework.security.web.access.ExceptionTranslationFilter@fd9512f, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@2ce5ea69]
+22:19:11.879 [Test worker] WARN  o.s.s.c.a.web.builders.WebSecurity - 
 
 ********************************************************************
 **********        Security debugging is enabled.       *************
@@ -518,15 +427,15 @@ This generated password is for development use only. Your security configuration
 ********************************************************************
 
 
-14:09:50.134 [Test worker] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
-14:09:50.854 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
-14:09:50.868 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
-14:09:50.897 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
-14:09:51.032 [Test worker] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: pressLikeTourUsingGET_1
-14:09:51.043 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
-14:09:51.043 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@a256322]]
-14:09:51.043 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
-14:09:51.051 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - Started KoingServerApplicationTests in 6.509 seconds (JVM running for 7.369)
+22:19:11.909 [Test worker] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+22:19:12.834 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+22:19:12.852 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+22:19:12.884 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+22:19:13.046 [Test worker] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: pressLikeTourUsingGET_1
+22:19:13.058 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+22:19:13.059 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@721fda59]]
+22:19:13.059 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+22:19:13.065 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - Started KoingServerApplicationTests in 6.187 seconds (JVM running for 7.093)
 </pre>
 </span>
 </div>
@@ -538,7 +447,7 @@ This generated password is for development use only. Your security configuration
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.5</a> at 2023. 1. 30. 오후 2:09:51</p>
+<a href="http://www.gradle.org">Gradle 7.5</a> at 2023. 1. 30. 오후 10:19:13</p>
 </div>
 </div>
 </body>
