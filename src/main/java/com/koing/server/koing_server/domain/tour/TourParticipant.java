@@ -2,6 +2,7 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.domain.review.ReviewToTourist;
 import com.koing.server.koing_server.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public class TourParticipant {
     private User participant;
 
     private int numberOfParticipants;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private ReviewToTourist reviewToTourist;
 
     private void setTourApplication(TourApplication tourApplication) {
         this.tourApplication = tourApplication;

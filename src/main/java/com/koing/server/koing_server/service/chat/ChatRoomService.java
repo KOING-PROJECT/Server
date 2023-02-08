@@ -2,6 +2,7 @@ package com.koing.server.koing_server.service.chat;
 
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
@@ -38,80 +39,83 @@ public class ChatRoomService {
     private final TourRepositoryImpl tourRepositoryImpl;
     private final TourApplicationRepositoryImpl tourApplicationRepositoryImpl;
 
-    @Transactional
-    public SuperResponse createChatRoom(ChatRoomCreateDto chatRoomCreateDto) {
-        LOGGER.info("[ChatRoomService] Chat room 생성 시도");
-
-        User createUser = getUser(chatRoomCreateDto.getCreateUserId());
-        LOGGER.info("[ChatRoomService] Chat room 생성 유저 조회 성공");
-
-        TourApplication relatedTourApplication = getTourApplication(
-                chatRoomCreateDto.getRelatedTourId(),
-                chatRoomCreateDto.getTourDate()
-        );
-
-        LOGGER.info("[ChatRoomService] Chat room 관련 투어 조회 성공");
-
-        Set<User> chattingUsers = new HashSet<>();
-        Set<String> chattingUserNames = new HashSet<>();
-
-        chattingUsers.add(createUser);
-        chattingUserNames.add(createUser.getName());
-
-        for (Long userId : chatRoomCreateDto.getChattingUserIds()) {
-            User chatUser = getUser(userId);
-            chattingUsers.add(chatUser);
-            chattingUserNames.add(chatUser.getName());
-        }
-
-        User guide = relatedTourApplication.getTour().getCreateUser();
-        chattingUsers.add(guide);
-        chattingUserNames.add(guide.getName());
-
-        LOGGER.info("[ChatRoomService] Chat room 생성 유저들 조회 및 추가 성공");
-
-        ChatRoom chatRoom = new ChatRoom(chatRoomCreateDto, chattingUsers, createUser, relatedTourApplication);
-
-        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
-        if (savedChatRoom == null) {
-            throw new DBFailException("채팅방 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
-                    ErrorCode.DB_FAIL_CREATE_CHAT_ROOM_FAIL_EXCEPTION);
-        }
-
-        LOGGER.info("[ChatRoomService] Chat room 생성 성공");
-
-        return SuccessResponse.success(
-                SuccessCode.CHAT_ROOM_CREATE_SUCCESS,
-                new ChatRoomDetailDto(savedChatRoom.getRoomId(), relatedTourApplication, new ArrayList<>(chattingUserNames))
-        );
-    }
-
-    @Transactional
-    public SuperResponse getChatRoom(String roomId) {
-        LOGGER.info("[ChatRoomService] Chat room 조회 시도");
-
-        ChatRoom chatRoom = chatRoomRepositoryImpl.findChatRoomByRoomId(roomId);
-        if (chatRoom == null) {
-            throw new NotFoundException("해당 채팅방을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_CHAT_ROOM_EXCEPTION);
-        }
-
-        LOGGER.info("[ChatRoomService] Chat room 조회 성공");
-
-        List<String> chattingUserNames = new ArrayList<>();
-        for (User chattingUser : chatRoom.getChattingUsers()) {
-            chattingUserNames.add(chattingUser.getName());
-        }
-
-        List<ChatMessageDto> messageDtos = new ArrayList<>();
-        for (ChatMessage chatMessage : chatRoom.getMessages()) {
-            messageDtos.add(new ChatMessageDto(chatMessage));
-        }
-
-        return SuccessResponse.success(
-                SuccessCode.GET_CHAT_ROOM_SUCCESS,
-                new ChatRoomDetailDto(chatRoom.getRoomId(), chatRoom, chattingUserNames, messageDtos)
-        );
-    }
+//    @Transactional
+//    public SuperResponse createChatRoom(ChatRoomCreateDto chatRoomCreateDto) {
+//        LOGGER.info("[ChatRoomService] Chat room 생성 시도");
+//
+//        User createUser = getUser(chatRoomCreateDto.getCreateUserId());
+//        LOGGER.info("[ChatRoomService] Chat room 생성 유저 조회 성공");
+//
+//        TourApplication relatedTourApplication = getTourApplication(
+//                chatRoomCreateDto.getRelatedTourId(),
+//                chatRoomCreateDto.getTourDate()
+//        );
+//
+//        LOGGER.info("[ChatRoomService] Chat room 관련 투어 조회 성공");
+//
+//        Set<User> chattingUsers = new HashSet<>();
+//        Set<String> chattingUserNames = new HashSet<>();
+//
+//        chattingUsers.add(createUser);
+//        chattingUserNames.add(createUser.getName());
+//
+//        for (Long userId : chatRoomCreateDto.getChattingUserIds()) {
+//            User chatUser = getUser(userId);
+//            chattingUsers.add(chatUser);
+//            chattingUserNames.add(chatUser.getName());
+//        }
+//
+//        // 가이드가 생성한 chat이 아니면 guide도 chattingUsers에 추가
+//        if (!createUser.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
+//            User guide = relatedTourApplication.getTour().getCreateUser();
+//            chattingUsers.add(guide);
+//            chattingUserNames.add(guide.getName());
+//        }
+//
+//        LOGGER.info("[ChatRoomService] Chat room 생성 유저들 조회 및 추가 성공");
+//
+//        ChatRoom chatRoom = new ChatRoom(chatRoomCreateDto);
+//
+//        ChatRoom savedChatRoom = chatRoomRepository.save(chatRoom);
+//        if (savedChatRoom == null) {
+//            throw new DBFailException("채팅방 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
+//                    ErrorCode.DB_FAIL_CREATE_CHAT_ROOM_FAIL_EXCEPTION);
+//        }
+//
+//        LOGGER.info("[ChatRoomService] Chat room 생성 성공");
+//
+//        return SuccessResponse.success(
+//                SuccessCode.CHAT_ROOM_CREATE_SUCCESS,
+//                new ChatRoomDetailDto(savedChatRoom.getRoomId(), relatedTourApplication, new ArrayList<>(chattingUserNames))
+//        );
+//    }
+//
+//    @Transactional
+//    public SuperResponse getChatRoom(String roomId) {
+//        LOGGER.info("[ChatRoomService] Chat room 조회 시도");
+//
+//        ChatRoom chatRoom = chatRoomRepositoryImpl.findChatRoomByRoomId(roomId);
+//        if (chatRoom == null) {
+//            throw new NotFoundException("해당 채팅방을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_CHAT_ROOM_EXCEPTION);
+//        }
+//
+//        LOGGER.info("[ChatRoomService] Chat room 조회 성공");
+//
+//        List<String> chattingUserNames = new ArrayList<>();
+//        for (User chattingUser : chatRoom.getChattingUsers()) {
+//            chattingUserNames.add(chattingUser.getName());
+//        }
+//
+//        List<ChatMessageDto> messageDtos = new ArrayList<>();
+//        for (ChatMessage chatMessage : chatRoom.getMessages()) {
+//            messageDtos.add(new ChatMessageDto(chatMessage));
+//        }
+//
+//        return SuccessResponse.success(
+//                SuccessCode.GET_CHAT_ROOM_SUCCESS,
+//                new ChatRoomDetailDto(chatRoom.getRoomId(), chatRoom, chattingUserNames, messageDtos)
+//        );
+//    }
 
     private Tour getTour(Long tourId) {
         Tour tour = tourRepositoryImpl.findTourByTourId(tourId);

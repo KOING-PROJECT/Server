@@ -63,6 +63,8 @@ public enum SuccessCode {
     PRESS_LIKE_TOUR_UPDATE_SUCCESS(CREATED, "tour-survey : 투어 좋아요 업데이트 성공입니다."),
     CHAT_ROOM_CREATE_SUCCESS(CREATED, "chat-room : 채팅방 생성 성공입니다."),
     CHAT_MESSAGE_CREATE_SUCCESS(CREATED, "chat-message : 메시지 저장 성공입니다."),
+    REVIEW_TO_GUIDE_CREATE_SUCCESS(CREATED, "review : ReviewToGuide 생성 성공입니다."),
+    REVIEW_TO_TOURIST_CREATE_SUCCESS(CREATED, "review : ReviewToTourist 생성 성공입니다."),
 
     /**
      * 202 ACCEPTED

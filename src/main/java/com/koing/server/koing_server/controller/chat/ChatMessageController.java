@@ -34,7 +34,7 @@ public class ChatMessageController {
 
     @MessageMapping(value = "/chat/enter")
 //    @MessageMapping(value = "/hello")
-//    @SendTo("/topic/greetings")
+    @SendTo("/sub/greetings")
     public SuperResponse enterChatRoom(ChatMessageSendDto chatMessageSendDto) {
         LOGGER.info("[ChatMessageController] 채팅방 입장 시도");
         chatMessageSendDto.setMessage(chatMessageSendDto.getWriterName() + " 님이 채팅방에 입장하셨습니다.");
@@ -46,16 +46,31 @@ public class ChatMessageController {
     }
 
 //    @MessageMapping(value = "/chat/message")
-//    @MessageMapping(value = "/hello")
-//    @SendTo("/topic/greetings")
-    public SuperResponse sendMessageChatRoom(ChatMessageSendDto chatMessageSendDto) {
-        LOGGER.info("[ChatMessageController] 채팅방에 채팅 시도");
-        sendMessage(chatMessageSendDto);
+////    @MessageMapping(value = "/hello")
+//    @SendTo("/sub/greetings")
+//    public SuperResponse sendMessageChatRoom(ChatMessageSendDto chatMessageSendDto) {
+//        LOGGER.info("[ChatMessageController] 채팅방에 채팅 시도");
+//        sendMessage(chatMessageSendDto);
+//
+//        SuperResponse chatMessageSendResponse = saveMessage(chatMessageSendDto, MessageType.TALK);
+//        LOGGER.info("[ChatMessageController] 채팅방에 채팅 및 채팅 저장 성공");
+//        return chatMessageSendResponse;
+//    }
 
-        SuperResponse chatMessageSendResponse = saveMessage(chatMessageSendDto, MessageType.TALK);
+    ///////
+    @MessageMapping(value = "/chat/message")
+//    @MessageMapping(value = "/hello")
+    @SendTo("/sub/greetings")
+    public Greeting sendMessageChatRoom(HelloMessage helloMessage) {
+        LOGGER.info("[ChatMessageController] 채팅방에 채팅 시도");
+//        sendMessage(chatMessageSendDto);
+
+//        SuperResponse chatMessageSendResponse = saveMessage(chatMessageSendDto, MessageType.TALK);
         LOGGER.info("[ChatMessageController] 채팅방에 채팅 및 채팅 저장 성공");
-        return chatMessageSendResponse;
+//        return chatMessageSendResponse;
+        return new Greeting("Hello, " + HtmlUtils.htmlEscape(helloMessage.getName()) + "!");
     }
+    ////////////
 
     @MessageMapping("/hello")
     @SendTo("/topic/greetings")

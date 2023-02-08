@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.review.ReviewToGuide;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,6 +42,13 @@ public class TourApplication extends AuditingTimeEntity {
 
     private int currentParticipants;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "relatedTourApplication")
+    private Set<ReviewToGuide> reviewsToGuide;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "reviewed_tourist")
+    private Set<Long> reviewedTouristId;
+
     public TourApplication(String tourDate, int maxParticipant) {
         this.tour = null;
         this.tourParticipants = new ArrayList<>();
@@ -48,6 +56,8 @@ public class TourApplication extends AuditingTimeEntity {
         this.maxParticipant = maxParticipant;
         this.tourStatus = TourStatus.RECRUITMENT;
         this.currentParticipants = 0;
+        this.reviewsToGuide = new HashSet<>();
+        this.reviewedTouristId = new HashSet<>();
     }
 
     public void setTour(Tour tour) {

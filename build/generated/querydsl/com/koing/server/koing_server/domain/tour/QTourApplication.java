@@ -33,6 +33,10 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);
 
+    public final SetPath<Long, NumberPath<Long>> reviewedTouristId = this.<Long, NumberPath<Long>>createSet("reviewedTouristId", Long.class, NumberPath.class, PathInits.DIRECT2);
+
+    public final SetPath<com.koing.server.koing_server.domain.review.ReviewToGuide, com.koing.server.koing_server.domain.review.QReviewToGuide> reviewsToGuide = this.<com.koing.server.koing_server.domain.review.ReviewToGuide, com.koing.server.koing_server.domain.review.QReviewToGuide>createSet("reviewsToGuide", com.koing.server.koing_server.domain.review.ReviewToGuide.class, com.koing.server.koing_server.domain.review.QReviewToGuide.class, PathInits.DIRECT2);
+
     public final QTour tour;
 
     public final StringPath tourDate = createString("tourDate");

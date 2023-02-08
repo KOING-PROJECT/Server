@@ -11,4 +11,6 @@ public interface TourParticipantRepositoryCustom {
 
     TourParticipant findTourParticipantByTourApplicationId(Long tourApplicationId);
 
+    TourParticipant findTourParticipantByTourParticipantId(Long tourParticipantId);
+
 }

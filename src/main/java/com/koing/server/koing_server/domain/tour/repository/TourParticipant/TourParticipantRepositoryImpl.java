@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.koing.server.koing_server.domain.review.QReviewToTourist.reviewToTourist;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
 import static com.koing.server.koing_server.domain.user.QUser.user;
@@ -24,6 +25,8 @@ public class TourParticipantRepositoryImpl implements TourParticipantRepositoryC
                 .fetchJoin()
                 .leftJoin(tourParticipant.participant, user)
                 .fetchJoin()
+                .leftJoin(tourParticipant.reviewToTourist, reviewToTourist)
+                .fetchJoin()
                 .distinct()
                 .where(
                         tourParticipant.participant.eq(user)
@@ -39,9 +42,28 @@ public class TourParticipantRepositoryImpl implements TourParticipantRepositoryC
                 .fetchJoin()
                 .leftJoin(tourParticipant.participant, user)
                 .fetchJoin()
+                .leftJoin(tourParticipant.reviewToTourist, reviewToTourist)
+                .fetchJoin()
                 .distinct()
                 .where(
                         tourParticipant.tourApplication.id.eq(tourApplicationId)
+                )
+                .fetchOne();
+    }
+
+    @Override
+    public TourParticipant findTourParticipantByTourParticipantId(Long tourParticipantId) {
+        return jpqlQueryFactory
+                .selectFrom(tourParticipant)
+                .leftJoin(tourParticipant.tourApplication, tourApplication)
+                .fetchJoin()
+                .leftJoin(tourParticipant.participant, user)
+                .fetchJoin()
+                .leftJoin(tourParticipant.reviewToTourist, reviewToTourist)
+                .fetchJoin()
+                .distinct()
+                .where(
+                        tourParticipant.id.eq(tourParticipantId)
                 )
                 .fetchOne();
     }

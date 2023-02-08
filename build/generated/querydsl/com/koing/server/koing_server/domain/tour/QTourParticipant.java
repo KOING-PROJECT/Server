@@ -28,6 +28,8 @@ public class QTourParticipant extends EntityPathBase<TourParticipant> {
 
     public final com.koing.server.koing_server.domain.user.QUser participant;
 
+    public final com.koing.server.koing_server.domain.review.QReviewToTourist reviewToTourist;
+
     public final QTourApplication tourApplication;
 
     public QTourParticipant(String variable) {
@@ -49,6 +51,7 @@ public class QTourParticipant extends EntityPathBase<TourParticipant> {
     public QTourParticipant(Class<? extends TourParticipant> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.participant = inits.isInitialized("participant") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("participant"), inits.get("participant")) : null;
+        this.reviewToTourist = inits.isInitialized("reviewToTourist") ? new com.koing.server.koing_server.domain.review.QReviewToTourist(forProperty("reviewToTourist"), inits.get("reviewToTourist")) : null;
         this.tourApplication = inits.isInitialized("tourApplication") ? new QTourApplication(forProperty("tourApplication"), inits.get("tourApplication")) : null;
     }
 

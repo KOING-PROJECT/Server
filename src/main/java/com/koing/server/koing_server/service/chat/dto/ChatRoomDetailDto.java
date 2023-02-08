@@ -27,12 +27,12 @@ public class ChatRoomDetailDto {
 
     public ChatRoomDetailDto(String roomId, ChatRoom chatRoom, List<String> chattingUserNames, List<ChatMessageDto> messages) {
         // chatRoom 조회 시 사용
-        this.roomId = roomId;
-        this.tourTitle = chatRoom.getRelatedTourApplication().getTour().getTitle();
-        this.currentTourParticipant = chatRoom.getRelatedTourApplication().getCurrentParticipants();
-        this.tourDate = chatRoom.getRelatedTourApplication().getTourDate();
-        this.chattingUserNames = chattingUserNames.stream().sorted().collect(Collectors.toList());
-        this.messages = messages;
+//        this.roomId = roomId;
+//        this.tourTitle = chatRoom.getRelatedTourApplication().getTour().getTitle();
+//        this.currentTourParticipant = chatRoom.getRelatedTourApplication().getCurrentParticipants();
+//        this.tourDate = chatRoom.getRelatedTourApplication().getTourDate();
+//        this.chattingUserNames = chattingUserNames.stream().sorted().collect(Collectors.toList());
+//        this.messages = messages;
     }
 
     private String roomId;

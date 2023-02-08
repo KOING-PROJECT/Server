@@ -16,21 +16,22 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
     @Override
     public ChatRoom findChatRoomByRoomId(String roomId) {
-        return jpqlQueryFactory
-                .selectFrom(chatRoom)
-                .leftJoin(chatRoom.createUser, user)
-                .fetchJoin()
-                .leftJoin(chatRoom.chattingUsers, user)
-                .fetchJoin()
-                .leftJoin(chatRoom.relatedTourApplication, tourApplication)
-                .fetchJoin()
-                .leftJoin(chatRoom.messages, chatMessage)
-                .fetchJoin()
-                .distinct()
-                .where(
-                        chatRoom.roomId.eq(roomId)
-                )
-                .fetchOne();
+//        return jpqlQueryFactory
+//                .selectFrom(chatRoom)
+//                .leftJoin(chatRoom.createUser, user)
+//                .fetchJoin()
+//                .leftJoin(chatRoom.chattingUsers, user)
+//                .fetchJoin()
+//                .leftJoin(chatRoom.relatedTourApplication, tourApplication)
+//                .fetchJoin()
+//                .leftJoin(chatRoom.messages, chatMessage)
+//                .fetchJoin()
+//                .distinct()
+//                .where(
+//                        chatRoom.roomId.eq(roomId)
+//                )
+//                .fetchOne();
+        return null;
     }
 
 }
