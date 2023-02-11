@@ -19,6 +19,7 @@ import com.koing.server.koing_server.domain.tour.repository.TourParticipant.Tour
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.review.dto.ReviewToGuideCreateDto;
+import com.koing.server.koing_server.service.review.dto.ReviewToGuideRequestDto;
 import com.koing.server.koing_server.service.review.dto.ReviewToTouristCreateDto;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +98,20 @@ public class ReviewService {
         LOGGER.info("[ReviewService] ReviewToTourist 저장 완료");
 
         return SuccessResponse.success(SuccessCode.REVIEW_TO_TOURIST_CREATE_SUCCESS, null);
+    }
+
+    public SuperResponse getReviewToGuide(ReviewToGuideRequestDto reviewToGuideRequestDto) {
+        LOGGER.info("[ReviewService] ReviewToGuide 조회 시도");
+
+        TourApplication tourApplication = getTourApplication(reviewToGuideRequestDto.getTourId(), reviewToGuideRequestDto.getTourDate());
+        LOGGER.info("[ReviewService] tourId와 tourDate로 tourApplication 조회 성공");
+
+        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
+        LOGGER.info("[ReviewService] 조회된 tourApplication의 tourParticipant 조회");
+
+
+
+
     }
 
     private User getUser(Long userId) {
