@@ -20,7 +20,11 @@ public class TourMyTourDto {
         this.thumbnail = tour.getThumbnail();
         this.guideName = tour.getCreateUser().getName();
         this.guideThumbnail = tour.getThumbnail();
-        this.tourDates = tour.getTourSchedule().getTourDates();
+        if (tour.getTourSchedule() != null) {
+            if (tour.getTourSchedule().getTourDates() != null) {
+                this.tourDates = tour.getTourSchedule().getTourDates();
+            }
+        }
         this.tourStatus = tour.getTourStatus();
         this.createStatus = tour.getCreateStatus();
     }
