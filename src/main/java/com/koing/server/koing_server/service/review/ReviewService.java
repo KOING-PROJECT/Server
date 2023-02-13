@@ -100,19 +100,19 @@ public class ReviewService {
         return SuccessResponse.success(SuccessCode.REVIEW_TO_TOURIST_CREATE_SUCCESS, null);
     }
 
-    public SuperResponse getReviewToGuide(ReviewToGuideRequestDto reviewToGuideRequestDto) {
-        LOGGER.info("[ReviewService] ReviewToGuide 조회 시도");
-
-        TourApplication tourApplication = getTourApplication(reviewToGuideRequestDto.getTourId(), reviewToGuideRequestDto.getTourDate());
-        LOGGER.info("[ReviewService] tourId와 tourDate로 tourApplication 조회 성공");
-
-        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
-        LOGGER.info("[ReviewService] 조회된 tourApplication의 tourParticipant 조회");
-
-
-
-
-    }
+//    public SuperResponse getReviewToGuide(ReviewToGuideRequestDto reviewToGuideRequestDto) {
+//        LOGGER.info("[ReviewService] ReviewToGuide 조회 시도");
+//
+//        TourApplication tourApplication = getTourApplication(reviewToGuideRequestDto.getTourId(), reviewToGuideRequestDto.getTourDate());
+//        LOGGER.info("[ReviewService] tourId와 tourDate로 tourApplication 조회 성공");
+//
+//        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
+//        LOGGER.info("[ReviewService] 조회된 tourApplication의 tourParticipant 조회");
+//
+//
+//
+//
+//    }
 
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);

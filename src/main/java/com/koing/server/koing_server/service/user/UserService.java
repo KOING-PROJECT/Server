@@ -160,6 +160,18 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_TOUR_GUIDE_DETAIL_INFO_SUCCESS, userGuideDetailInfoDto);
     }
 
+    public SuperResponse getGuideDetailInfoFromMyPage(Long guideId) {
+        LOGGER.info("[UserService] 가이드 세부 정보 조회 시도");
+
+        User guide = getUser(guideId);
+        LOGGER.info("[UserService] 가이드 조회 성공");
+
+        UserGuideDetailInfoFromMyPageDto userGuideDetailInfoFromMyPageDto = new UserGuideDetailInfoFromMyPageDto(guide);
+        LOGGER.info("[UserService] 가이드 세부 정보 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_TOUR_GUIDE_DETAIL_INFO_FROM_MY_PAGE_SUCCESS, userGuideDetailInfoFromMyPageDto);
+    }
+
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);
         if (user == null) {
