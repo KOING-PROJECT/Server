@@ -30,13 +30,23 @@ public class TourApplicationController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "TourApplication - 투어 신청서 생성 성공"),
             @ApiResponse(code = 402, message = "투어 카테고리 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createTourApplication(@RequestBody TourApplicationCreateDto tourApplicationCreateDto) {
         LOGGER.info("[TourCategoryController] 투어 신청서 생성 시도");
-        SuperResponse createTourApplicationResponse = tourApplicationService.createTourApplication(tourApplicationCreateDto);
+        SuperResponse createTourApplicationResponse;
+        try {
+            createTourApplicationResponse = tourApplicationService.createTourApplication(tourApplicationCreateDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourCategoryController] 투어 신청서 생성 성공");
+
         return createTourApplicationResponse;
     }
 

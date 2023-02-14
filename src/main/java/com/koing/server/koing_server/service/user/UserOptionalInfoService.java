@@ -54,7 +54,7 @@ public class UserOptionalInfoService {
         List<String> uploadedImageUrls = new ArrayList<>();
         for (MultipartFile multipartFile : userOptionalInfoCreateDto.getImageFiles()) {
             try {
-                uploadedImageUrls.add(awss3Component.convertAndUploadFiles(multipartFile, "static"));
+                uploadedImageUrls.add(awss3Component.convertAndUploadFiles(multipartFile, "profile/image"));
             } catch (IOException ioException) {
                 throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
             }

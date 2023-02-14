@@ -42,7 +42,7 @@ public class ReviewToGuide extends AuditingTimeEntity {
     private TourApplication relatedTourApplication;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @Column(nullable = false, name = "tour_reviews")
+    @Column(name = "tour_reviews")
     private Set<String> tourReviews;
 
     @ElementCollection(fetch = FetchType.EAGER)

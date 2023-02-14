@@ -8,6 +8,8 @@ import com.koing.server.koing_server.common.enums.TourCategoryIndex;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
+import com.koing.server.koing_server.common.exception.IOFailException;
+import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.*;
@@ -22,13 +24,16 @@ import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourSch
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.tour.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +52,7 @@ public class TourService {
     private final TourApplicationRepositoryImpl tourApplicationRepositoryImpl;
     private final TourParticipantRepository tourParticipantRepository;
     private final TourParticipantRepositoryImpl tourParticipantRepositoryImpl;
+    private final AWSS3Component awss3Component;
 
     @Transactional
     public SuperResponse getTours(List<String> categories) {
@@ -76,28 +82,25 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, tourListResponseDto);
     }
 
-    public SuperResponse createTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {
+    public SuperResponse createTour(TourCreateDto tourCreateDto, List<MultipartFile> thumbnails, CreateStatus createStatus) {
         // tour create 완료 시 호출
         LOGGER.info("[TourService] Tour 생성 시도");
 
         if (!userRepositoryImpl.isExistUserByUserId(tourCreateDto.getCreateUserId())) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_USER_EXCEPTION);
+            throw new NotFoundException("탈퇴했거나 존재하지 않는 유저입니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
         }
 
-        Tour tour = buildTour(tourCreateDto, createStatus);
+        Tour tour = buildTour(tourCreateDto, thumbnails, createStatus);
 
         Tour savedTour = tourRepository.save(tour);
 
         if(savedTour.getTitle() == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_FAIL_EXCEPTION);
+            throw new DBFailException("투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_FAIL_EXCEPTION);
         }
 
         TourDto tourDto = new TourDto(savedTour);
         LOGGER.info("[TourService] Tour 생성 성공");
 
-//        if (isSet) {
-//            return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, savedTour.getId());
-//        }
         return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, tourDto);
     }
 
@@ -131,22 +134,22 @@ public class TourService {
     }
 
     @Transactional
-    public SuperResponse updateTour(Long tourId, TourCreateDto tourCreateDto, CreateStatus createStatus) {
+    public SuperResponse updateTour(Long tourId, TourCreateDto tourCreateDto, List<MultipartFile> thumbnails, CreateStatus createStatus) {
         LOGGER.info("[TourService] Tour update 시도");
 
         Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
 
         if(tour == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
 
         if (tour.getCreateUser().getId() != tourCreateDto.getCreateUserId()) {
-            return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION);
+            throw new NotAcceptableException("해당 투어의 생성자가 아닙니다.", ErrorCode.NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION);
         }
 
         LOGGER.info("[TourService] update할 Tour 조회 성공");
 
-        tour = updateTour(tour, tourCreateDto, createStatus);
+        tour = updateTour(tour, tourCreateDto, thumbnails, createStatus);
 
         Tour updatedTour = tourRepository.save(tour);
         TourDto tourDto = new TourDto(updatedTour);
@@ -298,13 +301,13 @@ public class TourService {
         return tourApplications;
     }
 
-    private Tour buildTour(TourCreateDto tourCreateDto, CreateStatus createStatus) {
+    private Tour buildTour(TourCreateDto tourCreateDto, List<MultipartFile> thumbnails, CreateStatus createStatus) {
         Tour tour = Tour.builder()
                 .createUser(getUser(tourCreateDto.getCreateUserId()))
                 .title(tourCreateDto.getTitle())
                 .description(tourCreateDto.getDescription())
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
-                .thumbnail(tourCreateDto.getThumbnail())
+                .thumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails))
                 .participant(tourCreateDto.getParticipant())
                 .tourPrice(tourCreateDto.getTourPrice())
                 .hasLevy(tourCreateDto.isHasLevy())
@@ -315,13 +318,13 @@ public class TourService {
         return tour;
     }
 
-    public Tour updateTour(Tour tour, TourCreateDto tourCreateDto, CreateStatus createStatus) {
+    public Tour updateTour(Tour tour, TourCreateDto tourCreateDto, List<MultipartFile> thumbnails, CreateStatus createStatus) {
         tour.setTitle(tourCreateDto.getTitle());
         tour.setDescription(tourCreateDto.getDescription());
         Set<TourCategory> beforeTourCategories = tour.getTourCategories();
         tour.deleteTourCategories(beforeTourCategories);
         tour.setTourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()));
-        tour.setThumbnail(tourCreateDto.getThumbnail());
+        tour.setThumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails));
         tour.setParticipant(tourCreateDto.getParticipant());
         tour.setTourPrice(tourCreateDto.getTourPrice());
         tour.setHasLevy(tourCreateDto.isHasLevy());
@@ -330,6 +333,25 @@ public class TourService {
             tour.setCreateStatus(createStatus);
         }
         return tour;
+    }
+
+    private Set<String> uploadThumbnails(List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
+        LOGGER.info("[ReviewService] 투어 썸네일 s3에 upload 시도");
+        Set<String> thumbnails = new HashSet<>();
+
+        thumbnails.addAll(uploadedThumbnailUrls);
+
+        for (MultipartFile multipartFile : multipartFiles) {
+            try {
+                thumbnails.add(awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail"));
+            } catch (IOException ioException) {
+                throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
+            }
+        }
+
+        LOGGER.info("[ReviewService] 투어 썸네일 s3에 upload 완료 = " + thumbnails);
+
+        return thumbnails;
     }
 
     private Set<TourCategory> buildTourCategories(List<String> tourCategoryNames) {

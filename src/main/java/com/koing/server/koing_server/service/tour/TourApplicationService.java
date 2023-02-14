@@ -57,7 +57,7 @@ public class TourApplicationService {
         Tour tour = tourRepositoryImpl.findTourByTourId(tourApplicationCreateDto.getTourId());
 
         if (tour == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
 
         LOGGER.info("[TourApplicationService] TourId로 tour 찾기 성공 = " + tour);
@@ -72,7 +72,7 @@ public class TourApplicationService {
             TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
 
             if (savedTourApplication.getId() == null) {
-                return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                throw new DBFailException("투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
             }
 
             LOGGER.info("[TourApplicationService] TourApplication 생성 성공 = " + savedTourApplication);
@@ -82,7 +82,7 @@ public class TourApplicationService {
         Tour savedTour = tourRepository.save(tour);
 
         if (savedTour.getTourApplications().size() != tourDates.size()) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+            throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
         }
 
         LOGGER.info("[TourApplicationService] 투어에 TourApplication 업데이트 성공 = " + savedTour);
@@ -245,7 +245,7 @@ public class TourApplicationService {
             TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
 
             if (savedTourApplication.getId() == null) {
-                return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                throw new DBFailException("투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
             }
 
             LOGGER.info("[TourApplicationService] 새로운 TourApplication 생성 성공 = " + savedTourApplication);

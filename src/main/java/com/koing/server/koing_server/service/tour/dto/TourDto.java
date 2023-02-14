@@ -18,7 +18,7 @@ public class TourDto {
         this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
         this.maxParticipant = tour.getParticipant();
-        this.thumbnail = tour.getThumbnail();
+        this.thumbnails = tour.getThumbnails();
         this.guideName = tour.getCreateUser().getName();
         if (tour.getCreateUser().getUserOptionalInfo() != null) {
             if (tour.getCreateUser().getUserOptionalInfo().getImageUrls() != null &&
@@ -34,7 +34,7 @@ public class TourDto {
     private Long tourId;
     private String tourTitle;
     private int maxParticipant;
-    private String thumbnail;
+    private Set<String> thumbnails;
     private String guideName;
     private String guideThumbnail;
     private Set<String> tourDates;

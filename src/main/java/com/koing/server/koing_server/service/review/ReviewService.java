@@ -57,7 +57,7 @@ public class ReviewService {
         List<String> reviewPhotos = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             try {
-                reviewPhotos.add(awss3Component.convertAndUploadFiles(multipartFile, "static"));
+                reviewPhotos.add(awss3Component.convertAndUploadFiles(multipartFile, "review/image"));
             } catch (IOException ioException) {
                 throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
             }
