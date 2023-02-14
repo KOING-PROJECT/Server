@@ -321,8 +321,10 @@ public class TourService {
     public Tour updateTour(Tour tour, TourCreateDto tourCreateDto, List<MultipartFile> thumbnails, CreateStatus createStatus) {
         tour.setTitle(tourCreateDto.getTitle());
         tour.setDescription(tourCreateDto.getDescription());
-        Set<TourCategory> beforeTourCategories = tour.getTourCategories();
-        tour.deleteTourCategories(beforeTourCategories);
+        if (tour.getTourCategories() != null) {
+            Set<TourCategory> beforeTourCategories = tour.getTourCategories();
+            tour.deleteTourCategories(beforeTourCategories);
+        }
         tour.setTourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()));
         tour.setThumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails));
         tour.setParticipant(tourCreateDto.getParticipant());

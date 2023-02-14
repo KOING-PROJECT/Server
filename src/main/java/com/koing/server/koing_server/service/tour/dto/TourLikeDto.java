@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TourLikeDto {
@@ -12,11 +14,11 @@ public class TourLikeDto {
     public TourLikeDto(Tour tour) {
         this.tourId = tour.getId();
         this.title = tour.getTitle();
-        this.thumbnail = tour.getThumbnail();
+        this.thumbnails = tour.getThumbnails();
     }
 
     private Long tourId;
     private String title;
-    private String thumbnail;
+    private Set<String> thumbnails;
 
 }

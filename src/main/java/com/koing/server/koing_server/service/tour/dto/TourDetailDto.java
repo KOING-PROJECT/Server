@@ -29,7 +29,7 @@ public class TourDetailDto {
         for (TourCategory tourCategory : tour.getTourCategories()) {
             this.tourCategoryNames.add(tourCategory.getCategoryName());
         }
-        this.thumbnail = tour.getThumbnail();
+        this.thumbnails = tour.getThumbnails();
         this.participant = tour.getParticipant();
         this.tourPrice = tour.getTourPrice();
         this.hasLevy = tour.isHasLevy();
@@ -45,7 +45,7 @@ public class TourDetailDto {
     private String title;
     private String description;
     private Set<String> tourCategoryNames;
-    private String thumbnail;
+    private Set<String> thumbnails;
     private int participant;
     private int tourPrice;
     private boolean hasLevy;

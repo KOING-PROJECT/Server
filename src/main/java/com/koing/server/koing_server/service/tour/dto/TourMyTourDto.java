@@ -7,6 +7,7 @@ import com.koing.server.koing_server.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -17,9 +18,11 @@ public class TourMyTourDto {
         this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
         this.maxParticipant = tour.getParticipant();
-        this.thumbnail = tour.getThumbnail();
+        this.thumbnails = tour.getThumbnails();
         this.guideName = tour.getCreateUser().getName();
-        this.guideThumbnail = tour.getThumbnail();
+        if (tour.getCreateUser().getUserOptionalInfo() != null) {
+            this.guideThumbnails = tour.getCreateUser().getUserOptionalInfo().getImageUrls();
+        }
         if (tour.getTourSchedule() != null) {
             if (tour.getTourSchedule().getTourDates() != null) {
                 this.tourDates = tour.getTourSchedule().getTourDates();
@@ -32,9 +35,9 @@ public class TourMyTourDto {
     private Long tourId;
     private String tourTitle;
     private int maxParticipant;
-    private String thumbnail;
+    private Set<String> thumbnails;
     private String guideName;
-    private String guideThumbnail;
+    private List<String> guideThumbnails;
     private Set<String> tourDates;
     private TourStatus tourStatus;
     private CreateStatus createStatus;

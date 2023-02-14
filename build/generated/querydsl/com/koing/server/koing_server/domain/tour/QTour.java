@@ -43,7 +43,7 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final SetPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> pressLikeUsers = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createSet("pressLikeUsers", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
 
-    public final StringPath thumbnail = createString("thumbnail");
+    public final SetPath<String, StringPath> thumbnails = this.<String, StringPath>createSet("thumbnails", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 

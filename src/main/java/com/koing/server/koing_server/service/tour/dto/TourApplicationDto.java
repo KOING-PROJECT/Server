@@ -5,6 +5,8 @@ import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import lombok.Getter;
 
+import java.util.Set;
+
 @Getter
 public class TourApplicationDto {
 
@@ -12,7 +14,7 @@ public class TourApplicationDto {
     public TourApplicationDto(Tour tour) {
         this.tourTitle = tour.getTitle();
         this.guideName = tour.getCreateUser().getName();
-        this.tourThumbnail = tour.getThumbnail();
+        this.tourThumbnails = tour.getThumbnails();
         this.tourDate = null;
         this.tourStatus = TourStatus.RECRUITMENT;
     }
@@ -20,14 +22,14 @@ public class TourApplicationDto {
     public TourApplicationDto(TourApplication tourApplication) {
         this.tourTitle = tourApplication.getTour().getTitle();
         this.guideName = tourApplication.getTour().getCreateUser().getName();
-        this.tourThumbnail = tourApplication.getTour().getThumbnail();
+        this.tourThumbnails = tourApplication.getTour().getThumbnails();
         this.tourDate = tourApplication.getTourDate();
         this.tourStatus = tourApplication.getTourStatus();
     }
 
     private String tourTitle;
     private String guideName;
-    private String tourThumbnail;
+    private Set<String> tourThumbnails;
     private String tourDate;
     private TourStatus tourStatus;
 }

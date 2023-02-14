@@ -16,13 +16,13 @@ public class TourHomeToursDto {
     public TourHomeToursDto(Tour tour) {
         this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
-        this.thumbnail = tour.getThumbnail();
+        this.thumbnails = tour.getThumbnails();
         this.pressLikeUserIds = getPressLikeUserIds(tour);
     }
 
     private Long tourId;
     private String tourTitle;
-    private String thumbnail;
+    private Set<String> thumbnails;
     private Set<Long> pressLikeUserIds;
 
     private Set<Long> getPressLikeUserIds(Tour tour) {

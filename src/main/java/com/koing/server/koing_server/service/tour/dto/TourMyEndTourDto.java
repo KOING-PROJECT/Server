@@ -14,7 +14,7 @@ public class TourMyEndTourDto {
     public TourMyEndTourDto(Tour tour) {
         this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
-        this.thumbnail = tour.getThumbnail();
+        this.thumbnails = tour.getThumbnails();
         List<String> dates = new ArrayList<>(tour.getTourSchedule().getTourDates());
         Collections.sort(dates);
         this.firstTourDate = dates.get(0);
@@ -22,7 +22,7 @@ public class TourMyEndTourDto {
 
     private Long tourId;
     private String tourTitle;
-    private String thumbnail;
+    private Set<String> thumbnails;
     private String firstTourDate;
 
 }
