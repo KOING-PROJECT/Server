@@ -26,6 +26,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
+    public final NumberPath<Integer> attachment = createNumber("attachment", Integer.class);
+
     public final StringPath birthDate = createString("birthDate");
 
     public final StringPath country = createString("country");

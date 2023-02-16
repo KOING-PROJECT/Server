@@ -30,7 +30,7 @@ public class User extends AuditingTimeEntity {
     public User(String email, String password
             , String phoneNumber, String name, String birthDate
             , String country, GenderType gender, int age,
-                boolean enabled, Set<String> roles,
+                boolean enabled, int attachment, Set<String> roles,
                 UserOptionalInfo userOptionalInfo,
                 Set<TourParticipant> tourParticipants,
                 Set<Tour> createTours,
@@ -48,6 +48,7 @@ public class User extends AuditingTimeEntity {
         this.gender = gender;
         this.age = age;
         this.enabled = enabled;
+        this.attachment = attachment;
         this.userOptionalInfo = userOptionalInfo;
         this.tourParticipants = tourParticipants;
         this.createTours = createTours;
@@ -93,6 +94,8 @@ public class User extends AuditingTimeEntity {
 
     @Column
     private boolean enabled;
+
+    private int attachment;
 
     // orphanRemoval = true 이므로 부모 entity에서 자식 entity를 삭제하면 자식 entity가 삭제됨.
     @JoinColumn(name = "user_optional_info_id")

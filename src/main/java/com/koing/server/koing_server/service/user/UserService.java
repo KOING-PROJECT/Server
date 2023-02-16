@@ -10,15 +10,10 @@ import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
-import com.koing.server.koing_server.domain.user.UserOptionalInfo;
-import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository;
 import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepositoryImpl;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.tour.TourSurveyService;
-import com.koing.server.koing_server.service.tour.dto.TourDto;
-import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
 import com.koing.server.koing_server.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -160,16 +155,16 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_TOUR_GUIDE_DETAIL_INFO_SUCCESS, userGuideDetailInfoDto);
     }
 
-    public SuperResponse getGuideDetailInfoFromMyPage(Long guideId) {
-        LOGGER.info("[UserService] 가이드 세부 정보 조회 시도");
+    public SuperResponse getUserDetailInfoFromMyPage(Long userId) {
+        LOGGER.info("[UserService] 유저 세부 정보 조회 시도");
 
-        User guide = getUser(guideId);
-        LOGGER.info("[UserService] 가이드 조회 성공");
+        User user = getUser(userId);
+        LOGGER.info("[UserService] 유저 조회 성공");
 
-        UserGuideDetailInfoFromMyPageDto userGuideDetailInfoFromMyPageDto = new UserGuideDetailInfoFromMyPageDto(guide);
-        LOGGER.info("[UserService] 가이드 세부 정보 조회 성공");
+        UserDetailInfoFromMyPageDto userDetailInfoFromMyPageDto = new UserDetailInfoFromMyPageDto(user);
+        LOGGER.info("[UserService] 유저 세부 정보 조회 성공");
 
-        return SuccessResponse.success(SuccessCode.GET_TOUR_GUIDE_DETAIL_INFO_FROM_MY_PAGE_SUCCESS, userGuideDetailInfoFromMyPageDto);
+        return SuccessResponse.success(SuccessCode.GET_USER_DETAIL_INFO_FROM_MY_PAGE_SUCCESS, userDetailInfoFromMyPageDto);
     }
 
     private User getUser(Long userId) {

@@ -24,6 +24,7 @@ public class UserGuideDetailInfoDto {
                 guide.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.imageUrl = guide.getUserOptionalInfo().getImageUrls().get(0);
         }
+        this.attachment = getAttachment();
         this.isFollowing = checkFollowing(guide, loginUser);
         this.introduction = guide.getUserOptionalInfo().getDescription();
         this.language = guide.getUserOptionalInfo().getLanguages();
@@ -35,6 +36,7 @@ public class UserGuideDetailInfoDto {
     private String guideName;
     private Set<String> roles;
     private String imageUrl;
+    private int attachment;
     private boolean isFollowing;
     private String introduction;
     private Set<String> language;

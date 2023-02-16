@@ -154,27 +154,27 @@ public class UserController {
     }
 
 
-    @ApiOperation("User - 마이페이지에서 Guide의 세부정보를 조회합니다.")
+    @ApiOperation("User - 마이페이지에서 User의 세부정보를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "User - 마이페이지에서 Guide의 세부정보를 조회 성공"),
+            @ApiResponse(code = 200, message = "User - 마이페이지에서 User의 세부정보를 조회 성공"),
             @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @GetMapping("/{guideId}")
-    public SuperResponse getGuideDetailInfoFromMyPage(
-            @PathVariable("guideId") Long guideId
+    @GetMapping("/{userId}")
+    public SuperResponse getUserDetailInfoFromMyPage(
+            @PathVariable("userId") Long userId
     ) {
-        LOGGER.info("[UserController] 마이페이지에서 Guide 세부 정보 조회 시도");
-        SuperResponse getGuideDetailInfoFromMyPageResponse;
+        LOGGER.info("[UserController] 마이페이지에서 User 세부 정보 조회 시도");
+        SuperResponse getUserDetailInfoFromMyPageResponse;
         try {
-            getGuideDetailInfoFromMyPageResponse = userService.getGuideDetailInfoFromMyPage(guideId);
+            getUserDetailInfoFromMyPageResponse = userService.getUserDetailInfoFromMyPage(userId);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
-        LOGGER.info("[UserController] 마이페이지에서 Guide 세부 정보 조회 성공");
+        LOGGER.info("[UserController] 마이페이지에서 User 세부 정보 조회 성공");
 
-        return getGuideDetailInfoFromMyPageResponse;
+        return getUserDetailInfoFromMyPageResponse;
     }
 }
