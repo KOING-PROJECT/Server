@@ -14,4 +14,6 @@ public interface TourRepositoryCustom {
 
     List<Tour> findLikeTourByUser(Long userId);
 
+    Tour findTemporaryTourByTourId(Long tourId);
+
 }

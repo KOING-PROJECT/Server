@@ -109,16 +109,16 @@ public class TourService {
 
         LOGGER.info("[TourService] Tour 삭제 시도");
 
-        Tour tour = getTour(tourId);
+        Tour tour = getTourAtDB(tourId);
         LOGGER.info("[TourService] 삭제할 Tour 조회 성공");
 
-        List<TourApplication> tourApplications = getTourApplications(tourId);
+        List<TourApplication> tourApplications = getTourApplicationsAtDB(tourId);
         LOGGER.info("[TourService] Tour의 TourApplication 조회");
 
         for (TourApplication tourApplication : tourApplications) {
             if (tourApplication.getTourParticipants() != null &&
                     tourApplication.getTourParticipants().size() > 0) {
-                TourParticipant tourParticipant = getTourParticipant(tourApplication.getId());
+                TourParticipant tourParticipant = getTourParticipantAtDB(tourApplication.getId());
                 tourParticipantRepository.delete(tourParticipant);
             }
             tourApplication.deleteTour(tour);
@@ -162,7 +162,7 @@ public class TourService {
     public SuperResponse getTourDetailInfo(Long tourId, Long userId) {
         LOGGER.info("[TourService] 투어 세부 정보 조회 시도");
 
-        Tour tour = getTour(tourId);
+        Tour tour = getTourAtDB(tourId);
 
         TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
 
@@ -186,7 +186,7 @@ public class TourService {
     public SuperResponse pressLikeTour(Long tourId, Long userId) {
         LOGGER.info("[TourService] 투어 좋아요 업데이트 시도");
 
-        Tour tour = getTour(tourId);
+        Tour tour = getTourAtDB(tourId);
         LOGGER.info("[TourService] 해당 투어 조회 성공");
 
         int beforeTourLikeUser;
@@ -198,7 +198,7 @@ public class TourService {
             beforeTourLikeUser = tour.getPressLikeUsers().size();
         }
 
-        User user = getUser(userId);
+        User user = getUserAtDB(userId);
         LOGGER.info("[TourService] 해당 유저 조회 성공");
         int beforeUserLikeTour;
 
@@ -230,7 +230,7 @@ public class TourService {
     public SuperResponse getLikeTours(Long userId) {
         LOGGER.info("[TourService] 좋아요 누른 투어 조회 시도");
 
-        User user = getUser(userId);
+        User user = getUserAtDB(userId);
         LOGGER.info("[TourService] 해당 유저 조회 성공");
 
         Set<Tour> pressLikeTours = user.getPressLikeTours();
@@ -268,16 +268,38 @@ public class TourService {
         return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, new TourHomeToursResponseDto(tourHomeToursDtos));
     }
 
-    private Tour getTour(Long tourId) {
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
-        if (tour == null) {
+    @Transactional
+    public SuperResponse getTemporaryTour(Long temporaryTourId) {
+        LOGGER.info("[TourService] 임시저장한 투어 정보 조회 시도");
+
+        Tour temporaryTour = getTemporaryTourAtDB(temporaryTourId);
+        LOGGER.info("[TourService] 임시저장한 투어 정보 조회 성공");
+
+        TourTemporaryTourDto tourTemporaryTourDto = new TourTemporaryTourDto(temporaryTour);
+        LOGGER.info("[TourService] tourTemporaryTourDto 생성 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_TEMPORARY_TOUR_SUCCESS, tourTemporaryTourDto);
+    }
+
+    private Tour getTourAtDB(Long temporaryTourId) {
+        Tour temporaryTour = tourRepositoryImpl.findTourByTourId(temporaryTourId);
+        if (temporaryTour == null) {
             throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+
+        return temporaryTour;
+    }
+
+    private Tour getTemporaryTourAtDB(Long tourId) {
+        Tour tour = tourRepositoryImpl.findTemporaryTourByTourId(tourId);
+        if (tour == null) {
+            throw new NotFoundException("이어서 만들 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TEMPORARY_TOUR_EXCEPTION);
         }
 
         return tour;
     }
 
-    private User getUser(Long userId) {
+    private User getUserAtDB(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);
         if (user == null) {
             throw new NotFoundException("해당 유저를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
@@ -286,7 +308,7 @@ public class TourService {
         return user;
     }
 
-    private TourParticipant getTourParticipant(Long tourApplicationId) {
+    private TourParticipant getTourParticipantAtDB(Long tourApplicationId) {
         TourParticipant tourParticipant = tourParticipantRepositoryImpl.findTourParticipantByTourApplicationId(tourApplicationId);
         if (tourParticipant == null) {
             throw new NotFoundException("해당 투어 신청 내용을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION);
@@ -295,7 +317,7 @@ public class TourService {
         return tourParticipant;
     }
 
-    private List<TourApplication> getTourApplications(Long tourId) {
+    private List<TourApplication> getTourApplicationsAtDB(Long tourId) {
         List<TourApplication> tourApplications = tourApplicationRepositoryImpl.findTourApplicationsByTourId(tourId);
 
         return tourApplications;
@@ -303,7 +325,7 @@ public class TourService {
 
     private Tour buildTour(TourCreateDto tourCreateDto, List<MultipartFile> thumbnails, CreateStatus createStatus) {
         Tour tour = Tour.builder()
-                .createUser(getUser(tourCreateDto.getCreateUserId()))
+                .createUser(getUserAtDB(tourCreateDto.getCreateUserId()))
                 .title(tourCreateDto.getTitle())
                 .description(tourCreateDto.getDescription())
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
@@ -397,6 +419,5 @@ public class TourService {
 
         return "역사";
     }
-
 
 }

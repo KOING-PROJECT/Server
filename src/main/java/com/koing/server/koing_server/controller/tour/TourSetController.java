@@ -601,4 +601,29 @@ public class TourSetController {
         );
     }
 
+
+    @ApiOperation("TourSet - 이어서 만들 투어를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "TourSet - 이어서 만들 투어 가져오기 성공"),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/temporary/{tourId}")
+    public SuperResponse getTemporaryTour(
+            @PathVariable("tourId") Long tourId
+    ) {
+        LOGGER.info("[TourSetController] 이어서 만들 투어 조회 시도");
+        SuperResponse getTemporaryTourResponse;
+        try {
+            getTemporaryTourResponse = tourService.getTemporaryTour(tourId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourSetController] 이어서 만들 투어 조회 성공");
+        return getTemporaryTourResponse;
+    }
+
 }

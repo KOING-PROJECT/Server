@@ -90,4 +90,28 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .distinct()
                 .fetch();
     }
+
+    @Override
+    public Tour findTemporaryTourByTourId(Long tourId) {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
+                .leftJoin(tour.tourCategories, tourCategory)
+                .fetchJoin()
+                .leftJoin(tour.additionalPrice)
+                .fetchJoin()
+                .leftJoin(tour.tourApplications, tourApplication)
+                .fetchJoin()
+                .leftJoin(tour.pressLikeUsers, user)
+                .fetchJoin()
+                .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .where(
+                        tour.createStatus.eq(CreateStatus.CREATING),
+                        tour.id.eq(tourId)
+                )
+                .distinct()
+                .fetchOne();
+    }
 }
