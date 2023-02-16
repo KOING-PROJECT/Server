@@ -23,7 +23,7 @@ public class Tour extends AuditingTimeEntity {
     @Builder
     public Tour(String title, User createUser, String description,
                 Set<TourCategory> tourCategories, Set<String> thumbnails,
-                int participant, int tourPrice, boolean hasLevy,
+                int participant, int tourPrice, boolean hasLevy, int temporarySavePage,
                 TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
                 CreateStatus createStatus
                 ) {
@@ -35,6 +35,7 @@ public class Tour extends AuditingTimeEntity {
         this.participant = participant;
         this.tourPrice = tourPrice;
         this.hasLevy = hasLevy;
+        this.temporarySavePage = temporarySavePage;
         this.tourStatus = tourStatus;
         this.additionalPrice = additionalPrice;
         this.createStatus = createStatus;
@@ -69,6 +70,8 @@ public class Tour extends AuditingTimeEntity {
     private int tourPrice;
 
     private boolean hasLevy;
+
+    private int temporarySavePage;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "additional_price")

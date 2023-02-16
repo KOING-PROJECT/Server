@@ -311,6 +311,7 @@ public class TourService {
                 .participant(tourCreateDto.getParticipant())
                 .tourPrice(tourCreateDto.getTourPrice())
                 .hasLevy(tourCreateDto.isHasLevy())
+                .temporarySavePage(tourCreateDto.getTemporarySavePage())
                 .additionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()))
                 .tourStatus(TourStatus.RECRUITMENT)
                 .createStatus(createStatus)
@@ -330,6 +331,7 @@ public class TourService {
         tour.setParticipant(tourCreateDto.getParticipant());
         tour.setTourPrice(tourCreateDto.getTourPrice());
         tour.setHasLevy(tourCreateDto.isHasLevy());
+        tour.setTemporarySavePage(tourCreateDto.getTemporarySavePage());
         tour.setAdditionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()));
         if (CreateStatus.COMPLETE.equals(createStatus)) {
             tour.setCreateStatus(createStatus);

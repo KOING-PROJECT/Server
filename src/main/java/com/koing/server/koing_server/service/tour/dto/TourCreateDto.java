@@ -25,6 +25,7 @@ public class TourCreateDto {
         this.participant = tourSetCreateDto.getParticipant();
         this.tourPrice = tourSetCreateDto.getTourPrice();
         this.hasLevy = tourSetCreateDto.isHasLevy();
+        this.temporarySavePage = tourSetCreateDto.getTemporarySavePage();
         this.additionalPrice = tourSetCreateDto.getAdditionalPrice();
     }
 
@@ -36,6 +37,7 @@ public class TourCreateDto {
     private int participant;
     private int tourPrice;
     private boolean hasLevy;
+    private int temporarySavePage;
     private List<String> additionalPrice;
 
 }

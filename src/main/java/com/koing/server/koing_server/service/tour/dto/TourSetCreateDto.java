@@ -17,6 +17,7 @@ public class TourSetCreateDto {
     private int participant;
     private int tourPrice;
     private boolean hasLevy;
+    private int temporarySavePage;
     private List<String> additionalPrice;
     private Set<String> tourDates;
     private boolean dateNegotiation;
