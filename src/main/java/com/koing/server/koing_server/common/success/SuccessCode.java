@@ -55,6 +55,7 @@ public enum SuccessCode {
     TOUR_SCHEDULE_UPDATE_SUCCESS(CREATED, "tour-schedule : 투어 스케줄 update 성공입니다."),
     TOUR_SET_CREATE_SUCCESS(CREATED, "tour-set : 투어 set 생성 성공입니다."),
     TOUR_SET_UPDATE_SUCCESS(CREATED, "tour-set : 투어 set 업데이트 성공입니다."),
+    TOUR_SET_COMPLETE_SUCCESS(CREATED, "tour-set : 투어 set 완성 성공입니다."),
     TEMPORARY_TOUR_SET_COMPLETE_SUCCESS(CREATED, "tour-set : 임시 저장한 투어 set complete 성공입니다."),
     TEMPORARY_TOUR_TOUR_SCHEDULE_TOUR_SURVEY_CREATE_SUCCESS(CREATED, "tour-set : 투어, 투어 스케줄, 투어 설문 임시 저장 성공입니다."),
     TEMPORARY_TOUR_TOUR_SCHEDULE_TOUR_SURVEY_UPDATE_SUCCESS(CREATED, "tour-set : 임시 저장한 투어, 투어 스케줄, 투어 설문 update 성공입니다."),
@@ -68,6 +69,9 @@ public enum SuccessCode {
     CHAT_MESSAGE_CREATE_SUCCESS(CREATED, "chat-message : 메시지 저장 성공입니다."),
     REVIEW_TO_GUIDE_CREATE_SUCCESS(CREATED, "review : ReviewToGuide 생성 성공입니다."),
     REVIEW_TO_TOURIST_CREATE_SUCCESS(CREATED, "review : ReviewToTourist 생성 성공입니다."),
+    TOUR_COMPLETE_SUCCESS(OK, "tour : 투어 완성 성공입니다."),
+    TOUR_SCHEDULE_COMPLETE_SUCCESS(OK, "tour-schedule : 투어 스케줄 완성 성공입니다."),
+    TOUR_SURVEY_COMPLETE_SUCCESS(OK, "tour-survey : 투어 설문 완성 성공입니다."),
 
     /**
      * 202 ACCEPTED

@@ -64,21 +64,42 @@ public class TourSurveyService {
         return SuccessResponse.success(SuccessCode.TOUR_SURVEY_CREATE_SUCCESS, savedTourSurvey);
     }
 
+//    public SuperResponse completeTourSurvey(Long tourId, TourSurveyCreateDto tourSurveyCreateDto) {
+//        LOGGER.info("[TourSurveyService] TourSurvey 완성 시도");
+//
+//        TourSurvey tourSurvey = tourSurveyRepositoryImpl.findTourSurveyByTourId(tourId);
+//
+//        if(tourSurvey == null) {
+//            throw new NotFoundException("해당 투어 설문을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_SURVEY_EXCEPTION);
+//        }
+//        LOGGER.info("[TourSurveyService] tourId로 TourSurvey 조회 성공");
+//
+//        tourSurvey = updateTourSurvey(tourSurvey, tourSurveyCreateDto, CreateStatus.COMPLETE);
+//
+//        TourSurvey savedTourSurvey = tourSurveyRepository.save(tourSurvey);
+//
+//        if (savedTourSurvey.getCreateStatus() != CreateStatus.COMPLETE) {
+//            throw new DBFailException("투어 설문 완성과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_COMPLETE_TOUR_SURVEY_FAIL_EXCEPTION);
+//        }
+//        LOGGER.info("[TourSurveyService] TourSurvey 완성 성공");
+//
+//        return SuccessResponse.success(SuccessCode.TOUR_SURVEY_COMPLETE_SUCCESS, savedTourSurvey);
+//    }
+
     @Transactional
     public SuperResponse updateTourSurvey(Long tourId, TourSurveyCreateDto tourSurveyCreateDto, CreateStatus createStatus) {
         // tour create 완료 시 호출
         LOGGER.info("[TourSurveyService] TourSurvey 업데이트 시도");
 
-        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
-
-        if(tour == null) {
+        if (!tourRepositoryImpl.checkExistByTourId(tourId)) {
             throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
-        LOGGER.info("[TourSurveyService] tourId로 tour 조회 성공");
 
-        TourSurvey tourSurvey = tour.getTourSurvey();
+//        TourSurvey tourSurvey = tour.getTourSurvey();
 
-        if (tourSurvey == null) {
+        TourSurvey tourSurvey = tourSurveyRepositoryImpl.findTourSurveyByTourId(tourId);
+
+        if(tourSurvey == null) {
             throw new NotFoundException("해당 투어 설문을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_SURVEY_EXCEPTION);
         }
         LOGGER.info("[TourSurveyService] tour의 tourSurvey 조회 성공");
@@ -91,6 +112,17 @@ public class TourSurveyService {
             throw new DBFailException("투어 설문 업데이트에 실패했습니다.", ErrorCode.DB_FAIL_UPDATE_TOUR_SURVEY_FAIL_EXCEPTION);
         }
         LOGGER.info("[TourSurveyService] TourSurvey 업데이트 성공");
+
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+
+        if(tour == null) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+        LOGGER.info("[TourSurveyService] tourId로 tour 조회 성공");
+
+        tour.setTemporarySavePage(3);
+        tour.setTourSurvey(updatedTourSurvey);
+        Tour updatedTour = tourRepository.save(tour);
 
         return SuccessResponse.success(SuccessCode.TOUR_SURVEY_UPDATE_SUCCESS, updatedTourSurvey);
     }

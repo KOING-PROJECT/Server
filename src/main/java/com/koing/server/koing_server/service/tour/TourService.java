@@ -27,6 +27,7 @@ import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.tour.dto.*;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bind.annotation.Super;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -102,6 +103,27 @@ public class TourService {
         LOGGER.info("[TourService] Tour 생성 성공");
 
         return SuccessResponse.success(SuccessCode.TOUR_CREATE_SUCCESS, tourDto);
+    }
+
+    public SuperResponse completeTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 완성 시도");
+
+        if (!tourRepositoryImpl.checkExistByTourId(tourId)) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+
+        Tour tour = getTourAtDB(tourId);
+        tour.setCreateStatus(CreateStatus.COMPLETE);
+
+        Tour savedTour = tourRepository.save(tour);
+
+        if (savedTour.getCreateStatus() != CreateStatus.COMPLETE) {
+            throw new DBFailException("투어 완성과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_COMPLETE_TOUR_FAIL_EXCEPTION);
+        }
+
+        LOGGER.info("[TourService] Tour 완성 완료");
+
+        return SuccessResponse.success(SuccessCode.TOUR_COMPLETE_SUCCESS, new TourDto(savedTour));
     }
 
     @Transactional

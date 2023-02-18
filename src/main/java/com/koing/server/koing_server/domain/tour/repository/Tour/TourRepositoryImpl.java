@@ -114,4 +114,15 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .distinct()
                 .fetchOne();
     }
+
+    @Override
+    public boolean checkExistByTourId(Long tourId) {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .where(
+                        tour.id.eq(tourId)
+                )
+                .distinct()
+                .fetchOne() != null;
+    }
 }

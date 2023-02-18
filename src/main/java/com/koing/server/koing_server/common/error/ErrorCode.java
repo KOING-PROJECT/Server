@@ -56,6 +56,9 @@ public enum ErrorCode {
     DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "이미지 저장 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_REVIEW_TO_GUIDE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "ReviewToGuide 저장과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_REVIEW_TO_TOURIST_FAIL_EXCEPTION(DB_HANDLE_FAIL, "ReviewToTourist 저장과정에서 오류가 발생했습니다."),
+    DB_FAIL_COMPLETE_TOUR_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 완성과정에서 오류가 발생했습니다."),
+    DB_FAIL_COMPLETE_TOUR_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 스케줄 완성과정에서 오류가 발생했습니다."),
+    DB_FAIL_COMPLETE_TOUR_SURVEY_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 설문 완성과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 

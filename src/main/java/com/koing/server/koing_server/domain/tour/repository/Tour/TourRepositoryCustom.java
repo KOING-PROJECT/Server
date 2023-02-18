@@ -16,4 +16,6 @@ public interface TourRepositoryCustom {
 
     Tour findTemporaryTourByTourId(Long tourId);
 
+    boolean checkExistByTourId(Long tourId);
+
 }

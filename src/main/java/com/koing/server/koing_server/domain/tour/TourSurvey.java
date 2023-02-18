@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.tour;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
@@ -35,6 +36,10 @@ public class TourSurvey {
     private String type;
 
     private boolean movingSupport;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    private Tour tour;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

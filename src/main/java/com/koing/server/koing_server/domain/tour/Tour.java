@@ -106,6 +106,11 @@ public class Tour extends AuditingTimeEntity {
         tourSchedule.setTour(this);
     }
 
+    public void setTourSurvey(TourSurvey tourSurvey) {
+        this.tourSurvey = tourSurvey;
+        tourSurvey.setTour(this);
+    }
+
     public void setTourCategories(Set<TourCategory> tourCategories) {
         this.tourCategories = tourCategories;
         for (TourCategory tourCategory : tourCategories) {
@@ -118,10 +123,6 @@ public class Tour extends AuditingTimeEntity {
         for (TourCategory tourCategory : tourCategories) {
             tourCategory.deleteTour(this);
         }
-    }
-
-    public void setTourSurvey(TourSurvey tourSurvey) {
-        this.tourSurvey = tourSurvey;
     }
 
     public void pressLikeTour(User user) {
