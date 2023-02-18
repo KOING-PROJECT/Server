@@ -36,7 +36,7 @@ public class TourApplicationController {
     })
     @PostMapping("")
     public SuperResponse createTourApplication(@RequestBody TourApplicationCreateDto tourApplicationCreateDto) {
-        LOGGER.info("[TourCategoryController] 투어 신청서 생성 시도");
+        LOGGER.info("[TourApplicationController] 투어 신청서 생성 시도");
         SuperResponse createTourApplicationResponse;
         try {
             createTourApplicationResponse = tourApplicationService.createTourApplication(tourApplicationCreateDto);
@@ -45,7 +45,7 @@ public class TourApplicationController {
         } catch (Exception exception) {
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
-        LOGGER.info("[TourCategoryController] 투어 신청서 생성 성공");
+        LOGGER.info("[TourApplicationController] 투어 신청서 생성 성공");
 
         return createTourApplicationResponse;
     }
@@ -62,7 +62,7 @@ public class TourApplicationController {
     })
     @PostMapping("/participate")
     public SuperResponse participateTour(@RequestBody TourApplicationParticipateDto tourApplicationParticipateDto) {
-        LOGGER.info("[TourCategoryController] 투어 신청 시도");
+        LOGGER.info("[TourApplicationController] 투어 신청 시도");
         SuperResponse participateTourApplicationResponse;
         try {
             participateTourApplicationResponse = tourApplicationService.participateTour(tourApplicationParticipateDto);
@@ -71,7 +71,7 @@ public class TourApplicationController {
         } catch (Exception exception) {
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
-        LOGGER.info("[TourCategoryController] 투어 신청 성공");
+        LOGGER.info("[TourApplicationController] 투어 신청 성공");
 
         return participateTourApplicationResponse;
     }
@@ -85,7 +85,7 @@ public class TourApplicationController {
     })
     @GetMapping("/{userId}")
     public SuperResponse getTourApplications(@PathVariable("userId") Long userId) {
-        LOGGER.info("[TourCategoryController] 투어 신청서 리스트 조회 시도");
+        LOGGER.info("[TourApplicationController] 투어 신청서 리스트 조회 시도");
 
         SuperResponse getTourApplicationResponse;
         try {
@@ -95,9 +95,35 @@ public class TourApplicationController {
         } catch (Exception exception) {
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
-        LOGGER.info("[TourCategoryController] 투어 신청 리스트 조회 성공");
+        LOGGER.info("[TourApplicationController] 투어 신청 리스트 조회 성공");
 
         return getTourApplicationResponse;
     }
 
+
+    @ApiOperation("TourApplication - 투어에 참가하는 투어리스트 리스트를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "TourApplication - 투어에 참가하는 투어리스트 리스트를 조회 성공"),
+            @ApiResponse(code = 402, message = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/participants/{tourId}/{tourDate}")
+    public SuperResponse getTourApplicationParticipants(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("tourDate") String tourDate
+    ) {
+        LOGGER.info("[TourApplicationController] 투어에 참가하는 투어리스트 리스트를 조회 시도");
+
+        SuperResponse getTourApplicationParticipantsResponse;
+        try {
+            getTourApplicationParticipantsResponse = tourApplicationService.getTourApplicationParticipants(tourId, tourDate);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourApplicationController] 투어에 참가하는 투어리스트 리스트를 조회 성공");
+
+        return getTourApplicationParticipantsResponse;
+    }
 }

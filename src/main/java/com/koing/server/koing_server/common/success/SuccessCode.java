@@ -32,6 +32,7 @@ public enum SuccessCode {
     GET_CHAT_ROOM_SUCCESS(OK, "chat-room : 채팅방 조회 성공입니다."),
     UPLOAD_S3_SUCCESS(OK, "s3 : 파일 업로드 성공입니다."),
     GET_TEMPORARY_TOUR_SUCCESS(OK, "tour : 이어서 만들 투어 조회 성공입니다."),
+    GET_TOUR_PARTICIPANTS_SUCCESS(OK, "tour-application : 투어에 참가하는 투어리스트 리스트 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

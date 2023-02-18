@@ -362,20 +362,22 @@ public class TourService {
     }
 
     private Set<String> uploadThumbnails(List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
-        LOGGER.info("[ReviewService] 투어 썸네일 s3에 upload 시도");
+        LOGGER.info("[TourService] 투어 썸네일 s3에 upload 시도");
         Set<String> thumbnails = new HashSet<>();
 
         thumbnails.addAll(uploadedThumbnailUrls);
 
-        for (MultipartFile multipartFile : multipartFiles) {
-            try {
-                thumbnails.add(awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail"));
-            } catch (IOException ioException) {
-                throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
+        if (multipartFiles != null) {
+            for (MultipartFile multipartFile : multipartFiles) {
+                try {
+                    thumbnails.add(awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail"));
+                } catch (IOException ioException) {
+                    throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
+                }
             }
         }
 
-        LOGGER.info("[ReviewService] 투어 썸네일 s3에 upload 완료 = " + thumbnails);
+        LOGGER.info("[TourService] 투어 썸네일 s3에 upload 완료 = " + thumbnails);
 
         return thumbnails;
     }

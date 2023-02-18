@@ -57,7 +57,7 @@ public class TourSetController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @Transactional
     public SuperResponse createTourSet(
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 전체 tour set(투어, 투어 스케줄, 투어 설문, 투어 신청서)을 생성
@@ -149,13 +149,22 @@ public class TourSetController {
     @Transactional
     public SuperResponse updateTourSet(
             @PathVariable("tourId") Long tourId,
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 전체 tour set(투어, 투어 스케줄, 투어 설문, 투어 신청서)을 업데이트
         LOGGER.info("[TourController] 투어 세트 업데이트 시도");
 
-        if (tourApplicationService.checkDateExistParticipant(tourId, tourSetCreateDto.getTourDates())) {
+        boolean checkDateExist = false;
+        try {
+            checkDateExist = tourApplicationService.checkDateExistParticipant(tourId, tourSetCreateDto.getTourDates());
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+
+        if (checkDateExist) {
             return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_TOUR_APPLICATION_HAVE_PARTICIPANT_EXCEPTION);
         }
 
@@ -249,7 +258,7 @@ public class TourSetController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @Transactional
     public SuperResponse createTemporaryTourAndTourScheduleAndTourSurvey(
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 투어, 투어 스케줄, 투어 설문을 임시 저장
@@ -326,7 +335,7 @@ public class TourSetController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @Transactional
     public SuperResponse createTemporaryTourAndTourSchedule(
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 투어, 투어 스케줄을 임시 저장
@@ -393,7 +402,7 @@ public class TourSetController {
     @Transactional
     public SuperResponse updateTemporaryTourAndTourScheduleAndTourSurvey(
             @PathVariable("tourId") Long tourId,
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 임시 저장한 투어, 투어 스케줄을 update
@@ -468,7 +477,7 @@ public class TourSetController {
     @Transactional
     public SuperResponse updateTemporaryTourAndTourSchedule(
             @PathVariable("tourId") Long tourId,
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 임시 저장한 투어, 투어 스케줄을 update
@@ -531,7 +540,7 @@ public class TourSetController {
     @Transactional
     public SuperResponse completeTourSet(
             @PathVariable("tourId") Long tourId,
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourSetCreateDto tourSetCreateDto
     ) {
         // 임시 저장한 tour set(투어, 투어 스케줄, 투어 설문, 투어 신청서)을 완성

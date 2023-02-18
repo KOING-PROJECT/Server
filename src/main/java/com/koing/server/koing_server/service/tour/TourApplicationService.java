@@ -26,6 +26,7 @@ import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationResponseDto;
+import com.koing.server.koing_server.service.user.dto.UserTourParticipantDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,7 +173,13 @@ public class TourApplicationService {
     @Transactional
     public boolean checkDateExistParticipant(Long tourId, Set<String> newTourDates) {
 
+        getTour(tourId);
+
         TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
+
+        if (tourSchedule == null) {
+            throw new NotFoundException("해당 투어 스케줄을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_SCHEDULE_EXCEPTION);
+        }
 
         List<String> removedDates = new ArrayList<>();
 
@@ -198,7 +205,7 @@ public class TourApplicationService {
     }
 
     @Transactional
-    public SuperResponse updateTourApplication(Long tourId, Set<String> newTourDates, int newMaxParticitpant) {
+    public SuperResponse updateTourApplication(Long tourId, Set<String> newTourDates, int newMaxParticipant) {
 
         LOGGER.info("[TourApplicationService] TourApplication 업데이트 시도");
         Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
@@ -239,7 +246,7 @@ public class TourApplicationService {
 
         for (String createDate: createDates) {
             LOGGER.info("[TourApplicationService] 새로운 TourApplication 생성 시도");
-            TourApplication tourApplication = new TourApplication(createDate, newMaxParticitpant);
+            TourApplication tourApplication = new TourApplication(createDate, newMaxParticipant);
             tourApplication.setTour(tour);
 
             TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
@@ -257,7 +264,7 @@ public class TourApplicationService {
                             tourId,
                             date
                     );
-            tourApplication.setMaxParticipant(newMaxParticitpant);
+            tourApplication.setMaxParticipant(newMaxParticipant);
             tourApplicationRepository.save(tourApplication);
         }
 
@@ -268,6 +275,22 @@ public class TourApplicationService {
         TourApplicationDto tourApplicationDto = new TourApplicationDto(savedTour);
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
+    }
+
+    public SuperResponse getTourApplicationParticipants(Long tourId, String tourDate) {
+        LOGGER.info("[TourApplicationService] 날짜별 투어 참여자 조회 시도");
+
+        TourApplication tourApplication = getTourApplication(tourId, tourDate);
+        LOGGER.info("[TourApplicationService] TourId와 TourDate로 TourApplication 조회 성공");
+
+        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
+
+        List<UserTourParticipantDto> userTourParticipantDtos = new ArrayList<>();
+        for (TourParticipant tourParticipant : tourParticipants) {
+            userTourParticipantDtos.add(new UserTourParticipantDto(tourParticipant));
+        }
+
+        return SuccessResponse.success(SuccessCode.GET_TOUR_PARTICIPANTS_SUCCESS, userTourParticipantDtos);
     }
 
     private User getUser(Long userId) {
@@ -286,6 +309,15 @@ public class TourApplicationService {
         }
 
         return tourApplication;
+    }
+
+    private Tour getTour(Long temporaryTourId) {
+        Tour temporaryTour = tourRepositoryImpl.findTourByTourId(temporaryTourId);
+        if (temporaryTour == null) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
+
+        return temporaryTour;
     }
 
 }

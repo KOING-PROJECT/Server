@@ -63,7 +63,7 @@ public class TourController {
     @PostMapping(value = "",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public SuperResponse createTour(
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourCreateDto tourCreateDto
     ) {
         LOGGER.info("[TourController] 투어 생성 시도");
@@ -93,7 +93,7 @@ public class TourController {
     @PostMapping(value = "/temporary",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public SuperResponse createTemporaryTour(
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourCreateDto tourCreateDto
     ) {
         LOGGER.info("[TourController] 생성 중인 투어 임시 저장 시도");
@@ -145,7 +145,7 @@ public class TourController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public SuperResponse updateTour(
             @PathVariable("tourId") Long tourId,
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourCreateDto tourCreateDto
     ) {
         // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
@@ -176,7 +176,7 @@ public class TourController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public SuperResponse completeTour(
             @PathVariable("tourId") Long tourId,
-            @RequestPart("thumbnails") List<MultipartFile> thumbnails,
+            @RequestPart(value = "thumbnails", required = false) List<MultipartFile> thumbnails,
             @RequestPart TourCreateDto tourCreateDto
     ) {
         // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
