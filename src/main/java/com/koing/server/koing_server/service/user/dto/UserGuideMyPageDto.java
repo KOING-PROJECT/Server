@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.service.user.dto;
 
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.user.User;
@@ -30,6 +31,7 @@ public class UserGuideMyPageDto {
         this.createdTours = createCreatedTours(user);
         this.recruitmentTours = createRecruitmentTours(user);
         this.myEndTours = createTourMyEndTourDtos(user);
+        this.guideGrade = user.getGuideGrade();
     }
 
     private String guideName;
@@ -40,6 +42,7 @@ public class UserGuideMyPageDto {
     private Set<TourMyTourDto> createdTours;
     private Set<TourMyTourDto> recruitmentTours;
     private Set<TourMyEndTourDto> myEndTours;
+    private GuideGrade guideGrade;
 
     private Set<TourMyTourDto> createMyTours(User user) {
         Set<Tour> createTours = user.getCreateTours()

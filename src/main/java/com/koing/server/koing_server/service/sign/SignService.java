@@ -94,11 +94,9 @@ public class SignService {
                 .build();
 
         if (role.equalsIgnoreCase(UserRole.ROLE_GUIDE.getRole())) {
-            user.setGuideGrade(GuideGrade.BASIC);
-        }
-
-        if (role.equalsIgnoreCase(UserRole.ROLE_TOURIST.getRole())) {
-            user.setTouristGrade(TouristGrade.BASIC);
+            user.setGuideGrade(GuideGrade.BEGINNER);
+        } else {
+            user.setTouristGrade(TouristGrade.BEGINNER);
         }
 
         User savedUser = userRepository.save(user);

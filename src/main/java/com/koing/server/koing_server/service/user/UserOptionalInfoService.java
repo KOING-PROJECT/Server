@@ -52,11 +52,13 @@ public class UserOptionalInfoService {
 
         LOGGER.info("[UserOptionalInfoService] 프로필 이미지 s3에 upload 시도");
         List<String> uploadedImageUrls = new ArrayList<>();
-        for (MultipartFile multipartFile : userOptionalInfoCreateDto.getImageFiles()) {
-            try {
-                uploadedImageUrls.add(awss3Component.convertAndUploadFiles(multipartFile, "profile/image"));
-            } catch (IOException ioException) {
-                throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
+        if (userOptionalInfoCreateDto.getImageFiles() != null) {
+            for (MultipartFile multipartFile : userOptionalInfoCreateDto.getImageFiles()) {
+                try {
+                    uploadedImageUrls.add(awss3Component.convertAndUploadFiles(multipartFile, "profile/image"));
+                } catch (IOException ioException) {
+                    throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
+                }
             }
         }
 

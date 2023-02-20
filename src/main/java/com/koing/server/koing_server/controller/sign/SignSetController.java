@@ -43,7 +43,7 @@ public class SignSetController {
     @PostMapping(value = "/sign-up",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public SuperResponse signUpSet(
-            @RequestPart("imageFiles") List<MultipartFile> imageFiles,
+            @RequestPart(value = "imageFiles", required = false) List<MultipartFile> imageFiles,
             @RequestPart SignUpSetCreateDto signUpSetCreateDto
     ) {
         LOGGER.info("[SignController] 회원가입 시도");

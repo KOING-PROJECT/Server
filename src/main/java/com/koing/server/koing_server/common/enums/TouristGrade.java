@@ -2,7 +2,10 @@ package com.koing.server.koing_server.common.enums;
 
 public enum TouristGrade {
 
-    BASIC("BASIC", 1),
+    BEGINNER("BEGINNER", 1),
+    TRAVELER("TRAVELER", 2),
+    INFLUENCER("INFLUENCER", 3),
+    NATIVE("NATIVE", 4),
     ;
 
     private String grade;

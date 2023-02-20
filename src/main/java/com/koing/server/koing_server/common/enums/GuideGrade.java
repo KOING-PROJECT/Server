@@ -2,7 +2,11 @@ package com.koing.server.koing_server.common.enums;
 
 public enum GuideGrade {
 
-    BASIC("BASIC", 1),
+    BEGINNER("BEGINNER", 1),
+    NOVICE("NOVICE", 2),
+    INTERMEDIATE("INTERMEDIATE", 3),
+    EXPERT("EXPERT", 4),
+    PRO("PRO", 5)
     ;
 
     private String grade;

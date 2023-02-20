@@ -15,6 +15,7 @@ import java.util.Set;
 public class UserOptionalInfoCreateDto {
 
     public UserOptionalInfoCreateDto(Long userId, SignUpSetCreateDto signUpSetCreateDto, List<MultipartFile> imageFiles) {
+        System.out.println("실행 = " + imageFiles);
         this.userId = userId;
 //        this.imageUrl = signUpSetCreateDto.getImageUrl();
         this.imageFiles = imageFiles;

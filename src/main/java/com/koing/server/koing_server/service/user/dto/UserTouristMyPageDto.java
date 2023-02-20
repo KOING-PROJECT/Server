@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.user.dto;
 
+import com.koing.server.koing_server.common.enums.TouristGrade;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
@@ -28,6 +29,7 @@ public class UserTouristMyPageDto {
         this.following = createUserFollowDtos(user);
         this.likeTours = createTourLikeDtos(user);
         this.tourHistories = createTourHistoryDtos(user);
+        this.touristGrade = user.getTouristGrade();
     }
 
     private String touristName;
@@ -36,6 +38,8 @@ public class UserTouristMyPageDto {
     private Set<UserFollowDto> following;
     private Set<TourLikeDto> likeTours;
     private Set<TourHistoryDto> tourHistories;
+
+    private TouristGrade touristGrade;
 
     private Set<UserFollowDto> createUserFollowDtos(User user) {
         Set<User> followingUsers = user.getFollowing();

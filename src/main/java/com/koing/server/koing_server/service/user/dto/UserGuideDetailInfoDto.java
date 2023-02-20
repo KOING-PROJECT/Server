@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.service.user.dto;
 
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.user.User;
@@ -31,6 +32,7 @@ public class UserGuideDetailInfoDto {
         this.area = guide.getUserOptionalInfo().getAreas();
         this.job = guide.getUserOptionalInfo().getJob();
         this.otherTours = createOtherTours(guide, tour);
+        this.guideGrade = getGuideGrade();
     }
 
     private String guideName;
@@ -43,6 +45,7 @@ public class UserGuideDetailInfoDto {
     private Set<String> area;
     private String job;
 //    private String university;
+    private GuideGrade guideGrade;
     private Set<TourLikeDto> otherTours;
 
     private boolean checkFollowing(User guide, User loginUser) {
