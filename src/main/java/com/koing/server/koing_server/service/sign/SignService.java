@@ -3,6 +3,9 @@ package com.koing.server.koing_server.service.sign;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.GuideGrade;
+import com.koing.server.koing_server.common.enums.TouristGrade;
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.ConflictEmailException;
 import com.koing.server.koing_server.common.exception.DBFailException;
@@ -89,6 +92,14 @@ public class SignService {
                 .following(new HashSet<>())
                 .follower(new HashSet<>())
                 .build();
+
+        if (role.equalsIgnoreCase(UserRole.ROLE_GUIDE.getRole())) {
+            user.setGuideGrade(GuideGrade.BASIC);
+        }
+
+        if (role.equalsIgnoreCase(UserRole.ROLE_TOURIST.getRole())) {
+            user.setTouristGrade(TouristGrade.BASIC);
+        }
 
         User savedUser = userRepository.save(user);
         LOGGER.info("[signUp] 회원가입 완료");

@@ -38,6 +38,7 @@ public enum SuccessCode {
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
     RE_ISSUE_TOKEN_SUCCESS(OK, "reIssue : 토큰 재발급 성공입니다."),
     CRYPTOGRAM_CERTIFICATION_SUCCESS(OK, "cryptogram : 이메일 인증 성공입니다."),
+    EMAIL_SEND_SUCCESS(OK, "eamil-send : Email send 성공입니다."),
 
     /**
      * 201 CREATED
@@ -45,7 +46,6 @@ public enum SuccessCode {
     SIGN_UP_SUCCESS(CREATED, "sign-up : 회원가입 성공입니다."),
     CRYPTOGRAM_CREATE_SUCCESS(CREATED, "cryptogram-create : Cryptogram 생성 성공입니다."),
     CRYPTOGRAM_UPDATE_SUCCESS(CREATED, "cryptogram-update : Cryptogram 업데이트 성공입니다."),
-    EMAIL_SEND_SUCCESS(CREATED, "eamil-send : Email send 성공입니다."),
     TOUR_CATEGORY_CREATE_SUCCESS(CREATED, "tour-category : 투어 카테고리 생성 성공입니다."),
     TOUR_CREATE_SUCCESS(CREATED, "tour : 투어 생성 성공입니다."),
     TOUR_UPDATE_SUCCESS(CREATED, "tour : 투어 update 성공입니다."),

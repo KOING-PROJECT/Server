@@ -47,6 +47,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.GuideGrade> guideGrade = createEnum("guideGrade", com.koing.server.koing_server.common.enums.GuideGrade.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");
@@ -58,6 +60,8 @@ public class QUser extends EntityPathBase<User> {
     public final SetPath<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour> pressLikeTours = this.<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour>createSet("pressLikeTours", com.koing.server.koing_server.domain.tour.Tour.class, com.koing.server.koing_server.domain.tour.QTour.class, PathInits.DIRECT2);
 
     public final SetPath<String, StringPath> roles = this.<String, StringPath>createSet("roles", String.class, StringPath.class, PathInits.DIRECT2);
+
+    public final EnumPath<com.koing.server.koing_server.common.enums.TouristGrade> touristGrade = createEnum("touristGrade", com.koing.server.koing_server.common.enums.TouristGrade.class);
 
     public final SetPath<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant> tourParticipants = this.<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant>createSet("tourParticipants", com.koing.server.koing_server.domain.tour.TourParticipant.class, com.koing.server.koing_server.domain.tour.QTourParticipant.class, PathInits.DIRECT2);
 

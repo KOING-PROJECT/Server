@@ -2,6 +2,7 @@ package com.koing.server.koing_server.service.mail;
 
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.exception.InternalServerException;
 import com.koing.server.koing_server.common.properties.EmailProperties;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.cryptogram.Cryptogram;
@@ -33,7 +34,7 @@ public class MailService {
     public SuperResponse sendMail(MailSendDto mailSendDto) {
 
         // 외부 properties 에서 email, password 가져오기
-        emailProperties.initEmailProperties();
+//        emailProperties.initEmailProperties();
 
         String sendUserEmail = emailProperties.getEmail(); // 네이버일 경우 네이버 계정, gmail경우 gmail 계정
         String password = emailProperties.getPassword();   // 패스워드
@@ -55,6 +56,7 @@ public class MailService {
 
             String cipher = cryptogramService.createCipher();
             Cryptogram cryptogram;
+            System.out.println("cipher = " + cipher);
 
             if (!cryptogramService.hasCryptogram(targetEmail)) {
                 cryptogram = cryptogramService.createCryptogram(cipher, targetEmail);
@@ -72,12 +74,12 @@ public class MailService {
             // send the message
             Transport.send(message); ////전송
             LOGGER.info("[MailService] Email 전송 성공");
-        } catch (AddressException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (AddressException addressException) {
+            throw new InternalServerException("AddressException이 발생했습니다.");
+        } catch (MessagingException messagingException) {
+            throw new InternalServerException("MessagingException이 발생했습니다.");
+        } catch (Exception exception) {
+            throw exception;
         }
 
         return SuccessResponse.success(SuccessCode.EMAIL_SEND_SUCCESS, null);
@@ -86,14 +88,14 @@ public class MailService {
     private Properties setProperties() {
         Properties prop = new Properties();
 
-//        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.host", "smtp.naver.com");
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+//        prop.put("mail.smtp.host", "smtp.naver.com");
         prop.put("mail.smtp.port", 465);
         prop.put("mail.smtp.auth", "true");
         prop.put("mail.smtp.starttls.enable", "true");
         prop.put("mail.smtp.ssl.enable", "true");
-//        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        prop.put("mail.smtp.ssl.trust", "smtp.naver.com");
+        prop.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+//        prop.put("mail.smtp.ssl.trust", "smtp.naver.com");
 
         return prop;
     }

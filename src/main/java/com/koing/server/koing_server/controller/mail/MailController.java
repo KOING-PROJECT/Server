@@ -1,7 +1,12 @@
 package com.koing.server.koing_server.controller.mail;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.controller.sign.SignController;
+import com.koing.server.koing_server.service.cryptogram.CryptogramService;
+import com.koing.server.koing_server.service.cryptogram.dto.CryptogramVerifyDto;
 import com.koing.server.koing_server.service.mail.MailService;
 import com.koing.server.koing_server.service.mail.dto.MailSendDto;
 import io.swagger.annotations.Api;
@@ -33,12 +38,17 @@ public class MailController {
     })
     @PostMapping("")
     public SuperResponse sendMail(@RequestBody MailSendDto mailSendDto) {
-        LOGGER.info("[MailController] 인증 이메일 전송");
-        SuperResponse sendMailResponse = mailService.sendMail(mailSendDto);
+        LOGGER.info("[MailController] 인증 이메일 전송 시도");
+        SuperResponse sendMailResponse;
 
-        if (sendMailResponse.getStatus() == 200) {
-            LOGGER.info("[MailController] 인증 이메일 실패");
+        try {
+            sendMailResponse = mailService.sendMail(mailSendDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
+        LOGGER.info("[MailController] 이메일 전송 성공");
 
         return sendMailResponse;
     }

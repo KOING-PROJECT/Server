@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.common.enums.GuideGrade;
+import com.koing.server.koing_server.common.enums.TouristGrade;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
@@ -30,7 +32,8 @@ public class User extends AuditingTimeEntity {
     public User(String email, String password
             , String phoneNumber, String name, String birthDate
             , String country, GenderType gender, int age,
-                boolean enabled, int attachment, Set<String> roles,
+                boolean enabled, int attachment,
+                Set<String> roles,
                 UserOptionalInfo userOptionalInfo,
                 Set<TourParticipant> tourParticipants,
                 Set<Tour> createTours,
@@ -49,6 +52,8 @@ public class User extends AuditingTimeEntity {
         this.age = age;
         this.enabled = enabled;
         this.attachment = attachment;
+        this.guideGrade = null;
+        this.touristGrade = null;
         this.userOptionalInfo = userOptionalInfo;
         this.tourParticipants = tourParticipants;
         this.createTours = createTours;
@@ -96,6 +101,14 @@ public class User extends AuditingTimeEntity {
     private boolean enabled;
 
     private int attachment;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "guide_grade")
+    private GuideGrade guideGrade;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tourist_grade")
+    private TouristGrade touristGrade;
 
     // orphanRemoval = true 이므로 부모 entity에서 자식 entity를 삭제하면 자식 entity가 삭제됨.
     @JoinColumn(name = "user_optional_info_id")
