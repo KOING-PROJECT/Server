@@ -15,17 +15,17 @@ import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepositoryImpl;
+import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.review.dto.ReviewToGuideCreateDto;
-import com.koing.server.koing_server.service.review.dto.ReviewToGuideRequestDto;
-import com.koing.server.koing_server.service.review.dto.ReviewToTouristCreateDto;
+import com.koing.server.koing_server.service.review.dto.*;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,6 +43,7 @@ public class ReviewService {
     private final TourApplicationRepositoryImpl tourApplicationRepositoryImpl;
     private final UserRepositoryImpl userRepositoryImpl;
     private final TourParticipantRepositoryImpl tourParticipantRepositoryImpl;
+    private final TourParticipantRepository tourParticipantRepository;
     private final AWSS3Component awss3Component;
 
     public SuperResponse reviewToGuide(ReviewToGuideCreateDto reviewToGuideCreateDto, List<MultipartFile> multipartFiles) {
@@ -84,20 +85,58 @@ public class ReviewService {
         User writeGuide = getUser(reviewToTouristCreateDto.getWriteGuideId());
         LOGGER.info("[ReviewService] writeGuideId로 작성자 조회 성공");
 
-        TourParticipant tourParticipant = getTourParticipant(reviewToTouristCreateDto.getTourParticipantId());
+        TourParticipant tourParticipant = getTourParticipant(
+                reviewToTouristCreateDto.getTourId(),
+                reviewToTouristCreateDto.getTourDate(),
+                reviewToTouristCreateDto.getTourParticipantId()
+        );
         LOGGER.info("[ReviewService] tourParticipantId로 투어 신청 내용 조회 성공");
 
-        ReviewToTourist reviewToTourist = new ReviewToTourist(reviewToTouristCreateDto, writeGuide, tourParticipant);
+        ReviewToTourist reviewToTourist = new ReviewToTourist(reviewToTouristCreateDto, writeGuide);
         LOGGER.info("[ReviewService] ReviewToTourist 생성");
+        reviewToTourist.setRelatedTourParticipant(tourParticipant);
 
         ReviewToTourist savedReviewToTourist = reviewToTouristRepository.save(reviewToTourist);
 
         if (savedReviewToTourist == null) {
             throw new DBFailException("ReviewToTourist 저장과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_REVIEW_TO_TOURIST_FAIL_EXCEPTION);
         }
+
+        TourParticipant updatedTourParticipant = tourParticipantRepository.save(tourParticipant);
+
+        if (updatedTourParticipant == null) {
+            throw new DBFailException("투어 신청 내용 업데이트 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_TOUR_PARTICIPANT_FAIL_EXCEPTION);
+        }
+
         LOGGER.info("[ReviewService] ReviewToTourist 저장 완료");
 
         return SuccessResponse.success(SuccessCode.REVIEW_TO_TOURIST_CREATE_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse getGuideMyPageReviewList(Long tourId, String tourDate) {
+        LOGGER.info("[ReviewService] Guide의 후기 작성 리스트 조회 시도");
+
+        String convertTourDate = tourDate.substring(0, 4) + "/" + tourDate.substring(4,6) + "/" + tourDate.substring(6);
+        TourApplication tourApplication = getTourApplication(tourId, convertTourDate);
+
+        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
+
+        List<ReviewGuideMyPageResponseDto> reviewGuideMyPageResponseDtos = new ArrayList<>();
+
+        for (TourParticipant tourParticipant : tourParticipants) {
+            if (tourParticipant.getReviewToTourist() != null) {
+                System.out.println("실행");
+                reviewGuideMyPageResponseDtos.add(new ReviewGuideMyPageResponseDto(tourParticipant, true));
+            }
+            else {
+                System.out.println("실행2");
+                reviewGuideMyPageResponseDtos.add(new ReviewGuideMyPageResponseDto(tourParticipant, false));
+            }
+        }
+        LOGGER.info("[ReviewService] Guide의 후기 작성 리스트 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_GUIDE_MY_PAGE_REVIEW_SUCCESS, new ReviewGuideMyPageListResponseDto(reviewGuideMyPageResponseDtos));
     }
 
 //    public SuperResponse getReviewToGuide(ReviewToGuideRequestDto reviewToGuideRequestDto) {
@@ -132,8 +171,12 @@ public class ReviewService {
         return tourApplication;
     }
 
-    private TourParticipant getTourParticipant(Long tourParticipantId) {
-        TourParticipant tourParticipant = tourParticipantRepositoryImpl.findTourParticipantByTourParticipantId(tourParticipantId);
+    private TourParticipant getTourParticipant(Long tourId, String tourDate, Long tourParticipantId) {
+        System.out.println(tourDate);
+        System.out.println(tourId);
+        System.out.println(tourParticipantId);
+        TourParticipant tourParticipant = tourParticipantRepositoryImpl
+                .findTourParticipantByTourIdAndTourDateAndTourParticipantId(tourId, tourDate, tourParticipantId);
         if (tourParticipant == null) {
             throw new NotFoundException("해당 투어 신청 내용을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION);
         }

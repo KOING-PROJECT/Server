@@ -27,6 +27,7 @@ import com.koing.server.koing_server.service.tour.dto.TourApplicationDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationResponseDto;
 import com.koing.server.koing_server.service.user.dto.UserTourParticipantDto;
+import com.koing.server.koing_server.service.user.dto.UserTourParticipantListDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -277,10 +278,13 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, tourApplicationDto);
     }
 
+    @Transactional
     public SuperResponse getTourApplicationParticipants(Long tourId, String tourDate) {
         LOGGER.info("[TourApplicationService] 날짜별 투어 참여자 조회 시도");
 
-        TourApplication tourApplication = getTourApplication(tourId, tourDate);
+        String convertTourDate = tourDate.substring(0, 4) + "/" + tourDate.substring(4,6) + "/" + tourDate.substring(6);
+
+        TourApplication tourApplication = getTourApplication(tourId, convertTourDate);
         LOGGER.info("[TourApplicationService] TourId와 TourDate로 TourApplication 조회 성공");
 
         List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
@@ -290,7 +294,7 @@ public class TourApplicationService {
             userTourParticipantDtos.add(new UserTourParticipantDto(tourParticipant));
         }
 
-        return SuccessResponse.success(SuccessCode.GET_TOUR_PARTICIPANTS_SUCCESS, userTourParticipantDtos);
+        return SuccessResponse.success(SuccessCode.GET_TOUR_PARTICIPANTS_SUCCESS, new UserTourParticipantListDto(userTourParticipantDtos));
     }
 
     private User getUser(Long userId) {
@@ -305,7 +309,7 @@ public class TourApplicationService {
     private TourApplication getTourApplication(Long tourId, String tourDate) {
         TourApplication tourApplication = tourApplicationRepositoryImpl.findTourApplicationByTourIdAndTourDate(tourId, tourDate);
         if (tourApplication == null) {
-            throw new NotFoundException("해당 투어 신청서를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+            throw new NotFoundException("해당 투어 신청서를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_APPLICATION_EXCEPTION);
         }
 
         return tourApplication;

@@ -52,7 +52,11 @@ public class TourParticipantRepositoryImpl implements TourParticipantRepositoryC
     }
 
     @Override
-    public TourParticipant findTourParticipantByTourParticipantId(Long tourParticipantId) {
+    public TourParticipant findTourParticipantByTourIdAndTourDateAndTourParticipantId(
+            Long tourId,
+            String tourDate,
+            Long tourParticipantId
+    ) {
         return jpqlQueryFactory
                 .selectFrom(tourParticipant)
                 .leftJoin(tourParticipant.tourApplication, tourApplication)
@@ -63,7 +67,9 @@ public class TourParticipantRepositoryImpl implements TourParticipantRepositoryC
                 .fetchJoin()
                 .distinct()
                 .where(
-                        tourParticipant.id.eq(tourParticipantId)
+                        tourParticipant.tourApplication.tour.id.eq(tourId),
+                        tourParticipant.tourApplication.tourDate.eq(tourDate),
+                        tourParticipant.participant.id.eq(tourParticipantId)
                 )
                 .fetchOne();
     }

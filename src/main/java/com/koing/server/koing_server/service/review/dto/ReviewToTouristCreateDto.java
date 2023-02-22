@@ -17,6 +17,8 @@ import java.util.Set;
 public class ReviewToTouristCreateDto {
 
     private Long writeGuideId;
+    private Long tourId;
+    private String tourDate;
     private Long tourParticipantId;
     private Set<String> progressReviews;
     private Set<String> touristReviews;

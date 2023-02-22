@@ -20,9 +20,9 @@ import java.util.Set;
 @Table(name = "REVIEW_TO_TOURIST_TABLE")
 public class ReviewToTourist extends AuditingTimeEntity {
 
-    public ReviewToTourist(ReviewToTouristCreateDto reviewToTouristCreateDto, User writeGuide, TourParticipant relatedTourParticipant) {
+    public ReviewToTourist(ReviewToTouristCreateDto reviewToTouristCreateDto, User writeGuide) {
         this.writeGuide = writeGuide;
-        this.relatedTourParticipant = relatedTourParticipant;
+        this.relatedTourParticipant = null;
         this.progressReviews = reviewToTouristCreateDto.getProgressReviews();
         this.touristReviews = reviewToTouristCreateDto.getTouristReviews();
         this.attachment = reviewToTouristCreateDto.getAttachment();
@@ -48,5 +48,10 @@ public class ReviewToTourist extends AuditingTimeEntity {
     private Set<String> touristReviews;
 
     private int attachment;
+
+    public void setRelatedTourParticipant(TourParticipant tourParticipant) {
+        this.relatedTourParticipant = tourParticipant;
+        tourParticipant.setReviewToTourist(this);
+    }
 
 }

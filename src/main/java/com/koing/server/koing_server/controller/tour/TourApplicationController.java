@@ -101,7 +101,7 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 투어에 참가하는 투어리스트 리스트를 가져옵니다.")
+    @ApiOperation("TourApplication - 투어에 참가하는 투어리스트 리스트를 가져옵니다. (날짜 형식을 20221225 이런 식으로 줘야합니다)")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "TourApplication - 투어에 참가하는 투어리스트 리스트를 조회 성공"),
             @ApiResponse(code = 402, message = "해당 투어 신청서를 찾을 수 없습니다."),
@@ -120,6 +120,8 @@ public class TourApplicationController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[TourApplicationController] 투어에 참가하는 투어리스트 리스트를 조회 성공");
