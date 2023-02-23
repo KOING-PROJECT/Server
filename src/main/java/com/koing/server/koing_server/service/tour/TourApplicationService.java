@@ -104,6 +104,11 @@ public class TourApplicationService {
 
         LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 성공 = " + tourApplication);
 
+        for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+            if (tourParticipant.getParticipant().getId() == tourApplicationParticipateDto.getUserId()) {
+                throw new NotAcceptableException("이미 신청한 투어입니다.", ErrorCode.NOT_ACCEPTABLE_ALREADY_PARTICIPATED_TOUR_EXCEPTION);
+            }
+        }
 
         int currParticipants = tourApplication.getCurrentParticipants();
         int numberOfParticipants = tourApplicationParticipateDto.getNumberOfParticipants();
