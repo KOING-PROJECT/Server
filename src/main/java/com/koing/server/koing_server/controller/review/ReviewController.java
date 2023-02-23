@@ -6,7 +6,6 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.review.ReviewService;
 import com.koing.server.koing_server.service.review.dto.ReviewToGuideCreateDto;
-import com.koing.server.koing_server.service.review.dto.ReviewToGuideRequestDto;
 import com.koing.server.koing_server.service.review.dto.ReviewToTouristCreateDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpSetCreateDto;
 import io.swagger.annotations.Api;
@@ -43,7 +42,7 @@ public class ReviewController {
     @PostMapping(value = "/guide",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public SuperResponse reviewToGuide(
-            @RequestPart("reviewPhotos") List<MultipartFile> reviewPhotos,
+            @RequestPart(value = "reviewPhotos", required = false) List<MultipartFile> reviewPhotos,
             @RequestPart ReviewToGuideCreateDto reviewToGuideCreateDto
     ) {
         LOGGER.info("[ReviewController] ReviewToGuide 작성 시도");
@@ -53,8 +52,6 @@ public class ReviewController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            System.out.println(exception);
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[ReviewController] ReviewToGuide 작성 성공");
@@ -114,6 +111,62 @@ public class ReviewController {
         LOGGER.info("[ReviewController] Guide가 리뷰를 작성할 투어리스트를 조회 성공");
 
         return getGuideMyPageReviewListResponse;
+    }
+
+
+    @ApiOperation("Review - Guide가 보낸 리뷰, 받은 리뷰를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Review - Guide가 보낸 리뷰, 받은 리뷰를 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 투어 신청 내용을 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/guide/{tourId}/{tourDate}/{touristId}")
+    public SuperResponse getGuideMyPageReviews(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("tourDate") String tourDate,
+            @PathVariable("touristId") Long touristId
+    ) {
+        LOGGER.info("[ReviewController] Guide가 보낸 리뷰, 받은 리뷰 조회 시도");
+        SuperResponse getGuideMyPageReviewsResponse;
+        try {
+            getGuideMyPageReviewsResponse = reviewService.getGuideMyPageReviews(tourId, tourDate, touristId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[ReviewController] Guide가 보낸 리뷰, 받은 리뷰 조회 성공");
+
+        return getGuideMyPageReviewsResponse;
+    }
+
+
+    @ApiOperation("Review - Tourist가 보낸 리뷰, 받은 리뷰를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Review - Tourist가 보낸 리뷰, 받은 리뷰를 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 투어 신청 내용을 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/tourist/{tourId}/{tourDate}/{userId}")
+    public SuperResponse getTouristMyPageReviews(
+            @PathVariable("tourId") Long tourId,
+            @PathVariable("tourDate") String tourDate,
+            @PathVariable("userId") Long userId
+    ) {
+        LOGGER.info("[ReviewController] Tourist가 보낸 리뷰, 받은 리뷰 조회 시도");
+        SuperResponse getTouristMyPageReviewsResponse;
+        try {
+            getTouristMyPageReviewsResponse = reviewService.getTouristMyPageReviews(tourId, tourDate, userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[ReviewController] Tourist가 보낸 리뷰, 받은 리뷰 조회 성공");
+
+        return getTouristMyPageReviewsResponse;
     }
 
 }

@@ -33,7 +33,9 @@ public enum SuccessCode {
     UPLOAD_S3_SUCCESS(OK, "s3 : 파일 업로드 성공입니다."),
     GET_TEMPORARY_TOUR_SUCCESS(OK, "tour : 이어서 만들 투어 조회 성공입니다."),
     GET_TOUR_PARTICIPANTS_SUCCESS(OK, "tour-application : 투어에 참가하는 투어리스트 리스트 조회 성공입니다."),
-    GET_GUIDE_MY_PAGE_REVIEW_SUCCESS(OK, "review : 가이드의 리뷰 작성 리스트 조회 성공입니다."),
+    GET_GUIDE_MY_PAGE_REVIEW_LIST_SUCCESS(OK, "review : 가이드의 리뷰 작성 리스트 조회 성공입니다."),
+    GET_GUIDE_REVIEWS_SUCCESS(OK, "review : 가이드가 보낸 리뷰, 받은 리뷰 조회 성공입니다."),
+    GET_TOURIST_REVIEWS_SUCCESS(OK, "review : 투어리스트가 보낸 리뷰, 받은 리뷰 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

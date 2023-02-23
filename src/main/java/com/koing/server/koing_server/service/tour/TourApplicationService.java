@@ -287,9 +287,9 @@ public class TourApplicationService {
     public SuperResponse getTourApplicationParticipants(Long tourId, String tourDate) {
         LOGGER.info("[TourApplicationService] 날짜별 투어 참여자 조회 시도");
 
-        String convertTourDate = tourDate.substring(0, 4) + "/" + tourDate.substring(4,6) + "/" + tourDate.substring(6);
+//        String convertTourDate = tourDate.substring(0, 4) + "/" + tourDate.substring(4,6) + "/" + tourDate.substring(6);
 
-        TourApplication tourApplication = getTourApplication(tourId, convertTourDate);
+        TourApplication tourApplication = getTourApplication(tourId, tourDate);
         LOGGER.info("[TourApplicationService] TourId와 TourDate로 TourApplication 조회 성공");
 
         List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
