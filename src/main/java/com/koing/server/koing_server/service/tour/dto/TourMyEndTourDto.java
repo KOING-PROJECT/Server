@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.service.tour.dto;
 
 import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.tour.TourApplication;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +12,18 @@ import java.util.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TourMyEndTourDto {
 
-    public TourMyEndTourDto(Tour tour) {
-        this.tourId = tour.getId();
-        this.tourTitle = tour.getTitle();
-        this.thumbnails = tour.getThumbnails();
-        List<String> dates = new ArrayList<>(tour.getTourSchedule().getTourDates());
-        Collections.sort(dates);
-        this.firstTourDate = dates.get(0);
+    public TourMyEndTourDto(TourApplication tourApplication, boolean hasReview) {
+        this.tourId = tourApplication.getTour().getId();
+        this.tourTitle = tourApplication.getTour().getTitle();
+        this.thumbnails = tourApplication.getTour().getThumbnails();
+        this.tourDate = tourApplication.getTourDate();
+        this.hasReview = hasReview;
     }
 
     private Long tourId;
     private String tourTitle;
     private Set<String> thumbnails;
-    private String firstTourDate;
+    private String tourDate;
+    private boolean hasReview;
 
 }

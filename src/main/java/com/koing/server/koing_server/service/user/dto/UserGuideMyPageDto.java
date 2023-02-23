@@ -4,6 +4,8 @@ import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.tour.dto.TourMyEndTourDto;
 import com.koing.server.koing_server.service.tour.dto.TourMyTourDto;
@@ -11,7 +13,9 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -104,14 +108,35 @@ public class UserGuideMyPageDto {
     }
 
     private Set<TourMyEndTourDto> createTourMyEndTourDtos(User user) {
-        Set<Tour> endTours = user.getCreateTours()
-                .stream()
-                .filter(tour -> tour.getTourStatus().equals(TourStatus.FINISH))
-                .collect(Collectors.toSet());
+        Set<Tour> endTours = user.getCreateTours();
+//                .stream()
+//                .filter(tour -> tour.getTourStatus().equals(TourStatus.FINISH))
+//                .collect(Collectors.toSet());
+
+        List<TourApplication> endTourApplication = new ArrayList<>();
+        for (Tour tour : endTours) {
+            for (TourApplication tourApplication : tour.getTourApplications()) {
+                if (tourApplication.getTourStatus().equals(TourStatus.FINISH)) {
+                    endTourApplication.add(tourApplication);
+                }
+            }
+        }
 
         Set<TourMyEndTourDto> tourMyEndTourDtos = new HashSet<>();
-        for (Tour endTour : endTours) {
-            tourMyEndTourDtos.add(new TourMyEndTourDto(endTour));
+        for (TourApplication tourApplication : endTourApplication) {
+            int reviewToTouristCount = 0;
+            for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+                if (tourParticipant.getReviewToTourist() != null) {
+                    reviewToTouristCount += 1;
+                }
+            }
+
+            if (tourApplication.getTourParticipants().size() > reviewToTouristCount) {
+                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, false));
+            }
+            else {
+                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, true));
+            }
         }
 
         return tourMyEndTourDtos;
