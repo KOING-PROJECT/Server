@@ -6,22 +6,29 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
+import com.koing.server.koing_server.common.exception.IOFailException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
+import com.koing.server.koing_server.domain.user.UserOptionalInfo;
+import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository;
 import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepositoryImpl;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +40,6 @@ public class UserService {
     private final Logger LOGGER = LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
-    private final UserOptionalInfoRepositoryImpl userOptionalInfoRepositoryImpl;
     private final TourRepositoryImpl tourRepositoryImpl;
 
     @Transactional

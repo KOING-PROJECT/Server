@@ -166,7 +166,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 complete 합니다.(임시저장 tour를 완성)")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 complete 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 complete 성공"),
             @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 406, message = "해당 투어의 생성자가 아닙니다."),

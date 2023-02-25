@@ -88,7 +88,7 @@ public class QUser extends EntityPathBase<User> {
 
     public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.userOptionalInfo = inits.isInitialized("userOptionalInfo") ? new QUserOptionalInfo(forProperty("userOptionalInfo")) : null;
+        this.userOptionalInfo = inits.isInitialized("userOptionalInfo") ? new QUserOptionalInfo(forProperty("userOptionalInfo"), inits.get("userOptionalInfo")) : null;
     }
 
 }

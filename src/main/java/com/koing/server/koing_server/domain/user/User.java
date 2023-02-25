@@ -151,6 +151,7 @@ public class User extends AuditingTimeEntity {
 
     public void setUserOptionalInfo(UserOptionalInfo userOptionalInfo) {
         this.userOptionalInfo = userOptionalInfo;
+        userOptionalInfo.setUser(this);
     }
 
     public void pressFollow(User targetUser) {

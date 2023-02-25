@@ -8,8 +8,10 @@ import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.controller.tour.TourScheduleController;
 import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.service.tour.dto.TourCreateDto;
 import com.koing.server.koing_server.service.user.UserOptionalInfoService;
 import com.koing.server.koing_server.service.user.dto.UserOptionalInfoCreateDto;
+import com.koing.server.koing_server.service.user.dto.UserProfileUpdateDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -17,7 +19,9 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -51,6 +55,36 @@ public class UserOptionalInfoController {
         }
         LOGGER.info("[UserOptionalInfoController] 유저 선택정보 생성 성공");
         return userOptionalInfoResponse;
+    }
+
+
+    @ApiOperation("UserOptionalInfo - 유저 선택정보를 업데이트합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Tour - 투어 업데이트 성공"),
+            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 유저의 선택사항을 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping(value = "/{userId}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public SuperResponse updateTour(
+            @PathVariable("userId") Long userId,
+            @RequestPart(value = "profileImages", required = false) List<MultipartFile> profileImages,
+            @RequestPart UserProfileUpdateDto userProfileUpdateDto
+    ) {
+        // 완성 된 tour를 수정하거나, 임시 저장 중인 tour를 다시 임시 저장 할 때 사용
+        LOGGER.info("[UserOptionalInfoController] 유저 선택정보 update 시도");
+        SuperResponse updateUserOptionalInfoResponse;
+        try {
+            updateUserOptionalInfoResponse = userOptionalInfoService.updateUserProfile(userId, userProfileUpdateDto, profileImages);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserOptionalInfoController] 유저 선택정보 update 성공");
+
+        return updateUserOptionalInfoResponse;
     }
 
 }

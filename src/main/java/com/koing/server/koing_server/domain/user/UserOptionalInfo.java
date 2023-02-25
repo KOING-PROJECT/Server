@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koing.server.koing_server.service.user.dto.UserOptionalInfoCreateDto;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -28,6 +29,10 @@ public class UserOptionalInfo {
     @Column(name = "user_optional_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> imageUrls;
