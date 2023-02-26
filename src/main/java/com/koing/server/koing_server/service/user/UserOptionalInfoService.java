@@ -3,10 +3,7 @@ package com.koing.server.koing_server.service.user;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
-import com.koing.server.koing_server.common.exception.BoilerplateException;
-import com.koing.server.koing_server.common.exception.DBFailException;
-import com.koing.server.koing_server.common.exception.IOFailException;
-import com.koing.server.koing_server.common.exception.NotFoundException;
+import com.koing.server.koing_server.common.exception.*;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
@@ -62,6 +59,8 @@ public class UserOptionalInfoService {
                     uploadedImageUrls.add(awss3Component.convertAndUploadFiles(multipartFile, "profile/image"));
                 } catch (IOException ioException) {
                     throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
+                } catch (Exception exception) {
+                    throw new InternalServerException("예상치 못한 서버 에러가 발생하였습니다.", ErrorCode.INTERNAL_SERVER_EXCEPTION);
                 }
             }
         }

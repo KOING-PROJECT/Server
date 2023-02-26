@@ -48,6 +48,7 @@ public enum SuccessCode {
      * 201 CREATED
      */
     SIGN_UP_SUCCESS(CREATED, "sign-up : 회원가입 성공입니다."),
+    SIGN_UP_SET_SUCCESS(CREATED, "sign-up : 회원가입, 선택정보 생성 성공입니다."),
     CRYPTOGRAM_CREATE_SUCCESS(CREATED, "cryptogram-create : Cryptogram 생성 성공입니다."),
     CRYPTOGRAM_UPDATE_SUCCESS(CREATED, "cryptogram-update : Cryptogram 업데이트 성공입니다."),
     TOUR_CATEGORY_CREATE_SUCCESS(CREATED, "tour-category : 투어 카테고리 생성 성공입니다."),
