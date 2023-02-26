@@ -17,6 +17,7 @@ import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.s3.AWSS3Service;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.user.dto.UserOptionalInfoCreateDto;
+import com.koing.server.koing_server.service.user.dto.UserProfileDto;
 import com.koing.server.koing_server.service.user.dto.UserProfileUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -87,6 +88,16 @@ public class UserOptionalInfoService {
     }
 
     @Transactional
+    public SuperResponse getUserProfile(Long userId) {
+        LOGGER.info("[UserService] 유저 선택정보 조회 시도");
+
+        UserOptionalInfo userOptionalInfo= getUserOptionalInfo(userId);
+        LOGGER.info("[UserService] 유저 선택정보 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_USER_OPTIONAL_INFO_SUCCESS, new UserProfileDto(userOptionalInfo));
+    }
+
+    @Transactional
     public SuperResponse updateUserProfile(Long userId, UserProfileUpdateDto userProfileUpdateDto, List<MultipartFile> multipartFiles) {
         LOGGER.info("[UserService] 유저 프로필 업데이트 시도");
 
@@ -115,8 +126,6 @@ public class UserOptionalInfoService {
         LOGGER.info("[TourService] 투어 썸네일 s3에 upload 시도");
         List<String> profileImages = new ArrayList<>();
 
-        profileImages.addAll(uploadedImageUrls);
-
         if (multipartFiles != null) {
             for (MultipartFile multipartFile : multipartFiles) {
                 try {
@@ -125,6 +134,9 @@ public class UserOptionalInfoService {
                     throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
                 }
             }
+        }
+        else {
+            profileImages.addAll(uploadedImageUrls);
         }
 
         LOGGER.info("[TourService] 투어 썸네일 s3에 upload 완료 = " + profileImages);
