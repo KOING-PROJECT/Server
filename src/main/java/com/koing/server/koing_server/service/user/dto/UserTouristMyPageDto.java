@@ -7,13 +7,13 @@ import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.tour.dto.TourHistoryDto;
 import com.koing.server.koing_server.service.tour.dto.TourLikeDto;
+import com.koing.server.koing_server.service.tour.dto.TourMyTourDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -35,16 +35,16 @@ public class UserTouristMyPageDto {
     private String touristName;
     private Set<String> roles;
     private String imageUrl;
-    private Set<UserFollowDto> following;
-    private Set<TourLikeDto> likeTours;
-    private Set<TourHistoryDto> tourHistories;
+    private List<UserFollowDto> following;
+    private List<TourLikeDto> likeTours;
+    private List<TourHistoryDto> tourHistories;
 
     private TouristGrade touristGrade;
 
-    private Set<UserFollowDto> createUserFollowDtos(User user) {
-        Set<User> followingUsers = user.getFollowing();
+    private List<UserFollowDto> createUserFollowDtos(User user) {
+        List<User> followingUsers = user.getFollowing().stream().collect(Collectors.toList());
 
-        Set<UserFollowDto> userFollowDtos = new HashSet<>();
+        List<UserFollowDto> userFollowDtos = new ArrayList<>();
         for (User following : followingUsers) {
             userFollowDtos.add(new UserFollowDto(following));
         }
@@ -52,10 +52,10 @@ public class UserTouristMyPageDto {
         return userFollowDtos;
     }
 
-    private Set<TourLikeDto> createTourLikeDtos(User user) {
-        Set<Tour> likeTours = user.getPressLikeTours();
+    private List<TourLikeDto> createTourLikeDtos(User user) {
+        List<Tour> likeTours = user.getPressLikeTours().stream().collect(Collectors.toList());
 
-        Set<TourLikeDto> tourLikeDtos = new HashSet<>();
+        List<TourLikeDto> tourLikeDtos = new ArrayList<>();
         for (Tour likeTour : likeTours) {
             tourLikeDtos.add(new TourLikeDto(likeTour));
         }
@@ -63,18 +63,23 @@ public class UserTouristMyPageDto {
         return tourLikeDtos;
     }
 
-    private Set<TourHistoryDto> createTourHistoryDtos(User user) {
-        Set<TourParticipant> tourParticipants = user.getTourParticipants();
+    private List<TourHistoryDto> createTourHistoryDtos(User user) {
+        List<TourParticipant> tourParticipants = user.getTourParticipants().stream().collect(Collectors.toList());
 
-        Set<TourApplication> tourApplications = new HashSet<>();
+        List<TourApplication> tourApplications = new ArrayList<>();
         for (TourParticipant tourParticipant : tourParticipants) {
             tourApplications.add(tourParticipant.getTourApplication());
         }
 
-        Set<TourHistoryDto> tourHistoryDtos = new HashSet<>();
+        List<TourHistoryDto> tourHistoryDtos = new ArrayList<>();
         for (TourApplication tourApplication : tourApplications) {
             tourHistoryDtos.add(new TourHistoryDto(tourApplication));
         }
+
+        tourHistoryDtos = tourHistoryDtos
+                .stream()
+                .sorted(Comparator.comparing((TourHistoryDto t) -> t.getTourDate()).reversed())
+                .collect(Collectors.toList());
 
         return tourHistoryDtos;
     }
