@@ -13,10 +13,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
@@ -41,34 +38,50 @@ public class UserGuideMyPageDto {
     private String guideName;
     private Set<String> roles;
     private String imageUrl;
-    private Set<TourMyTourDto> myTours;
-    private Set<TourMyTourDto> creatingTours;
-    private Set<TourMyTourDto> createdTours;
-    private Set<TourMyTourDto> recruitmentTours;
-    private Set<TourMyEndTourDto> myEndTours;
+    private List<TourMyTourDto> myTours;
+    private List<TourMyTourDto> creatingTours;
+    private List<TourMyTourDto> createdTours;
+    private List<TourMyTourDto> recruitmentTours;
+    private List<TourMyEndTourDto> myEndTours;
     private GuideGrade guideGrade;
 
-    private Set<TourMyTourDto> createMyTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+    private List<TourMyTourDto> createMyTours(User user) {
+        List<Tour> createTours = user.getCreateTours()
                 .stream()
-                .filter(tour -> !tour.getTourStatus().equals(TourStatus.FINISH))
-                .collect(Collectors.toSet());
+                .filter(tour -> !tour.getTourStatus().equals(TourStatus.FINISH) && tour.getCreateStatus().equals(CreateStatus.COMPLETE))
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
             tourMyTourDtos.add(new TourMyTourDto(createTour));
         }
 
-        return tourMyTourDtos;
-    }
+        tourMyTourDtos = tourMyTourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourMyTourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed())
+                .collect(Collectors.toList());
 
-    private Set<TourMyTourDto> createCreatingTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+        List<Tour> creatingTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.CREATING))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        for (Tour creatingTour : creatingTours) {
+            tourMyTourDtos.add(new TourMyTourDto(creatingTour));
+        }
+
+        return tourMyTourDtos;
+    }
+
+    private List<TourMyTourDto> createCreatingTours(User user) {
+        List<Tour> createTours = user.getCreateTours()
+                .stream()
+                .filter(tour -> tour.getCreateStatus().equals(CreateStatus.CREATING))
+                .collect(Collectors.toList());
+
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
             tourMyTourDtos.add(new TourMyTourDto(createTour));
         }
@@ -76,42 +89,55 @@ public class UserGuideMyPageDto {
         return tourMyTourDtos;
     }
 
-    private Set<TourMyTourDto> createCreatedTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+    private List<TourMyTourDto> createCreatedTours(User user) {
+        List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
                         && tour.getTourStatus().equals(TourStatus.CREATED))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
             tourMyTourDtos.add(new TourMyTourDto(createTour));
         }
 
+        tourMyTourDtos = tourMyTourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourMyTourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed())
+                .collect(Collectors.toList());
+
         return tourMyTourDtos;
     }
 
-    private Set<TourMyTourDto> createRecruitmentTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+    private List<TourMyTourDto> createRecruitmentTours(User user) {
+        List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
                         && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)
                         || tour.getTourStatus().equals(TourStatus.STANDBY)))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
             tourMyTourDtos.add(new TourMyTourDto(createTour));
         }
 
+        tourMyTourDtos = tourMyTourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourMyTourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed())
+                .collect(Collectors.toList());
+
         return tourMyTourDtos;
     }
 
-    private Set<TourMyEndTourDto> createTourMyEndTourDtos(User user) {
-        Set<Tour> endTours = user.getCreateTours();
-//                .stream()
-//                .filter(tour -> tour.getTourStatus().equals(TourStatus.FINISH))
-//                .collect(Collectors.toSet());
+    private List<TourMyEndTourDto> createTourMyEndTourDtos(User user) {
+        List<Tour> endTours = user.getCreateTours()
+                .stream()
+                .collect(Collectors.toList());
 
         List<TourApplication> endTourApplication = new ArrayList<>();
         for (Tour tour : endTours) {
@@ -122,7 +148,7 @@ public class UserGuideMyPageDto {
             }
         }
 
-        Set<TourMyEndTourDto> tourMyEndTourDtos = new HashSet<>();
+        List<TourMyEndTourDto> tourMyEndTourDtos = new ArrayList<>();
         for (TourApplication tourApplication : endTourApplication) {
             int reviewToTouristCount = 0;
             for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
@@ -138,6 +164,11 @@ public class UserGuideMyPageDto {
                 tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, true));
             }
         }
+
+        tourMyEndTourDtos = tourMyEndTourDtos
+                .stream()
+                .sorted(Comparator.comparing((TourMyEndTourDto t) -> t.getTourDate()).reversed())
+                .collect(Collectors.toList());
 
         return tourMyEndTourDtos;
     }
