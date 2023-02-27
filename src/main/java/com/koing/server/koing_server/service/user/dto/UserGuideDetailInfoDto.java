@@ -32,7 +32,7 @@ public class UserGuideDetailInfoDto {
         this.area = guide.getUserOptionalInfo().getAreas();
         this.job = guide.getUserOptionalInfo().getJob();
         this.otherTours = createOtherTours(guide, tour);
-        this.guideGrade = getGuideGrade();
+        this.guideGrade = guide.getGuideGrade();
     }
 
     private String guideName;
