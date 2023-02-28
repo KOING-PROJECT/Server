@@ -22,6 +22,11 @@ public class QTourDetailSchedule extends EntityPathBase<TourDetailSchedule> {
 
     public static final QTourDetailSchedule tourDetailSchedule = new QTourDetailSchedule("tourDetailSchedule");
 
+    public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final StringPath description = createString("description");
 
     public final StringPath endTime = createString("endTime");
@@ -37,6 +42,9 @@ public class QTourDetailSchedule extends EntityPathBase<TourDetailSchedule> {
     public final StringPath startTime = createString("startTime");
 
     public final QTourSchedule tourSchedule;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QTourDetailSchedule(String variable) {
         this(TourDetailSchedule.class, forVariable(variable), INITS);

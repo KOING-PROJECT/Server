@@ -22,6 +22,11 @@ public class QTourSurvey extends EntityPathBase<TourSurvey> {
 
     public static final QTourSurvey tourSurvey = new QTourSurvey("tourSurvey");
 
+    public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final EnumPath<com.koing.server.koing_server.common.enums.CreateStatus> createStatus = createEnum("createStatus", com.koing.server.koing_server.common.enums.CreateStatus.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -33,6 +38,9 @@ public class QTourSurvey extends EntityPathBase<TourSurvey> {
     public final QTour tour;
 
     public final StringPath type = createString("type");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QTourSurvey(String variable) {
         this(TourSurvey.class, forVariable(variable), INITS);

@@ -2,6 +2,7 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.review.ReviewToTourist;
 import com.koing.server.koing_server.domain.user.User;
 import lombok.AccessLevel;
@@ -19,7 +20,7 @@ import java.util.HashSet;
 @Table(name = "TOUR_PARTICIPANT_TABLE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourParticipant {
+public class TourParticipant extends AuditingTimeEntity {
 
     public TourParticipant(TourApplication tourApplication, User participant, int numberOfParticipants) {
         setTourApplication(tourApplication);

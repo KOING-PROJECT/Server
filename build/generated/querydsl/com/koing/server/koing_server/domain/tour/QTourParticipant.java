@@ -22,6 +22,11 @@ public class QTourParticipant extends EntityPathBase<TourParticipant> {
 
     public static final QTourParticipant tourParticipant = new QTourParticipant("tourParticipant");
 
+    public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> numberOfParticipants = createNumber("numberOfParticipants", Integer.class);
@@ -31,6 +36,9 @@ public class QTourParticipant extends EntityPathBase<TourParticipant> {
     public final com.koing.server.koing_server.domain.review.QReviewToTourist reviewToTourist;
 
     public final QTourApplication tourApplication;
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
     public QTourParticipant(String variable) {
         this(TourParticipant.class, forVariable(variable), INITS);
