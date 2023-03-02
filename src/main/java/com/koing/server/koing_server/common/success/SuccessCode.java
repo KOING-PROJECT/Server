@@ -18,6 +18,7 @@ public enum SuccessCode {
     SUCCESS(OK, "성공입니다."),
     GET_USER_SUCCESS(OK, "user : 유저 조회 성공입니다."),
     GET_USERS_SUCCESS(OK, "user : 유저 리스트 조회 성공입니다."),
+    GET_GUIDES_SUCCESS(OK, "user : 가이드 리스트 조회 성공입니다."),
     GET_TOURS_SUCCESS(OK, "tour : 투어 리스트 조회 성공입니다."),
     DELETE_TOUR_SUCCESS(OK, "tour : 투어 삭제 성공입니다."),
     GET_TOUR_CATEGORIES_SUCCESS(OK, "tour : 투어 카테고리 리스트 조회 성공입니다."),

@@ -17,4 +17,6 @@ public interface UserRepositoryCustom {
 
     User loadUserByUserId(Long userId, boolean enabled);
 
+    List<User> findAllGuideByEnabled(boolean enabled);
+
 }

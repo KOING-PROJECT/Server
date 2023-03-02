@@ -43,10 +43,35 @@ public class UserService {
     private final TourRepositoryImpl tourRepositoryImpl;
 
     @Transactional
-    public List<User> getUsers() {
+    public SuperResponse getUsers() {
+
+        LOGGER.info("[UserService] 유저 리스트 조회 시도");
+
         List<User> users = userRepositoryImpl.findAllUserByEnabled(true);
 
-        return users;
+        List<UserListDto> userListDtos = new ArrayList<>();
+        for (User user : users) {
+            userListDtos.add(new UserListDto(user));
+        }
+        LOGGER.info("[UserService] 유저 리스트 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_USERS_SUCCESS, new UserListResponseDto(userListDtos));
+    }
+
+    @Transactional
+    public SuperResponse getGuides() {
+
+        LOGGER.info("[UserService] 가이드 리스트 조회 시도");
+
+        List<User> users = userRepositoryImpl.findAllGuideByEnabled(true);
+
+        List<UserGuideListDto> userGuideListDtos = new ArrayList<>();
+        for (User user : users) {
+            userGuideListDtos.add(new UserGuideListDto(user));
+        }
+        LOGGER.info("[UserService] 가이드 리스트 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_GUIDES_SUCCESS, new UserGuideListResponseDto(userGuideListDtos));
     }
 
     @Transactional

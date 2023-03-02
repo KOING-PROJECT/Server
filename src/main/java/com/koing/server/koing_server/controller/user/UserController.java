@@ -35,7 +35,6 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "User - 유저 정보 가져오기 성공"),
             @ApiResponse(code = 401, message = "토큰이 없습니다."),
-            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 410, message = "만료된 토큰입니다."),
             @ApiResponse(code = 411, message = "잘못된 토큰 형식입니다."),
             @ApiResponse(code = 412, message = "알 수 없는 권한이므로 접근이 불가능합니다."),
@@ -44,8 +43,47 @@ public class UserController {
     @GetMapping("/users")
     public SuperResponse getUser() {
 
-        List<User> users = userService.getUsers();
-        return SuccessResponse.success(SuccessCode.GET_USERS_SUCCESS, users);
+        LOGGER.info("[UserController] 유저 리스트 조회 시도");
+
+        SuperResponse getUserListResponse;
+        try {
+            getUserListResponse = userService.getUsers();
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] 유저 리스트 조회 성공");
+
+        return getUserListResponse;
+    }
+
+
+    @ApiOperation("User - 가이드 리스트를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - 가이드 정보 가져오기 성공"),
+            @ApiResponse(code = 401, message = "토큰이 없습니다."),
+            @ApiResponse(code = 410, message = "만료된 토큰입니다."),
+            @ApiResponse(code = 411, message = "잘못된 토큰 형식입니다."),
+            @ApiResponse(code = 412, message = "알 수 없는 권한이므로 접근이 불가능합니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/users/guides")
+    public SuperResponse getGuides() {
+
+        LOGGER.info("[UserController] 가이드 리스트 조회 시도");
+
+        SuperResponse getGuideListResponse;
+        try {
+            getGuideListResponse = userService.getGuides();
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] 가이드 리스트 조회 성공");
+
+        return getGuideListResponse;
     }
 
 

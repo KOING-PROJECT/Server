@@ -5,19 +5,14 @@ import lombok.*;
 
 import java.util.List;
 
-@ToString
-@Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Builder(access = AccessLevel.PRIVATE)
+@Data
+@NoArgsConstructor
 public class UserListResponseDto {
 
-    private List<User> users;
-
-    public static UserListResponseDto of(List<User> users) {
-        return UserListResponseDto.builder()
-                .users(users)
-                .build();
+    public UserListResponseDto(List<UserListDto> users) {
+        this.users = users;
     }
+
+    private List<UserListDto> users;
 
 }

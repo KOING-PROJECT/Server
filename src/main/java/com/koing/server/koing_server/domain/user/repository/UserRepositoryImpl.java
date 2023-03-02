@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.user.repository;
 
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.domain.user.User;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -114,6 +115,28 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 )
                 .distinct()
                 .fetchOne();
+    }
+
+    @Override
+    public List<User> findAllGuideByEnabled(boolean enabled) {
+        return jpqlQueryFactory
+                .selectFrom(user)
+                .leftJoin(user.roles)
+                .fetchJoin()
+                .leftJoin(user.createTours, tour)
+                .fetchJoin()
+                .leftJoin(user.tourParticipants, tourParticipant)
+                .fetchJoin()
+                .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
+                .leftJoin(user.pressLikeTours, tour)
+                .fetchJoin()
+                .where(
+                        user.enabled.eq(true),
+                        user.roles.contains(UserRole.ROLE_GUIDE.getRole())
+                )
+                .distinct()
+                .fetch();
     }
 
 }
