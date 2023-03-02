@@ -126,6 +126,26 @@ public enum ErrorCode {
     UNSUPPORTED_MEDIA_TYPE_EXCEPTION(UNSUPPORTED_MEDIA_TYPE, "해당하는 미디어 타입을 지원하지 않습니다."),
 
     /**
+     * 416 Unsupported Encoding
+     */
+    UNSUPPORTED_ENCODING_EXCEPTION(UNSUPPORTED_ENCODING, "해당하는 인코딩을 지원하지 않습니다."),
+
+    /**
+     * 417 No Such Algorithm
+     */
+    NO_SUCH_ALGORITHM_EXCEPTION(NO_SUCH_ALGORITHM, "해당하는 알고리즘이 없습니다."),
+
+    /**
+     * 418 Invalid Key
+     */
+    INVALID_KEY_EXCEPTION(INVALID_KEY, "유효하지 않은 키 입니다."),
+
+    /**
+     * 419 Json processing
+     */
+    JSON_PROCESSING_EXCEPTION(JSON_PROCESSING, "Json 파일 프로세싱 과정에서 오류가 발생했습니다."),
+
+    /**
      * 500 Internal Server Exception
      */
     INTERNAL_SERVER_EXCEPTION(INTERNAL_SERVER, "예상치 못한 서버 에러가 발생하였습니다."),

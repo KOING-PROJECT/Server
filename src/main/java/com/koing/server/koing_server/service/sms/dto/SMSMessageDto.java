@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 public class SMSMessageDto {
 
     public SMSMessageDto(String receivePhoneNumber) {
-        this.receivePhoneNumber = receivePhoneNumber;
+        this.to = receivePhoneNumber;
     }
 
-    private String receivePhoneNumber;
+    private String to;
 
 }
