@@ -13,6 +13,7 @@ public class TourSetCreateDto {
     private String title;
     private String description;
     private List<String> tourCategoryNames;
+    private List<String> tourDetailTypes;
     private List<String> uploadedThumbnailUrls;
     private int participant;
     private int tourPrice;

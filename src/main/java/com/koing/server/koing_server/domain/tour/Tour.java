@@ -22,8 +22,9 @@ public class Tour extends AuditingTimeEntity {
 
     @Builder
     public Tour(String title, User createUser, String description,
-                Set<TourCategory> tourCategories, Set<String> thumbnails,
-                int participant, int tourPrice, boolean hasLevy, int temporarySavePage,
+                Set<TourCategory> tourCategories, Set<String> tourDetailTypes,
+                Set<String> thumbnails, int participant, int tourPrice,
+                boolean hasLevy, int temporarySavePage,
                 TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
                 CreateStatus createStatus
                 ) {
@@ -31,6 +32,7 @@ public class Tour extends AuditingTimeEntity {
         this.createUser = createUser;
         this.description = description;
         this.tourCategories = tourCategories;
+        this.tourDetailTypes = tourDetailTypes;
         this.thumbnails = thumbnails;
         this.participant = participant;
         this.tourPrice = tourPrice;
@@ -58,6 +60,10 @@ public class Tour extends AuditingTimeEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<TourCategory> tourCategories;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(nullable = false, name = "detailTypes")
+    private Set<String> tourDetailTypes;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false, name = "thumbnails")

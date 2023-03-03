@@ -53,6 +53,8 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final SetPath<TourCategory, QTourCategory> tourCategories = this.<TourCategory, QTourCategory>createSet("tourCategories", TourCategory.class, QTourCategory.class, PathInits.DIRECT2);
 
+    public final SetPath<String, StringPath> tourDetailTypes = this.<String, StringPath>createSet("tourDetailTypes", String.class, StringPath.class, PathInits.DIRECT2);
+
     public final NumberPath<Integer> tourPrice = createNumber("tourPrice", Integer.class);
 
     public final QTourSchedule tourSchedule;

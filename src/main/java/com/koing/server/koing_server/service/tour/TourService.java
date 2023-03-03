@@ -358,6 +358,7 @@ public class TourService {
                 .title(tourCreateDto.getTitle())
                 .description(tourCreateDto.getDescription())
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
+                .tourDetailTypes(tourCreateDto.getTourDetailTypes().stream().collect(Collectors.toSet()))
                 .thumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails))
                 .participant(tourCreateDto.getParticipant())
                 .tourPrice(tourCreateDto.getTourPrice())
@@ -378,6 +379,7 @@ public class TourService {
             tour.deleteTourCategories(beforeTourCategories);
         }
         tour.setTourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()));
+        tour.setTourDetailTypes(tourCreateDto.getTourDetailTypes().stream().collect(Collectors.toSet()));
         tour.setThumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails));
         tour.setParticipant(tourCreateDto.getParticipant());
         tour.setTourPrice(tourCreateDto.getTourPrice());

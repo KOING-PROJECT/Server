@@ -18,6 +18,7 @@ public class TourTemporaryTourDto {
         this.title = tour.getTitle();
         this.description = tour.getDescription();
         getCategoryNamesFromTour(tour.getTourCategories());
+        this.tourDetailTypes = tour.getTourDetailTypes();
         this.thumbnails = tour.getThumbnails();
         this.participant = tour.getParticipant();
         this.tourPrice = tour.getTourPrice();
@@ -42,7 +43,7 @@ public class TourTemporaryTourDto {
     private String title;
     private String description;
     private Set<String> tourCategoryNames;
-    private Set<String> tourCategoryDetails;
+    private Set<String> tourDetailTypes;
     private Set<String> thumbnails;
     private int participant;
     private int tourPrice;
@@ -59,16 +60,13 @@ public class TourTemporaryTourDto {
     private void getCategoryNamesFromTour(Set<TourCategory> tourCategories) {
         if (tourCategories == null || tourCategories.size() == 0) {
             this.tourCategoryNames = new HashSet<>();
-            this.tourCategoryDetails = new HashSet<>();
             return;
         }
 
         this.tourCategoryNames = new HashSet<>();
-        this.tourCategoryDetails = new HashSet<>();
 
         for (TourCategory tourCategory : tourCategories) {
             this.tourCategoryNames.add(tourCategory.getCategoryName());
-            this.tourCategoryDetails.addAll(tourCategory.getDetailTypes());
         }
     }
 

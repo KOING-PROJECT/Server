@@ -21,6 +21,7 @@ public class TourCreateDto {
         this.title = tourSetCreateDto.getTitle();
         this.description = tourSetCreateDto.getDescription();
         this.tourCategoryNames = tourSetCreateDto.getTourCategoryNames();
+        this.tourDetailTypes = tourSetCreateDto.getTourDetailTypes();
         this.uploadedThumbnailUrls = tourSetCreateDto.getUploadedThumbnailUrls();
         this.participant = tourSetCreateDto.getParticipant();
         this.tourPrice = tourSetCreateDto.getTourPrice();
@@ -33,6 +34,7 @@ public class TourCreateDto {
     private String title;
     private String description;
     private List<String> tourCategoryNames;
+    private List<String> tourDetailTypes;
     private List<String> uploadedThumbnailUrls;
     private int participant;
     private int tourPrice;
