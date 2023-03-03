@@ -78,6 +78,13 @@ public class TourService {
             tourDtos.add(new TourDto(tour));
         }
 
+        tourDtos = tourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed().reversed())
+                .collect(Collectors.toList());
+
         TourListResponseDto tourListResponseDto = new TourListResponseDto(tourDtos);
 
         return SuccessResponse.success(SuccessCode.GET_TOURS_SUCCESS, tourListResponseDto);
