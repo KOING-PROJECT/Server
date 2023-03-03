@@ -31,7 +31,7 @@ public class CryptogramController {
 
     @ApiOperation("Cryptogram : 인증번호를 확인합니다")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "cryptogram : 인증번호 확인 성공"),
+            @ApiResponse(code = 200, message = "Cryptogram : 인증번호 확인 성공"),
             @ApiResponse(code = 401, message = "Cryptogram이 일치하지 않습니다."),
             @ApiResponse(code = 401, message = "Cryptogram이 만료되었습니다. 이메일 인증을 다시 요청해주세요."),
             @ApiResponse(code = 402, message = "Cryptogram 인증과정에서 오류가 발생했습니다."),
@@ -42,10 +42,10 @@ public class CryptogramController {
     public SuperResponse verifyCryptogram(@RequestBody CryptogramVerifyDto cryptogramVerifyDto) {
         LOGGER.info("[CryptogramController] 인증번호 확인 시도");
 
-        SuperResponse VerifyCryptogramResponse;
+        SuperResponse verifyCryptogramResponse;
 
         try {
-            VerifyCryptogramResponse = cryptogramService.verifyCryptogram(cryptogramVerifyDto);
+            verifyCryptogramResponse = cryptogramService.verifyCryptogram(cryptogramVerifyDto);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
@@ -53,7 +53,7 @@ public class CryptogramController {
         }
         LOGGER.info("[CryptogramController] 인증번호 확인 성공");
 
-        return VerifyCryptogramResponse;
+        return verifyCryptogramResponse;
     }
 
 }

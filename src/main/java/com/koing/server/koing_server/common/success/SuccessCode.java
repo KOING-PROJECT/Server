@@ -45,6 +45,7 @@ public enum SuccessCode {
     RE_ISSUE_TOKEN_SUCCESS(OK, "reIssue : 토큰 재발급 성공입니다."),
     CRYPTOGRAM_CERTIFICATION_SUCCESS(OK, "cryptogram : 이메일 인증 성공입니다."),
     EMAIL_SEND_SUCCESS(OK, "eamil-send : Email send 성공입니다."),
+    SMS_CERTIFICATION_SUCCESS(OK, "sms : 휴대폰 인증 성공입니다."),
 
     /**
      * 201 CREATED

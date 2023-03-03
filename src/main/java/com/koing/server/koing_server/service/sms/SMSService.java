@@ -5,11 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.InternalServerException;
+import com.koing.server.koing_server.common.exception.NotFoundException;
+import com.koing.server.koing_server.common.exception.UnAuthorizedException;
 import com.koing.server.koing_server.common.success.SuccessCode;
+import com.koing.server.koing_server.domain.cryptogram.Cryptogram;
+import com.koing.server.koing_server.domain.sms.SMS;
+import com.koing.server.koing_server.domain.sms.repository.SMSRepository;
+import com.koing.server.koing_server.domain.sms.repository.SMSRepositoryImpl;
 import com.koing.server.koing_server.service.sms.dto.SMSRequestDto;
 import com.koing.server.koing_server.service.sms.dto.SMSResponseDto;
 import com.koing.server.koing_server.service.sms.dto.SMSSendDto;
+import com.koing.server.koing_server.service.sms.dto.SMSVerifyDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
@@ -30,6 +38,7 @@ import java.net.URI;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
@@ -37,6 +46,8 @@ import java.util.Random;
 public class SMSService {
 
     private final Logger LOGGER = LoggerFactory.getLogger(SMSService.class);
+    private final SMSRepository smsRepository;
+    private final SMSRepositoryImpl smsRepositoryImpl;
 
     @Value("${naver.cloud.platform.service.id}")
     private String serviceId;
@@ -83,8 +94,22 @@ public class SMSService {
             throw new InternalServerException("예상치 못한 서버 에러가 발생하였습니다.", ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
 
+        SMS sms;
+        String targetPhoneNumber = smsRequestDto.getCountryCode() + "-" + smsRequestDto.getReceivePhoneNumber();
         String certificationNumber = createCertificationNumber();
-        String content = createContent(certificationNumber);
+
+        if (!smsRepositoryImpl.hasSMSByTargetPhoneNumber(targetPhoneNumber)) {
+            sms = createSMS(targetPhoneNumber, certificationNumber);
+        }
+        else {
+            sms = updateSMS(targetPhoneNumber, certificationNumber);
+        }
+
+        if (sms == null) {
+            throw new InternalServerException("예상치 못한 서버 에러가 발생하였습니다.", ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+
+        String content = createContent(sms.getCertificationNumber());
 
         SMSSendDto smsSendDto = createSMSSend(smsRequestDto.getCountryCode(), fromPhoneNumber, content, smsRequestDto.getReceivePhoneNumber());
 
@@ -111,6 +136,42 @@ public class SMSService {
         LOGGER.info("[SMSService] 인증번호 전송 성공");
 
         return SuccessResponse.success(SuccessCode.SMS_SEND_SUCCESS, responseEntity.getBody());
+    }
+
+    public SuperResponse verifySMS(SMSVerifyDto smsVerifyDto) {
+
+        LOGGER.info("[SMSService] 인증번호 인증 시도");
+
+        String targetPhoneNumber = smsVerifyDto.getCountryCode() + "-" + smsVerifyDto.getReceivePhoneNumber();
+        String certificationNumber = smsVerifyDto.getCertificationNumber();
+
+        if (!smsRepositoryImpl.hasSMSByTargetPhoneNumber(targetPhoneNumber)) {
+            throw new NotFoundException("해당 번호의 문자인증을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_SMS_EXCEPTION);
+        }
+
+        SMS sms = smsRepositoryImpl.findSMSByTargetPhoneNumber(targetPhoneNumber);
+
+        if (!sms.getCertificationNumber().equals(certificationNumber)) {
+            throw new UnAuthorizedException("인증번호가 일치하지 않습니다.", ErrorCode.UNAUTHORIZED_CERTIFICATION_NUMBER_EXCEPTION);
+        }
+        LOGGER.info("[SMSService] 인증번호 일치 확인");
+
+        if(!LocalDateTime.now().isBefore(sms.getUpdatedAt().plusMinutes(3))) {
+            // 유효기간 만료된 인증번호
+            throw new UnAuthorizedException("인증번호가 만료되었습니다. 휴대폰 인증을 다시 요청해주세요.", ErrorCode.UNAUTHORIZED_CERTIFICATION_NUMBER_EXPIRE_EXCEPTION);
+        }
+        LOGGER.info("[SMSService] 인증번호가 만료되지 않음을 확인");
+
+        sms.setVerified(true);
+        SMS updatedSMS = smsRepository.save(sms);
+
+        if (!updatedSMS.isVerified()) {
+            throw new DBFailException("문자 인증 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_VERIFY_SMS_FAIL_EXCEPTION);
+        }
+
+        LOGGER.info("[SMSService] 인증번호 인증 완료");
+
+        return SuccessResponse.success(SuccessCode.SMS_CERTIFICATION_SUCCESS, updatedSMS.isVerified());
     }
 
     private String makeSignature(String path, String time) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
@@ -166,6 +227,41 @@ public class SMSService {
         }
 
         return certificationNumber;
+    }
+
+    private SMS createSMS(String targetPhoneNumber, String certificationNumber) {
+        LOGGER.info("[SMSService] 인증번호 생성 시도");
+
+        SMS sms = SMS.builder()
+                .certificationNumber(certificationNumber)
+                .targetPhoneNumber(targetPhoneNumber)
+                .verified(false)
+                .build();
+
+        SMS savedSMS = smsRepository.save(sms);
+
+        if (savedSMS == null) {
+            throw new DBFailException("문자 인증을 생성하는 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_SMS_FAIL_EXCEPTION);
+        }
+        LOGGER.info("[SMSService] 인증번호 생성 완료");
+
+        return savedSMS;
+    }
+
+    private SMS updateSMS(String targetPhoneNumber, String newCertificationNumber) {
+        LOGGER.info("[SMSService] 인증번호 생성 시도");
+
+        SMS sms = smsRepositoryImpl.findSMSByTargetPhoneNumber(targetPhoneNumber);
+        sms.setCertificationNumber(newCertificationNumber);
+
+        SMS updatedSMS = smsRepository.save(sms);
+
+        if (updatedSMS.getCertificationNumber() != newCertificationNumber) {
+            throw new DBFailException("문자 인증을 업데이트하는 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_SMS_FAIL_EXCEPTION);
+        }
+        LOGGER.info("[SMSService] 인증번호 업데이트 시도");
+
+        return updatedSMS;
     }
 
 }

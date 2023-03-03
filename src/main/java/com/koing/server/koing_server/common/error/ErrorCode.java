@@ -29,6 +29,8 @@ public enum ErrorCode {
     UNAUTHORIZED_EXPIRE_TOKEN_EXCEPTION(UNAUTHORIZED, "토큰이 만료되었습니다."),
     UNAUTHORIZED_CRYPTOGRAM_NOT_MATCH_EXCEPTION(UNAUTHORIZED, "Cryptogram이 일치하지 않습니다."),
     UNAUTHORIZED_CRYPTOGRAM_EXPIRE_EXCEPTION(UNAUTHORIZED, "Cryptogram이 만료되었습니다. 이메일 인증을 다시 요청해주세요."),
+    UNAUTHORIZED_CERTIFICATION_NUMBER_EXCEPTION(UNAUTHORIZED, "인증번호가 일치하지 않습니다."),
+    UNAUTHORIZED_CERTIFICATION_NUMBER_EXPIRE_EXCEPTION(UNAUTHORIZED, "인증번호가 만료되었습니다. 휴대폰 인증을 다시 요청해주세요."),
 
     /**
      * 402 DB Fail
@@ -61,6 +63,9 @@ public enum ErrorCode {
     DB_FAIL_COMPLETE_TOUR_SURVEY_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 설문 완성과정에서 오류가 발생했습니다."),
     DB_FAIL_VERIFY_CRYPTOGRAM_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 인증과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_TOUR_PARTICIPANT_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 신청 내용 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증을 생성하는 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증을 업데이트하는 과정에서 오류가 발생했습니다."),
+    DB_FAIL_VERIFY_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증 과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -88,6 +93,7 @@ public enum ErrorCode {
     NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION(NOT_FOUND, "해당 투어 신청 내용을 찾을 수 없습니다."),
     NOT_FOUND_TEMPORARY_TOUR_EXCEPTION(NOT_FOUND, "이어서 만들 투어를 찾을 수 없습니다."),
     NOT_FOUND_USER_OPTIONAL_INFO_EXCEPTION(NOT_FOUND, "해당 유저의 선택사항을 찾을 수 없습니다."),
+    NOT_FOUND_SMS_EXCEPTION(NOT_FOUND, "해당 번호의 문자인증을 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
