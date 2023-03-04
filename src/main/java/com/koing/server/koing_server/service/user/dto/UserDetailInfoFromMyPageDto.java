@@ -22,12 +22,13 @@ public class UserDetailInfoFromMyPageDto {
         if (user.getUserOptionalInfo().getImageUrls() != null &&
                 user.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
+            this.introduction = user.getUserOptionalInfo().getDescription();
+            this.language = user.getUserOptionalInfo().getLanguages();
+            this.area = user.getUserOptionalInfo().getAreas();
+            this.job = user.getUserOptionalInfo().getJob();
+            setJobAndUnivAndCompany(user);
         }
         this.attachment = user.getAttachment();
-        this.introduction = user.getUserOptionalInfo().getDescription();
-        this.language = user.getUserOptionalInfo().getLanguages();
-        this.area = user.getUserOptionalInfo().getAreas();
-        this.job = user.getUserOptionalInfo().getJob();
 
         if (user.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
             this.tours = createTours(user);
@@ -45,11 +46,12 @@ public class UserDetailInfoFromMyPageDto {
     private String introduction;
     private Set<String> language;
     private Set<String> area;
-    private String job;
     private Set<TourLikeDto> tours;
-
     private GuideGrade guideGrade;
     private TouristGrade touristGrade;
+    private String job;
+    private String universityName;
+    private String company;
 
     private Set<TourLikeDto> createTours(User user) {
         Set<Tour> tours = user.getCreateTours()
@@ -66,6 +68,21 @@ public class UserDetailInfoFromMyPageDto {
         }
 
         return tourLikeDtos;
+    }
+
+    private void setJobAndUnivAndCompany(User user) {
+        String job = user.getUserOptionalInfo().getJob();
+
+        this.job = job;
+
+        if (job.equals("대학생")) {
+            this.universityName = user.getUserOptionalInfo().getUniversityEmail();
+            this.company = "";
+        }
+        else {
+            this.company = user.getUserOptionalInfo().getCompany();
+            this.universityName = "";
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.user.dto;
 
+import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,7 @@ public class UserProfileDto {
         this.description = userOptionalInfo.getDescription();
         this.languages = userOptionalInfo.getLanguages();
         this.areas = userOptionalInfo.getAreas();
-        this.job = userOptionalInfo.getJob();
-        this.universityEmail = userOptionalInfo.getUniversityEmail();
-        this.company = userOptionalInfo.getCompany();
+        setJobAndUnivAndCompany(userOptionalInfo);
         this.isCertified = userOptionalInfo.isCertified();
     }
 
@@ -31,5 +30,20 @@ public class UserProfileDto {
     private String universityEmail;
     private String company;
     private boolean isCertified;
+
+    private void setJobAndUnivAndCompany(UserOptionalInfo userOptionalInfo) {
+        String job = userOptionalInfo.getJob();
+
+        this.job = job;
+
+        if (job.equals("대학생")) {
+            this.universityEmail = userOptionalInfo.getUniversityEmail();
+            this.company = "";
+        }
+        else {
+            this.company = userOptionalInfo.getCompany();
+            this.universityEmail = "";
+        }
+    }
 
 }

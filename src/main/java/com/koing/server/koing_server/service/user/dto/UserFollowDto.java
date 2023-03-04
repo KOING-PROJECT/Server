@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.user.dto;
 
+import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import lombok.AccessLevel;
@@ -17,6 +18,10 @@ public class UserFollowDto {
                 userOptionalInfo.getImageUrls().size() > 0) {
             this.followingUserThumbnail = userOptionalInfo.getImageUrls().get(0);
         }
+
+        if (followingUser.getGuideGrade() != null) {
+            this.guideGrade = followingUser.getGuideGrade();
+        }
     }
 
     public UserFollowDto(User followingUser) {
@@ -26,10 +31,15 @@ public class UserFollowDto {
                 followingUser.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.followingUserThumbnail = followingUser.getUserOptionalInfo().getImageUrls().get(0);
         }
+
+        if (followingUser.getGuideGrade() != null) {
+            this.guideGrade = followingUser.getGuideGrade();
+        }
     }
 
     private Long followingUserId;
     private String followingUserName;
     private String followingUserThumbnail;
+    private GuideGrade guideGrade;
 
 }

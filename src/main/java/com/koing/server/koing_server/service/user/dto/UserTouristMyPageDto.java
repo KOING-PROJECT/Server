@@ -25,6 +25,7 @@ public class UserTouristMyPageDto {
         if (user.getUserOptionalInfo().getImageUrls() != null &&
                 user.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
+            setJobAndUnivAndCompany(user);
         }
         this.following = createUserFollowDtos(user);
         this.likeTours = createTourLikeDtos(user);
@@ -38,8 +39,10 @@ public class UserTouristMyPageDto {
     private List<UserFollowDto> following;
     private List<TourLikeDto> likeTours;
     private List<TourHistoryDto> tourHistories;
-
     private TouristGrade touristGrade;
+    private String job;
+    private String universityName;
+    private String company;
 
     private List<UserFollowDto> createUserFollowDtos(User user) {
         List<User> followingUsers = user.getFollowing().stream().collect(Collectors.toList());
@@ -82,6 +85,21 @@ public class UserTouristMyPageDto {
                 .collect(Collectors.toList());
 
         return tourHistoryDtos;
+    }
+
+    private void setJobAndUnivAndCompany(User user) {
+        String job = user.getUserOptionalInfo().getJob();
+
+        this.job = job;
+
+        if (job.equals("대학생")) {
+            this.universityName = user.getUserOptionalInfo().getUniversityEmail();
+            this.company = "";
+        }
+        else {
+            this.company = user.getUserOptionalInfo().getCompany();
+            this.universityName = "";
+        }
     }
 
 }

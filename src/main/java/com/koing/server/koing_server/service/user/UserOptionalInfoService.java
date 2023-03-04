@@ -5,6 +5,8 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.*;
 import com.koing.server.koing_server.common.success.SuccessCode;
+import com.koing.server.koing_server.domain.cryptogram.Cryptogram;
+import com.koing.server.koing_server.domain.cryptogram.repository.CryptogramRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository;
@@ -38,6 +40,7 @@ public class UserOptionalInfoService {
     private final UserRepositoryImpl userRepositoryImpl;
     private final UserRepository userRepository;
     private final AWSS3Component awss3Component;
+    private final CryptogramRepositoryImpl cryptogramRepositoryImpl;
 
     @Transactional
     public SuperResponse createUserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto) throws BoilerplateException {
@@ -66,7 +69,16 @@ public class UserOptionalInfoService {
         }
 
         LOGGER.info("[UserOptionalInfoService] 프로필 이미지 s3에 upload 완료 = " + uploadedImageUrls);
-        UserOptionalInfo userOptionalInfo = new UserOptionalInfo(userOptionalInfoCreateDto, uploadedImageUrls);
+
+        String userEmail = user.getEmail();
+        boolean isVerified = false;
+
+        if (cryptogramRepositoryImpl.hasCryptogramByUserEmail(userEmail)) {
+            Cryptogram cryptogram = cryptogramRepositoryImpl.findCryptogramByUserEmail(userEmail);
+            isVerified = cryptogram.isVerified();
+        }
+
+        UserOptionalInfo userOptionalInfo = new UserOptionalInfo(userOptionalInfoCreateDto, uploadedImageUrls, isVerified);
         UserOptionalInfo savedUserOptionalInfo = userOptionalInfoRepository.save(userOptionalInfo);
 
         if (savedUserOptionalInfo == null) {

@@ -26,6 +26,7 @@ public class UserGuideMyPageDto {
         if (user.getUserOptionalInfo().getImageUrls() != null &&
                 user.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
+            setJobAndUnivAndCompany(user);
         }
         this.myTours = createMyTours(user);
         this.creatingTours = createCreatingTours(user);
@@ -44,6 +45,9 @@ public class UserGuideMyPageDto {
     private List<TourMyTourDto> recruitmentTours;
     private List<TourMyEndTourDto> myEndTours;
     private GuideGrade guideGrade;
+    private String job;
+    private String universityName;
+    private String company;
 
     private List<TourMyTourDto> createMyTours(User user) {
         List<Tour> createTours = user.getCreateTours()
@@ -173,4 +177,18 @@ public class UserGuideMyPageDto {
         return tourMyEndTourDtos;
     }
 
+    private void setJobAndUnivAndCompany(User user) {
+        String job = user.getUserOptionalInfo().getJob();
+
+        this.job = job;
+
+        if (job.equals("대학생")) {
+            this.universityName = user.getUserOptionalInfo().getUniversityEmail();
+            this.company = "";
+        }
+        else {
+            this.company = user.getUserOptionalInfo().getCompany();
+            this.universityName = "";
+        }
+    }
 }

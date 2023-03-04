@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserOptionalInfo {
 
-    public UserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto, List<String> imageUrls) {
+    public UserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto, List<String> imageUrls, boolean isVerified) {
         this.imageUrls = imageUrls;
         this.description = userOptionalInfoCreateDto.getDescription();
         this.languages = userOptionalInfoCreateDto.getLanguages();
@@ -23,6 +23,7 @@ public class UserOptionalInfo {
         this.job = userOptionalInfoCreateDto.getJob();
         this.universityEmail = userOptionalInfoCreateDto.getUniversityEmail();
         this.company = userOptionalInfoCreateDto.getCompany();
+        this.isCertified = isVerified;
     }
 
     @Id

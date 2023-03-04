@@ -7,6 +7,7 @@ import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.IOFailException;
+import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
@@ -87,6 +88,10 @@ public class UserService {
 
         User targetUser = getUser(targetUserId);
         LOGGER.info("[UserService] 대상 유저 조회 성공");
+
+        if (!targetUser.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
+            throw new NotAcceptableException("해당 유저는 가이드가 아니므로 팔로우 할 수 없습니다.", ErrorCode.NOT_ACCEPTABLE_NOT_GUIDE_EXCEPTION);
+        }
 
         int beforeTargerUserFollower;
 
