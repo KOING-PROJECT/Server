@@ -39,7 +39,7 @@ public class TourDto {
     private Long tourId;
     private String tourTitle;
     private int maxParticipant;
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
     private String guideName;
     private String guideThumbnail;
     private List<String> tourDates;

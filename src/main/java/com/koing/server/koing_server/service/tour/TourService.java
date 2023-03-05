@@ -392,9 +392,9 @@ public class TourService {
         return tour;
     }
 
-    private Set<String> uploadThumbnails(List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
+    private List<String> uploadThumbnails(List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
         LOGGER.info("[TourService] 투어 썸네일 s3에 upload 시도");
-        Set<String> thumbnails = new HashSet<>();
+        List<String> thumbnails = new ArrayList<>();
 
         thumbnails.addAll(uploadedThumbnailUrls);
 

@@ -23,7 +23,7 @@ public class Tour extends AuditingTimeEntity {
     @Builder
     public Tour(String title, User createUser, String description,
                 Set<TourCategory> tourCategories, Set<String> tourDetailTypes,
-                Set<String> thumbnails, int participant, int tourPrice,
+                List<String> thumbnails, int participant, int tourPrice,
                 boolean hasLevy, int temporarySavePage,
                 TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
                 CreateStatus createStatus
@@ -67,7 +67,7 @@ public class Tour extends AuditingTimeEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false, name = "thumbnails")
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
 
     @Column(nullable = false)
     private int participant;

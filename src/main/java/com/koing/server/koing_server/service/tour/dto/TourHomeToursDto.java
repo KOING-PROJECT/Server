@@ -22,7 +22,7 @@ public class TourHomeToursDto {
 
     private Long tourId;
     private String tourTitle;
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
     private Set<Long> pressLikeUserIds;
 
     private Set<Long> getPressLikeUserIds(Tour tour) {

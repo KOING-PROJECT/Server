@@ -10,10 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -25,18 +23,18 @@ public class TourDetailDto {
         this.createUserName = tour.getCreateUser().getName();
         this.title = tour.getTitle();
         this.description = tour.getDescription();
-        this.tourCategoryNames = new HashSet<>();
+        this.tourCategoryNames = new ArrayList<>();
         for (TourCategory tourCategory : tour.getTourCategories()) {
             this.tourCategoryNames.add(tourCategory.getCategoryName());
         }
-        this.tourDetailTypes = tour.getTourDetailTypes();
-        this.thumbnails = tour.getThumbnails();
+        this.tourDetailTypes = tour.getTourDetailTypes().stream().collect(Collectors.toList());
+        this.thumbnails = tour.getThumbnails().stream().collect(Collectors.toList());
         this.participant = tour.getParticipant();
         this.tourPrice = tour.getTourPrice();
         this.hasLevy = tour.isHasLevy();
-        this.additionalPrice = tour.getAdditionalPrice();
-        this.tourDates = tourSchedule.getTourDates();
-        this.tourDetailSchedules = tourSchedule.getTourDetailScheduleList();
+        this.additionalPrice = tour.getAdditionalPrice().stream().collect(Collectors.toList());
+        this.tourDates = tourSchedule.getTourDates().stream().sorted().collect(Collectors.toList());
+        sortTourDetailSchedule(tourSchedule);
         this.isUserPressTourLike = false;
     }
 
@@ -45,16 +43,31 @@ public class TourDetailDto {
     private String createUserName;
     private String title;
     private String description;
-    private Set<String> tourCategoryNames;
-    private Set<String> tourDetailTypes;
-    private Set<String> thumbnails;
+    private List<String> tourCategoryNames;
+    private List<String> tourDetailTypes;
+    private List<String> thumbnails;
     private int participant;
     private int tourPrice;
     private boolean hasLevy;
-    private Set<HashMap<String, List>> additionalPrice;
-    private Set<String> tourDates;
+    private List<HashMap<String, List>> additionalPrice;
+    private List<String> tourDates;
     private List<TourDetailSchedule> tourDetailSchedules;
     private boolean isUserPressTourLike;
     // 후기 추가해야됨
 
+    private void sortTourDetailSchedule(TourSchedule tourSchedule) {
+
+        if (tourSchedule.getTourDetailScheduleList() == null || tourSchedule.getTourDetailScheduleList().size() < 1) {
+            return;
+        }
+
+        List<TourDetailSchedule> tourDetailSchedules = tourSchedule.getTourDetailScheduleList()
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourDetailSchedule t) -> t.getStartTime()
+                ).reversed().reversed())
+                .collect(Collectors.toList());
+
+        this.tourDetailSchedules = tourDetailSchedules;
+    }
 }

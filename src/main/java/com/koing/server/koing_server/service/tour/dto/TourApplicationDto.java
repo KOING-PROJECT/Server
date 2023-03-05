@@ -5,6 +5,7 @@ import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -29,7 +30,7 @@ public class TourApplicationDto {
 
     private String tourTitle;
     private String guideName;
-    private Set<String> tourThumbnails;
+    private List<String> tourThumbnails;
     private String tourDate;
     private TourStatus tourStatus;
 }

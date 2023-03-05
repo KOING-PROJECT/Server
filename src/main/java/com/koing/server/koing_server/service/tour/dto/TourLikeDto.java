@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -19,6 +20,6 @@ public class TourLikeDto {
 
     private Long tourId;
     private String title;
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
 
 }

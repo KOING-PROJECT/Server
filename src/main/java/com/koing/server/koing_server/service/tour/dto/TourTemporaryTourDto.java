@@ -9,6 +9,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data
 public class TourTemporaryTourDto {
@@ -27,7 +28,7 @@ public class TourTemporaryTourDto {
         this.additionalPrice = getAdditionalPriceFromTour(tour.getAdditionalPrice());
 
         if (tour.getTourSchedule() != null) {
-            this.tourDates = tour.getTourSchedule().getTourDates();
+            this.tourDates = tour.getTourSchedule().getTourDates().stream().sorted().collect(Collectors.toList());
             this.dateNegotiation = tour.getTourSchedule().isDateNegotiation();
             this.tourDetailScheduleHashMap = getTourDetailScheduleHashMapFromTour(tour.getTourSchedule().getTourDetailScheduleList());
         }
@@ -44,13 +45,13 @@ public class TourTemporaryTourDto {
     private String description;
     private Set<String> tourCategoryNames;
     private Set<String> tourDetailTypes;
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
     private int participant;
     private int tourPrice;
     private boolean hasLevy;
     private int temporarySavePage;
     private List<String> additionalPrice;
-    private Set<String> tourDates;
+    private List<String> tourDates;
     private boolean dateNegotiation;
     private HashMap<String, HashMap<String, String>> tourDetailScheduleHashMap;
     private String style;

@@ -22,7 +22,7 @@ public class TourMyEndTourDto {
 
     private Long tourId;
     private String tourTitle;
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
     private String tourDate;
     private boolean hasReview;
 

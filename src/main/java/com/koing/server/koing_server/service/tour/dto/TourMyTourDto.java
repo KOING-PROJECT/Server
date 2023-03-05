@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -25,7 +26,10 @@ public class TourMyTourDto {
         }
         if (tour.getTourSchedule() != null) {
             if (tour.getTourSchedule().getTourDates() != null) {
-                this.tourDates = tour.getTourSchedule().getTourDates();
+                this.tourDates = tour.getTourSchedule().getTourDates()
+                        .stream()
+                        .sorted()
+                        .collect(Collectors.toList());
             }
         }
         this.tourStatus = tour.getTourStatus();
@@ -35,10 +39,10 @@ public class TourMyTourDto {
     private Long tourId;
     private String tourTitle;
     private int maxParticipant;
-    private Set<String> thumbnails;
+    private List<String> thumbnails;
     private String guideName;
     private List<String> guideThumbnails;
-    private Set<String> tourDates;
+    private List<String> tourDates;
     private TourStatus tourStatus;
     private CreateStatus createStatus;
 }
