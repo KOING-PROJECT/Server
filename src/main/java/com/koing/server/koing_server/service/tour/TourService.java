@@ -1,6 +1,5 @@
 package com.koing.server.koing_server.service.tour;
 
-import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
@@ -30,7 +29,6 @@ import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.tour.dto.*;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.implementation.bind.annotation.Super;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -104,13 +102,14 @@ public class TourService {
         }
 
         Tour tour = buildTour(tourCreateDto, thumbnails, createStatus);
-
+        System.out.println("tttttttttt = " + tour.getThumbnails());
         Tour savedTour = tourRepository.save(tour);
 
-        if(savedTour.getTitle() == null) {
+        if(savedTour == null) {
             throw new DBFailException("투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_FAIL_EXCEPTION);
         }
 
+        System.out.println(savedTour.getThumbnails());
         TourDto tourDto = new TourDto(savedTour);
         LOGGER.info("[TourService] Tour 생성 성공");
 
@@ -365,6 +364,7 @@ public class TourService {
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
                 .tourDetailTypes(tourCreateDto.getTourDetailTypes().stream().collect(Collectors.toSet()))
                 .participant(tourCreateDto.getParticipant())
+                .thumbnails(new ArrayList<>())
                 .tourPrice(tourCreateDto.getTourPrice())
                 .hasLevy(tourCreateDto.isHasLevy())
                 .temporarySavePage(tourCreateDto.getTemporarySavePage())
@@ -372,6 +372,7 @@ public class TourService {
                 .tourStatus(TourStatus.RECRUITMENT)
                 .createStatus(createStatus)
                 .build();
+
         uploadThumbnails(tour, tourCreateDto.getThumbnailOrders(), tourCreateDto.getUploadedThumbnailUrls(), thumbnails);
 
         return tour;
@@ -394,9 +395,29 @@ public class TourService {
         if (CreateStatus.COMPLETE.equals(createStatus)) {
             tour.setCreateStatus(createStatus);
         }
+        deleteRemovedThumbnails(tour, tourCreateDto.getUploadedThumbnailUrls());
         uploadThumbnails(tour, tourCreateDto.getThumbnailOrders(), tourCreateDto.getUploadedThumbnailUrls(), thumbnails);
 
         return tour;
+    }
+
+    private void deleteRemovedThumbnails(Tour tour, List<String> uploadedThumbnailUrls) {
+
+        List<Thumbnail> beforeThumbnail = tour.getThumbnails();
+
+        List<String> beforeThumbnailUrls = new ArrayList<>();
+        for (Thumbnail thumbnail : beforeThumbnail) {
+            beforeThumbnailUrls.add(thumbnail.getFilePath());
+        }
+
+        for (String beforeThumbnailUrl : beforeThumbnailUrls) {
+            if (!uploadedThumbnailUrls.contains(beforeThumbnailUrl)) {
+                Thumbnail deleteThumbnail = getThumbnail(beforeThumbnailUrl);
+
+                deleteThumbnail.deleteTour(tour);
+                thumbnailRepository.delete(deleteThumbnail);
+            }
+        }
     }
 
     private List<Thumbnail> uploadThumbnails(Tour tour, List<String> thumbnailOrders, List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
@@ -413,7 +434,7 @@ public class TourService {
                     throw new NotAcceptableException("해당 사진의 순서를 알 수 없습니다.", ErrorCode.NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION);
                 }
 
-                thumbnail.setOrder(idx);
+                thumbnail.setThumbnailOrder(idx);
                 thumbnailRepository.save(thumbnail);
             }
         }
@@ -423,6 +444,7 @@ public class TourService {
             for (MultipartFile multipartFile : multipartFiles) {
                 try {
                     String originName = multipartFile.getOriginalFilename();
+                    System.out.println("originName = " + originName);
                     int idx = thumbnailOrders.indexOf(originName);
                     if (idx < 0) {
                         throw new NotAcceptableException("해당 사진의 순서를 알 수 없습니다.", ErrorCode.NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION);
@@ -450,7 +472,7 @@ public class TourService {
 
     private Thumbnail createThumbnail(Tour tour, int order, String originName, String filePath) {
         Thumbnail thumbnail = new Thumbnail();
-        thumbnail.setOrder(order);
+        thumbnail.setThumbnailOrder(order);
         thumbnail.setOriginName(originName);
         thumbnail.setFilePath(filePath);
         thumbnail.setTour(tour);
@@ -473,7 +495,13 @@ public class TourService {
         Set<TourCategory> tourCategories = new HashSet<>();
 
         for (String tourCategoryName : tourCategoryNames) {
-            tourCategories.add(tourCategoryRepositoryImpl.findTourCategoryByCategoryName(tourCategoryName));
+            TourCategory tourCategory = tourCategoryRepositoryImpl.findTourCategoryByCategoryName(tourCategoryName);
+
+            if (tourCategory == null) {
+                throw new NotFoundException("존재하지 않는 투어 카테고리 입니다.", ErrorCode.NOT_FOUND_TOUR_CATEGORY_EXCEPTION);
+            }
+
+            tourCategories.add(tourCategory);
         }
 
         return tourCategories;

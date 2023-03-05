@@ -71,7 +71,7 @@ public class Tour extends AuditingTimeEntity {
 //    private List<String> thumbnails;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ownedTour")
     private List<Thumbnail> thumbnails;
 
     @Column(nullable = false)

@@ -1,7 +1,6 @@
 package com.koing.server.koing_server.service.review.dto;
 
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

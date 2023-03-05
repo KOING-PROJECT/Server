@@ -13,14 +13,14 @@ import java.util.ArrayList;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "TOUR_IMAGE_TABLE")
+@Table(name = "TOUR_THUMBNAIL_TABLE")
 public class Thumbnail extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int order;
+    private int thumbnailOrder;
 
     private String originName;
 
@@ -28,16 +28,22 @@ public class Thumbnail extends AuditingTimeEntity {
     private String filePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Tour tour;
+    private Tour ownedTour;
 
     public void setTour(Tour tour) {
-        this.tour = tour;
+        this.ownedTour = tour;
 
         if (tour.getThumbnails() == null) {
             tour.setThumbnails(new ArrayList<>());
         }
 
         tour.getThumbnails().add(this);
+    }
+
+    public void deleteTour(Tour tour) {
+        this.ownedTour = null;
+
+        tour.getThumbnails().remove(this);
     }
 
 }

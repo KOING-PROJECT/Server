@@ -1,14 +1,14 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.Tour;
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -20,7 +20,7 @@ public class TourDto {
         this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
         this.maxParticipant = tour.getParticipant();
-        this.thumbnails = tour.getThumbnails();
+        getThumbnails(tour);
         this.guideName = tour.getCreateUser().getName();
         if (tour.getCreateUser().getUserOptionalInfo() != null) {
             if (tour.getCreateUser().getUserOptionalInfo().getImageUrls() != null &&
@@ -43,5 +43,21 @@ public class TourDto {
     private String guideName;
     private String guideThumbnail;
     private List<String> tourDates;
+
+    private void getThumbnails(Tour tour) {
+        List<Thumbnail> thumbnails = tour.getThumbnails()
+                .stream()
+                .sorted(Comparator.comparing((Thumbnail t) -> t.getThumbnailOrder()))
+                .collect(Collectors.toList());
+        System.out.println(thumbnails);
+
+        List<String> thumbnailUrls = new ArrayList<>();
+
+        for (Thumbnail thumbnail : thumbnails) {
+            thumbnailUrls.add(thumbnail.getFilePath());
+        }
+
+        this.thumbnails = thumbnailUrls;
+    }
 
 }

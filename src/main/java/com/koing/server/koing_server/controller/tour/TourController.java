@@ -138,6 +138,7 @@ public class TourController {
             @ApiResponse(code = 200, message = "Tour - 투어 업데이트 성공"),
             @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "존재하지 않는 투어 카테고리 입니다."),
             @ApiResponse(code = 406, message = "해당 투어의 생성자가 아닙니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
@@ -156,6 +157,8 @@ public class TourController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[TourController] 투어 update 성공");

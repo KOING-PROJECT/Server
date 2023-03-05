@@ -96,6 +96,7 @@ public enum ErrorCode {
     NOT_FOUND_USER_OPTIONAL_INFO_EXCEPTION(NOT_FOUND, "해당 유저의 선택사항을 찾을 수 없습니다."),
     NOT_FOUND_SMS_EXCEPTION(NOT_FOUND, "해당 번호의 문자인증을 찾을 수 없습니다."),
     NOT_FOUND_THUMBNAIL_EXCEPTION(NOT_FOUND, "해당 썸네일을 찾을 수 없습니다."),
+    NOT_FOUND_TOUR_CATEGORY_EXCEPTION(NOT_FOUND, "존재하지 않는 투어 카테고리 입니다."),
 
     /**
      * 405 Method Not Allowed

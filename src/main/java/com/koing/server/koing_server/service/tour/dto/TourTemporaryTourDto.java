@@ -1,13 +1,9 @@
 package com.koing.server.koing_server.service.tour.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.koing.server.koing_server.common.enums.CreateStatus;
-import com.koing.server.koing_server.common.enums.TourStatus;
+import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.*;
-import com.koing.server.koing_server.domain.user.User;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -20,7 +16,7 @@ public class TourTemporaryTourDto {
         this.description = tour.getDescription();
         getCategoryNamesFromTour(tour.getTourCategories());
         this.tourDetailTypes = tour.getTourDetailTypes();
-        this.thumbnails = tour.getThumbnails();
+        this.thumbnails = getThumbnails(tour);
         this.participant = tour.getParticipant();
         this.tourPrice = tour.getTourPrice();
         this.hasLevy = tour.isHasLevy();
@@ -123,5 +119,19 @@ public class TourTemporaryTourDto {
         return newHashMap;
     }
 
+    private List<String> getThumbnails(Tour tour) {
+        List<Thumbnail> thumbnails = tour.getThumbnails()
+                .stream()
+                .sorted(Comparator.comparing((Thumbnail t) -> t.getThumbnailOrder()))
+                .collect(Collectors.toList());
+
+        List<String> thumbnailUrls = new ArrayList<>();
+
+        for (Thumbnail thumbnail : thumbnails) {
+            thumbnailUrls.add(thumbnail.getFilePath());
+        }
+
+        return thumbnailUrls;
+    }
 
 }

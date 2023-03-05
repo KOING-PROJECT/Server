@@ -67,6 +67,8 @@ public class TourSetController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
 
