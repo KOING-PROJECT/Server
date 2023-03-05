@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.user.User;
 import lombok.*;
 
@@ -23,7 +24,7 @@ public class Tour extends AuditingTimeEntity {
     @Builder
     public Tour(String title, User createUser, String description,
                 Set<TourCategory> tourCategories, Set<String> tourDetailTypes,
-                List<String> thumbnails, int participant, int tourPrice,
+                List<Thumbnail> thumbnails, int participant, int tourPrice,
                 boolean hasLevy, int temporarySavePage,
                 TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
                 CreateStatus createStatus
@@ -65,9 +66,13 @@ public class Tour extends AuditingTimeEntity {
     @Column(nullable = false, name = "detailTypes")
     private Set<String> tourDetailTypes;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Column(nullable = false, name = "thumbnails")
-    private List<String> thumbnails;
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Column(nullable = false, name = "thumbnails")
+//    private List<String> thumbnails;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tour")
+    private List<Thumbnail> thumbnails;
 
     @Column(nullable = false)
     private int participant;

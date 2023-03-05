@@ -23,6 +23,7 @@ public class TourCreateDto {
         this.tourCategoryNames = tourSetCreateDto.getTourCategoryNames();
         this.tourDetailTypes = tourSetCreateDto.getTourDetailTypes();
         this.uploadedThumbnailUrls = tourSetCreateDto.getUploadedThumbnailUrls();
+        this.thumbnailOrders = tourSetCreateDto.getThumbnailOrders();
         this.participant = tourSetCreateDto.getParticipant();
         this.tourPrice = tourSetCreateDto.getTourPrice();
         this.hasLevy = tourSetCreateDto.isHasLevy();
@@ -36,6 +37,7 @@ public class TourCreateDto {
     private List<String> tourCategoryNames;
     private List<String> tourDetailTypes;
     private List<String> uploadedThumbnailUrls;
+    private List<String> thumbnailOrders;
     private int participant;
     private int tourPrice;
     private boolean hasLevy;

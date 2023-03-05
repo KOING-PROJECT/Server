@@ -66,6 +66,7 @@ public enum ErrorCode {
     DB_FAIL_CREATE_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증을 생성하는 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증을 업데이트하는 과정에서 오류가 발생했습니다."),
     DB_FAIL_VERIFY_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_THUMBNAIL_EXCEPTION(DB_HANDLE_FAIL, "썸네일 저장 과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -94,6 +95,7 @@ public enum ErrorCode {
     NOT_FOUND_TEMPORARY_TOUR_EXCEPTION(NOT_FOUND, "이어서 만들 투어를 찾을 수 없습니다."),
     NOT_FOUND_USER_OPTIONAL_INFO_EXCEPTION(NOT_FOUND, "해당 유저의 선택사항을 찾을 수 없습니다."),
     NOT_FOUND_SMS_EXCEPTION(NOT_FOUND, "해당 번호의 문자인증을 찾을 수 없습니다."),
+    NOT_FOUND_THUMBNAIL_EXCEPTION(NOT_FOUND, "해당 썸네일을 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
@@ -110,6 +112,7 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_USER_NOT_HAVE_ROLE_EXCEPTION(NOT_ACCEPTABLE, "해당 유저의 ROLE이 없습니다."),
     NOT_ACCEPTABLE_ALREADY_PARTICIPATED_TOUR_EXCEPTION(NOT_ACCEPTABLE, "이미 신청한 투어입니다."),
     NOT_ACCEPTABLE_NOT_GUIDE_EXCEPTION(NOT_ACCEPTABLE, "해당 유저는 가이드가 아니므로 팔로우 할 수 없습니다."),
+    NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION(NOT_ACCEPTABLE, "해당 사진의 순서를 알 수 없습니다."),
 
     /**
      * 407 PAYMENT_SERVER_ERROR

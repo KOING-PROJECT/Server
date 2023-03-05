@@ -28,8 +28,8 @@ public class AWSS3Component {
 
     public String convertAndUploadFiles(MultipartFile multipartFile, String s3DirName) throws IOException {
         File uploadFile = convertFile(multipartFile)
-//                .orElseThrow(() -> new FileConvertException("파일 변환과정에서 오류가 발생했습니다."));
-                .orElseThrow();
+                .orElseThrow(() -> new FileConvertException("파일 변환과정에서 오류가 발생했습니다."));
+//                .orElseThrow();
         return upload(uploadFile, s3DirName);
     }
 

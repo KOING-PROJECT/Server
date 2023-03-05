@@ -12,6 +12,9 @@ import com.koing.server.koing_server.common.exception.IOFailException;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
+import com.koing.server.koing_server.domain.image.Thumbnail;
+import com.koing.server.koing_server.domain.image.repository.ThumbnailRepository;
+import com.koing.server.koing_server.domain.image.repository.ThumbnailRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.*;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepositoryImpl;
@@ -54,6 +57,8 @@ public class TourService {
     private final TourParticipantRepository tourParticipantRepository;
     private final TourParticipantRepositoryImpl tourParticipantRepositoryImpl;
     private final AWSS3Component awss3Component;
+    private final ThumbnailRepositoryImpl thumbnailRepositoryImpl;
+    private final ThumbnailRepository thumbnailRepository;
 
     @Transactional
     public SuperResponse getTours(List<String> categories) {
@@ -359,7 +364,6 @@ public class TourService {
                 .description(tourCreateDto.getDescription())
                 .tourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()))
                 .tourDetailTypes(tourCreateDto.getTourDetailTypes().stream().collect(Collectors.toSet()))
-                .thumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails))
                 .participant(tourCreateDto.getParticipant())
                 .tourPrice(tourCreateDto.getTourPrice())
                 .hasLevy(tourCreateDto.isHasLevy())
@@ -368,6 +372,8 @@ public class TourService {
                 .tourStatus(TourStatus.RECRUITMENT)
                 .createStatus(createStatus)
                 .build();
+        uploadThumbnails(tour, tourCreateDto.getThumbnailOrders(), tourCreateDto.getUploadedThumbnailUrls(), thumbnails);
+
         return tour;
     }
 
@@ -380,7 +386,6 @@ public class TourService {
         }
         tour.setTourCategories(buildTourCategories(tourCreateDto.getTourCategoryNames()));
         tour.setTourDetailTypes(tourCreateDto.getTourDetailTypes().stream().collect(Collectors.toSet()));
-        tour.setThumbnails(uploadThumbnails(tourCreateDto.getUploadedThumbnailUrls(), thumbnails));
         tour.setParticipant(tourCreateDto.getParticipant());
         tour.setTourPrice(tourCreateDto.getTourPrice());
         tour.setHasLevy(tourCreateDto.isHasLevy());
@@ -389,19 +394,49 @@ public class TourService {
         if (CreateStatus.COMPLETE.equals(createStatus)) {
             tour.setCreateStatus(createStatus);
         }
+        uploadThumbnails(tour, tourCreateDto.getThumbnailOrders(), tourCreateDto.getUploadedThumbnailUrls(), thumbnails);
+
         return tour;
     }
 
-    private List<String> uploadThumbnails(List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
+    private List<Thumbnail> uploadThumbnails(Tour tour, List<String> thumbnailOrders, List<String> uploadedThumbnailUrls, List<MultipartFile> multipartFiles) {
         LOGGER.info("[TourService] 투어 썸네일 s3에 upload 시도");
-        List<String> thumbnails = new ArrayList<>();
+        List<Thumbnail> thumbnails = new ArrayList<>();
 
-        thumbnails.addAll(uploadedThumbnailUrls);
+        if (uploadedThumbnailUrls != null && uploadedThumbnailUrls.size() > 0) {
+            for (String uploadedThumbnailUrl : uploadedThumbnailUrls) {
+
+                Thumbnail thumbnail = getThumbnail(uploadedThumbnailUrl);
+
+                int idx = thumbnailOrders.indexOf(uploadedThumbnailUrl);
+                if (idx < 0) {
+                    throw new NotAcceptableException("해당 사진의 순서를 알 수 없습니다.", ErrorCode.NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION);
+                }
+
+                thumbnail.setOrder(idx);
+                thumbnailRepository.save(thumbnail);
+            }
+        }
+//        thumbnails.addAll(uploadedThumbnailUrls);
 
         if (multipartFiles != null) {
             for (MultipartFile multipartFile : multipartFiles) {
                 try {
-                    thumbnails.add(awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail"));
+                    String originName = multipartFile.getOriginalFilename();
+                    int idx = thumbnailOrders.indexOf(originName);
+                    if (idx < 0) {
+                        throw new NotAcceptableException("해당 사진의 순서를 알 수 없습니다.", ErrorCode.NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION);
+                    }
+
+                    String filePath = awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail");
+
+                    Thumbnail thumbnail = createThumbnail(tour, idx, originName, filePath);
+                    Thumbnail savedThumbnail = thumbnailRepository.save(thumbnail);
+
+                    if (savedThumbnail == null) {
+                        throw new DBFailException("썸네일 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_THUMBNAIL_EXCEPTION);
+                    }
+//                    thumbnails.add(awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail"));
                 } catch (IOException ioException) {
                     throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
                 }
@@ -412,6 +447,27 @@ public class TourService {
 
         return thumbnails;
     }
+
+    private Thumbnail createThumbnail(Tour tour, int order, String originName, String filePath) {
+        Thumbnail thumbnail = new Thumbnail();
+        thumbnail.setOrder(order);
+        thumbnail.setOriginName(originName);
+        thumbnail.setFilePath(filePath);
+        thumbnail.setTour(tour);
+
+        return thumbnail;
+    }
+
+    private Thumbnail getThumbnail(String filePath) {
+        Thumbnail thumbnail = thumbnailRepositoryImpl.findThumbnailByFilePath(filePath);
+
+        if (thumbnail == null) {
+            throw new NotFoundException("해당 썸네일을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_THUMBNAIL_EXCEPTION);
+        }
+
+        return thumbnail;
+    }
+
 
     private Set<TourCategory> buildTourCategories(List<String> tourCategoryNames) {
         Set<TourCategory> tourCategories = new HashSet<>();

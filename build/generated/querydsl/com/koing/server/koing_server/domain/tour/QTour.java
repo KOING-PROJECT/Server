@@ -45,7 +45,7 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final NumberPath<Integer> temporarySavePage = createNumber("temporarySavePage", Integer.class);
 
-    public final ListPath<String, StringPath> thumbnails = this.<String, StringPath>createList("thumbnails", String.class, StringPath.class, PathInits.DIRECT2);
+    public final ListPath<com.koing.server.koing_server.domain.image.Thumbnail, com.koing.server.koing_server.domain.image.QThumbnail> thumbnails = this.<com.koing.server.koing_server.domain.image.Thumbnail, com.koing.server.koing_server.domain.image.QThumbnail>createList("thumbnails", com.koing.server.koing_server.domain.image.Thumbnail.class, com.koing.server.koing_server.domain.image.QThumbnail.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 
