@@ -3,6 +3,8 @@ package com.koing.server.koing_server.service.user.dto;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TourStatus;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserGuideMyPageDto {
 
-    public UserGuideMyPageDto(User user) {
+    public UserGuideMyPageDto(User user, String today) {
         this.guideName = user.getName();
         this.roles = user.getRoles();
         if (user.getUserOptionalInfo().getImageUrls() != null &&
@@ -28,7 +30,7 @@ public class UserGuideMyPageDto {
             this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
             setJobAndUnivAndCompany(user);
         }
-        this.myTours = createMyTours(user);
+        this.myTours = createMyTours(user, today);
         this.creatingTours = createCreatingTours(user);
         this.createdTours = createCreatedTours(user);
         this.recruitmentTours = createRecruitmentTours(user);
@@ -49,15 +51,26 @@ public class UserGuideMyPageDto {
     private String universityName;
     private String company;
 
-    private List<TourMyTourDto> createMyTours(User user) {
+    private List<TourMyTourDto> createMyTours(User user, String today) {
         List<Tour> createTours = user.getCreateTours()
                 .stream()
-                .filter(tour -> !tour.getTourStatus().equals(TourStatus.FINISH) && tour.getCreateStatus().equals(CreateStatus.COMPLETE))
+                .filter(tour -> !tour.getTourStatus().equals(TourStatus.FINISH)
+                        && tour.getCreateStatus().equals(CreateStatus.COMPLETE))
                 .collect(Collectors.toList());
 
         List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            List<TourApplication> tourApplications
+                    = createTour.getTourApplications()
+                    .stream()
+                    .filter((TourApplication t) -> t.getTourDate().equals(today))
+                    .collect(Collectors.toList());
+            if (tourApplications != null && tourApplications.size() > 0) {
+                tourMyTourDtos.add(new TourMyTourDto(createTour, tourApplications.get(0).getGuideProgressStatus()));
+            }
+            else {
+                tourMyTourDtos.add(new TourMyTourDto(createTour));
+            }
         }
 
         tourMyTourDtos = tourMyTourDtos

@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.user.dto;
 
+import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TouristGrade;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
@@ -70,14 +71,21 @@ public class UserTouristMyPageDto {
         List<TourParticipant> tourParticipants = user.getTourParticipants().stream().collect(Collectors.toList());
 
         List<TourApplication> tourApplications = new ArrayList<>();
+        List<ProgressStatus> touristProgressStatus = new ArrayList<>();
+
         for (TourParticipant tourParticipant : tourParticipants) {
             tourApplications.add(tourParticipant.getTourApplication());
+            touristProgressStatus.add(tourParticipant.getTouristProgressStatus());
         }
 
         List<TourHistoryDto> tourHistoryDtos = new ArrayList<>();
-        for (TourApplication tourApplication : tourApplications) {
-            tourHistoryDtos.add(new TourHistoryDto(tourApplication));
+        for (int i = 0; i < tourApplications.size(); i++) {
+            tourHistoryDtos.add(new TourHistoryDto(tourApplications.get(i), touristProgressStatus.get(i)));
         }
+
+//        for (TourApplication tourApplication : tourApplications) {
+//            tourHistoryDtos.add()
+//        }
 
         tourHistoryDtos = tourHistoryDtos
                 .stream()

@@ -151,7 +151,7 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_LIKE_TOURS_SUCCESS, new UserFollowListResponseDto(userFollowDtos));
     }
 
-    public SuperResponse getMyInfo(Long userId) {
+    public SuperResponse getMyInfo(Long userId, String today) {
         LOGGER.info("[UserService] My page 정보 조회 시도");
 
         User user = getUser(userId);
@@ -164,7 +164,7 @@ public class UserService {
             return SuccessResponse.success(SuccessCode.GET_TOURIST_INFO_SUCCESS, userTouristMyPageDto);
         }
         else if(user.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
-            UserGuideMyPageDto userGuideMyPageDto = new UserGuideMyPageDto(user);
+            UserGuideMyPageDto userGuideMyPageDto = new UserGuideMyPageDto(user, today);
             LOGGER.info("[UserService] Guide My page 정보 조회 성공");
 
             return SuccessResponse.success(SuccessCode.GET_GUIDE_INFO_SUCCESS, userGuideMyPageDto);

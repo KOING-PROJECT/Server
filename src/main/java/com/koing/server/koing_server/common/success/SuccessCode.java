@@ -39,6 +39,8 @@ public enum SuccessCode {
     GET_TOURIST_REVIEWS_SUCCESS(OK, "review : 투어리스트가 보낸 리뷰, 받은 리뷰 조회 성공입니다."),
     GET_USER_OPTIONAL_INFO_SUCCESS(OK, "user : 유저 선택정보 조회 성공입니다."),
     SMS_SEND_SUCCESS(OK, "SMS : 회원가입 인증번호 전송 성공입니다."),
+    PRESS_START_SUCCESS(OK, "tour-application : 투어 시작 처리 성공입니다."),
+    START_TOUR_SUCCESS(OK, "tour-application : 투어 시작 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

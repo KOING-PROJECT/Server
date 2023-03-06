@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.Tour;
@@ -16,13 +17,14 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class TourHistoryDto {
 
-    public TourHistoryDto(TourApplication tourApplication) {
+    public TourHistoryDto(TourApplication tourApplication, ProgressStatus progressStatus) {
         this.tourId = tourApplication.getTour().getId();
         this.title = tourApplication.getTour().getTitle();
         this.guideName = tourApplication.getTour().getCreateUser().getName();
         this.thumbnails = getThumbnails(tourApplication.getTour());
         this.tourDate = tourApplication.getTourDate();
         this.tourStatus = tourApplication.getTourStatus();
+        this.touristProgress = progressStatus;
     }
 
     private Long tourId;
@@ -31,6 +33,7 @@ public class TourHistoryDto {
     private List<String> thumbnails;
     private String tourDate;
     private TourStatus tourStatus;
+    private ProgressStatus touristProgress;
 
     private List<String> getThumbnails(Tour tour) {
         List<Thumbnail> thumbnails = tour.getThumbnails()

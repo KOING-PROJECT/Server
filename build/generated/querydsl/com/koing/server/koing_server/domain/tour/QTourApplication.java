@@ -29,6 +29,8 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Integer> currentParticipants = createNumber("currentParticipants", Integer.class);
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.ProgressStatus> guideProgressStatus = createEnum("guideProgressStatus", com.koing.server.koing_server.common.enums.ProgressStatus.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);

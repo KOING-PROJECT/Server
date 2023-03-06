@@ -146,12 +146,15 @@ public class UserController {
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @GetMapping("/mypage/{userId}")
-    public SuperResponse getMyPage(@PathVariable("userId") Long userId) {
+    @GetMapping("/mypage/{userId}/{today}")
+    public SuperResponse getMyPage(
+            @PathVariable("userId") Long userId,
+            @PathVariable("today") String today
+    ) {
         LOGGER.info("[UserController] My page 조회 시도");
         SuperResponse getMyPageResponse;
         try {
-            getMyPageResponse = userService.getMyInfo(userId);
+            getMyPageResponse = userService.getMyInfo(userId, today);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {

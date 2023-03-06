@@ -102,7 +102,6 @@ public class TourService {
         }
 
         Tour tour = buildTour(tourCreateDto, thumbnails, createStatus);
-        System.out.println("tttttttttt = " + tour.getThumbnails());
         Tour savedTour = tourRepository.save(tour);
 
         if(savedTour == null) {

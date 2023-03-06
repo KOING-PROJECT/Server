@@ -2,6 +2,7 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.review.ReviewToTourist;
 import com.koing.server.koing_server.domain.user.User;
@@ -26,6 +27,7 @@ public class TourParticipant extends AuditingTimeEntity {
         setTourApplication(tourApplication);
         setParticipant(participant);
         this.numberOfParticipants = numberOfParticipants;
+        this.touristProgressStatus = ProgressStatus.READY;
     }
 
     @Id
@@ -42,6 +44,11 @@ public class TourParticipant extends AuditingTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     private ReviewToTourist reviewToTourist;
+
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProgressStatus touristProgressStatus;
 
     private void setTourApplication(TourApplication tourApplication) {
         this.tourApplication = tourApplication;

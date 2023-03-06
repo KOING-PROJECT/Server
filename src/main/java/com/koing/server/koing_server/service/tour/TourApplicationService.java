@@ -3,6 +3,9 @@ package com.koing.server.koing_server.service.tour;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.ProgressStatus;
+import com.koing.server.koing_server.common.enums.TourStatus;
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
@@ -302,6 +305,71 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.GET_TOUR_PARTICIPANTS_SUCCESS, new UserTourParticipantListDto(userTourParticipantDtos));
     }
 
+    public SuperResponse guideStartTour(Long tourId, String today) {
+        LOGGER.info("[TourApplicationService] 투어 시작 시도");
+
+        TourApplication tourApplication = getTourApplication(tourId, today);
+
+        if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)) {
+            throw new NotAcceptableException("이미 시작을 누르신 투어입니다.", ErrorCode.NOT_ACCEPTABLE_ALREADY_PRESS_START_EXCEPTION);
+        }
+
+        tourApplication.setGuideProgressStatus(ProgressStatus.PRESS_START);
+
+        TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+        if (!updatedTourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)) {
+            throw new DBFailException("투어 시작 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_START_EXCEPTION);
+        }
+
+        return SuccessResponse.success(SuccessCode.PRESS_START_SUCCESS, null);
+    }
+
+    public SuperResponse touristStartTour(Long tourId, String tourDate, Long loginUserId) {
+        LOGGER.info("[TourApplicationService] 투어 시작 시도");
+
+        TourParticipant tourParticipant = getTourParticipant(tourId, tourDate, loginUserId);
+
+        if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
+            throw new NotAcceptableException("이미 시작을 누르신 투어입니다.", ErrorCode.NOT_ACCEPTABLE_ALREADY_PRESS_START_EXCEPTION);
+        }
+
+        tourParticipant.setTouristProgressStatus(ProgressStatus.PRESS_START);
+
+        TourParticipant updatedTourParticipant = tourParticipantRepository.save(tourParticipant);
+
+        if (!updatedTourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
+            throw new DBFailException("투어 시작 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_START_EXCEPTION);
+        }
+
+        return SuccessResponse.success(SuccessCode.PRESS_START_SUCCESS, null);
+    }
+
+    public SuperResponse checkStartTour(Long tourId, String date) {
+
+        TourApplication tourApplication = getTourApplication(tourId, date);
+
+        boolean checkTouristProgressStatus = true;
+        for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+            if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.READY)) {
+                checkTouristProgressStatus = false;
+            }
+        }
+
+        if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
+                && checkTouristProgressStatus) {
+            tourApplication.setTourStatus(TourStatus.ONGOING);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourStatus().equals(TourStatus.ONGOING)) {
+                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+            }
+        }
+
+        return SuccessResponse.success(SuccessCode.START_TOUR_SUCCESS, null);
+    }
+
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);
         if (user == null) {
@@ -329,4 +397,18 @@ public class TourApplicationService {
         return temporaryTour;
     }
 
+    private TourParticipant getTourParticipant(Long tourId, String tourDate, Long touristId) {
+        TourParticipant tourParticipant = tourParticipantRepositoryImpl
+                .findTourParticipantByTourIdAndTourDateAndTourParticipantId(
+                        tourId,
+                        tourDate,
+                        touristId
+                );
+
+        if (tourParticipant == null) {
+            throw new NotFoundException("해당 투어 신청 내용을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION);
+        }
+
+        return tourParticipant;
+    }
 }

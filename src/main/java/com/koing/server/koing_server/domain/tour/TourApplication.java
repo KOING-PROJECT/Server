@@ -2,6 +2,7 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
@@ -20,6 +21,18 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TourApplication extends AuditingTimeEntity {
+
+    public TourApplication(String tourDate, int maxParticipant) {
+        this.tour = null;
+        this.tourParticipants = new ArrayList<>();
+        this.tourDate = tourDate;
+        this.maxParticipant = maxParticipant;
+        this.tourStatus = TourStatus.RECRUITMENT;
+        this.currentParticipants = 0;
+        this.reviewsToGuide = new HashSet<>();
+        this.reviewedTouristId = new HashSet<>();
+        this.guideProgressStatus = ProgressStatus.READY;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,16 +62,9 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(name = "reviewed_tourist")
     private Set<Long> reviewedTouristId;
 
-    public TourApplication(String tourDate, int maxParticipant) {
-        this.tour = null;
-        this.tourParticipants = new ArrayList<>();
-        this.tourDate = tourDate;
-        this.maxParticipant = maxParticipant;
-        this.tourStatus = TourStatus.RECRUITMENT;
-        this.currentParticipants = 0;
-        this.reviewsToGuide = new HashSet<>();
-        this.reviewedTouristId = new HashSet<>();
-    }
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProgressStatus guideProgressStatus;
 
     public void setTour(Tour tour) {
         this.tour = tour;

@@ -37,6 +37,8 @@ public class QTourParticipant extends EntityPathBase<TourParticipant> {
 
     public final QTourApplication tourApplication;
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.ProgressStatus> touristProgressStatus = createEnum("touristProgressStatus", com.koing.server.koing_server.common.enums.ProgressStatus.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 
