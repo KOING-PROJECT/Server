@@ -368,7 +368,7 @@ public class TourService {
                 .hasLevy(tourCreateDto.isHasLevy())
                 .temporarySavePage(tourCreateDto.getTemporarySavePage())
                 .additionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()))
-                .tourStatus(TourStatus.RECRUITMENT)
+                .tourStatus(TourStatus.CREATED)
                 .createStatus(createStatus)
                 .build();
 
