@@ -41,6 +41,7 @@ public enum SuccessCode {
     SMS_SEND_SUCCESS(OK, "SMS : 회원가입 인증번호 전송 성공입니다."),
     PRESS_START_SUCCESS(OK, "tour-application : 투어 시작 처리 성공입니다."),
     START_TOUR_SUCCESS(OK, "tour-application : 투어 시작 성공입니다."),
+    GET_FCM_TOKEN_SUCCESS(OK, "fcm : FCM 토큰 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
@@ -83,6 +84,8 @@ public enum SuccessCode {
     TOUR_COMPLETE_SUCCESS(OK, "tour : 투어 완성 성공입니다."),
     TOUR_SCHEDULE_COMPLETE_SUCCESS(OK, "tour-schedule : 투어 스케줄 완성 성공입니다."),
     TOUR_SURVEY_COMPLETE_SUCCESS(OK, "tour-survey : 투어 설문 완성 성공입니다."),
+    FCM_TOKEN_CREATE_SUCCESS(OK, "fcm : FCM 토큰 생성 성공입니다."),
+    FCM_TOKEN_UPDATE_SUCCESS(OK, "fcm : FCM 토큰 업데이트 성공입니다."),
 
     /**
      * 202 ACCEPTED

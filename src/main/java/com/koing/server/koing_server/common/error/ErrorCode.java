@@ -69,6 +69,8 @@ public enum ErrorCode {
     DB_FAIL_CREATE_THUMBNAIL_EXCEPTION(DB_HANDLE_FAIL, "썸네일 저장 과정에서 오류가 발생했습니다."),
     DB_FAIL_PRESS_START_EXCEPTION(DB_HANDLE_FAIL, "투어 시작 처리 과정에서 오류가 발생했습니다."),
     DB_FAIL_START_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 시작 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_FCM_TOKEN_EXCEPTION(DB_HANDLE_FAIL, "FCM 토큰 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_FCM_TOKEN_EXCEPTION(DB_HANDLE_FAIL, "FCM 토큰 업데이트 과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -99,6 +101,7 @@ public enum ErrorCode {
     NOT_FOUND_SMS_EXCEPTION(NOT_FOUND, "해당 번호의 문자인증을 찾을 수 없습니다."),
     NOT_FOUND_THUMBNAIL_EXCEPTION(NOT_FOUND, "해당 썸네일을 찾을 수 없습니다."),
     NOT_FOUND_TOUR_CATEGORY_EXCEPTION(NOT_FOUND, "존재하지 않는 투어 카테고리 입니다."),
+    NOT_FOUND_FCM_TOKEN_EXCEPTION(NOT_FOUND, "해당 유저와 장치의 FCM 토큰을 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
