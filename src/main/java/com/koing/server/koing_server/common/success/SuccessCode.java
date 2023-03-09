@@ -42,6 +42,7 @@ public enum SuccessCode {
     PRESS_START_SUCCESS(OK, "tour-application : 투어 시작 처리 성공입니다."),
     START_TOUR_SUCCESS(OK, "tour-application : 투어 시작 성공입니다."),
     GET_FCM_TOKEN_SUCCESS(OK, "fcm : FCM 토큰 조회 성공입니다."),
+    GET_USER_CATEGORY_INDEXES_SUCCESS(OK, "user : 유저 선호 카테고리 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

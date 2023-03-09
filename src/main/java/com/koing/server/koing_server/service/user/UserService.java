@@ -203,6 +203,7 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_USER_DETAIL_INFO_FROM_MY_PAGE_SUCCESS, userDetailInfoFromMyPageDto);
     }
 
+    @Transactional
     public SuperResponse updateUserCategoryIndexes(UserCategoryIndexesUpdateDto userCategoryIndexesUpdateDto) {
         LOGGER.info("[UserService] 유저 선호 카테고리 업데이트 시도");
 
@@ -219,8 +220,21 @@ public class UserService {
         if (beforeCategoryIndexes.equals(updatedUser.getCategoryIndexes())) {
             throw new DBFailException("유저 선호 카테고리 업데이트 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_USER_CATEGORY_INDEXES_EXCEPTION);
         }
+        LOGGER.info("[UserService] 유저 선호 카테고리 업데이트 성공");
 
         return SuccessResponse.success(SuccessCode.USER_CATEGORY_INDEXES_UPDATE_SUCCESS, null);
+    }
+
+    public SuperResponse getUserCategoryIndexes(Long userId) {
+        LOGGER.info("[UserService] 유저를 통한 선호 카테고리 조회 시도");
+
+        User user = getUser(userId);
+
+        Set<Integer> userCategoryIndexes = user.getCategoryIndexes();
+
+        LOGGER.info("[UserService] 유저를 통한 선호 카테고리 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_USER_CATEGORY_INDEXES_SUCCESS, userCategoryIndexes);
     }
 
     private User getUser(Long userId) {

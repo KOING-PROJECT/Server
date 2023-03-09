@@ -10,6 +10,7 @@ import com.koing.server.koing_server.common.success.SuccessStatusCode;
 import com.koing.server.koing_server.controller.tour.TourSurveyController;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.user.UserService;
+import com.koing.server.koing_server.service.user.dto.UserCategoryIndexesUpdateDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -217,5 +218,56 @@ public class UserController {
         LOGGER.info("[UserController] 마이페이지에서 User 세부 정보 조회 성공");
 
         return getUserDetailInfoFromMyPageResponse;
+    }
+
+
+    @ApiOperation("User - User의 선호 카테고리를 업데이트 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - User 선호 카테고리 업데이트 성공"),
+            @ApiResponse(code = 402, message = "유저 선호 카테고리 업데이트 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/category/{userId}")
+    public SuperResponse updateUserCategoryIndexes(
+            @RequestBody UserCategoryIndexesUpdateDto userCategoryIndexesUpdateDto
+            ) {
+        LOGGER.info("[UserController] User 선호 카테고리 업데이트 시도");
+        SuperResponse updateUserCategoryIndexesResponse;
+        try {
+            updateUserCategoryIndexesResponse = userService.updateUserCategoryIndexes(userCategoryIndexesUpdateDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] User 선호 카테고리 업데이트 성공");
+
+        return updateUserCategoryIndexesResponse;
+    }
+
+
+    @ApiOperation("User - User의 선호 카테고리를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - User 선호 카테고리 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저 선호 카테고리를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/category/{userId}")
+    public SuperResponse getUserCategoryIndexes(
+            @PathVariable("userId") Long userId
+    ) {
+        LOGGER.info("[UserController] User 선호 카테고리 조회 시도");
+        SuperResponse getUserCategoryIndexesResponse;
+        try {
+            getUserCategoryIndexesResponse = userService.getUserCategoryIndexes(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] User 선호 카테고리 조회 성공");
+
+        return getUserCategoryIndexesResponse;
     }
 }

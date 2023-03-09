@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
@@ -138,11 +139,6 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 )
                 .distinct()
                 .fetch();
-    }
-
-    @Override
-    public Set<Integer> findUserCategoryIndexesByUserId(Long userId) {
-        return null;
     }
 
 }

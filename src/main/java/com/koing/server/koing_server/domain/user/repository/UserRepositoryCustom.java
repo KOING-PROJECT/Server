@@ -20,6 +20,4 @@ public interface UserRepositoryCustom {
 
     List<User> findAllGuideByEnabled(boolean enabled);
 
-    Set<Integer> findUserCategoryIndexesByUserId(Long userId);
-
 }

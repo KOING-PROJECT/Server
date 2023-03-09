@@ -144,7 +144,7 @@ public class User extends AuditingTimeEntity {
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY)
     private Set<User> follower;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false, name = "category_indexes")
     private Set<Integer> categoryIndexes;
 

@@ -103,6 +103,7 @@ public enum ErrorCode {
     NOT_FOUND_THUMBNAIL_EXCEPTION(NOT_FOUND, "해당 썸네일을 찾을 수 없습니다."),
     NOT_FOUND_TOUR_CATEGORY_EXCEPTION(NOT_FOUND, "존재하지 않는 투어 카테고리 입니다."),
     NOT_FOUND_FCM_TOKEN_EXCEPTION(NOT_FOUND, "해당 유저와 장치의 FCM 토큰을 찾을 수 없습니다."),
+    NOT_FOUND_USER_CATEGORY_INDEXES_EXCEPTION(NOT_FOUND, "해당 유저의 선호 카테고리를 찾을 수 없습니다."),
 
     /**
      * 405 Method Not Allowed
