@@ -3,6 +3,7 @@ package com.koing.server.koing_server.domain.tour;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.ProgressStatus;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
@@ -27,7 +28,7 @@ public class TourApplication extends AuditingTimeEntity {
         this.tourParticipants = new ArrayList<>();
         this.tourDate = tourDate;
         this.maxParticipant = maxParticipant;
-        this.tourStatus = TourStatus.RECRUITMENT;
+        this.tourApplicationStatus = TourApplicationStatus.RECRUITMENT;
         this.currentParticipants = 0;
         this.reviewsToGuide = new HashSet<>();
         this.reviewedTouristId = new HashSet<>();
@@ -49,7 +50,7 @@ public class TourApplication extends AuditingTimeEntity {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TourStatus tourStatus;
+    private TourApplicationStatus tourApplicationStatus;
 
     private int maxParticipant;
 

@@ -2,6 +2,7 @@ package com.koing.server.koing_server.service.user.dto;
 
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.GuideGrade;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
@@ -31,9 +32,9 @@ public class UserGuideMyPageDto {
             setJobAndUnivAndCompany(user);
         }
         this.myTours = createMyTours(user, today);
-        this.creatingTours = createCreatingTours(user);
-        this.createdTours = createCreatedTours(user);
-        this.recruitmentTours = createRecruitmentTours(user);
+        this.creatingTours = createCreatingTours(user, today);
+        this.createdTours = createCreatedTours(user, today);
+        this.recruitmentTours = createRecruitmentTours(user, today);
         this.myEndTours = createTourMyEndTourDtos(user);
         this.guideGrade = user.getGuideGrade();
     }
@@ -60,17 +61,18 @@ public class UserGuideMyPageDto {
 
         List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            List<TourApplication> tourApplications
-                    = createTour.getTourApplications()
-                    .stream()
-                    .filter((TourApplication t) -> t.getTourDate().equals(today))
-                    .collect(Collectors.toList());
-            if (tourApplications != null && tourApplications.size() > 0) {
-                tourMyTourDtos.add(new TourMyTourDto(createTour, tourApplications.get(0).getGuideProgressStatus()));
-            }
-            else {
-                tourMyTourDtos.add(new TourMyTourDto(createTour));
-            }
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
+//            List<TourApplication> tourApplications
+//                    = createTour.getTourApplications()
+//                    .stream()
+//                    .filter((TourApplication t) -> t.getTourDate().equals(today))
+//                    .collect(Collectors.toList());
+//            if (tourApplications != null && tourApplications.size() > 0) {
+//                tourMyTourDtos.add(new TourMyTourDto(createTour, tourApplications.get(0).getGuideProgressStatus()));
+//            }
+//            else {
+//                tourMyTourDtos.add(new TourMyTourDto(createTour));
+//            }
         }
 
         tourMyTourDtos = tourMyTourDtos
@@ -86,13 +88,13 @@ public class UserGuideMyPageDto {
                 .collect(Collectors.toList());
 
         for (Tour creatingTour : creatingTours) {
-            tourMyTourDtos.add(new TourMyTourDto(creatingTour));
+            tourMyTourDtos.add(new TourMyTourDto(creatingTour, today));
         }
 
         return tourMyTourDtos;
     }
 
-    private List<TourMyTourDto> createCreatingTours(User user) {
+    private List<TourMyTourDto> createCreatingTours(User user, String today) {
         List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.CREATING))
@@ -100,13 +102,13 @@ public class UserGuideMyPageDto {
 
         List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
         }
 
         return tourMyTourDtos;
     }
 
-    private List<TourMyTourDto> createCreatedTours(User user) {
+    private List<TourMyTourDto> createCreatedTours(User user, String today) {
         List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
@@ -115,7 +117,7 @@ public class UserGuideMyPageDto {
 
         List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
         }
 
         tourMyTourDtos = tourMyTourDtos
@@ -128,17 +130,16 @@ public class UserGuideMyPageDto {
         return tourMyTourDtos;
     }
 
-    private List<TourMyTourDto> createRecruitmentTours(User user) {
+    private List<TourMyTourDto> createRecruitmentTours(User user, String today) {
         List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
-                        && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)
-                        || tour.getTourStatus().equals(TourStatus.STANDBY)))
+                        && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)))
                 .collect(Collectors.toList());
 
         List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
         }
 
         tourMyTourDtos = tourMyTourDtos
@@ -159,7 +160,14 @@ public class UserGuideMyPageDto {
         List<TourApplication> endTourApplication = new ArrayList<>();
         for (Tour tour : endTours) {
             for (TourApplication tourApplication : tour.getTourApplications()) {
-                if (tourApplication.getTourStatus().equals(TourStatus.FINISH)) {
+                TourApplicationStatus tourApplicationStatus = tourApplication.getTourApplicationStatus();
+                if (tourApplicationStatus.equals(TourApplicationStatus.GUIDE_END)
+                        || tourApplicationStatus.equals(TourApplicationStatus.TOURIST_END)
+                        || tourApplicationStatus.equals(TourApplicationStatus.NO_REVIEW)
+                        || tourApplicationStatus.equals(TourApplicationStatus.GUIDE_REVIEWED)
+                        || tourApplicationStatus.equals(TourApplicationStatus.TOURIST_REVIEWED)
+                        || tourApplicationStatus.equals(TourApplicationStatus.REVIEWED)
+                ) {
                     endTourApplication.add(tourApplication);
                 }
             }

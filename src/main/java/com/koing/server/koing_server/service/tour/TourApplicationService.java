@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.ProgressStatus;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
@@ -358,11 +359,31 @@ public class TourApplicationService {
 
         if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
                 && checkTouristProgressStatus) {
-            tourApplication.setTourStatus(TourStatus.ONGOING);
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.ONGOING);
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
-            if (!updatedTourApplication.getTourStatus().equals(TourStatus.ONGOING)) {
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.ONGOING)) {
+                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+            }
+        }
+        else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
+                && !checkTouristProgressStatus) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_START);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_START)) {
+                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+            }
+        }
+        else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.READY)
+                && checkTouristProgressStatus) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.TOURIST_START);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.TOURIST_START)) {
                 throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
             }
         }

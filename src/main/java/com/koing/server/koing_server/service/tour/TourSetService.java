@@ -29,7 +29,6 @@ public class TourSetService {
     private final TourService tourService;
     private final TourScheduleService tourScheduleService;
     private final TourSurveyService tourSurveyService;
-    private final TourApplicationService tourApplicationService;
 
     @Transactional
     public SuperResponse createTemporaryTourSet(TourSetCreateDto tourSetCreateDto, List<MultipartFile> thumbnails) {
@@ -87,8 +86,10 @@ public class TourSetService {
         SuperResponse completeTourSurveyResponse = tourSurveyService.updateTourSurvey(tourId, tourSurveyCreateDto, CreateStatus.COMPLETE);
         LOGGER.info("[TourSetService] 임시 투어 설문 업데이트 및 완성 성공");
 
-        SuperResponse createTourApplicationResponse = tourApplicationService.createTourApplication(new TourApplicationCreateDto(tourId));
-        LOGGER.info("[TourSetService] 투어 신청서 생성 성공");
+//        SuperResponse createTourApplicationResponse = tourApplicationService.createTourApplication(new TourApplicationCreateDto(tourId));
+//        LOGGER.info("[TourSetService] 투어 신청서 생성 성공");
+
+        LOGGER.info("[TourSetService] 임시 투어 세트 완성 성공");
 
         return SuccessResponse.success(
                 SuccessCode.TOUR_SET_COMPLETE_SUCCESS,

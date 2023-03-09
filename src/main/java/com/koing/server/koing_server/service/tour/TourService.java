@@ -3,6 +3,7 @@ package com.koing.server.koing_server.service.tour;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourCategoryIndex;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
@@ -66,10 +67,10 @@ public class TourService {
         // 모집중이거나 모집이 완료되었지만 아직 시작안한(대기 가능하게) tour list 반환
         List<Tour> tours;
         if (categories.contains("전체")) {
-            tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby();
+            tours = tourRepositoryImpl.findTourByStatusRecruitment();
         }
         else {
-            tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby()
+            tours = tourRepositoryImpl.findTourByStatusRecruitment()
                     .stream()
                     .filter(tour -> tour.checkCategories(categories))
                     .collect(Collectors.toList());
@@ -108,7 +109,6 @@ public class TourService {
             throw new DBFailException("투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_FAIL_EXCEPTION);
         }
 
-        System.out.println(savedTour.getThumbnails());
         TourDto tourDto = new TourDto(savedTour);
         LOGGER.info("[TourService] Tour 생성 성공");
 
@@ -188,6 +188,126 @@ public class TourService {
 
         LOGGER.info("[TourService] Tour update 성공");
         return SuccessResponse.success(SuccessCode.TOUR_UPDATE_SUCCESS, tourDto);
+    }
+
+    @Transactional
+    public SuperResponse approvalTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 승인 시도");
+
+        Tour tour = getTourAtDB(tourId);
+
+        LOGGER.info("[TourService] 승인 할 Tour 조회 성공");
+
+        tour.setTourStatus(TourStatus.APPROVAL);
+
+        Tour approvalTour = tourRepository.save(tour);
+
+        if (!approvalTour.getTourStatus().equals(TourStatus.APPROVAL)) {
+            throw new DBFailException("투어 승인 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_APPROVAL_TOUR_EXCEPTION);
+        }
+
+        LOGGER.info("[TourService] Tour 승인 성공");
+
+        return SuccessResponse.success(SuccessCode.TOUR_APPROVAL_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse rejectionTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 승인 거절 시도");
+
+        Tour tour = getTourAtDB(tourId);
+
+        LOGGER.info("[TourService] 승인 거절 할 Tour 조회 성공");
+
+        tour.setTourStatus(TourStatus.REJECTION);
+
+        Tour rejectionTour = tourRepository.save(tour);
+
+        if (!rejectionTour.getTourStatus().equals(TourStatus.REJECTION)) {
+            throw new DBFailException("투어 승인 거절 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_REJECTION_TOUR_EXCEPTION);
+        }
+
+        LOGGER.info("[TourService] Tour 승인 거절 성공");
+
+        return SuccessResponse.success(SuccessCode.TOUR_REJECTION_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse recruitmentTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 모집 시작 시도");
+
+        Tour tour = getTourAtDB(tourId);
+
+        LOGGER.info("[TourService] 모집 시작 할 Tour 조회 성공");
+
+        tour.setTourStatus(TourStatus.RECRUITMENT);
+
+        Tour approvalTour = tourRepository.save(tour);
+
+        if (!approvalTour.getTourStatus().equals(TourStatus.RECRUITMENT)) {
+            throw new DBFailException("투어 모집 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_RECRUITMENT_TOUR_EXCEPTION);
+        }
+
+        int tourMaxParticipant = tour.getParticipant();
+
+        Set<String> tourDates = tour.getTourSchedule().getTourDates();
+
+        for (String tourDate: tourDates) {
+            TourApplication tourApplication = new TourApplication(tourDate, tourMaxParticipant);
+            tourApplication.setTour(tour);
+
+            TourApplication savedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (savedTourApplication.getId() == null) {
+                throw new DBFailException("투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+            }
+
+            LOGGER.info("[TourService] TourApplication 생성 성공 = " + savedTourApplication);
+        }
+
+        Tour updatedTour = tourRepository.save(tour);
+
+        if (updatedTour.getTourApplications().size() != tourDates.size()) {
+            throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+        }
+        LOGGER.info("[TourService] 투어에 TourApplication 업데이트 성공 = " + updatedTour);
+
+        LOGGER.info("[TourService] Tour 모집 시작 성공");
+
+        return SuccessResponse.success(SuccessCode.TOUR_RECRUITMENT_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse deActivateTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 비활성화 시도");
+
+        Tour tour = getTourAtDB(tourId);
+
+        LOGGER.info("[TourService] 승인 거절 할 Tour 조회 성공");
+
+        tour.setTourStatus(TourStatus.DE_ACTIVATE);
+
+        Tour deActivatedTour = tourRepository.save(tour);
+
+        if (!deActivatedTour.getTourStatus().equals(TourStatus.DE_ACTIVATE)) {
+            throw new DBFailException("투어 비활성화 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_DE_ACTIVATE_TOUR_EXCEPTION);
+        }
+
+        List<TourApplication> tourApplications = getTourApplicationsAtDB(tourId);
+
+        for (TourApplication tourApplication : tourApplications) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.DE_ACTIVATE);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.DE_ACTIVATE)) {
+                throw new DBFailException("투어 신청서 비활성화 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_DE_ACTIVATE_TOUR_APPLICATION_EXCEPTION);
+            }
+        }
+
+        LOGGER.info("[TourService] Tour 비활성화 성공");
+
+        return SuccessResponse.success(SuccessCode.TOUR_DE_ACTIVATE_SUCCESS, null);
     }
 
     @Transactional
@@ -285,7 +405,7 @@ public class TourService {
 
         String categoryName = getCategoryName(categoryIndex);
 
-        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndStandby()
+        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitment()
                 .stream()
                 .filter(tour -> tour.checkCategories(Arrays.asList(categoryName)))
                 .collect(Collectors.toList());

@@ -44,7 +44,7 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
     }
 
     @Override
-    public List<Tour> findTourByStatusRecruitmentAndStandby() {
+    public List<Tour> findTourByStatusRecruitment() {
         return jpqlQueryFactory
                 .selectFrom(tour)
                 .leftJoin(tour.createUser, user)
@@ -60,8 +60,7 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .leftJoin(tour.tourSchedule, tourSchedule)
                 .fetchJoin()
                 .where(
-                        tour.tourStatus.eq(TourStatus.RECRUITMENT)
-                                .or(tour.tourStatus.eq(TourStatus.STANDBY)),
+                        tour.tourStatus.eq(TourStatus.RECRUITMENT),
                         tour.createStatus.eq(CreateStatus.COMPLETE)
                 )
                 .distinct()

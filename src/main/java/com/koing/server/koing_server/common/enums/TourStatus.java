@@ -6,10 +6,8 @@ public enum TourStatus {
     APPROVAL("APPROVAL", 2),
     REJECTION("REJECTION", 3),
     RECRUITMENT("RECRUITMENT", 4),
-    STANDBY("STANDBY", 5),
-    ONGOING("ONGOING", 6),
-    FINISH("FINISH", 7)
-
+    DE_ACTIVATE("DE_ACTIVATE", 5),
+    FINISH("FINISH", 6)
     ;
 
     private String status;
