@@ -51,6 +51,7 @@ public class FCMTokenController {
     @ApiOperation("FCM - FCM 토큰을 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "FCM - FCM 토큰 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저와 장치의 FCM 토큰을 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/{userId}")
@@ -77,6 +78,7 @@ public class FCMTokenController {
     @ApiOperation("FCM - FCM 토큰을 업데이트 합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "FCM - FCM 토큰 업데이트 성공"),
+            @ApiResponse(code = 402, message = "FCM 토큰 업데이트 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/{userId}")

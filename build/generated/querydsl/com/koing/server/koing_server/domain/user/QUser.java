@@ -30,6 +30,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath birthDate = createString("birthDate");
 
+    public final SetPath<Integer, NumberPath<Integer>> categoryIndexes = this.<Integer, NumberPath<Integer>>createSet("categoryIndexes", Integer.class, NumberPath.class, PathInits.DIRECT2);
+
     public final StringPath country = createString("country");
 
     //inherited

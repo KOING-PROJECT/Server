@@ -86,6 +86,7 @@ public enum SuccessCode {
     TOUR_SURVEY_COMPLETE_SUCCESS(OK, "tour-survey : 투어 설문 완성 성공입니다."),
     FCM_TOKEN_CREATE_SUCCESS(OK, "fcm : FCM 토큰 생성 성공입니다."),
     FCM_TOKEN_UPDATE_SUCCESS(OK, "fcm : FCM 토큰 업데이트 성공입니다."),
+    USER_CATEGORY_INDEXES_UPDATE_SUCCESS(OK, "user : 유저 선호 카테고리 업데이트 성공입니다."),
 
     /**
      * 202 ACCEPTED

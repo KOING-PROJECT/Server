@@ -91,6 +91,7 @@ public class SignService {
                 .pressLikeTours(new HashSet<>())
                 .following(new HashSet<>())
                 .follower(new HashSet<>())
+                .categoryIndexes(new HashSet<>())
                 .build();
 
         if (role.equalsIgnoreCase(UserRole.ROLE_GUIDE.getRole())) {

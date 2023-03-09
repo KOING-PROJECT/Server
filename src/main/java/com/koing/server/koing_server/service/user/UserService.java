@@ -203,6 +203,26 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_USER_DETAIL_INFO_FROM_MY_PAGE_SUCCESS, userDetailInfoFromMyPageDto);
     }
 
+    public SuperResponse updateUserCategoryIndexes(UserCategoryIndexesUpdateDto userCategoryIndexesUpdateDto) {
+        LOGGER.info("[UserService] 유저 선호 카테고리 업데이트 시도");
+
+        User user = getUser(userCategoryIndexesUpdateDto.getUserId());
+
+        LOGGER.info("[UserService] 유저 조회 성공");
+
+        Set<Integer> beforeCategoryIndexes = user.getCategoryIndexes();
+
+        user.setCategoryIndexes(userCategoryIndexesUpdateDto.getCategoryIndexes());
+
+        User updatedUser = userRepository.save(user);
+
+        if (beforeCategoryIndexes.equals(updatedUser.getCategoryIndexes())) {
+            throw new DBFailException("유저 선호 카테고리 업데이트 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_USER_CATEGORY_INDEXES_EXCEPTION);
+        }
+
+        return SuccessResponse.success(SuccessCode.USER_CATEGORY_INDEXES_UPDATE_SUCCESS, null);
+    }
+
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);
         if (user == null) {

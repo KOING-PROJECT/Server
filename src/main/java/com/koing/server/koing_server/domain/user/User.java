@@ -39,7 +39,8 @@ public class User extends AuditingTimeEntity {
                 Set<Tour> createTours,
                 Set<Tour> pressLikeTours,
                 Set<User> following,
-                Set<User> follower
+                Set<User> follower,
+                Set<Integer> categoryIndexes
                 ) {
         this.email = email;
         this.password = password;
@@ -60,6 +61,7 @@ public class User extends AuditingTimeEntity {
         this.pressLikeTours = pressLikeTours;
         this.following = following;
         this.follower = follower;
+        this.categoryIndexes = categoryIndexes;
     }
 
     @Id
@@ -141,6 +143,10 @@ public class User extends AuditingTimeEntity {
     @JsonIgnore
     @ManyToMany(mappedBy = "following", fetch = FetchType.LAZY)
     private Set<User> follower;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Column(nullable = false, name = "category_indexes")
+    private Set<Integer> categoryIndexes;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
