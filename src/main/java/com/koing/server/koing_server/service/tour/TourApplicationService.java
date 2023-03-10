@@ -39,8 +39,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -114,9 +116,16 @@ public class TourApplicationService {
             }
         }
 
+        // 투어 정원 초과인지 확인
+        if (tourApplication.isExceed()) {
+            throw new NotAcceptableException("이미 신청한 팀이 있는 투어입니다.", ErrorCode.NOT_ACCEPTABLE_ALREADY_EXCEED_TOUR_APPLICATION_EXCEPTION);
+        }
+
         int currParticipants = tourApplication.getCurrentParticipants();
         int numberOfParticipants = tourApplicationParticipateDto.getNumberOfParticipants();
 
+        // 지금은 투어 당 한팀만 신청 가능 하기에 한팀이라도 신청하면 isExceed = true 여서 위 조건에서 걸림
+        // 나중에 여러팀 신청 가능이면 이 코드에서 정원 초과를 판단
         if (currParticipants + numberOfParticipants > tourApplication.getMaxParticipant()) {
             throw new NotAcceptableException("해당 투어의 정원을 초과했습니다.", ErrorCode.NOT_ACCEPTABLE_OVER_MAX_PARTICIPANTS_EXCEPTION);
         }
@@ -134,21 +143,43 @@ public class TourApplicationService {
         );
         LOGGER.info("[TourApplicationService] TourParticipant 생성 성공");
 
-        tourApplication.setCurrentParticipants(currParticipants + numberOfParticipants);
-
-        TourApplication updateTourApplication = tourApplicationRepository.save(tourApplication);
-        User updatedUser = userRepository.save(user);
-
         LOGGER.info("[TourApplicationService] TourParticipant 생성 저장 시도");
         TourParticipant savedTourParticipant = tourParticipantRepository.save(tourParticipant);
 
         if (savedTourParticipant == null) {
-            throw new DBFailException(
-                    "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
-                    ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION
-            );
+            throw new DBFailException("투어 신청 내역 생성 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_TOUR_PARTICIPANT_EXCEPTION);
         }
+
+        User updatedUser = userRepository.save(user);
+
+        tourApplication.setCurrentParticipants(currParticipants + numberOfParticipants);
+        tourApplication.setTourApplicationStatus(TourApplicationStatus.STANDBY);
+        tourApplication.setExceed(true);
+
+        TourApplication updateTourApplication = tourApplicationRepository.save(tourApplication);
+
+        if (updateTourApplication.isExceed()) {
+            throw new DBFailException(
+                "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
+                ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION
+        );
+        }
+
         LOGGER.info("[TourApplicationService] TourParticipant 생성 저장 성공");
+
+        Tour tour = getTour(tourId);
+
+        if (tour.getExceedTourDate() == null) {
+            tour.setExceedTourDate(new HashSet<>());
+        }
+
+        tour.getExceedTourDate().add(tourDate);
+
+        Tour updatedTour = tourRepository.save(tour);
+
+        if (!updatedTour.getExceedTourDate().contains(tourDate)) {
+            throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+        }
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, null);
     }
@@ -307,7 +338,7 @@ public class TourApplicationService {
     }
 
     public SuperResponse guideStartTour(Long tourId, String today) {
-        LOGGER.info("[TourApplicationService] 투어 시작 시도");
+        LOGGER.info("[TourApplicationService] 가이드 투어 시작 시도");
 
         TourApplication tourApplication = getTourApplication(tourId, today);
 
@@ -322,12 +353,13 @@ public class TourApplicationService {
         if (!updatedTourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)) {
             throw new DBFailException("투어 시작 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_START_EXCEPTION);
         }
+        LOGGER.info("[TourApplicationService] 가이드 투어 시작 성공");
 
         return SuccessResponse.success(SuccessCode.PRESS_START_SUCCESS, null);
     }
 
     public SuperResponse touristStartTour(Long tourId, String tourDate, Long loginUserId) {
-        LOGGER.info("[TourApplicationService] 투어 시작 시도");
+        LOGGER.info("[TourApplicationService] 투어리스트 투어 시작 시도");
 
         TourParticipant tourParticipant = getTourParticipant(tourId, tourDate, loginUserId);
 
@@ -342,6 +374,7 @@ public class TourApplicationService {
         if (!updatedTourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
             throw new DBFailException("투어 시작 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_START_EXCEPTION);
         }
+        LOGGER.info("[TourApplicationService] 투어리스트 투어 시작 성공");
 
         return SuccessResponse.success(SuccessCode.PRESS_START_SUCCESS, null);
     }
@@ -366,6 +399,16 @@ public class TourApplicationService {
             if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.ONGOING)) {
                 throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
             }
+
+            Tour tour = getTour(tourId);
+
+            tour.setRecentStartedTourDate(date);
+
+            Tour updatedTour = tourRepository.save(tour);
+
+            if (!updatedTour.getRecentStartedTourDate().equals(date)) {
+                throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+            }
         }
         else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
                 && !checkTouristProgressStatus) {
@@ -375,6 +418,16 @@ public class TourApplicationService {
 
             if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_START)) {
                 throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+            }
+
+            Tour tour = getTour(tourId);
+
+            tour.setRecentStartedTourDate(date);
+
+            Tour updatedTour = tourRepository.save(tour);
+
+            if (!updatedTour.getRecentStartedTourDate().equals(date)) {
+                throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
             }
         }
         else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.READY)
@@ -386,9 +439,113 @@ public class TourApplicationService {
             if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.TOURIST_START)) {
                 throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
             }
+
+            Tour tour = getTour(tourId);
+
+            tour.setRecentStartedTourDate(date);
+
+            Tour updatedTour = tourRepository.save(tour);
+
+            if (!updatedTour.getRecentStartedTourDate().equals(date)) {
+                throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+            }
         }
 
         return SuccessResponse.success(SuccessCode.START_TOUR_SUCCESS, null);
+    }
+
+    public SuperResponse guideEndTour(Long tourId) {
+        LOGGER.info("[TourApplicationService] 가이드 투어 종료 시도");
+
+        Tour tour = getTour(tourId);
+
+        String recentStartedTourDate = tour.getRecentStartedTourDate();
+
+        TourApplication tourApplication = getTourApplication(tourId, recentStartedTourDate);
+
+        if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)) {
+            throw new NotAcceptableException("이미 종료를 누르신 투어입니다.", ErrorCode.NOT_ACCEPTABLE_ALREADY_PRESS_END_EXCEPTION);
+        }
+
+        tourApplication.setGuideProgressStatus(ProgressStatus.PRESS_END);
+
+        TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+        if (!updatedTourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)) {
+            throw new DBFailException("투어 종료 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_END_EXCEPTION);
+        }
+
+        return SuccessResponse.success(SuccessCode.PRESS_END_SUCCESS, null);
+    }
+
+    public SuperResponse touristEndTour(Long tourId, String tourDate, Long loginUserId) {
+        LOGGER.info("[TourApplicationService] 투어리스트 투어 종료 시도");
+
+        TourParticipant tourParticipant = getTourParticipant(tourId, tourDate, loginUserId);
+
+        if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_END)) {
+            throw new NotAcceptableException("이미 종료를 누르신 투어입니다.", ErrorCode.NOT_ACCEPTABLE_ALREADY_PRESS_END_EXCEPTION);
+        }
+
+        tourParticipant.setTouristProgressStatus(ProgressStatus.PRESS_END);
+
+        TourParticipant updatedTourParticipant = tourParticipantRepository.save(tourParticipant);
+
+        if (!updatedTourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
+            throw new DBFailException("투어 종료 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_END_EXCEPTION);
+        }
+        LOGGER.info("[TourApplicationService] 투어리스트 투어 종료 성공");
+
+        return SuccessResponse.success(SuccessCode.PRESS_END_SUCCESS, null);
+    }
+
+    public SuperResponse checkEndTour(Long tourId, String date) {
+
+        Tour tour = getTour(tourId);
+
+        String recentStartedTourDate = tour.getRecentStartedTourDate();
+
+        TourApplication tourApplication = getTourApplication(tourId, recentStartedTourDate);
+
+        boolean checkTouristProgressStatus = true;
+        for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+            if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
+                checkTouristProgressStatus = false;
+            }
+        }
+
+        if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)
+                && checkTouristProgressStatus) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.NO_REVIEW);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.ONGOING)) {
+                throw new DBFailException("투어 종료 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_END_TOUR_EXCEPTION);
+            }
+        }
+        else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)
+                && !checkTouristProgressStatus) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_END);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_END)) {
+                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+            }
+        }
+        else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
+                && checkTouristProgressStatus) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.TOURIST_END);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.TOURIST_END)) {
+                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+            }
+        }
+
+        return SuccessResponse.success(SuccessCode.END_TOUR_SUCCESS, null);
     }
 
     private User getUser(Long userId) {
@@ -409,8 +566,8 @@ public class TourApplicationService {
         return tourApplication;
     }
 
-    private Tour getTour(Long temporaryTourId) {
-        Tour temporaryTour = tourRepositoryImpl.findTourByTourId(temporaryTourId);
+    private Tour getTour(Long tourId) {
+        Tour temporaryTour = tourRepositoryImpl.findTourByTourId(tourId);
         if (temporaryTour == null) {
             throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }

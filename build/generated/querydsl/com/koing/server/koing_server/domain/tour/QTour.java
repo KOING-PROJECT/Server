@@ -35,6 +35,8 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final StringPath description = createString("description");
 
+    public final SetPath<String, StringPath> exceedTourDate = this.<String, StringPath>createSet("exceedTourDate", String.class, StringPath.class, PathInits.DIRECT2);
+
     public final BooleanPath hasLevy = createBoolean("hasLevy");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -42,6 +44,8 @@ public class QTour extends EntityPathBase<Tour> {
     public final NumberPath<Integer> participant = createNumber("participant", Integer.class);
 
     public final SetPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> pressLikeUsers = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createSet("pressLikeUsers", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
+
+    public final StringPath recentStartedTourDate = createString("recentStartedTourDate");
 
     public final NumberPath<Integer> temporarySavePage = createNumber("temporarySavePage", Integer.class);
 

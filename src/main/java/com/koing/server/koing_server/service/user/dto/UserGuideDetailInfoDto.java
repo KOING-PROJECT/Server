@@ -58,8 +58,7 @@ public class UserGuideDetailInfoDto {
                 .stream()
                 .filter(t -> !t.getId().equals(tour.getId())
                         && t.getCreateStatus().equals(CreateStatus.COMPLETE)
-                        && (t.getTourStatus().equals(TourStatus.RECRUITMENT)
-                        || t.getTourStatus().equals(TourStatus.STANDBY))
+                        && t.getTourStatus().equals(TourStatus.RECRUITMENT)
                 )
                 .collect(Collectors.toSet());
 

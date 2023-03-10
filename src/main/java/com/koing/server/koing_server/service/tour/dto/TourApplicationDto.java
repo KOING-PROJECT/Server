@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.Tour;
@@ -20,7 +21,7 @@ public class TourApplicationDto {
         this.guideName = tour.getCreateUser().getName();
         this.tourThumbnails = getThumbnails(tour);
         this.tourDate = null;
-        this.tourStatus = TourStatus.RECRUITMENT;
+        this.tourApplicationStatus = TourApplicationStatus.RECRUITMENT;
     }
 
     public TourApplicationDto(TourApplication tourApplication) {
@@ -28,14 +29,14 @@ public class TourApplicationDto {
         this.guideName = tourApplication.getTour().getCreateUser().getName();
         this.tourThumbnails = getThumbnails(tourApplication.getTour());
         this.tourDate = tourApplication.getTourDate();
-        this.tourStatus = tourApplication.getTourStatus();
+        this.tourApplicationStatus = tourApplication.getTourApplicationStatus();
     }
 
     private String tourTitle;
     private String guideName;
     private List<String> tourThumbnails;
     private String tourDate;
-    private TourStatus tourStatus;
+    private TourApplicationStatus tourApplicationStatus;
 
     private List<String> getThumbnails(Tour tour) {
         List<Thumbnail> thumbnails = tour.getThumbnails()

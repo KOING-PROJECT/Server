@@ -490,6 +490,7 @@ public class TourService {
                 .additionalPrice(buildAdditionalPrice(tourCreateDto.getAdditionalPrice()))
                 .tourStatus(TourStatus.CREATED)
                 .createStatus(createStatus)
+                .exceedTourDate(new HashSet<>())
                 .build();
 
         uploadThumbnails(tour, tourCreateDto.getThumbnailOrders(), tourCreateDto.getUploadedThumbnailUrls(), thumbnails);

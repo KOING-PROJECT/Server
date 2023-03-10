@@ -57,8 +57,7 @@ public class UserDetailInfoFromMyPageDto {
         Set<Tour> tours = user.getCreateTours()
                 .stream()
                 .filter(t -> t.getCreateStatus().equals(CreateStatus.COMPLETE)
-                        && (t.getTourStatus().equals(TourStatus.RECRUITMENT)
-                        || t.getTourStatus().equals(TourStatus.STANDBY))
+                        && t.getTourStatus().equals(TourStatus.RECRUITMENT)
                 )
                 .collect(Collectors.toSet());
 

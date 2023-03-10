@@ -27,7 +27,7 @@ public class Tour extends AuditingTimeEntity {
                 List<Thumbnail> thumbnails, int participant, int tourPrice,
                 boolean hasLevy, int temporarySavePage,
                 TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
-                CreateStatus createStatus
+                CreateStatus createStatus, Set<String> exceedTourDate
                 ) {
         this.title = title;
         this.createUser = createUser;
@@ -42,6 +42,8 @@ public class Tour extends AuditingTimeEntity {
         this.tourStatus = tourStatus;
         this.additionalPrice = additionalPrice;
         this.createStatus = createStatus;
+        this.exceedTourDate = exceedTourDate;
+        this.recentStartedTourDate = "";
     }
 
     @Id
@@ -111,6 +113,12 @@ public class Tour extends AuditingTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CreateStatus createStatus;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "exceed_tour_date")
+    private Set<String> exceedTourDate;
+
+    private String recentStartedTourDate;
 
     public void setTourSchedule(TourSchedule tourSchedule) {
         this.tourSchedule = tourSchedule;

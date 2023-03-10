@@ -54,10 +54,13 @@ public class TourApplicationController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "TourApplication - 투어 신청 성공"),
             @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
             @ApiResponse(code = 406, message = "해당 투어의 정원을 초과했습니다."),
+            @ApiResponse(code = 406, message = "이미 신청한 팀이 있는 투어입니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/participate")

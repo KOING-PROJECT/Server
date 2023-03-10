@@ -69,6 +69,8 @@ public enum ErrorCode {
     DB_FAIL_CREATE_THUMBNAIL_EXCEPTION(DB_HANDLE_FAIL, "썸네일 저장 과정에서 오류가 발생했습니다."),
     DB_FAIL_PRESS_START_EXCEPTION(DB_HANDLE_FAIL, "투어 시작 처리 과정에서 오류가 발생했습니다."),
     DB_FAIL_START_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 시작 과정에서 오류가 발생했습니다."),
+    DB_FAIL_END_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 과정에서 오류가 발생했습니다."),
+    DB_FAIL_PRESS_END_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 처리 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_FCM_TOKEN_EXCEPTION(DB_HANDLE_FAIL, "FCM 토큰 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_FCM_TOKEN_EXCEPTION(DB_HANDLE_FAIL, "FCM 토큰 업데이트 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_USER_CATEGORY_INDEXES_EXCEPTION(DB_HANDLE_FAIL, "유저 선호 카테고리 업데이트 과정에서 오류가 발생했습니다."),
@@ -77,6 +79,7 @@ public enum ErrorCode {
     DB_FAIL_RECRUITMENT_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 모집 시작 과정에서 오류가 발생했습니다."),
     DB_FAIL_DE_ACTIVATE_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 비활성화 과정에서 오류가 발생했습니다."),
     DB_FAIL_DE_ACTIVATE_TOUR_APPLICATION_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 비활성화 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_TOUR_PARTICIPANT_EXCEPTION(DB_HANDLE_FAIL, "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -127,6 +130,8 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_NOT_GUIDE_EXCEPTION(NOT_ACCEPTABLE, "해당 유저는 가이드가 아니므로 팔로우 할 수 없습니다."),
     NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION(NOT_ACCEPTABLE, "해당 사진의 순서를 알 수 없습니다."),
     NOT_ACCEPTABLE_ALREADY_PRESS_START_EXCEPTION(NOT_ACCEPTABLE, "이미 시작을 누르신 투어입니다."),
+    NOT_ACCEPTABLE_ALREADY_EXCEED_TOUR_APPLICATION_EXCEPTION(NOT_ACCEPTABLE, "이미 신청한 팀이 있는 투어입니다."),
+    NOT_ACCEPTABLE_ALREADY_PRESS_END_EXCEPTION(NOT_ACCEPTABLE, "이미 종료를 누르신 투어입니다."),
 
     /**
      * 407 PAYMENT_SERVER_ERROR

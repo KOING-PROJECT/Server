@@ -33,6 +33,8 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final BooleanPath isExceed = createBoolean("isExceed");
+
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);
 
     public final SetPath<Long, NumberPath<Long>> reviewedTouristId = this.<Long, NumberPath<Long>>createSet("reviewedTouristId", Long.class, NumberPath.class, PathInits.DIRECT2);
@@ -41,11 +43,11 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final QTour tour;
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.TourApplicationStatus> tourApplicationStatus = createEnum("tourApplicationStatus", com.koing.server.koing_server.common.enums.TourApplicationStatus.class);
+
     public final StringPath tourDate = createString("tourDate");
 
     public final ListPath<TourParticipant, QTourParticipant> tourParticipants = this.<TourParticipant, QTourParticipant>createList("tourParticipants", TourParticipant.class, QTourParticipant.class, PathInits.DIRECT2);
-
-    public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

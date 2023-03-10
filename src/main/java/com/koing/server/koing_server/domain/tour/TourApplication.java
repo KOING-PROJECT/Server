@@ -33,6 +33,7 @@ public class TourApplication extends AuditingTimeEntity {
         this.reviewsToGuide = new HashSet<>();
         this.reviewedTouristId = new HashSet<>();
         this.guideProgressStatus = ProgressStatus.READY;
+        this.isExceed = false;
     }
 
     @Id
@@ -66,6 +67,8 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProgressStatus guideProgressStatus;
+
+    private boolean isExceed;
 
     public void setTour(Tour tour) {
         this.tour = tour;
