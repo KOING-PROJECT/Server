@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
@@ -34,6 +35,10 @@ public class TourDto {
                     .sorted()
                     .collect(Collectors.toList());
         }
+
+        if (tour.getExceedTourDate() != null) {
+            this.exceedTourDate = tour.getExceedTourDate();
+        }
     }
 
     private Long tourId;
@@ -43,6 +48,7 @@ public class TourDto {
     private String guideName;
     private String guideThumbnail;
     private List<String> tourDates;
+    private Set<String> exceedTourDate;
 
     private void getThumbnails(Tour tour) {
         List<Thumbnail> thumbnails = tour.getThumbnails()

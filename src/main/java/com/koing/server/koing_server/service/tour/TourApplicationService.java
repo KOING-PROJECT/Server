@@ -158,11 +158,11 @@ public class TourApplicationService {
 
         TourApplication updateTourApplication = tourApplicationRepository.save(tourApplication);
 
-        if (updateTourApplication.isExceed()) {
+        if (!updateTourApplication.isExceed()) {
             throw new DBFailException(
                 "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.",
                 ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION
-        );
+            );
         }
 
         LOGGER.info("[TourApplicationService] TourParticipant 생성 저장 성공");
@@ -337,6 +337,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.GET_TOUR_PARTICIPANTS_SUCCESS, new UserTourParticipantListDto(userTourParticipantDtos));
     }
 
+    @Transactional
     public SuperResponse guideStartTour(Long tourId, String today) {
         LOGGER.info("[TourApplicationService] 가이드 투어 시작 시도");
 
@@ -358,6 +359,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.PRESS_START_SUCCESS, null);
     }
 
+    @Transactional
     public SuperResponse touristStartTour(Long tourId, String tourDate, Long loginUserId) {
         LOGGER.info("[TourApplicationService] 투어리스트 투어 시작 시도");
 
@@ -379,6 +381,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.PRESS_START_SUCCESS, null);
     }
 
+    @Transactional
     public SuperResponse checkStartTour(Long tourId, String date) {
 
         TourApplication tourApplication = getTourApplication(tourId, date);
@@ -454,6 +457,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.START_TOUR_SUCCESS, null);
     }
 
+    @Transactional
     public SuperResponse guideEndTour(Long tourId) {
         LOGGER.info("[TourApplicationService] 가이드 투어 종료 시도");
 
@@ -478,6 +482,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.PRESS_END_SUCCESS, null);
     }
 
+    @Transactional
     public SuperResponse touristEndTour(Long tourId, String tourDate, Long loginUserId) {
         LOGGER.info("[TourApplicationService] 투어리스트 투어 종료 시도");
 
@@ -491,7 +496,7 @@ public class TourApplicationService {
 
         TourParticipant updatedTourParticipant = tourParticipantRepository.save(tourParticipant);
 
-        if (!updatedTourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
+        if (!updatedTourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_END)) {
             throw new DBFailException("투어 종료 처리 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_PRESS_END_EXCEPTION);
         }
         LOGGER.info("[TourApplicationService] 투어리스트 투어 종료 성공");
@@ -499,6 +504,7 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.PRESS_END_SUCCESS, null);
     }
 
+    @Transactional
     public SuperResponse checkEndTour(Long tourId, String date) {
 
         Tour tour = getTour(tourId);
@@ -520,7 +526,7 @@ public class TourApplicationService {
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
-            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.ONGOING)) {
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.NO_REVIEW)) {
                 throw new DBFailException("투어 종료 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_END_TOUR_EXCEPTION);
             }
         }

@@ -33,6 +33,8 @@ public class QTourParticipant extends EntityPathBase<TourParticipant> {
 
     public final com.koing.server.koing_server.domain.user.QUser participant;
 
+    public final BooleanPath reviewedToTourist = createBoolean("reviewedToTourist");
+
     public final com.koing.server.koing_server.domain.review.QReviewToTourist reviewToTourist;
 
     public final QTourApplication tourApplication;

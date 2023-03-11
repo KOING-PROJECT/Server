@@ -2,6 +2,7 @@ package com.koing.server.koing_server.service.review;
 
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.IOFailException;
@@ -77,6 +78,7 @@ public class ReviewService {
         if (savedReviewToGuide == null) {
             throw new DBFailException("ReviewToGuide 저장과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_REVIEW_TO_GUIDE_FAIL_EXCEPTION);
         }
+
         LOGGER.info("[ReviewService] ReviewToGuide 저장 완료");
 
         return SuccessResponse.success(SuccessCode.REVIEW_TO_GUIDE_CREATE_SUCCESS, null);
@@ -109,6 +111,17 @@ public class ReviewService {
 
         if (updatedTourParticipant == null) {
             throw new DBFailException("투어 신청 내용 업데이트 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_TOUR_PARTICIPANT_FAIL_EXCEPTION);
+        }
+
+        TourApplication tourApplication = getTourApplication(reviewToTouristCreateDto.getTourId(), reviewToTouristCreateDto.getTourDate());
+        if (checkGuideReviewedAll(tourApplication)) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_REVIEWED);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_REVIEWED)) {
+                throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+            }
         }
 
         LOGGER.info("[ReviewService] ReviewToTourist 저장 완료");
@@ -224,9 +237,6 @@ public class ReviewService {
     }
 
     private TourParticipant getTourParticipant(Long tourId, String tourDate, Long tourParticipantId) {
-        System.out.println(tourDate);
-        System.out.println(tourId);
-        System.out.println(tourParticipantId);
         TourParticipant tourParticipant = tourParticipantRepositoryImpl
                 .findTourParticipantByTourIdAndTourDateAndTourParticipantId(tourId, tourDate, tourParticipantId);
         if (tourParticipant == null) {
@@ -234,6 +244,21 @@ public class ReviewService {
         }
 
         return tourParticipant;
+    }
+
+    public boolean checkGuideReviewedAll(TourApplication tourApplication) {
+
+        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
+
+        boolean check = true;
+
+        for (TourParticipant tourParticipant : tourParticipants) {
+            if (tourParticipant.getReviewToTourist() == null) {
+                check = false;
+            }
+        }
+
+        return check;
     }
 
 }

@@ -28,6 +28,7 @@ public class TourParticipant extends AuditingTimeEntity {
         setParticipant(participant);
         this.numberOfParticipants = numberOfParticipants;
         this.touristProgressStatus = ProgressStatus.READY;
+        this.reviewedToTourist = false;
     }
 
     @Id
@@ -45,6 +46,7 @@ public class TourParticipant extends AuditingTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private ReviewToTourist reviewToTourist;
 
+    private boolean reviewedToTourist;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
