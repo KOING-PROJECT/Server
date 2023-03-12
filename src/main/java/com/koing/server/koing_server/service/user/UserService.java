@@ -158,7 +158,7 @@ public class UserService {
         LOGGER.info("[UserService] 로그인 유저 조회 성공");
 
         if (user.getRoles().contains(UserRole.ROLE_TOURIST.getRole())) {
-            UserTouristMyPageDto userTouristMyPageDto = new UserTouristMyPageDto(user);
+            UserTouristMyPageDto userTouristMyPageDto = new UserTouristMyPageDto(user, today);
             LOGGER.info("[UserService] Tourist My page 정보 조회 성공");
 
             return SuccessResponse.success(SuccessCode.GET_TOURIST_INFO_SUCCESS, userTouristMyPageDto);

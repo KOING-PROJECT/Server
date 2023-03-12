@@ -190,7 +190,7 @@ public class TourMyTourDto {
                 }
 
                 // 신청한 사람이 있던 없던, tourApplication이 어떤 상태이건
-                if (Integer.parseInt(tourApplicationDate) > Integer.parseInt(date)) {
+                if (Integer.parseInt(tourApplicationDate) >= Integer.parseInt(date)) {
                     hasBeforeDate = true;
                     if (tourApplicationStatus.equals(TourApplicationStatus.STANDBY)) {
                         checkParticipants = true;

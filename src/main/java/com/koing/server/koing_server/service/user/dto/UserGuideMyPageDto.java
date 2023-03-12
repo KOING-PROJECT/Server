@@ -173,21 +173,26 @@ public class UserGuideMyPageDto {
             }
         }
 
+//        List<TourMyEndTourDto> tourMyEndTourDtos = new ArrayList<>();
+//        for (TourApplication tourApplication : endTourApplication) {
+//            int reviewToTouristCount = 0;
+//            for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+//                if (tourParticipant.getReviewToTourist() != null) {
+//                    reviewToTouristCount += 1;
+//                }
+//            }
+//
+//            if (tourApplication.getTourParticipants().size() > reviewToTouristCount) {
+//                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, false));
+//            }
+//            else {
+//                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, true));
+//            }
+//        }
+
         List<TourMyEndTourDto> tourMyEndTourDtos = new ArrayList<>();
         for (TourApplication tourApplication : endTourApplication) {
-            int reviewToTouristCount = 0;
-            for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
-                if (tourParticipant.getReviewToTourist() != null) {
-                    reviewToTouristCount += 1;
-                }
-            }
-
-            if (tourApplication.getTourParticipants().size() > reviewToTouristCount) {
-                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, false));
-            }
-            else {
-                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, true));
-            }
+            tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication));
         }
 
         tourMyEndTourDtos = tourMyEndTourDtos

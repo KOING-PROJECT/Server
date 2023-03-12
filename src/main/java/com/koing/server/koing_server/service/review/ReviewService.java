@@ -79,6 +79,27 @@ public class ReviewService {
             throw new DBFailException("ReviewToGuide 저장과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_CREATE_REVIEW_TO_GUIDE_FAIL_EXCEPTION);
         }
 
+        if (checkAllTouristReviewed(tourApplication)) {
+            if (tourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_REVIEWED)) {
+                tourApplication.setTourApplicationStatus(TourApplicationStatus.REVIEWED);
+
+                TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+                if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.REVIEWED)) {
+                    throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                }
+            }
+            else {
+                tourApplication.setTourApplicationStatus(TourApplicationStatus.TOURIST_REVIEWED);
+
+                TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+                if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.TOURIST_REVIEWED)) {
+                    throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                }
+            }
+        }
+
         LOGGER.info("[ReviewService] ReviewToGuide 저장 완료");
 
         return SuccessResponse.success(SuccessCode.REVIEW_TO_GUIDE_CREATE_SUCCESS, null);
@@ -115,12 +136,23 @@ public class ReviewService {
 
         TourApplication tourApplication = getTourApplication(reviewToTouristCreateDto.getTourId(), reviewToTouristCreateDto.getTourDate());
         if (checkGuideReviewedAll(tourApplication)) {
-            tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_REVIEWED);
+            if (tourApplication.getTourApplicationStatus().equals(TourApplicationStatus.TOURIST_REVIEWED)) {
+                tourApplication.setTourApplicationStatus(TourApplicationStatus.REVIEWED);
 
-            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+                TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
-            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_REVIEWED)) {
-                throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.REVIEWED)) {
+                    throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                }
+            }
+            else {
+                tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_REVIEWED);
+
+                TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+                if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_REVIEWED)) {
+                    throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+                }
             }
         }
 
@@ -246,7 +278,7 @@ public class ReviewService {
         return tourParticipant;
     }
 
-    public boolean checkGuideReviewedAll(TourApplication tourApplication) {
+    private boolean checkGuideReviewedAll(TourApplication tourApplication) {
 
         List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
 
@@ -259,6 +291,15 @@ public class ReviewService {
         }
 
         return check;
+    }
+
+    private boolean checkAllTouristReviewed(TourApplication tourApplication) {
+
+        if (tourApplication.getReviewsToGuide().size() == tourApplication.getTourParticipants().size()) {
+            return true;
+        }
+
+        return false;
     }
 
 }

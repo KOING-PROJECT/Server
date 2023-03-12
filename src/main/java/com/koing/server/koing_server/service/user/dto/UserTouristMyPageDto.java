@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserTouristMyPageDto {
 
-    public UserTouristMyPageDto(User user) {
+    public UserTouristMyPageDto(User user, String today) {
         this.touristName = user.getName();
         this.roles = user.getRoles();
         if (user.getUserOptionalInfo().getImageUrls() != null &&
@@ -30,7 +30,7 @@ public class UserTouristMyPageDto {
         }
         this.following = createUserFollowDtos(user);
         this.likeTours = createTourLikeDtos(user);
-        this.tourHistories = createTourHistoryDtos(user);
+        this.tourHistories = createTourHistoryDtos(user, today);
         this.touristGrade = user.getTouristGrade();
     }
 
@@ -67,20 +67,20 @@ public class UserTouristMyPageDto {
         return tourLikeDtos;
     }
 
-    private List<TourHistoryDto> createTourHistoryDtos(User user) {
+    private List<TourHistoryDto> createTourHistoryDtos(User user, String today) {
         List<TourParticipant> tourParticipants = user.getTourParticipants().stream().collect(Collectors.toList());
 
         List<TourApplication> tourApplications = new ArrayList<>();
-        List<ProgressStatus> touristProgressStatus = new ArrayList<>();
+//        List<ProgressStatus> touristProgressStatus = new ArrayList<>();
 
         for (TourParticipant tourParticipant : tourParticipants) {
             tourApplications.add(tourParticipant.getTourApplication());
-            touristProgressStatus.add(tourParticipant.getTouristProgressStatus());
+//            touristProgressStatus.add(tourParticipant.getTouristProgressStatus());
         }
 
         List<TourHistoryDto> tourHistoryDtos = new ArrayList<>();
         for (int i = 0; i < tourApplications.size(); i++) {
-            tourHistoryDtos.add(new TourHistoryDto(tourApplications.get(i), touristProgressStatus.get(i)));
+            tourHistoryDtos.add(new TourHistoryDto(tourApplications.get(i), today));
         }
 
 //        for (TourApplication tourApplication : tourApplications) {
