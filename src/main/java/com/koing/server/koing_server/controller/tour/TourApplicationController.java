@@ -6,6 +6,7 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.service.tour.TourApplicationService;
+import com.koing.server.koing_server.service.tour.dto.TourApplicationCancelDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
 import io.swagger.annotations.Api;
@@ -78,6 +79,37 @@ public class TourApplicationController {
 
         return participateTourApplicationResponse;
     }
+
+
+    @ApiOperation("TourApplication - 신청한 투어를 취소합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "TourApplication - 투어 취소 성공"),
+            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @DeleteMapping("/cancel")
+    public SuperResponse cancelTour(@RequestBody TourApplicationCancelDto tourApplicationCancelDto) {
+        LOGGER.info("[TourApplicationController] 투어 신청 취소 시도");
+        SuperResponse cancelTourApplicationResponse;
+        try {
+            cancelTourApplicationResponse = tourApplicationService.cancelTour(tourApplicationCancelDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourApplicationController] 투어 신청 취소 성공");
+
+        return cancelTourApplicationResponse;
+    }
+
 
     @ApiOperation("TourApplication - 투어 신청서 리스트를 가져옵니다.")
     @ApiResponses(value = {

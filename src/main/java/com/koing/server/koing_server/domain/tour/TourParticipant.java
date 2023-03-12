@@ -35,10 +35,10 @@ public class TourParticipant extends AuditingTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private TourApplication tourApplication;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User participant;
 
     private int numberOfParticipants;
@@ -70,6 +70,20 @@ public class TourParticipant extends AuditingTimeEntity {
         }
 
         user.getTourParticipants().add(this);
+    }
+
+    public void disconnetTourApplicationAndParticipant(TourApplication tourApplication, User participant) {
+        this.tourApplication = null;
+
+        if (tourApplication.getTourParticipants().contains(this)) {
+            tourApplication.getTourParticipants().remove(this);
+        }
+
+        this.participant = null;
+
+        if (participant.getTourParticipants().contains(this)) {
+            participant.getTourParticipants().remove(this);
+        }
     }
 
 }

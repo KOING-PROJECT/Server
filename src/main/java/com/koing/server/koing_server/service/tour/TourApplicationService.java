@@ -26,10 +26,7 @@ import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourSch
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
-import com.koing.server.koing_server.service.tour.dto.TourApplicationDto;
-import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
-import com.koing.server.koing_server.service.tour.dto.TourApplicationResponseDto;
+import com.koing.server.koing_server.service.tour.dto.*;
 import com.koing.server.koing_server.service.user.dto.UserTourParticipantDto;
 import com.koing.server.koing_server.service.user.dto.UserTourParticipantListDto;
 import lombok.RequiredArgsConstructor;
@@ -102,6 +99,7 @@ public class TourApplicationService {
 
     @Transactional
     public SuperResponse participateTour(TourApplicationParticipateDto tourApplicationParticipateDto) {
+        LOGGER.info("[TourApplicationService] tour 신청 시도");
         Long tourId = tourApplicationParticipateDto.getTourId();
         String tourDate = tourApplicationParticipateDto.getTourDate();
 
@@ -180,8 +178,77 @@ public class TourApplicationService {
         if (!updatedTour.getExceedTourDate().contains(tourDate)) {
             throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
         }
+        LOGGER.info("[TourApplicationService] tour 신청 성공");
 
         return SuccessResponse.success(SuccessCode.TOUR_APPLICATION_UPDATE_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse cancelTour(TourApplicationCancelDto tourApplicationCancelDto) {
+        LOGGER.info("[TourApplicationService] tour 신청 취소 시도");
+        Long tourId = tourApplicationCancelDto.getTourId();
+        String tourDate = tourApplicationCancelDto.getTourDate();
+        Long touristId = tourApplicationCancelDto.getUserId();
+        String today = tourApplicationCancelDto.getToday();
+
+        // 투어 시작 일 기준 이틀전까지 투어 취소 가능
+        // TourParticipant - tourApplication과 연관관계 삭제, tourParticipant 삭제
+        // TourApplication - tourParticipant 삭제 / currentParticipants 수정 / isExceed 수정
+        // TourApplicationStatus.STANDBY 에서 TourApplicationStatus.RECRUITMENT 로 수정
+        // Tour - exceedTourDate 수정
+
+        TourApplication tourApplication = getTourApplication(tourId, tourDate);
+        LOGGER.info("[TourApplicationService] TourId로 TourApplication 조회 성공 = " + tourApplication);
+
+        if (Integer.parseInt(tourApplication.getTourDate()) < (Integer.parseInt(today) + 2)) {
+            throw new NotAcceptableException("투어 취소는 투어 당일 기준 이틀 전까지 가능합니다.", ErrorCode.NOT_ACCEPTABLE_TOUR_DATE_CLOSE_EXCEPTION);
+        }
+
+        User user = getUser(touristId);
+        LOGGER.info("[TourApplicationService] userId로 tourist 조회 성공");
+
+        TourParticipant tourParticipant = getTourParticipant(tourId, tourDate, touristId);
+        LOGGER.info("[TourApplicationService] tourId, tourDate, touristId로 TourApplication 조회 성공");
+
+        tourParticipant.disconnetTourApplicationAndParticipant(tourApplication, user);
+
+        int participantNumber = tourParticipant.getNumberOfParticipants();
+
+        int newCurrentParticipant = tourApplication.getCurrentParticipants() - participantNumber;
+        tourApplication.setCurrentParticipants(newCurrentParticipant);
+
+        if (tourApplication.getTourParticipants().size() < 1) {
+            tourApplication.setExceed(false);
+            if (tourApplication.getTourApplicationStatus().equals(TourApplicationStatus.STANDBY)) {
+                tourApplication.setTourApplicationStatus(TourApplicationStatus.RECRUITMENT);
+            }
+
+            Tour tour = getTour(tourId);
+            tour.deleteExceedDate(tourDate);
+            Tour updatedTour = tourRepository.save(tour);
+
+            if (updatedTour.getExceedTourDate().contains(tourDate)) {
+                throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+            }
+        }
+
+        User updatedUser = userRepository.save(user);
+
+        if (updatedUser.getTourParticipants().contains(tourParticipant)) {
+            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+        }
+
+        TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+        if (updatedTourApplication.getTourParticipants().contains(tourParticipant)) {
+            throw new DBFailException("투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_APPLICATION_FAIL_EXCEPTION);
+        }
+
+        tourParticipantRepository.delete(tourParticipant);
+
+        LOGGER.info("[TourApplicationService] tour 신청 취소 성공");
+
+        return SuccessResponse.success(SuccessCode.CANCEL_TOUR_APPLICATION_SUCCESS, null);
     }
 
     @Transactional

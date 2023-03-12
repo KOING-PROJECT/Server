@@ -184,4 +184,10 @@ public class Tour extends AuditingTimeEntity {
         return false;
     }
 
+    public void deleteExceedDate(String exceedTourDate) {
+        if (this.exceedTourDate.contains(exceedTourDate)) {
+            this.exceedTourDate.remove(exceedTourDate);
+        }
+    }
+
 }
