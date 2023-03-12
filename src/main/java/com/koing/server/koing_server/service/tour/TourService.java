@@ -159,6 +159,15 @@ public class TourService {
         tourApplicationRepository.deleteAll(tourApplications);
         LOGGER.info("[TourService] Tour의 TourApplication 삭제 성공");
 
+        List<Thumbnail> thumbnails = getThumbnails(tourId);
+
+        for (Thumbnail thumbnail : thumbnails) {
+            thumbnail.deleteTour(tour);
+        }
+
+        thumbnailRepository.deleteAll(thumbnails);
+        LOGGER.info("[TourService] Tour의 Thumbnails 삭제 성공");
+
         tourRepository.delete(tour);
         LOGGER.info("[TourService] Tour 삭제 성공");
 
@@ -242,9 +251,9 @@ public class TourService {
 
         tour.setTourStatus(TourStatus.RECRUITMENT);
 
-        Tour approvalTour = tourRepository.save(tour);
+        Tour recruitmentTour = tourRepository.save(tour);
 
-        if (!approvalTour.getTourStatus().equals(TourStatus.RECRUITMENT)) {
+        if (!recruitmentTour.getTourStatus().equals(TourStatus.RECRUITMENT)) {
             throw new DBFailException("투어 모집 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_RECRUITMENT_TOUR_EXCEPTION);
         }
 
@@ -283,7 +292,7 @@ public class TourService {
 
         Tour tour = getTourAtDB(tourId);
 
-        LOGGER.info("[TourService] 승인 거절 할 Tour 조회 성공");
+        LOGGER.info("[TourService] 비활성화할 Tour 조회 성공");
 
         tour.setTourStatus(TourStatus.DE_ACTIVATE);
 
@@ -308,6 +317,39 @@ public class TourService {
         LOGGER.info("[TourService] Tour 비활성화 성공");
 
         return SuccessResponse.success(SuccessCode.TOUR_DE_ACTIVATE_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse activateTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 활성화 시도");
+
+        Tour tour = getTourAtDB(tourId);
+
+        LOGGER.info("[TourService] 활성화 할 Tour 조회 성공");
+
+        tour.setTourStatus(TourStatus.RECRUITMENT);
+
+        Tour deActivatedTour = tourRepository.save(tour);
+
+        if (!deActivatedTour.getTourStatus().equals(TourStatus.RECRUITMENT)) {
+            throw new DBFailException("투어 활성화 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_ACTIVATE_TOUR_EXCEPTION);
+        }
+
+        List<TourApplication> tourApplications = getTourApplicationsAtDB(tourId);
+
+        for (TourApplication tourApplication : tourApplications) {
+            tourApplication.setTourApplicationStatus(TourApplicationStatus.RECRUITMENT);
+
+            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+
+            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.RECRUITMENT)) {
+                throw new DBFailException("투어 신청서 활성화 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_ACTIVATE_TOUR_APPLICATION_EXCEPTION);
+            }
+        }
+
+        LOGGER.info("[TourService] Tour 활성화 성공");
+
+        return SuccessResponse.success(SuccessCode.TOUR_ACTIVATE_SUCCESS, null);
     }
 
     @Transactional
@@ -606,6 +648,12 @@ public class TourService {
         if (thumbnail == null) {
             throw new NotFoundException("해당 썸네일을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_THUMBNAIL_EXCEPTION);
         }
+
+        return thumbnail;
+    }
+
+    private List<Thumbnail> getThumbnails(Long tourId) {
+        List<Thumbnail> thumbnail = thumbnailRepositoryImpl.findThumbnailByTourId(tourId);
 
         return thumbnail;
     }

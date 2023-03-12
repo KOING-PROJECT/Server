@@ -241,6 +241,7 @@ public class TourController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Tour - 투어 비활성화 성공"),
             @ApiResponse(code = 402, message = "투어 비활성화 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 402, message = "투어 신청서 비활성화 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
@@ -258,6 +259,31 @@ public class TourController {
         LOGGER.info("[TourController] 투어 비활성화 성공");
 
         return deActivateTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 투어를 활성화 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Tour - 투어 활성화 성공"),
+            @ApiResponse(code = 402, message = "투어 활성화 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 402, message = "투어 신청서 활성화 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/activate/{tourId}")
+    public SuperResponse activateTour(@PathVariable("tourId") Long tourId) {
+        LOGGER.info("[TourController] 투어 활성화 시도");
+        SuperResponse activateTourResponse;
+        try {
+            activateTourResponse = tourService.activateTour(tourId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourController] 투어 활성화 성공");
+
+        return activateTourResponse;
     }
 
 
