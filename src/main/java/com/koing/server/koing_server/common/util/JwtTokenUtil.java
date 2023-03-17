@@ -28,7 +28,7 @@ public class JwtTokenUtil {
     private final UserService userService;
 
 //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 6; // 1000 ms = 1초, 1시간 * 6
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 365; // 1000 ms = 1초, 현재 1년
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 10; // 1000 ms = 1초, 현재 10분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 48; // 1시간 * 48 = 2일 / refresh token
 
 

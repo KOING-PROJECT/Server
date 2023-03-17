@@ -82,6 +82,9 @@ public enum ErrorCode {
     DB_FAIL_DE_ACTIVATE_TOUR_APPLICATION_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 비활성화 과정에서 오류가 발생했습니다."),
     DB_FAIL_ACTIVATE_TOUR_APPLICATION_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 활성화 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_TOUR_PARTICIPANT_EXCEPTION(DB_HANDLE_FAIL, "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_WITHDRAWAL_USER_EXCEPTION(DB_HANDLE_FAIL, "유저 탈퇴 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_TEMPORARY_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "임시 비밀번호 발급 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "비밀번호 변경 과정에서 오류가 발생했습니다."),
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -135,6 +138,7 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_ALREADY_EXCEED_TOUR_APPLICATION_EXCEPTION(NOT_ACCEPTABLE, "이미 신청한 팀이 있는 투어입니다."),
     NOT_ACCEPTABLE_ALREADY_PRESS_END_EXCEPTION(NOT_ACCEPTABLE, "이미 종료를 누르신 투어입니다."),
     NOT_ACCEPTABLE_TOUR_DATE_CLOSE_EXCEPTION(NOT_ACCEPTABLE, "투어 취소는 투어 당일 기준 이틀 전까지 가능합니다."),
+    NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION(NOT_ACCEPTABLE, "비밀번호가 틀렸습니다."),
 
     /**
      * 407 PAYMENT_SERVER_ERROR

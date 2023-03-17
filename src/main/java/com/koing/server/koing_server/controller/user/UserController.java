@@ -11,6 +11,8 @@ import com.koing.server.koing_server.controller.tour.TourSurveyController;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.user.UserService;
 import com.koing.server.koing_server.service.user.dto.UserCategoryIndexesUpdateDto;
+import com.koing.server.koing_server.service.user.dto.UserPasswordChangeDto;
+import com.koing.server.koing_server.service.user.dto.UserWithdrawalDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -270,4 +272,59 @@ public class UserController {
 
         return getUserCategoryIndexesResponse;
     }
+
+
+    @ApiOperation("User - 회원 탈퇴를 진행합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - 회원 탈퇴 성공"),
+            @ApiResponse(code = 402, message = "유저 탈퇴 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/withdrawal")
+    public SuperResponse withdrawalUser(
+            @RequestBody UserWithdrawalDto userWithdrawalDto
+            ) {
+        LOGGER.info("[UserController] 유저 탈퇴 시도");
+        SuperResponse withdrawalUserResponse;
+        try {
+            withdrawalUserResponse = userService.withdrawalUser(userWithdrawalDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[UserController] 유저 탈퇴 성공");
+
+        return withdrawalUserResponse;
+    }
+
+
+    @ApiOperation("User - 비밀번호를 변경 진행합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User - 비밀번호를 변경 성공"),
+            @ApiResponse(code = 402, message = "비밀번호 변경 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/password")
+    public SuperResponse changePassword(
+            @RequestBody UserPasswordChangeDto userPasswordChangeDto
+    ) {
+        LOGGER.info("[UserController] 비밀번호 변경 시도");
+
+        SuperResponse passwordChangeResponse;
+        try {
+            passwordChangeResponse = userService.changePassword(userPasswordChangeDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+
+        LOGGER.info("[UserController] 비밀번호 변경 성공");
+
+        return passwordChangeResponse;
+    }
+
 }

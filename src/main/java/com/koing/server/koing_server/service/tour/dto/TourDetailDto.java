@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.service.tour.dto;
 
 import com.koing.server.koing_server.domain.image.Thumbnail;
+import com.koing.server.koing_server.domain.review.ReviewToGuide;
 import com.koing.server.koing_server.domain.tour.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class TourDetailDto {
         this.tourDates = tourSchedule.getTourDates().stream().sorted().collect(Collectors.toList());
         sortTourDetailSchedule(tourSchedule);
         this.isUserPressTourLike = false;
+        this.reviews = getTourReviews(tour);
     }
 
     private Long userId;
@@ -49,6 +51,7 @@ public class TourDetailDto {
     private List<TourDetailSchedule> tourDetailSchedules;
     private boolean isUserPressTourLike;
     // 후기 추가해야됨
+    private List<TourReviewToGuideDto> reviews;
 
     private void sortTourDetailSchedule(TourSchedule tourSchedule) {
 
@@ -79,5 +82,26 @@ public class TourDetailDto {
         }
 
         return thumbnailUrls;
+    }
+
+    private List<TourReviewToGuideDto> getTourReviews(Tour tour) {
+        List<TourApplication> tourApplications = tour.getTourApplications().stream().collect(Collectors.toList());
+
+        Set<ReviewToGuide> reviewToGuides = new HashSet<>();
+
+        for (TourApplication tourApplication : tourApplications) {
+            reviewToGuides.addAll(tourApplication.getReviewsToGuide());
+        }
+
+        List<ReviewToGuide> sortedReviewToGuides = reviewToGuides.stream()
+                .sorted(Comparator.comparing((ReviewToGuide r) -> r.getUpdatedAt()))
+                .collect(Collectors.toList());
+
+        List<TourReviewToGuideDto> tourReviewToGuideDtos = new ArrayList<>();
+        for (ReviewToGuide reviewToGuide : sortedReviewToGuides) {
+            tourReviewToGuideDtos.add(new TourReviewToGuideDto(reviewToGuide));
+        }
+
+        return tourReviewToGuideDtos;
     }
 }

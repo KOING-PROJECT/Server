@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.enums.*;
 import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.tour.TourParticipant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ public class TourMyTourDto {
         this.maxParticipant = tour.getParticipant();
         this.thumbnails = getThumbnails(tour);
         this.guideName = tour.getCreateUser().getName();
+        this.touristIds = getTouristIds(tour, date);
         if (tour.getCreateUser().getUserOptionalInfo() != null) {
             this.guideThumbnails = tour.getCreateUser().getUserOptionalInfo().getImageUrls();
         }
@@ -35,63 +37,16 @@ public class TourMyTourDto {
             }
         }
         this.currentStatus = decideCurrentStatus(tour, date);
-//        this.tourStatus = tour.getTourStatus();
-//        this.createStatus = tour.getCreateStatus();
     }
-
-//    public TourMyTourDto(Tour tour, ProgressStatus progressStatus) {
-//        this.tourId = tour.getId();
-//        this.tourTitle = tour.getTitle();
-//        this.maxParticipant = tour.getParticipant();
-//        this.thumbnails = getThumbnails(tour);
-//        this.guideName = tour.getCreateUser().getName();
-//        if (tour.getCreateUser().getUserOptionalInfo() != null) {
-//            this.guideThumbnails = tour.getCreateUser().getUserOptionalInfo().getImageUrls();
-//        }
-//        if (tour.getTourSchedule() != null) {
-//            if (tour.getTourSchedule().getTourDates() != null) {
-//                this.tourDates = tour.getTourSchedule().getTourDates()
-//                        .stream()
-//                        .sorted()
-//                        .collect(Collectors.toList());
-//            }
-//        }
-//        this.tourStatus = tour.getTourStatus();
-//        this.createStatus = tour.getCreateStatus();
-//        this.guideProgressStatus = progressStatus;
-//    }
-//
-//    public TourMyTourDto(Tour tour, String date) {
-//        this.tourId = tour.getId();
-//        this.tourTitle = tour.getTitle();
-//        this.maxParticipant = tour.getParticipant();
-//        this.thumbnails = getThumbnails(tour);
-//        this.guideName = tour.getCreateUser().getName();
-//        if (tour.getCreateUser().getUserOptionalInfo() != null) {
-//            this.guideThumbnails = tour.getCreateUser().getUserOptionalInfo().getImageUrls();
-//        }
-//        if (tour.getTourSchedule() != null) {
-//            if (tour.getTourSchedule().getTourDates() != null) {
-//                this.tourDates = tour.getTourSchedule().getTourDates()
-//                        .stream()
-//                        .sorted()
-//                        .collect(Collectors.toList());
-//            }
-//        }
-//        this.tourStatus = tour.getTourStatus();
-//        this.createStatus = tour.getCreateStatus();
-//    }
 
     private Long tourId;
     private String tourTitle;
     private int maxParticipant;
     private List<String> thumbnails;
     private String guideName;
+    private List<Long> touristIds;
     private List<String> guideThumbnails;
     private List<String> tourDates;
-//    private TourStatus tourStatus;
-//    private CreateStatus createStatus;
-//    private ProgressStatus guideProgressStatus;
     private CurrentStatus currentStatus;
 
     private List<String> getThumbnails(Tour tour) {
@@ -213,5 +168,20 @@ public class TourMyTourDto {
         }
 
         return CurrentStatus.UNKNOWN;
+    }
+
+    private List<Long> getTouristIds(Tour tour, String date) {
+        List<TourApplication> tourApplications = tour.getTourApplications()
+                .stream()
+                .filter((TourApplication t) -> t.getTourDate().equals(date))
+                .collect(Collectors.toList());
+
+        List<Long> touristIds = new ArrayList<>();
+
+        for (TourParticipant tourParticipants : tourApplications.get(0).getTourParticipants()) {
+            touristIds.add(tourParticipants.getId());
+        }
+
+        return touristIds;
     }
 }

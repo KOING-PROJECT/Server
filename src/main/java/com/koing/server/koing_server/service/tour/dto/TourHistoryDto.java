@@ -23,6 +23,7 @@ public class TourHistoryDto {
         this.tourId = tourApplication.getTour().getId();
         this.title = tourApplication.getTour().getTitle();
         this.guideName = tourApplication.getTour().getCreateUser().getName();
+        this.guideId = tourApplication.getTour().getCreateUser().getId();
         this.thumbnails = getThumbnails(tourApplication.getTour());
         this.tourDate = tourApplication.getTourDate();
         this.currentStatus = decideCurrentStatus(tourApplication, today);
@@ -31,6 +32,7 @@ public class TourHistoryDto {
     private Long tourId;
     private String title;
     private String guideName;
+    private Long guideId;
     private List<String> thumbnails;
     private String tourDate;
     private CurrentStatus currentStatus;

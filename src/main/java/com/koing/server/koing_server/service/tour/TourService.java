@@ -439,7 +439,7 @@ public class TourService {
     }
 
     @Transactional
-    public SuperResponse getToursByTourCategory(int categoryIndex) {
+    public SuperResponse getToursByTourCategory(String categoryIndex) {
 
         LOGGER.info("[TourService] Home화면 Tour list 조회 시도");
 
@@ -694,15 +694,15 @@ public class TourService {
         return hashMaps;
     }
 
-    private String getCategoryName(int categoryIndex) {
+    private String getCategoryName(String categoryIndex) {
 
         for (TourCategoryIndex tourCategoryIndex : TourCategoryIndex.values()) {
-            if (tourCategoryIndex.getCategoryIndex() == categoryIndex) {
-                return tourCategoryIndex.getCategoryName();
+            if (tourCategoryIndex.getCategoryIndex().equals(categoryIndex)) {
+                return tourCategoryIndex.getCategoryIndex();
             }
         }
 
-        return "역사";
+        return TourCategoryIndex.ALL.getCategoryIndex();
     }
 
 }

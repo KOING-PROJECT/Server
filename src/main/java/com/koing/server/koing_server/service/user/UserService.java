@@ -23,15 +23,13 @@ import com.koing.server.koing_server.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +40,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserRepositoryImpl userRepositoryImpl;
     private final TourRepositoryImpl tourRepositoryImpl;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public SuperResponse getUsers() {
@@ -235,6 +234,46 @@ public class UserService {
         LOGGER.info("[UserService] 유저를 통한 선호 카테고리 조회 성공");
 
         return SuccessResponse.success(SuccessCode.GET_USER_CATEGORY_INDEXES_SUCCESS, userCategoryIndexes);
+    }
+
+    @Transactional
+    public SuperResponse withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
+        LOGGER.info("[UserService] 유저 탈퇴 시도");
+
+        User user = getUser(userWithdrawalDto.getUserId());
+
+        user.setEnabled(false);
+
+        User updatedUser = userRepository.save(user);
+
+        if (updatedUser.isEnabled()) {
+            throw new DBFailException("유저 탈퇴 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_WITHDRAWAL_USER_EXCEPTION);
+        }
+
+        LOGGER.info("[UserService] 유저 탈퇴 성공");
+
+        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse changePassword(UserPasswordChangeDto userPasswordChangeDto) {
+        LOGGER.info("[UserService] 유저 비밀번호 변경 시도");
+
+        User user = getUser(userPasswordChangeDto.getUserId());
+
+        if (!passwordEncoder.matches(userPasswordChangeDto.getPreviousPassword(), user.getPassword())) {
+            throw new NotAcceptableException("비밀번호가 틀렸습니다.", ErrorCode.NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION);
+        }
+
+        user.setPassword(passwordEncoder.encode(userPasswordChangeDto.getNewPassword()));
+
+        User updatedUser = userRepository.save(user);
+
+        if (!passwordEncoder.matches(userPasswordChangeDto.getNewPassword(), updatedUser.getPassword())) {
+            throw new DBFailException("비밀번호 변경 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_PASSWORD_EXCEPTION);
+        }
+
+        return SuccessResponse.success(SuccessCode.UPDATE_PASSWORD_SUCCESS, null);
     }
 
     private User getUser(Long userId) {
