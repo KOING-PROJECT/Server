@@ -13,7 +13,8 @@ public enum TourApplicationStatus {
     NO_REVIEW("NO_REVIEW", 9),
     GUIDE_REVIEWED("GUIDE_REVIEWED", 10),
     TOURIST_REVIEWED("TOURIST_REVIEWED", 11),
-    REVIEWED("REVIEWED", 12)
+    REVIEWED("REVIEWED", 12),
+    NONE("NONE", 13)
     ;
 
     private String status;

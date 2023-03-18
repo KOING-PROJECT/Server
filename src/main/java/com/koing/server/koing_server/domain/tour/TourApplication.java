@@ -29,6 +29,7 @@ public class TourApplication extends AuditingTimeEntity {
         this.tourDate = tourDate;
         this.maxParticipant = maxParticipant;
         this.tourApplicationStatus = TourApplicationStatus.RECRUITMENT;
+        this.previousTourApplicationStatus = TourApplicationStatus.NONE;
         this.currentParticipants = 0;
         this.reviewsToGuide = new HashSet<>();
         this.reviewedTouristId = new HashSet<>();
@@ -52,6 +53,10 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TourApplicationStatus tourApplicationStatus;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TourApplicationStatus previousTourApplicationStatus;
 
     private int maxParticipant;
 

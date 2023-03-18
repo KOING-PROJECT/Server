@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,7 +25,7 @@ public class TourReviewToGuideDto {
         this.touristName = reviewToGuide.getWriteTourist().getName();
         if (reviewToGuide.getGuideReviews() != null
                 && reviewToGuide.getGuideReviews().size() > 0) {
-            this.reviewImage = reviewToGuide.getReviewPhotos().get(0);
+            this.reviewImages = reviewToGuide.getReviewPhotos();
         }
         this.reviewDescription = reviewToGuide.getTotalReview();
         this.reviewedDate = dateFormatting(reviewToGuide.getUpdatedAt());
@@ -33,7 +34,7 @@ public class TourReviewToGuideDto {
     private String touristImage;
     private TouristGrade touristGrade;
     private String touristName;
-    private String reviewImage;
+    private List<String> reviewImages;
     private String reviewDescription;
     private String reviewedDate;
 

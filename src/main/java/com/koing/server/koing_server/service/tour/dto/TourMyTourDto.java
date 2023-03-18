@@ -5,6 +5,7 @@ import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
+import com.koing.server.koing_server.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -171,15 +172,18 @@ public class TourMyTourDto {
     }
 
     private List<Long> getTouristIds(Tour tour, String date) {
+        List<Long> touristIds = new ArrayList<>();
+
         List<TourApplication> tourApplications = tour.getTourApplications()
                 .stream()
                 .filter((TourApplication t) -> t.getTourDate().equals(date))
                 .collect(Collectors.toList());
-
-        List<Long> touristIds = new ArrayList<>();
-
-        for (TourParticipant tourParticipants : tourApplications.get(0).getTourParticipants()) {
-            touristIds.add(tourParticipants.getId());
+//
+//
+        for (TourApplication tourApplication : tourApplications) {
+            for (TourParticipant tourParticipants : tourApplication.getTourParticipants()) {
+                touristIds.add(tourParticipants.getParticipant().getId());
+            }
         }
 
         return touristIds;

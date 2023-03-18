@@ -305,6 +305,9 @@ public class TourService {
         List<TourApplication> tourApplications = getTourApplicationsAtDB(tourId);
 
         for (TourApplication tourApplication : tourApplications) {
+            TourApplicationStatus previousTourApplicationStatus = tourApplication.getTourApplicationStatus();
+
+            tourApplication.setPreviousTourApplicationStatus(previousTourApplicationStatus);
             tourApplication.setTourApplicationStatus(TourApplicationStatus.DE_ACTIVATE);
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
@@ -338,7 +341,9 @@ public class TourService {
         List<TourApplication> tourApplications = getTourApplicationsAtDB(tourId);
 
         for (TourApplication tourApplication : tourApplications) {
-            tourApplication.setTourApplicationStatus(TourApplicationStatus.RECRUITMENT);
+            TourApplicationStatus previousTourApplicationStatus = tourApplication.getPreviousTourApplicationStatus();
+
+            tourApplication.setTourApplicationStatus(previousTourApplicationStatus);
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 

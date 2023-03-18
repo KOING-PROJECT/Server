@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .authorizeRequests((requests) -> requests
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                         .antMatchers("/swagger-ui.html", "/sign/**", "/mail/**").permitAll()
-                        .antMatchers("/jwt/reIssue").authenticated()
+//                        .antMatchers("/jwt/reIssue").authenticated()
                         .antMatchers("/user/**").authenticated()
                         .antMatchers("/guide/**").hasRole("GUIDE")
                         .antMatchers("/tourist/**").hasRole("TOURIST")

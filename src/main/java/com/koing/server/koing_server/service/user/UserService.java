@@ -150,6 +150,7 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_LIKE_TOURS_SUCCESS, new UserFollowListResponseDto(userFollowDtos));
     }
 
+    @Transactional
     public SuperResponse getMyInfo(Long userId, String today) {
         LOGGER.info("[UserService] My page 정보 조회 시도");
 
