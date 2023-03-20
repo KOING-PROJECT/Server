@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
 import com.koing.server.koing_server.domain.tour.*;
@@ -17,6 +18,9 @@ public class TourDetailDto {
         this.userId = userId;
         this.createUserId = tour.getCreateUser().getId();
         this.createUserName = tour.getCreateUser().getName();
+        if (tour.getCreateUser().getGuideGrade() != null) {
+            this.guideGrade = tour.getCreateUser().getGuideGrade();
+        }
         this.title = tour.getTitle();
         this.description = tour.getDescription();
         this.tourCategoryNames = new ArrayList<>();
@@ -38,6 +42,7 @@ public class TourDetailDto {
     private Long userId;
     private Long createUserId;
     private String createUserName;
+    private GuideGrade guideGrade;
     private String title;
     private String description;
     private List<String> tourCategoryNames;
