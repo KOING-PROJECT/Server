@@ -358,6 +358,28 @@ public class TourService {
     }
 
     @Transactional
+    public SuperResponse finishTour(Long tourId) {
+        LOGGER.info("[TourService] Tour 종료 시도");
+
+        Tour tour = getTourAtDB(tourId);
+
+        LOGGER.info("[TourService] 종료할 Tour 조회 성공");
+
+        tour.setTourStatus(TourStatus.FINISH);
+
+        Tour finishedTour = tourRepository.save(tour);
+
+        if (!finishedTour.getTourStatus().equals(TourStatus.FINISH)) {
+            throw new DBFailException("투어 종료 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_FINISH_TOUR_EXCEPTION);
+        }
+
+
+        LOGGER.info("[TourService] Tour 종료 성공");
+
+        return SuccessResponse.success(SuccessCode.TOUR_FINISH_SUCCESS, null);
+    }
+
+    @Transactional
     public SuperResponse getTourDetailInfo(Long tourId, Long userId) {
         LOGGER.info("[TourService] 투어 세부 정보 조회 시도");
 

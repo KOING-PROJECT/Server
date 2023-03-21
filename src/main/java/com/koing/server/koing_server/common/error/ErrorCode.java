@@ -87,6 +87,7 @@ public enum ErrorCode {
     DB_FAIL_UPDATE_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "비밀번호 변경 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_FINISH_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 과정에서 오류가 발생했습니다."),
 
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),

@@ -73,6 +73,7 @@ public enum SuccessCode {
     TOUR_RECRUITMENT_SUCCESS(CREATED, "tour : 투어 모집 시작 성공입니다."),
     TOUR_DE_ACTIVATE_SUCCESS(CREATED, "tour : 투어 비활성화 성공입니다."),
     TOUR_ACTIVATE_SUCCESS(CREATED, "tour : 투어 활성화 성공입니다."),
+    TOUR_FINISH_SUCCESS(CREATED, "tour : 투어 종료 성공입니다."),
     TOUR_APPLICATION_CREATE_SUCCESS(CREATED, "tour-application : 투어 신청서 생성 성공입니다."),
     TOUR_APPLICATION_UPDATE_SUCCESS(CREATED, "tour-application : 투어 신청서 업데이트 성공입니다."),
     TOUR_SCHEDULE_CREATE_SUCCESS(CREATED, "tour-schedule : 투어 스케줄 생성 성공입니다."),

@@ -135,7 +135,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 업데이트합니다.(완성 tour 혹은 임시저장 tour를 업데이트)")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 업데이트 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 업데이트 성공"),
             @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "존재하지 않는 투어 카테고리 입니다."),
@@ -167,7 +167,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 승인합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 승인 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 승인 성공"),
             @ApiResponse(code = 402, message = "투어 승인 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
@@ -191,7 +191,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 거절합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 거절 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 거절 성공"),
             @ApiResponse(code = 402, message = "투어 거절 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
@@ -215,7 +215,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어 모집을 시작합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 모집 시작 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 모집 시작 성공"),
             @ApiResponse(code = 402, message = "투어 모집 시작 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
@@ -239,7 +239,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 비활성화 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 비활성화 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 비활성화 성공"),
             @ApiResponse(code = 402, message = "투어 비활성화 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 402, message = "투어 신청서 비활성화 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
@@ -264,7 +264,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어를 활성화 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 활성화 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 활성화 성공"),
             @ApiResponse(code = 402, message = "투어 활성화 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 402, message = "투어 신청서 활성화 과정에서 오류가 발생했습니다."),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
@@ -284,6 +284,30 @@ public class TourController {
         LOGGER.info("[TourController] 투어 활성화 성공");
 
         return activateTourResponse;
+    }
+
+
+    @ApiOperation("Tour - 투어를 종료 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Tour - 투어 종료 성공"),
+            @ApiResponse(code = 402, message = "투어 종료 과정에서 오류가 발생했습니다."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/finish/{tourId}")
+    public SuperResponse finishTour(@PathVariable("tourId") Long tourId) {
+        LOGGER.info("[TourController] 투어 종료 시도");
+        SuperResponse finishTourResponse;
+        try {
+            finishTourResponse = tourService.finishTour(tourId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[TourController] 투어 종료 성공");
+
+        return finishTourResponse;
     }
 
 
@@ -345,7 +369,7 @@ public class TourController {
 
     @ApiOperation("Tour - 투어 좋아요를 누릅니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Tour - 투어 좋아요 누르기 성공"),
+            @ApiResponse(code = 201, message = "Tour - 투어 좋아요 누르기 성공"),
             @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
             @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
