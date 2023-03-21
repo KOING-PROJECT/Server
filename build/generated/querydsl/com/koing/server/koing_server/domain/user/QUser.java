@@ -74,6 +74,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final QUserOptionalInfo userOptionalInfo;
 
+    public final StringPath withdrawalReason = createString("withdrawalReason");
+
     public QUser(String variable) {
         this(User.class, forVariable(variable), INITS);
     }

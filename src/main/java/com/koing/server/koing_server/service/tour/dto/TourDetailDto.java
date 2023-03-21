@@ -37,6 +37,7 @@ public class TourDetailDto {
         sortTourDetailSchedule(tourSchedule);
         this.isUserPressTourLike = false;
         this.reviews = getTourReviews(tour);
+        this.exceedTourDate = tour.getExceedTourDate();
     }
 
     private Long userId;
@@ -57,6 +58,7 @@ public class TourDetailDto {
     private boolean isUserPressTourLike;
     // 후기 추가해야됨
     private List<TourReviewToGuideDto> reviews;
+    private Set<String> exceedTourDate;
 
     private void sortTourDetailSchedule(TourSchedule tourSchedule) {
 

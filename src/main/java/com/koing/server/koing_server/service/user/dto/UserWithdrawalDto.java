@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 public class UserWithdrawalDto {
 
     private Long userId;
+    private String withDrawalReason;
+    private String password;
 
 }

@@ -64,6 +64,7 @@ public class User extends AuditingTimeEntity {
         this.follower = follower;
         this.categoryIndexes = categoryIndexes;
         this.account = null;
+        this.withdrawalReason = "";
     }
 
     @Id
@@ -152,6 +153,8 @@ public class User extends AuditingTimeEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     private Account account;
+
+    private String withdrawalReason;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;

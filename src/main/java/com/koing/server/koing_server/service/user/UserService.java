@@ -243,7 +243,12 @@ public class UserService {
 
         User user = getUser(userWithdrawalDto.getUserId());
 
+        if (!passwordEncoder.matches(userWithdrawalDto.getPassword(), user.getPassword())) {
+            throw new NotAcceptableException("비밀번호가 틀렸습니다.", ErrorCode.NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION);
+        }
+
         user.setEnabled(false);
+        user.setWithdrawalReason(user.getWithdrawalReason());
 
         User updatedUser = userRepository.save(user);
 
