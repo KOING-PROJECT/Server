@@ -85,6 +85,9 @@ public enum ErrorCode {
     DB_FAIL_WITHDRAWAL_USER_EXCEPTION(DB_HANDLE_FAIL, "유저 탈퇴 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_TEMPORARY_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "임시 비밀번호 발급 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "비밀번호 변경 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 업데이트 과정에서 오류가 발생했습니다."),
+
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -117,6 +120,8 @@ public enum ErrorCode {
     NOT_FOUND_TOUR_CATEGORY_EXCEPTION(NOT_FOUND, "존재하지 않는 투어 카테고리 입니다."),
     NOT_FOUND_FCM_TOKEN_EXCEPTION(NOT_FOUND, "해당 유저와 장치의 FCM 토큰을 찾을 수 없습니다."),
     NOT_FOUND_USER_CATEGORY_INDEXES_EXCEPTION(NOT_FOUND, "해당 유저의 선호 카테고리를 찾을 수 없습니다."),
+    NOT_FOUND_USER_ACCOUNT_EXCEPTION(NOT_FOUND, "해당 유저의 계좌 정보를 찾을 수 없습니다."),
+
 
     /**
      * 405 Method Not Allowed
@@ -139,6 +144,8 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_ALREADY_PRESS_END_EXCEPTION(NOT_ACCEPTABLE, "이미 종료를 누르신 투어입니다."),
     NOT_ACCEPTABLE_TOUR_DATE_CLOSE_EXCEPTION(NOT_ACCEPTABLE, "투어 취소는 투어 당일 기준 이틀 전까지 가능합니다."),
     NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION(NOT_ACCEPTABLE, "비밀번호가 틀렸습니다."),
+    NOT_ACCEPTABLE_SAME_ACCOUNT_EXCEPTION(NOT_ACCEPTABLE, "수정할 계좌 정보가 없습니다."),
+    NOT_ACCEPTABLE_ACCOUNT_ALREADY_EXIST_EXCEPTION(NOT_ACCEPTABLE, "해당 유저의 계좌 정보가 이미 존재합니다."),
 
     /**
      * 407 PAYMENT_SERVER_ERROR

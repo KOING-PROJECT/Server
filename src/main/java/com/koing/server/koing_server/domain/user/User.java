@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TouristGrade;
+import com.koing.server.koing_server.domain.account.Account;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
@@ -62,6 +63,7 @@ public class User extends AuditingTimeEntity {
         this.following = following;
         this.follower = follower;
         this.categoryIndexes = categoryIndexes;
+        this.account = null;
     }
 
     @Id
@@ -147,6 +149,9 @@ public class User extends AuditingTimeEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false, name = "category_indexes")
     private Set<Integer> categoryIndexes;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Account account;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;

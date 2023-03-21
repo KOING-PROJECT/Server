@@ -49,6 +49,7 @@ public enum SuccessCode {
     WITHDRAWAL_USER_SUCCESS(OK, "user : 유저 탈퇴 성공입니다."),
     CREATE_TEMPORARY_PASSWORD_SUCCESS(OK, "user : 임시 비밀번호 발급 성공입니다."),
     UPDATE_PASSWORD_SUCCESS(OK, "user : 비밀번호 변경 성공입니다."),
+    GET_ACCOUNT_SUCCESS(OK, "account : 계좌 정보 조회 성공입니다."),
 
     // 인증
     LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
@@ -99,6 +100,8 @@ public enum SuccessCode {
     FCM_TOKEN_CREATE_SUCCESS(OK, "fcm : FCM 토큰 생성 성공입니다."),
     FCM_TOKEN_UPDATE_SUCCESS(OK, "fcm : FCM 토큰 업데이트 성공입니다."),
     USER_CATEGORY_INDEXES_UPDATE_SUCCESS(OK, "user : 유저 선호 카테고리 업데이트 성공입니다."),
+    ACCOUNT_CREATE_SUCCESS(OK, "account : 계좌 정보 생성 성공입니다."),
+    ACCOUNT_UPDATE_SUCCESS(OK, "account : 계좌 정보 업데이트 성공입니다."),
 
     /**
      * 202 ACCEPTED

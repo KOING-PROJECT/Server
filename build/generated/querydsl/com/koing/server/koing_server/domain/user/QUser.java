@@ -24,6 +24,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
 
+    public final com.koing.server.koing_server.domain.account.QAccount account;
+
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
     public final NumberPath<Integer> attachment = createNumber("attachment", Integer.class);
@@ -90,6 +92,7 @@ public class QUser extends EntityPathBase<User> {
 
     public QUser(Class<? extends User> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
+        this.account = inits.isInitialized("account") ? new com.koing.server.koing_server.domain.account.QAccount(forProperty("account"), inits.get("account")) : null;
         this.userOptionalInfo = inits.isInitialized("userOptionalInfo") ? new QUserOptionalInfo(forProperty("userOptionalInfo"), inits.get("userOptionalInfo")) : null;
     }
 
