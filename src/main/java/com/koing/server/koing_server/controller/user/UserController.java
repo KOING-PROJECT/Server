@@ -10,6 +10,7 @@ import com.koing.server.koing_server.common.success.SuccessStatusCode;
 import com.koing.server.koing_server.controller.tour.TourSurveyController;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.user.UserService;
+import com.koing.server.koing_server.service.user.UserWithdrawalService;
 import com.koing.server.koing_server.service.user.dto.UserCategoryIndexesUpdateDto;
 import com.koing.server.koing_server.service.user.dto.UserPasswordChangeDto;
 import com.koing.server.koing_server.service.user.dto.UserWithdrawalDto;
@@ -33,6 +34,7 @@ public class UserController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
+    private final UserWithdrawalService userWithdrawalService;
 
     @ApiOperation("User - 유저 리스트를 가져옵니다.")
     @ApiResponses(value = {
@@ -290,7 +292,8 @@ public class UserController {
         LOGGER.info("[UserController] 유저 탈퇴 시도");
         SuperResponse withdrawalUserResponse;
         try {
-            withdrawalUserResponse = userService.withdrawalUser(userWithdrawalDto);
+//            withdrawalUserResponse = userService.withdrawalUser(userWithdrawalDto);
+            withdrawalUserResponse = userWithdrawalService.withdrawalUser(userWithdrawalDto);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {

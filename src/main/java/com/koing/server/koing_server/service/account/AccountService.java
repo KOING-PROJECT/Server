@@ -38,7 +38,7 @@ public class AccountService {
     public SuperResponse createAccount(AccountCreateDto accountCreateDto) {
         LOGGER.info("[AccountService] 계좌 정보 생성 시도");
 
-        if (getAccount(accountCreateDto.getUserId()) != null) {
+        if (accountRepositoryImpl.findAccountByUserId(accountCreateDto.getUserId()) != null) {
             throw new NotAcceptableException("해당 유저의 계좌 정보가 이미 존재합니다.", ErrorCode.NOT_ACCEPTABLE_ACCOUNT_ALREADY_EXIST_EXCEPTION);
         }
 

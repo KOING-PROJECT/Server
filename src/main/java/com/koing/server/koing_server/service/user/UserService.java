@@ -237,8 +237,32 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_USER_CATEGORY_INDEXES_SUCCESS, userCategoryIndexes);
     }
 
+//    @Transactional
+//    public SuperResponse withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
+//        LOGGER.info("[UserService] 유저 탈퇴 시도");
+//
+//        User user = getUser(userWithdrawalDto.getUserId());
+//
+//        if (!passwordEncoder.matches(userWithdrawalDto.getPassword(), user.getPassword())) {
+//            throw new NotAcceptableException("비밀번호가 틀렸습니다.", ErrorCode.NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION);
+//        }
+//
+//        user.setEnabled(false);
+//        user.setWithdrawalReason(user.getWithdrawalReason());
+//
+//        User updatedUser = userRepository.save(user);
+//
+//        if (updatedUser.isEnabled()) {
+//            throw new DBFailException("유저 탈퇴 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_WITHDRAWAL_USER_EXCEPTION);
+//        }
+//
+//        LOGGER.info("[UserService] 유저 탈퇴 성공");
+//
+//        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
+//    }
+
     @Transactional
-    public SuperResponse withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
+    public List<Long> withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
         LOGGER.info("[UserService] 유저 탈퇴 시도");
 
         User user = getUser(userWithdrawalDto.getUserId());
@@ -256,9 +280,15 @@ public class UserService {
             throw new DBFailException("유저 탈퇴 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_WITHDRAWAL_USER_EXCEPTION);
         }
 
+        List<Long> createdTourIds = new ArrayList<>();
+
+        for (Tour tour : updatedUser.getCreateTours()) {
+            createdTourIds.add(tour.getId());
+        }
+
         LOGGER.info("[UserService] 유저 탈퇴 성공");
 
-        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
+        return createdTourIds;
     }
 
     @Transactional
