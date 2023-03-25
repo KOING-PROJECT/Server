@@ -87,14 +87,14 @@ public class PaymentService {
         payment.setGuide(guide);
         payment.setTourist(tourist);
 
-        guide.setTotalEarnAmount(previousTotalEarnAmount + paymentAmount);
-        guide.setCurrentRemainAmount(previousRemainAmount + paymentAmount);
+//        guide.setTotalEarnAmount(previousTotalEarnAmount + paymentAmount);
+//        guide.setCurrentRemainAmount(previousRemainAmount + paymentAmount);
 
-        User updatedGuide = userRepository.save(guide);
+//        User updatedGuide = userRepository.save(guide);
 
-        if (updatedGuide.getTotalEarnAmount() == previousTotalEarnAmount) {
-            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
-        }
+//        if (updatedGuide.getTotalEarnAmount() == previousTotalEarnAmount) {
+//            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//        }
 
         LOGGER.info("[PaymentService] 결제 정보 생성");
 

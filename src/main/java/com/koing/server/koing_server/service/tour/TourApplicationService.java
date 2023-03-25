@@ -12,6 +12,7 @@ import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
+import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
@@ -596,6 +597,26 @@ public class TourApplicationService {
                 && checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.NO_REVIEW);
             tourApplicationStatus = TourApplicationStatus.NO_REVIEW;
+
+            Long guideId = tour.getCreateUser().getId();
+            for (Payment payment : tourApplication.getPayments()) {
+                if (payment.getGuide().getId() == guideId) {
+                    User guide = getUser(guideId);
+
+                    int previousTotalEarnAmount = guide.getTotalEarnAmount();
+                    int previousCurrentRemainAmount = guide.getCurrentRemainAmount();
+                    int paymentAmount = payment.getPaymentAmount();
+
+                    guide.setTotalEarnAmount(previousTotalEarnAmount + paymentAmount);
+                    guide.setCurrentRemainAmount(previousCurrentRemainAmount + paymentAmount);
+
+                    User updatedUser = userRepository.save(guide);
+
+                    if (updatedUser.getTotalEarnAmount() == previousTotalEarnAmount) {
+                        throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+                    }
+                }
+            }
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
