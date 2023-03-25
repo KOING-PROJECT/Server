@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.UserRole;
+import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.IOFailException;
@@ -237,8 +238,53 @@ public class UserService {
         return SuccessResponse.success(SuccessCode.GET_USER_CATEGORY_INDEXES_SUCCESS, userCategoryIndexes);
     }
 
+    @Transactional
+    public SuperResponse requestWithdrawalUser(UserWithdrawalDto userWithdrawalDto) {
+        LOGGER.info("[UserService] 유저 탈퇴 요청 시도");
+
+        User user = getUser(userWithdrawalDto.getUserId());
+
+        if (!passwordEncoder.matches(userWithdrawalDto.getPassword(), user.getPassword())) {
+            throw new NotAcceptableException("비밀번호가 틀렸습니다.", ErrorCode.NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION);
+        }
+
+        user.setUserStatus(UserStatus.REQUEST_WITHDRAWAL);
+        user.setWithdrawalReason(user.getWithdrawalReason());
+
+        User updatedUser = userRepository.save(user);
+
+        if (!updatedUser.getUserStatus().equals(UserStatus.REQUEST_WITHDRAWAL)) {
+            throw new DBFailException("유저 탈퇴 요청 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_REQUEST_WITHDRAWAL_USER_EXCEPTION);
+        }
+
+        LOGGER.info("[UserService] 유저 탈퇴 요청 성공");
+
+        return SuccessResponse.success(SuccessCode.REQUEST_WITHDRAWAL_USER_SUCCESS, null);
+    }
+
+    // 유저 상태를 탈퇴로 변경(관리자 전용)
+    @Transactional
+    public SuperResponse withdrawalUser(Long userId) {
+        LOGGER.info("[UserService] 유저 상태 탈퇴로 변경 시도");
+
+        User user = getUser(userId);
+
+        user.setEnabled(false);
+
+        User updatedUser = userRepository.save(user);
+
+        if (updatedUser.isEnabled()) {
+            throw new DBFailException("유저 탈퇴 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_WITHDRAWAL_USER_EXCEPTION);
+        }
+
+        LOGGER.info("[UserService] 유저 상태 탈퇴로 변경 성공");
+
+        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
+    }
+
+    // 유저 탈퇴시 모든 투어 삭제할 때 사용
 //    @Transactional
-//    public SuperResponse withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
+//    public List<Long> withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
 //        LOGGER.info("[UserService] 유저 탈퇴 시도");
 //
 //        User user = getUser(userWithdrawalDto.getUserId());
@@ -256,40 +302,16 @@ public class UserService {
 //            throw new DBFailException("유저 탈퇴 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_WITHDRAWAL_USER_EXCEPTION);
 //        }
 //
+//        List<Long> createdTourIds = new ArrayList<>();
+//
+//        for (Tour tour : updatedUser.getCreateTours()) {
+//            createdTourIds.add(tour.getId());
+//        }
+//
 //        LOGGER.info("[UserService] 유저 탈퇴 성공");
 //
-//        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
+//        return createdTourIds;
 //    }
-
-    @Transactional
-    public List<Long> withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
-        LOGGER.info("[UserService] 유저 탈퇴 시도");
-
-        User user = getUser(userWithdrawalDto.getUserId());
-
-        if (!passwordEncoder.matches(userWithdrawalDto.getPassword(), user.getPassword())) {
-            throw new NotAcceptableException("비밀번호가 틀렸습니다.", ErrorCode.NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION);
-        }
-
-        user.setEnabled(false);
-        user.setWithdrawalReason(user.getWithdrawalReason());
-
-        User updatedUser = userRepository.save(user);
-
-        if (updatedUser.isEnabled()) {
-            throw new DBFailException("유저 탈퇴 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_WITHDRAWAL_USER_EXCEPTION);
-        }
-
-        List<Long> createdTourIds = new ArrayList<>();
-
-        for (Tour tour : updatedUser.getCreateTours()) {
-            createdTourIds.add(tour.getId());
-        }
-
-        LOGGER.info("[UserService] 유저 탈퇴 성공");
-
-        return createdTourIds;
-    }
 
     @Transactional
     public SuperResponse changePassword(UserPasswordChangeDto userPasswordChangeDto) {

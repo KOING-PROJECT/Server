@@ -292,8 +292,8 @@ public class UserController {
         LOGGER.info("[UserController] 유저 탈퇴 시도");
         SuperResponse withdrawalUserResponse;
         try {
-//            withdrawalUserResponse = userService.withdrawalUser(userWithdrawalDto);
-            withdrawalUserResponse = userWithdrawalService.withdrawalUser(userWithdrawalDto);
+            withdrawalUserResponse = userService.requestWithdrawalUser(userWithdrawalDto);
+//            withdrawalUserResponse = userWithdrawalService.withdrawalUser(userWithdrawalDto);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {

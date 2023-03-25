@@ -27,21 +27,21 @@ public class UserWithdrawalService {
     private final UserService userService;
     private final TourService tourService;
 
-    @Transactional
-    public SuperResponse withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
-        LOGGER.info("[UserService] 유저 탈퇴 시도");
-
-        List<Long> createdTourIds = userService.withdrawalUser(userWithdrawalDto);
-
-        LOGGER.info("[UserService] 유저 Enable false로 변경 완료");
-
-        for (Long id : createdTourIds) {
-            SuperResponse deleteTourResponse = tourService.deleteTour(id);
-        }
-
-        LOGGER.info("[UserService] 탈퇴 유저의 투어 삭제 성공");
-
-        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
-    }
+//    @Transactional
+//    public SuperResponse withdrawalUser(UserWithdrawalDto userWithdrawalDto) {
+//        LOGGER.info("[UserService] 유저 탈퇴 시도");
+//
+//        List<Long> createdTourIds = userService.withdrawalUser(userWithdrawalDto);
+//
+//        LOGGER.info("[UserService] 유저 Enable false로 변경 완료");
+//
+//        for (Long id : createdTourIds) {
+//            SuperResponse deleteTourResponse = tourService.deleteTour(id);
+//        }
+//
+//        LOGGER.info("[UserService] 탈퇴 유저의 투어 삭제 성공");
+//
+//        return SuccessResponse.success(SuccessCode.WITHDRAWAL_USER_SUCCESS, null);
+//    }
 
 }

@@ -83,6 +83,7 @@ public enum ErrorCode {
     DB_FAIL_ACTIVATE_TOUR_APPLICATION_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 활성화 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_TOUR_PARTICIPANT_EXCEPTION(DB_HANDLE_FAIL, "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_WITHDRAWAL_USER_EXCEPTION(DB_HANDLE_FAIL, "유저 탈퇴 과정에서 오류가 발생했습니다."),
+    DB_FAIL_REQUEST_WITHDRAWAL_USER_EXCEPTION(DB_HANDLE_FAIL, "유저 탈퇴 요청 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_TEMPORARY_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "임시 비밀번호 발급 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "비밀번호 변경 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 생성 과정에서 오류가 발생했습니다."),

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TouristGrade;
+import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.domain.account.Account;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
@@ -69,6 +70,7 @@ public class User extends AuditingTimeEntity {
         this.totalEarnAmount = 0;
         this.currentRemainAmount = 0;
         this.withdrawAmount = 0;
+        this.userStatus = UserStatus.ACTIVATE;
     }
 
     @Id
@@ -167,8 +169,12 @@ public class User extends AuditingTimeEntity {
     private Set<Payment> buyPayments;
 
     private int totalEarnAmount;
+
     private int currentRemainAmount;
+
     private int withdrawAmount;
+
+    private UserStatus userStatus;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;

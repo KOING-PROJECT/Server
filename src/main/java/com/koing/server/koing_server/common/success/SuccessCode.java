@@ -46,6 +46,7 @@ public enum SuccessCode {
     GET_FCM_TOKEN_SUCCESS(OK, "fcm : FCM 토큰 조회 성공입니다."),
     GET_USER_CATEGORY_INDEXES_SUCCESS(OK, "user : 유저 선호 카테고리 조회 성공입니다."),
     CANCEL_TOUR_APPLICATION_SUCCESS(OK, "tour-application : 투어 신청 취소 성공입니다."),
+    REQUEST_WITHDRAWAL_USER_SUCCESS(OK, "user : 유저 탈퇴 요청 성공입니다."),
     WITHDRAWAL_USER_SUCCESS(OK, "user : 유저 탈퇴 성공입니다."),
     CREATE_TEMPORARY_PASSWORD_SUCCESS(OK, "user : 임시 비밀번호 발급 성공입니다."),
     UPDATE_PASSWORD_SUCCESS(OK, "user : 비밀번호 변경 성공입니다."),
