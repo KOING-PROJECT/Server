@@ -71,6 +71,7 @@ public class User extends AuditingTimeEntity {
         this.currentRemainAmount = 0;
         this.withdrawAmount = 0;
         this.userStatus = UserStatus.ACTIVATE;
+        this.totalTourists = 0;
     }
 
     @Id
@@ -175,6 +176,8 @@ public class User extends AuditingTimeEntity {
     private int withdrawAmount;
 
     private UserStatus userStatus;
+
+    private int totalTourists;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;

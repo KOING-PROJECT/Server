@@ -606,9 +606,11 @@ public class TourApplicationService {
                     int previousTotalEarnAmount = guide.getTotalEarnAmount();
                     int previousCurrentRemainAmount = guide.getCurrentRemainAmount();
                     int paymentAmount = payment.getPaymentAmount();
+                    int previousTotalTourists = guide.getTotalTourists();
 
                     guide.setTotalEarnAmount(previousTotalEarnAmount + paymentAmount);
                     guide.setCurrentRemainAmount(previousCurrentRemainAmount + paymentAmount);
+                    guide.setTotalTourists(previousTotalTourists + tourApplication.getCurrentParticipants());
 
                     User updatedUser = userRepository.save(guide);
 
