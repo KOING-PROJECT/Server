@@ -37,6 +37,9 @@ public class UserGuideMyPageDto {
         this.recruitmentTours = createRecruitmentTours(user, today);
         this.myEndTours = createTourMyEndTourDtos(user);
         this.guideGrade = user.getGuideGrade();
+        this.totalEarnAmount = user.getTotalEarnAmount();
+        this.currentRemainAmount = user.getCurrentRemainAmount();
+        this.totalTourists = user.getTotalTourists();
     }
 
     private String guideName;
@@ -51,6 +54,9 @@ public class UserGuideMyPageDto {
     private String job;
     private String universityName;
     private String company;
+    private int totalEarnAmount;
+    private int currentRemainAmount;
+    private int totalTourists;
 
     private List<TourMyTourDto> createMyTours(User user, String today) {
         List<Tour> createTours = user.getCreateTours()

@@ -73,6 +73,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> totalEarnAmount = createNumber("totalEarnAmount", Integer.class);
 
+    public final NumberPath<Integer> totalTourists = createNumber("totalTourists", Integer.class);
+
     public final EnumPath<com.koing.server.koing_server.common.enums.TouristGrade> touristGrade = createEnum("touristGrade", com.koing.server.koing_server.common.enums.TouristGrade.class);
 
     public final SetPath<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant> tourParticipants = this.<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant>createSet("tourParticipants", com.koing.server.koing_server.domain.tour.TourParticipant.class, com.koing.server.koing_server.domain.tour.QTourParticipant.class, PathInits.DIRECT2);
