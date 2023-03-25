@@ -82,7 +82,7 @@ public class SignService {
                 .gender(genderType)
                 .age(signUpRequestDto.getAge())
                 .enabled(true)
-                .attachment(0)
+                .attachment(37.0)
                 .userOptionalInfo(null)
                 .tourParticipants(new HashSet<>())
                 .createTours(new HashSet<>())

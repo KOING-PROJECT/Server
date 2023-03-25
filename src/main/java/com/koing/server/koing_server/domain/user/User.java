@@ -35,7 +35,7 @@ public class User extends AuditingTimeEntity {
     public User(String email, String password
             , String phoneNumber, String name, String birthDate
             , String country, GenderType gender, int age,
-                boolean enabled, int attachment,
+                boolean enabled, double attachment,
                 Set<String> roles,
                 UserOptionalInfo userOptionalInfo,
                 Set<TourParticipant> tourParticipants,
@@ -112,7 +112,7 @@ public class User extends AuditingTimeEntity {
     @Column
     private boolean enabled;
 
-    private int attachment;
+    private double attachment;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "guide_grade")
@@ -175,6 +175,8 @@ public class User extends AuditingTimeEntity {
 
     private int withdrawAmount;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
     private UserStatus userStatus;
 
     private int totalTourists;

@@ -47,7 +47,7 @@ public class ReviewToTourist extends AuditingTimeEntity {
     @Column(nullable = false, name = "tourist_reviews")
     private Set<String> touristReviews;
 
-    private int attachment;
+    private double attachment;
 
     public void setRelatedTourParticipant(TourParticipant tourParticipant) {
         this.relatedTourParticipant = tourParticipant;

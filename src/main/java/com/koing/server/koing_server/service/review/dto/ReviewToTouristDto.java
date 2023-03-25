@@ -20,6 +20,6 @@ public class ReviewToTouristDto {
 
     private Set<String> progressReviews;
     private Set<String> touristReviews;
-    private int attachment;
+    private double attachment;
 
 }

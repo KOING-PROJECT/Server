@@ -456,6 +456,11 @@ public class TourApplicationService {
         TourApplicationStatus tourApplicationStatus = null;
 
         boolean checkTouristProgressStatus = true;
+
+        if (tourApplication.getTourParticipants() == null || tourApplication.getTourParticipants().size() < 1) {
+            checkTouristProgressStatus = false;
+        }
+
         for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
             if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.READY)) {
                 checkTouristProgressStatus = false;

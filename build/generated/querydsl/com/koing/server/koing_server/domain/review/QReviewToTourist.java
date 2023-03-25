@@ -24,7 +24,7 @@ public class QReviewToTourist extends EntityPathBase<ReviewToTourist> {
 
     public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
 
-    public final NumberPath<Integer> attachment = createNumber("attachment", Integer.class);
+    public final NumberPath<Double> attachment = createNumber("attachment", Double.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;

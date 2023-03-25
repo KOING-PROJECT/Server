@@ -73,6 +73,8 @@ public class TourApplicationController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[TourApplicationController] 투어 신청 성공");

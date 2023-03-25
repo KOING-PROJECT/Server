@@ -22,6 +22,6 @@ public class ReviewToTouristCreateDto {
     private Long tourParticipantId;
     private Set<String> progressReviews;
     private Set<String> touristReviews;
-    private int attachment;
+    private double attachment;
 
 }

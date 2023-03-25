@@ -21,7 +21,7 @@ public class ReviewToGuideDto {
 
     private Set<String> tourReviews;
     private Set<String> guideReviews;
-    private int attachment;
+    private double attachment;
     private String totalReview;
     private List<String> reviewPhotos;
 

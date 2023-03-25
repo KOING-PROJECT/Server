@@ -49,7 +49,7 @@ public class ReviewToGuide extends AuditingTimeEntity {
     @Column(nullable = false, name = "guide_reviews")
     private Set<String> guideReviews;
 
-    private int attachment;
+    private double attachment;
 
     @Column(length = 500)
     private String totalReview;

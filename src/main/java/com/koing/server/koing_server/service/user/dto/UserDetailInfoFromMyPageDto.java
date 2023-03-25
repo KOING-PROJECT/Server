@@ -42,7 +42,7 @@ public class UserDetailInfoFromMyPageDto {
     private String userName;
     private Set<String> roles;
     private String imageUrl;
-    private int attachment;
+    private double attachment;
     private String introduction;
     private Set<String> language;
     private Set<String> area;

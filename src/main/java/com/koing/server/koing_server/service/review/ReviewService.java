@@ -3,6 +3,8 @@ package com.koing.server.koing_server.service.review;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.TourApplicationStatus;
+import com.koing.server.koing_server.common.enums.TourReviewGrade;
+import com.koing.server.koing_server.common.enums.UserReviewGrade;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.IOFailException;
@@ -19,6 +21,7 @@ import com.koing.server.koing_server.domain.tour.repository.TourApplication.Tour
 import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository;
 import com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.review.dto.*;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
@@ -45,8 +48,10 @@ public class ReviewService {
     private final UserRepositoryImpl userRepositoryImpl;
     private final TourParticipantRepositoryImpl tourParticipantRepositoryImpl;
     private final TourParticipantRepository tourParticipantRepository;
+    private final UserRepository userRepository;
     private final AWSS3Component awss3Component;
 
+    @Transactional
     public SuperResponse reviewToGuide(ReviewToGuideCreateDto reviewToGuideCreateDto, List<MultipartFile> multipartFiles) {
         LOGGER.info("[ReviewService] reviewToGuide 작성 시도");
 
@@ -56,8 +61,11 @@ public class ReviewService {
         TourApplication tourApplication = getTourApplication(reviewToGuideCreateDto.getTourId(), reviewToGuideCreateDto.getTourDate());
         LOGGER.info("[ReviewService] tourId와 tourDate로 tourApplication 조회 성공");
 
+        boolean hasPhoto = false;
+
         List<String> reviewPhotos = new ArrayList<>();
         if (multipartFiles != null) {
+            hasPhoto = true;
             for (MultipartFile multipartFile : multipartFiles) {
                 try {
                     reviewPhotos.add(awss3Component.convertAndUploadFiles(multipartFile, "review/image"));
@@ -100,11 +108,62 @@ public class ReviewService {
             }
         }
 
+        double touristPreviousAttachment = writeUser.getAttachment();
+        touristPreviousAttachment += 0.1;
+
+        if (hasPhoto) {
+            touristPreviousAttachment += 0.1;
+        }
+
+        writeUser.setAttachment((double)Math.round(touristPreviousAttachment * 100) / 100);
+        System.out.println("touristPreviousAttachment = " + touristPreviousAttachment);
+
+        User updatedWriteUser = userRepository.save(writeUser);
+
+//        if (updatedWriteUser.getAttachment() == touristPreviousAttachment) {
+//            System.out.println("111111111111");
+//            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//        }
+
+        Long guideId = tourApplication.getTour().getCreateUser().getId();
+        User guide = getUser(guideId);
+
+        double guidePreviousAttachment = guide.getAttachment();
+
+        for (String tourReview : reviewToGuideCreateDto.getTourReviews()) {
+            for (TourReviewGrade tourReviewGrade : TourReviewGrade.values()) {
+                if (tourReviewGrade.getStatus().equals(tourReview)) {
+                    guidePreviousAttachment += tourReviewGrade.getScore();
+                }
+            }
+        }
+
+        for (String userReview : reviewToGuideCreateDto.getGuideReviews()) {
+            for (UserReviewGrade userReviewGrade : UserReviewGrade.values()) {
+                if (userReviewGrade.getStatus().equals(userReview)) {
+                    guidePreviousAttachment += userReviewGrade.getScore();
+                }
+            }
+        }
+
+        guidePreviousAttachment = guidePreviousAttachment + (reviewToGuideCreateDto.getAttachment() / 100.0);
+        System.out.println("guidePreviousAttachment = " + guidePreviousAttachment);
+
+        guide.setAttachment((double)Math.round(guidePreviousAttachment * 100) / 100);
+
+        User updatedGuide = userRepository.save(guide);
+
+//        if (updatedGuide.getAttachment() == guidePreviousAttachment) {
+//            System.out.println("2222222222222222");
+//            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//        }
+
         LOGGER.info("[ReviewService] ReviewToGuide 저장 완료");
 
         return SuccessResponse.success(SuccessCode.REVIEW_TO_GUIDE_CREATE_SUCCESS, null);
     }
 
+    @Transactional
     public SuperResponse reviewToTourist(ReviewToTouristCreateDto reviewToTouristCreateDto) {
         LOGGER.info("[ReviewService] ReviewToTourist 작성 시도");
 
@@ -155,6 +214,46 @@ public class ReviewService {
                 }
             }
         }
+
+        double guidePreviousAttachment = writeGuide.getAttachment();
+
+        writeGuide.setAttachment((double)Math.round((guidePreviousAttachment + 0.1) * 100) / 100);
+        User updatedWriteUser = userRepository.save(writeGuide);
+
+//        if (updatedWriteUser.getAttachment() == guidePreviousAttachment) {
+//            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//        }
+
+        Long touristId = tourParticipant.getParticipant().getId();
+        User tourist = getUser(touristId);
+
+        double touristPreviousAttachment = tourist.getAttachment();
+
+        for (String tourReview : reviewToTouristCreateDto.getProgressReviews()) {
+            for (TourReviewGrade tourReviewGrade : TourReviewGrade.values()) {
+                if (tourReviewGrade.getStatus().equals(tourReview)) {
+                    touristPreviousAttachment += tourReviewGrade.getScore();
+                }
+            }
+        }
+
+        for (String userReview : reviewToTouristCreateDto.getTouristReviews()) {
+            for (UserReviewGrade userReviewGrade : UserReviewGrade.values()) {
+                if (userReviewGrade.getStatus().equals(userReview)) {
+                    touristPreviousAttachment += userReviewGrade.getScore();
+                }
+            }
+        }
+
+        touristPreviousAttachment = touristPreviousAttachment + (reviewToTouristCreateDto.getAttachment() / 100.0);
+
+        tourist.setAttachment((double)Math.round(touristPreviousAttachment * 100) / 100);
+
+        User updatedTourist = userRepository.save(tourist);
+
+//        if (updatedTourist.getAttachment() == touristPreviousAttachment) {
+//            throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//        }
 
         LOGGER.info("[ReviewService] ReviewToTourist 저장 완료");
 
