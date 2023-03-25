@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.koing.server.koing_server.domain.payment.QPayment.payment;
 import static com.koing.server.koing_server.domain.review.QReviewToGuide.reviewToGuide;
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
@@ -28,6 +29,8 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                 .fetchJoin()
                 .leftJoin(tourApplication.reviewsToGuide, reviewToGuide)
                 .fetchJoin()
+                .leftJoin(tourApplication.payments, payment)
+                .fetchJoin()
                 .distinct()
                 .where(
                         tourApplication.tour.id.eq(tourId)
@@ -44,6 +47,8 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                 .leftJoin(tourApplication.tourParticipants, tourParticipant)
                 .fetchJoin()
                 .leftJoin(tourApplication.reviewsToGuide, reviewToGuide)
+                .fetchJoin()
+                .leftJoin(tourApplication.payments, payment)
                 .fetchJoin()
                 .distinct()
                 .where(

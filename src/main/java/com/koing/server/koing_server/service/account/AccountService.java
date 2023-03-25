@@ -109,8 +109,8 @@ public class AccountService {
 
         account.setBankName(accountCreateDto.getBankName());
         account.setAccountNumber(seedCbc.encrypt(accountCreateDto.getAccountNumber()));
-        account.setBankName(seedCbc.encrypt(accountCreateDto.getBirthDate()));
-        account.setBankName(seedCbc.encrypt(accountCreateDto.getRegistrationNumber()));
+        account.setBirthDate(seedCbc.encrypt(accountCreateDto.getBirthDate()));
+        account.setRegistrationNumber(seedCbc.encrypt(accountCreateDto.getRegistrationNumber()));
 
         Account updatedAccount = accountRepository.save(account);
 

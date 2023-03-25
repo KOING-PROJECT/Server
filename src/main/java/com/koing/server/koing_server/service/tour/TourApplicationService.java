@@ -452,6 +452,7 @@ public class TourApplicationService {
     public SuperResponse checkStartTour(Long tourId, String date) {
 
         TourApplication tourApplication = getTourApplication(tourId, date);
+        TourApplicationStatus tourApplicationStatus = null;
 
         boolean checkTouristProgressStatus = true;
         for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
@@ -463,6 +464,7 @@ public class TourApplicationService {
         if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
                 && checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.ONGOING);
+            tourApplicationStatus = TourApplicationStatus.ONGOING;
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
@@ -483,6 +485,7 @@ public class TourApplicationService {
         else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
                 && !checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_START);
+            tourApplicationStatus = TourApplicationStatus.GUIDE_START;
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
@@ -503,6 +506,7 @@ public class TourApplicationService {
         else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.READY)
                 && checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.TOURIST_START);
+            tourApplicationStatus = TourApplicationStatus.TOURIST_START;
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
@@ -521,7 +525,7 @@ public class TourApplicationService {
             }
         }
 
-        return SuccessResponse.success(SuccessCode.START_TOUR_SUCCESS, null);
+        return SuccessResponse.success(SuccessCode.START_TOUR_SUCCESS, tourApplicationStatus);
     }
 
     @Transactional
@@ -579,6 +583,7 @@ public class TourApplicationService {
         String recentStartedTourDate = tour.getRecentStartedTourDate();
 
         TourApplication tourApplication = getTourApplication(tourId, recentStartedTourDate);
+        TourApplicationStatus tourApplicationStatus = null;
 
         boolean checkTouristProgressStatus = true;
         for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
@@ -590,6 +595,7 @@ public class TourApplicationService {
         if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)
                 && checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.NO_REVIEW);
+            tourApplicationStatus = TourApplicationStatus.NO_REVIEW;
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
@@ -600,6 +606,7 @@ public class TourApplicationService {
         else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)
                 && !checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_END);
+            tourApplicationStatus = TourApplicationStatus.GUIDE_END;
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
@@ -610,6 +617,7 @@ public class TourApplicationService {
         else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
                 && checkTouristProgressStatus) {
             tourApplication.setTourApplicationStatus(TourApplicationStatus.TOURIST_END);
+            tourApplicationStatus = TourApplicationStatus.TOURIST_END;
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
 
@@ -618,7 +626,7 @@ public class TourApplicationService {
             }
         }
 
-        return SuccessResponse.success(SuccessCode.END_TOUR_SUCCESS, null);
+        return SuccessResponse.success(SuccessCode.END_TOUR_SUCCESS, tourApplicationStatus);
     }
 
     private User getUser(Long userId) {

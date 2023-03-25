@@ -88,6 +88,7 @@ public enum ErrorCode {
     DB_FAIL_CREATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 업데이트 과정에서 오류가 발생했습니다."),
     DB_FAIL_FINISH_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_PAYMENT_EXCEPTION(DB_HANDLE_FAIL, "결제 정보 생성 과정에서 오류가 발생했습니다."),
 
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
@@ -152,6 +153,7 @@ public enum ErrorCode {
      * 407 PAYMENT_SERVER_ERROR
      */
     PAYMENT_SERVER_CONNECT_ERROR(PAYMENT_SERVER_ERROR, "결제 서버와의 통신에서 오류가 발생했습니다."),
+    PAYMENT_CANCEL_WHILE_PAYMENT_ERROR(PAYMENT_SERVER_ERROR, "결제 도중에 결제가 취소되었습니다."),
 
     /**
      * 408 FILE_CONVERT_ERROR

@@ -80,7 +80,7 @@ public class UserTouristMyPageDto {
 
         List<TourHistoryDto> tourHistoryDtos = new ArrayList<>();
         for (int i = 0; i < tourApplications.size(); i++) {
-            tourHistoryDtos.add(new TourHistoryDto(tourApplications.get(i), today));
+            tourHistoryDtos.add(new TourHistoryDto(tourApplications.get(i), today, user.getId()));
         }
 
 //        for (TourApplication tourApplication : tourApplications) {

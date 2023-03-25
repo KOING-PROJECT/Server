@@ -32,6 +32,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath birthDate = createString("birthDate");
 
+    public final SetPath<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment> buyPayments = this.<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment>createSet("buyPayments", com.koing.server.koing_server.domain.payment.Payment.class, com.koing.server.koing_server.domain.payment.QPayment.class, PathInits.DIRECT2);
+
     public final SetPath<Integer, NumberPath<Integer>> categoryIndexes = this.<Integer, NumberPath<Integer>>createSet("categoryIndexes", Integer.class, NumberPath.class, PathInits.DIRECT2);
 
     public final StringPath country = createString("country");
@@ -40,6 +42,10 @@ public class QUser extends EntityPathBase<User> {
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final SetPath<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour> createTours = this.<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour>createSet("createTours", com.koing.server.koing_server.domain.tour.Tour.class, com.koing.server.koing_server.domain.tour.QTour.class, PathInits.DIRECT2);
+
+    public final NumberPath<Integer> currentRemainAmount = createNumber("currentRemainAmount", Integer.class);
+
+    public final SetPath<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment> earnPayments = this.<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment>createSet("earnPayments", com.koing.server.koing_server.domain.payment.Payment.class, com.koing.server.koing_server.domain.payment.QPayment.class, PathInits.DIRECT2);
 
     public final StringPath email = createString("email");
 
@@ -65,6 +71,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<String, StringPath> roles = this.<String, StringPath>createSet("roles", String.class, StringPath.class, PathInits.DIRECT2);
 
+    public final NumberPath<Integer> totalEarnAmount = createNumber("totalEarnAmount", Integer.class);
+
     public final EnumPath<com.koing.server.koing_server.common.enums.TouristGrade> touristGrade = createEnum("touristGrade", com.koing.server.koing_server.common.enums.TouristGrade.class);
 
     public final SetPath<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant> tourParticipants = this.<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant>createSet("tourParticipants", com.koing.server.koing_server.domain.tour.TourParticipant.class, com.koing.server.koing_server.domain.tour.QTourParticipant.class, PathInits.DIRECT2);
@@ -75,6 +83,8 @@ public class QUser extends EntityPathBase<User> {
     public final QUserOptionalInfo userOptionalInfo;
 
     public final StringPath withdrawalReason = createString("withdrawalReason");
+
+    public final NumberPath<Integer> withdrawAmount = createNumber("withdrawAmount", Integer.class);
 
     public QUser(String variable) {
         this(User.class, forVariable(variable), INITS);

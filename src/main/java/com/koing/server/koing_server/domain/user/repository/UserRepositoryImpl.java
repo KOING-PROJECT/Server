@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.koing.server.koing_server.domain.payment.QPayment.payment;
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
@@ -34,6 +35,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
+                .leftJoin(user.earnPayments, payment)
+                .fetchJoin()
+                .leftJoin(user.buyPayments, payment)
+                .fetchJoin()
                 .where(
                         user.enabled.eq(true)
                 )
@@ -54,6 +59,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
+                .fetchJoin()
+                .leftJoin(user.earnPayments, payment)
+                .fetchJoin()
+                .leftJoin(user.buyPayments, payment)
                 .fetchJoin()
                 .where(
                         user.email.eq(email),
@@ -112,6 +121,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
+                .leftJoin(user.earnPayments, payment)
+                .fetchJoin()
+                .leftJoin(user.buyPayments, payment)
+                .fetchJoin()
                 .where(
                         user.id.eq(userId)
                 )
@@ -132,6 +145,10 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .leftJoin(user.userOptionalInfo, userOptionalInfo)
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
+                .fetchJoin()
+                .leftJoin(user.earnPayments, payment)
+                .fetchJoin()
+                .leftJoin(user.buyPayments, payment)
                 .fetchJoin()
                 .where(
                         user.enabled.eq(true),

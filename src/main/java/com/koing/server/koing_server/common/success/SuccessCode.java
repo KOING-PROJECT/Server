@@ -103,6 +103,7 @@ public enum SuccessCode {
     USER_CATEGORY_INDEXES_UPDATE_SUCCESS(OK, "user : 유저 선호 카테고리 업데이트 성공입니다."),
     ACCOUNT_CREATE_SUCCESS(OK, "account : 계좌 정보 생성 성공입니다."),
     ACCOUNT_UPDATE_SUCCESS(OK, "account : 계좌 정보 업데이트 성공입니다."),
+    PAYMENT_CREATE_SUCCESS(OK, "payment : 결제 정보 생성 성공입니다."),
 
     /**
      * 202 ACCEPTED

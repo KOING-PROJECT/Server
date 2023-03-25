@@ -6,6 +6,7 @@ import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
 import lombok.*;
 
@@ -74,6 +75,9 @@ public class TourApplication extends AuditingTimeEntity {
     private ProgressStatus guideProgressStatus;
 
     private boolean isExceed;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentProduct")
+    private Set<Payment> payments;
 
     public void setTour(Tour tour) {
         this.tour = tour;

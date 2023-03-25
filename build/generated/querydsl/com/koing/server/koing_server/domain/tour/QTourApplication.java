@@ -37,6 +37,8 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);
 
+    public final SetPath<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment> payments = this.<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment>createSet("payments", com.koing.server.koing_server.domain.payment.Payment.class, com.koing.server.koing_server.domain.payment.QPayment.class, PathInits.DIRECT2);
+
     public final EnumPath<com.koing.server.koing_server.common.enums.TourApplicationStatus> previousTourApplicationStatus = createEnum("previousTourApplicationStatus", com.koing.server.koing_server.common.enums.TourApplicationStatus.class);
 
     public final SetPath<Long, NumberPath<Long>> reviewedTouristId = this.<Long, NumberPath<Long>>createSet("reviewedTouristId", Long.class, NumberPath.class, PathInits.DIRECT2);

@@ -5,6 +5,7 @@ import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.image.Thumbnail;
+import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import lombok.Data;
@@ -13,13 +14,14 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
 public class TourHistoryDto {
 
-    public TourHistoryDto(TourApplication tourApplication, String today) {
+    public TourHistoryDto(TourApplication tourApplication, String today, Long touristId) {
         this.tourId = tourApplication.getTour().getId();
         this.title = tourApplication.getTour().getTitle();
         this.guideName = tourApplication.getTour().getCreateUser().getName();
@@ -27,6 +29,7 @@ public class TourHistoryDto {
         this.thumbnails = getThumbnails(tourApplication.getTour());
         this.tourDate = tourApplication.getTourDate();
         this.currentStatus = decideCurrentStatus(tourApplication, today);
+        setImpUid(tourApplication, touristId);
     }
 
     private Long tourId;
@@ -36,6 +39,7 @@ public class TourHistoryDto {
     private List<String> thumbnails;
     private String tourDate;
     private CurrentStatus currentStatus;
+    private String impUid;
 
     private List<String> getThumbnails(Tour tour) {
         List<Thumbnail> thumbnails = tour.getThumbnails()
@@ -50,6 +54,16 @@ public class TourHistoryDto {
         }
 
         return thumbnailUrls;
+    }
+
+    private void setImpUid(TourApplication tourApplication, Long touristId) {
+        Set<Payment> payments = tourApplication.getPayments();
+
+        for (Payment payment : payments) {
+            if (payment.getTourist().getId() == touristId) {
+                this.impUid = payment.getImp_uid();
+            }
+        }
     }
 
     private CurrentStatus decideCurrentStatus(TourApplication tourApplication, String today) {
