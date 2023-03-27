@@ -35,6 +35,8 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final StringPath description = createString("description");
 
+    public final SetPath<String, StringPath> exceedTourDate = this.<String, StringPath>createSet("exceedTourDate", String.class, StringPath.class, PathInits.DIRECT2);
+
     public final BooleanPath hasLevy = createBoolean("hasLevy");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
@@ -43,13 +45,19 @@ public class QTour extends EntityPathBase<Tour> {
 
     public final SetPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> pressLikeUsers = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createSet("pressLikeUsers", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
 
-    public final StringPath thumbnail = createString("thumbnail");
+    public final StringPath recentStartedTourDate = createString("recentStartedTourDate");
+
+    public final NumberPath<Integer> temporarySavePage = createNumber("temporarySavePage", Integer.class);
+
+    public final ListPath<com.koing.server.koing_server.domain.image.Thumbnail, com.koing.server.koing_server.domain.image.QThumbnail> thumbnails = this.<com.koing.server.koing_server.domain.image.Thumbnail, com.koing.server.koing_server.domain.image.QThumbnail>createList("thumbnails", com.koing.server.koing_server.domain.image.Thumbnail.class, com.koing.server.koing_server.domain.image.QThumbnail.class, PathInits.DIRECT2);
 
     public final StringPath title = createString("title");
 
     public final SetPath<TourApplication, QTourApplication> tourApplications = this.<TourApplication, QTourApplication>createSet("tourApplications", TourApplication.class, QTourApplication.class, PathInits.DIRECT2);
 
     public final SetPath<TourCategory, QTourCategory> tourCategories = this.<TourCategory, QTourCategory>createSet("tourCategories", TourCategory.class, QTourCategory.class, PathInits.DIRECT2);
+
+    public final SetPath<String, StringPath> tourDetailTypes = this.<String, StringPath>createSet("tourDetailTypes", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> tourPrice = createNumber("tourPrice", Integer.class);
 
@@ -82,7 +90,7 @@ public class QTour extends EntityPathBase<Tour> {
         super(type, metadata, inits);
         this.createUser = inits.isInitialized("createUser") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("createUser"), inits.get("createUser")) : null;
         this.tourSchedule = inits.isInitialized("tourSchedule") ? new QTourSchedule(forProperty("tourSchedule"), inits.get("tourSchedule")) : null;
-        this.tourSurvey = inits.isInitialized("tourSurvey") ? new QTourSurvey(forProperty("tourSurvey")) : null;
+        this.tourSurvey = inits.isInitialized("tourSurvey") ? new QTourSurvey(forProperty("tourSurvey"), inits.get("tourSurvey")) : null;
     }
 
 }

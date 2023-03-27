@@ -29,17 +29,29 @@ public class QTourApplication extends EntityPathBase<TourApplication> {
 
     public final NumberPath<Integer> currentParticipants = createNumber("currentParticipants", Integer.class);
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.ProgressStatus> guideProgressStatus = createEnum("guideProgressStatus", com.koing.server.koing_server.common.enums.ProgressStatus.class);
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final BooleanPath isExceed = createBoolean("isExceed");
 
     public final NumberPath<Integer> maxParticipant = createNumber("maxParticipant", Integer.class);
 
-    public final ListPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> participants = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createList("participants", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
+    public final SetPath<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment> payments = this.<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment>createSet("payments", com.koing.server.koing_server.domain.payment.Payment.class, com.koing.server.koing_server.domain.payment.QPayment.class, PathInits.DIRECT2);
+
+    public final EnumPath<com.koing.server.koing_server.common.enums.TourApplicationStatus> previousTourApplicationStatus = createEnum("previousTourApplicationStatus", com.koing.server.koing_server.common.enums.TourApplicationStatus.class);
+
+    public final SetPath<Long, NumberPath<Long>> reviewedTouristId = this.<Long, NumberPath<Long>>createSet("reviewedTouristId", Long.class, NumberPath.class, PathInits.DIRECT2);
+
+    public final SetPath<com.koing.server.koing_server.domain.review.ReviewToGuide, com.koing.server.koing_server.domain.review.QReviewToGuide> reviewsToGuide = this.<com.koing.server.koing_server.domain.review.ReviewToGuide, com.koing.server.koing_server.domain.review.QReviewToGuide>createSet("reviewsToGuide", com.koing.server.koing_server.domain.review.ReviewToGuide.class, com.koing.server.koing_server.domain.review.QReviewToGuide.class, PathInits.DIRECT2);
 
     public final QTour tour;
 
+    public final EnumPath<com.koing.server.koing_server.common.enums.TourApplicationStatus> tourApplicationStatus = createEnum("tourApplicationStatus", com.koing.server.koing_server.common.enums.TourApplicationStatus.class);
+
     public final StringPath tourDate = createString("tourDate");
 
-    public final EnumPath<com.koing.server.koing_server.common.enums.TourStatus> tourStatus = createEnum("tourStatus", com.koing.server.koing_server.common.enums.TourStatus.class);
+    public final ListPath<TourParticipant, QTourParticipant> tourParticipants = this.<TourParticipant, QTourParticipant>createList("tourParticipants", TourParticipant.class, QTourParticipant.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;

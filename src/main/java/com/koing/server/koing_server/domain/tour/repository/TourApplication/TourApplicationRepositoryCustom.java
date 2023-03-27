@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface TourApplicationRepositoryCustom {
 
-    TourApplication findTourApplicationByTourIdAndTourDate(Long tourId, String tourDate);
+    List<TourApplication> findTourApplicationsByTourId(Long tourId);
 
-    List<TourApplication> findTourApplicationsByUser(User user);
+    TourApplication findTourApplicationByTourIdAndTourDate(Long tourId, String tourDate);
 
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.user.User;
 import lombok.*;
 
@@ -22,22 +23,27 @@ public class Tour extends AuditingTimeEntity {
 
     @Builder
     public Tour(String title, User createUser, String description,
-                Set<TourCategory> tourCategories, String thumbnail,
-                int participant, int tourPrice, boolean hasLevy,
+                Set<TourCategory> tourCategories, Set<String> tourDetailTypes,
+                List<Thumbnail> thumbnails, int participant, int tourPrice,
+                boolean hasLevy, int temporarySavePage,
                 TourStatus tourStatus, Set<HashMap<String, List>> additionalPrice,
-                CreateStatus createStatus
+                CreateStatus createStatus, Set<String> exceedTourDate
                 ) {
         this.title = title;
         this.createUser = createUser;
         this.description = description;
         this.tourCategories = tourCategories;
-        this.thumbnail = thumbnail;
+        this.tourDetailTypes = tourDetailTypes;
+        this.thumbnails = thumbnails;
         this.participant = participant;
         this.tourPrice = tourPrice;
         this.hasLevy = hasLevy;
+        this.temporarySavePage = temporarySavePage;
         this.tourStatus = tourStatus;
         this.additionalPrice = additionalPrice;
         this.createStatus = createStatus;
+        this.exceedTourDate = exceedTourDate;
+        this.recentStartedTourDate = "";
     }
 
     @Id
@@ -49,7 +55,7 @@ public class Tour extends AuditingTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY) // 연관관계 주인
     private User createUser;
 
-    @Column(length = 30, unique = true, nullable = false)
+    @Column(length = 30, nullable = false)
     private String title;
 
     @Column(length = 300, nullable = false)
@@ -58,8 +64,17 @@ public class Tour extends AuditingTimeEntity {
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<TourCategory> tourCategories;
 
-    @Column(length = 30, nullable = false)
-    private String thumbnail;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(nullable = false, name = "detailTypes")
+    private Set<String> tourDetailTypes;
+
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Column(nullable = false, name = "thumbnails")
+//    private List<String> thumbnails;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ownedTour")
+    private List<Thumbnail> thumbnails;
 
     @Column(nullable = false)
     private int participant;
@@ -68,6 +83,8 @@ public class Tour extends AuditingTimeEntity {
     private int tourPrice;
 
     private boolean hasLevy;
+
+    private int temporarySavePage;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Column(name = "additional_price")
@@ -97,9 +114,20 @@ public class Tour extends AuditingTimeEntity {
     @Enumerated(EnumType.STRING)
     private CreateStatus createStatus;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "exceed_tour_date")
+    private Set<String> exceedTourDate;
+
+    private String recentStartedTourDate;
+
     public void setTourSchedule(TourSchedule tourSchedule) {
         this.tourSchedule = tourSchedule;
         tourSchedule.setTour(this);
+    }
+
+    public void setTourSurvey(TourSurvey tourSurvey) {
+        this.tourSurvey = tourSurvey;
+        tourSurvey.setTour(this);
     }
 
     public void setTourCategories(Set<TourCategory> tourCategories) {
@@ -114,10 +142,6 @@ public class Tour extends AuditingTimeEntity {
         for (TourCategory tourCategory : tourCategories) {
             tourCategory.deleteTour(this);
         }
-    }
-
-    public void setTourSurvey(TourSurvey tourSurvey) {
-        this.tourSurvey = tourSurvey;
     }
 
     public void pressLikeTour(User user) {
@@ -151,6 +175,7 @@ public class Tour extends AuditingTimeEntity {
     }
 
     public boolean checkCategories(List<String> tourCategories) {
+
         for (TourCategory tourCategory : this.tourCategories) {
             if (tourCategories.contains(tourCategory.getCategoryName())) {
                 return true;
@@ -158,6 +183,12 @@ public class Tour extends AuditingTimeEntity {
         }
 
         return false;
+    }
+
+    public void deleteExceedDate(String exceedTourDate) {
+        if (this.exceedTourDate.contains(exceedTourDate)) {
+            this.exceedTourDate.remove(exceedTourDate);
+        }
     }
 
 }

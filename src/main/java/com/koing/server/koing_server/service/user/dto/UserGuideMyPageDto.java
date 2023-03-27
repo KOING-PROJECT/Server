@@ -1,8 +1,14 @@
 package com.koing.server.koing_server.service.user.dto;
 
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.enums.GuideGrade;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.tour.dto.TourMyEndTourDto;
 import com.koing.server.koing_server.service.tour.dto.TourMyTourDto;
@@ -10,105 +16,211 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserGuideMyPageDto {
 
-    public UserGuideMyPageDto(User user) {
+    public UserGuideMyPageDto(User user, String today) {
         this.guideName = user.getName();
         this.roles = user.getRoles();
-        this.imageUrl = user.getUserOptionalInfo().getImageUrl();
-        this.myTours = createMyTours(user);
-        this.creatingTours = createCreatingTours(user);
-        this.createdTours = createCreatedTours(user);
-        this.recruitmentTours = createRecruitmentTours(user);
+        if (user.getUserOptionalInfo().getImageUrls() != null &&
+                user.getUserOptionalInfo().getImageUrls().size() > 0) {
+            this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
+            setJobAndUnivAndCompany(user);
+        }
+        this.myTours = createMyTours(user, today);
+        this.creatingTours = createCreatingTours(user, today);
+        this.createdTours = createCreatedTours(user, today);
+        this.recruitmentTours = createRecruitmentTours(user, today);
         this.myEndTours = createTourMyEndTourDtos(user);
+        this.guideGrade = user.getGuideGrade();
+        this.totalEarnAmount = user.getTotalEarnAmount();
+        this.currentRemainAmount = user.getCurrentRemainAmount();
+        this.totalTourists = user.getTotalTourists();
     }
 
     private String guideName;
     private Set<String> roles;
     private String imageUrl;
-    private Set<TourMyTourDto> myTours;
-    private Set<TourMyTourDto> creatingTours;
-    private Set<TourMyTourDto> createdTours;
-    private Set<TourMyTourDto> recruitmentTours;
-    private Set<TourMyEndTourDto> myEndTours;
+    private List<TourMyTourDto> myTours;
+    private List<TourMyTourDto> creatingTours;
+    private List<TourMyTourDto> createdTours;
+    private List<TourMyTourDto> recruitmentTours;
+    private List<TourMyEndTourDto> myEndTours;
+    private GuideGrade guideGrade;
+    private String job;
+    private String universityName;
+    private String company;
+    private int totalEarnAmount;
+    private int currentRemainAmount;
+    private int totalTourists;
 
-    private Set<TourMyTourDto> createMyTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+    private List<TourMyTourDto> createMyTours(User user, String today) {
+        List<Tour> createTours = user.getCreateTours()
                 .stream()
-                .filter(tour -> !tour.getTourStatus().equals(TourStatus.FINISH))
-                .collect(Collectors.toSet());
+                .filter(tour -> !tour.getTourStatus().equals(TourStatus.FINISH)
+                        && tour.getCreateStatus().equals(CreateStatus.COMPLETE))
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
+//            List<TourApplication> tourApplications
+//                    = createTour.getTourApplications()
+//                    .stream()
+//                    .filter((TourApplication t) -> t.getTourDate().equals(today))
+//                    .collect(Collectors.toList());
+//            if (tourApplications != null && tourApplications.size() > 0) {
+//                tourMyTourDtos.add(new TourMyTourDto(createTour, tourApplications.get(0).getGuideProgressStatus()));
+//            }
+//            else {
+//                tourMyTourDtos.add(new TourMyTourDto(createTour));
+//            }
         }
 
-        return tourMyTourDtos;
-    }
+        tourMyTourDtos = tourMyTourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourMyTourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed())
+                .collect(Collectors.toList());
 
-    private Set<TourMyTourDto> createCreatingTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+        List<Tour> creatingTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.CREATING))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
-        for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+        for (Tour creatingTour : creatingTours) {
+            tourMyTourDtos.add(new TourMyTourDto(creatingTour, today));
         }
 
         return tourMyTourDtos;
     }
 
-    private Set<TourMyTourDto> createCreatedTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+    private List<TourMyTourDto> createCreatingTours(User user, String today) {
+        List<Tour> createTours = user.getCreateTours()
+                .stream()
+                .filter(tour -> tour.getCreateStatus().equals(CreateStatus.CREATING))
+                .collect(Collectors.toList());
+
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
+        for (Tour createTour : createTours) {
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
+        }
+
+        return tourMyTourDtos;
+    }
+
+    private List<TourMyTourDto> createCreatedTours(User user, String today) {
+        List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
                         && tour.getTourStatus().equals(TourStatus.CREATED))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
         }
+
+        tourMyTourDtos = tourMyTourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourMyTourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed())
+                .collect(Collectors.toList());
 
         return tourMyTourDtos;
     }
 
-    private Set<TourMyTourDto> createRecruitmentTours(User user) {
-        Set<Tour> createTours = user.getCreateTours()
+    private List<TourMyTourDto> createRecruitmentTours(User user, String today) {
+        List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
-                        && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)
-                        || tour.getTourStatus().equals(TourStatus.STANDBY)))
-                .collect(Collectors.toSet());
+                        && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)))
+                .collect(Collectors.toList());
 
-        Set<TourMyTourDto> tourMyTourDtos = new HashSet<>();
+        List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();
         for (Tour createTour : createTours) {
-            tourMyTourDtos.add(new TourMyTourDto(createTour));
+            tourMyTourDtos.add(new TourMyTourDto(createTour, today));
         }
+
+        tourMyTourDtos = tourMyTourDtos
+                .stream()
+                .sorted(Comparator.comparing(
+                        (TourMyTourDto t) -> t.getTourDates().stream().sorted().collect(Collectors.toList()).get(0)
+                ).reversed())
+                .collect(Collectors.toList());
 
         return tourMyTourDtos;
     }
 
-    private Set<TourMyEndTourDto> createTourMyEndTourDtos(User user) {
-        Set<Tour> endTours = user.getCreateTours()
+    private List<TourMyEndTourDto> createTourMyEndTourDtos(User user) {
+        List<Tour> endTours = user.getCreateTours()
                 .stream()
-                .filter(tour -> tour.getTourStatus().equals(TourStatus.FINISH))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
 
-        Set<TourMyEndTourDto> tourMyEndTourDtos = new HashSet<>();
-        for (Tour endTour : endTours) {
-            tourMyEndTourDtos.add(new TourMyEndTourDto(endTour));
+        List<TourApplication> endTourApplication = new ArrayList<>();
+        for (Tour tour : endTours) {
+            for (TourApplication tourApplication : tour.getTourApplications()) {
+                TourApplicationStatus tourApplicationStatus = tourApplication.getTourApplicationStatus();
+                if (tourApplicationStatus.equals(TourApplicationStatus.GUIDE_END)
+                        || tourApplicationStatus.equals(TourApplicationStatus.TOURIST_END)
+                        || tourApplicationStatus.equals(TourApplicationStatus.NO_REVIEW)
+                        || tourApplicationStatus.equals(TourApplicationStatus.GUIDE_REVIEWED)
+                        || tourApplicationStatus.equals(TourApplicationStatus.TOURIST_REVIEWED)
+                        || tourApplicationStatus.equals(TourApplicationStatus.REVIEWED)
+                ) {
+                    endTourApplication.add(tourApplication);
+                }
+            }
         }
+
+//        List<TourMyEndTourDto> tourMyEndTourDtos = new ArrayList<>();
+//        for (TourApplication tourApplication : endTourApplication) {
+//            int reviewToTouristCount = 0;
+//            for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+//                if (tourParticipant.getReviewToTourist() != null) {
+//                    reviewToTouristCount += 1;
+//                }
+//            }
+//
+//            if (tourApplication.getTourParticipants().size() > reviewToTouristCount) {
+//                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, false));
+//            }
+//            else {
+//                tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication, true));
+//            }
+//        }
+
+        List<TourMyEndTourDto> tourMyEndTourDtos = new ArrayList<>();
+        for (TourApplication tourApplication : endTourApplication) {
+            tourMyEndTourDtos.add(new TourMyEndTourDto(tourApplication));
+        }
+
+        tourMyEndTourDtos = tourMyEndTourDtos
+                .stream()
+                .sorted(Comparator.comparing((TourMyEndTourDto t) -> t.getTourDate()).reversed())
+                .collect(Collectors.toList());
 
         return tourMyEndTourDtos;
     }
 
+    private void setJobAndUnivAndCompany(User user) {
+        String job = user.getUserOptionalInfo().getJob();
+
+        this.job = job;
+
+        if (job.equals("대학생")) {
+            this.universityName = user.getUserOptionalInfo().getUniversityEmail();
+            this.company = "";
+        }
+        else {
+            this.company = user.getUserOptionalInfo().getCompany();
+            this.universityName = "";
+        }
+    }
 }

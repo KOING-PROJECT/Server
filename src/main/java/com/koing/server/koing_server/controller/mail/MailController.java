@@ -1,9 +1,12 @@
 package com.koing.server.koing_server.controller.mail;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
-import com.koing.server.koing_server.controller.sign.SignController;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.mail.MailService;
 import com.koing.server.koing_server.service.mail.dto.MailSendDto;
+import com.koing.server.koing_server.service.sign.dto.SignInTemporaryPasswordDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -33,14 +36,43 @@ public class MailController {
     })
     @PostMapping("")
     public SuperResponse sendMail(@RequestBody MailSendDto mailSendDto) {
-        LOGGER.info("[MailController] 인증 이메일 전송");
-        SuperResponse sendMailResponse = mailService.sendMail(mailSendDto);
+        LOGGER.info("[MailController] 인증 이메일 전송 시도");
+        SuperResponse sendMailResponse;
 
-        if (sendMailResponse.getStatus() == 200) {
-            LOGGER.info("[MailController] 인증 이메일 실패");
+        try {
+            sendMailResponse = mailService.sendMail(mailSendDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
+        LOGGER.info("[MailController] 이메일 전송 성공");
 
         return sendMailResponse;
+    }
+
+
+    @ApiOperation("MailSend : 임시 비밀번호를 발급합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "mail-send : 임시 비밀번호 발급성공"),
+            @ApiResponse(code = 401, message = "DB처리 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/temporary-password")
+    public SuperResponse createTemporaryPasswordMail(@RequestBody SignInTemporaryPasswordDto signInTemporaryPasswordDto) {
+        LOGGER.info("[MailController] 임시 비밀번호 발급 시도");
+        SuperResponse createTemporaryPasswordResponse;
+
+        try {
+            createTemporaryPasswordResponse = mailService.sendTemporaryPassword(signInTemporaryPasswordDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[MailController] 임시 비밀번호 발급 성공");
+
+        return createTemporaryPasswordResponse;
     }
 
 }

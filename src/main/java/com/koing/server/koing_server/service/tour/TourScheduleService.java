@@ -5,6 +5,8 @@ import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourDetailSchedule;
@@ -40,14 +42,14 @@ public class TourScheduleService {
             TourScheduleCreateDto tourScheduleCreateDto,
             CreateStatus createStatus
     ) {
-        LOGGER.info("[TourCategoryService] TourSchedule 생성 시도");
+        LOGGER.info("[TourScheduleService] TourSchedule 생성 시도");
 
         TourSchedule tourSchedule = new TourSchedule(tourScheduleCreateDto, createStatus);
 
         HashMap<String, HashMap<String, String>> tourDetailSchedulesHashMaps = tourScheduleCreateDto.getTourDetailScheduleHashMap();
 
         for (Map.Entry<String, HashMap<String, String>> tds : tourDetailSchedulesHashMaps.entrySet()) {
-            LOGGER.info("[TourCategoryService] TourDetailSchedule 생성 시도");
+            LOGGER.info("[TourScheduleService] TourDetailSchedule 생성 시도");
             TourDetailSchedule tourDetailSchedule = new TourDetailSchedule(tds);
 
             tourDetailSchedule.setNewTourSchedule(tourSchedule);
@@ -55,66 +57,90 @@ public class TourScheduleService {
             TourDetailSchedule savedTourDetailSchedule = tourDetailScheduleRepository.save(tourDetailSchedule);
 
             if (savedTourDetailSchedule == null) {
-                return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_DETAIL_SCHEDULE_FAIL_EXCEPTION);
+                throw new DBFailException("투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_DETAIL_SCHEDULE_FAIL_EXCEPTION);
             }
 
-            LOGGER.info("[TourCategoryService] TourDetailSchedule 생성 성공");
+            LOGGER.info("[TourScheduleService] TourDetailSchedule 생성 성공");
         }
 
         TourSchedule savedTourSchedule = tourScheduleRepository.save(tourSchedule);
 
         if (savedTourSchedule == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
+            throw new DBFailException("투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourCategoryService] TourSchedule 생성 성공");
+        LOGGER.info("[TourScheduleService] TourSchedule 생성 성공");
 
         if (createStatus.equals(CreateStatus.COMPLETE) && savedTourSchedule.getTourDetailScheduleList() == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
+            throw new DBFailException("투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourCategoryService] TourSchedule에 tourDetailSchedule update 성공");
+        LOGGER.info("[TourScheduleService] TourSchedule에 tourDetailSchedule update 성공");
 
         Tour tour = tourRepositoryImpl.findTourByTourId(tourScheduleCreateDto.getTourId());
         if (tour == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
         tour.setTourSchedule(savedTourSchedule);
 
-        LOGGER.info("[TourCategoryService] Tour에 TourSchedule update 시도");
+        LOGGER.info("[TourScheduleService] Tour에 TourSchedule update 시도");
 
         Tour savedTour = tourRepository.save(tour);
 
         if (savedTour.getTourSchedule() == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+            throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourCategoryService] Tour에 TourSchedule update 성공 = " + savedTour);
+        LOGGER.info("[TourScheduleService] Tour에 TourSchedule update 성공 = " + savedTour);
 
         return SuccessResponse.success(SuccessCode.TOUR_SCHEDULE_CREATE_SUCCESS, savedTourSchedule);
     }
 
-    @Transactional
-    public SuperResponse updateTourSchedule(Long tourId, TourScheduleCreateDto tourScheduleCreateDto, CreateStatus createStatus) {
-        LOGGER.info("[TourCategoryService] TourSchedule update 시도");
+    public SuperResponse completeTourSchedule(Long tourId) {
+        LOGGER.info("[TourScheduleService] TourSchedule 완성 시도");
+
+        if (!tourRepositoryImpl.checkExistByTourId(tourId)) {
+            throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
+        }
 
         TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
 
         if (tourSchedule == null) {
-            return ErrorResponse.error(ErrorCode.NOT_FOUND_TOUR_SCHEDULE_EXCEPTION);
+            throw new NotFoundException("해당 투어 스케줄을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_SCHEDULE_EXCEPTION);
         }
 
-        LOGGER.info("[TourCategoryService] TourSchedule 임시 저장 된 TourDetailSchedule 삭제 시도");
+        tourSchedule.setCreateStatus(CreateStatus.COMPLETE);
+
+        TourSchedule savedTourSchedule = tourScheduleRepository.save(tourSchedule);
+
+        if (savedTourSchedule.getCreateStatus() != CreateStatus.COMPLETE) {
+            throw new DBFailException("투어 스케줄 완성과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_COMPLETE_TOUR_SCHEDULE_FAIL_EXCEPTION);
+        }
+
+        return SuccessResponse.success(SuccessCode.TOUR_SCHEDULE_COMPLETE_SUCCESS, savedTourSchedule);
+    }
+
+    @Transactional
+    public SuperResponse updateTourSchedule(Long tourId, TourScheduleCreateDto tourScheduleCreateDto, CreateStatus createStatus) {
+        LOGGER.info("[TourScheduleService] TourSchedule update 시도");
+
+        TourSchedule tourSchedule = tourScheduleRepositoryImpl.findTourScheduleByTourId(tourId);
+
+        if (tourSchedule == null) {
+            throw new NotFoundException("해당 투어 스케줄을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_SCHEDULE_EXCEPTION);
+        }
+
+        LOGGER.info("[TourScheduleService] TourSchedule 임시 저장 된 TourDetailSchedule 삭제 시도");
         if (tourSchedule.getTourDetailScheduleList().size() > 0) {
             tourDetailScheduleRepository.deleteAll(tourSchedule.getTourDetailScheduleList());
             tourSchedule.deleteTourDetailSchedule();
         }
-        LOGGER.info("[TourCategoryService] TourSchedule 임시 저장 된 TourDetailSchedule 삭제 성공");
+        LOGGER.info("[TourScheduleService] TourSchedule 임시 저장 된 TourDetailSchedule 삭제 성공");
 
         HashMap<String, HashMap<String, String>> tourDetailSchedulesHashMaps = tourScheduleCreateDto.getTourDetailScheduleHashMap();
 
         for (Map.Entry<String, HashMap<String, String>> tds : tourDetailSchedulesHashMaps.entrySet()) {
-            LOGGER.info("[TourCategoryService] TourDetailSchedule 생성 시도");
+            LOGGER.info("[TourScheduleService] TourDetailSchedule 생성 시도");
             TourDetailSchedule tourDetailSchedule = new TourDetailSchedule(tds);
 
             tourDetailSchedule.setNewTourSchedule(tourSchedule);
@@ -122,14 +148,10 @@ public class TourScheduleService {
             TourDetailSchedule savedTourDetailSchedule = tourDetailScheduleRepository.save(tourDetailSchedule);
 
             if (savedTourDetailSchedule == null) {
-                return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_DETAIL_SCHEDULE_FAIL_EXCEPTION);
+                throw new DBFailException("투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_DETAIL_SCHEDULE_FAIL_EXCEPTION);
             }
 
-            LOGGER.info("[TourCategoryService] TourDetailSchedule 생성 성공");
-        }
-
-        if (tourSchedule.getTourDetailScheduleList() != null) {
-            System.out.println("getTourDetailScheduleList = " + tourSchedule.getTourDetailScheduleList().size());
+            LOGGER.info("[TourScheduleService] TourDetailSchedule 생성 성공");
         }
 
         if (CreateStatus.COMPLETE.equals(createStatus)) {
@@ -141,23 +163,24 @@ public class TourScheduleService {
         TourSchedule savedTourSchedule = tourScheduleRepository.save(tourSchedule);
 
         if (savedTourSchedule == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
+            throw new DBFailException("투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_CREATE_TOUR_SCHEDULE_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourCategoryService] TourSchedule update 성공");
+        LOGGER.info("[TourScheduleService] TourSchedule update 성공");
 
         Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+        tour.setTemporarySavePage(2);
         tour.setTourSchedule(savedTourSchedule);
 
-        LOGGER.info("[TourCategoryService] Tour에 TourSchedule update 시도");
+        LOGGER.info("[TourScheduleService] Tour에 TourSchedule update 시도");
 
         Tour savedTour = tourRepository.save(tour);
 
         if (savedTour.getTourSchedule() == null) {
-            return ErrorResponse.error(ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
+            throw new DBFailException("투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_TOUR_FAIL_EXCEPTION);
         }
 
-        LOGGER.info("[TourCategoryService] Tour에 TourSchedule update 성공 = " + savedTour);
+        LOGGER.info("[TourScheduleService] Tour에 TourSchedule update 성공 = " + savedTour);
 
         return SuccessResponse.success(SuccessCode.TOUR_SCHEDULE_UPDATE_SUCCESS, savedTourSchedule);
     }

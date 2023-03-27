@@ -4,6 +4,6 @@ import com.koing.server.koing_server.domain.tour.TourSurvey;
 
 public interface TourSurveyRepositoryCustom {
 
-//    TourSurvey findTourSurveyByTourId(Long tourId);
+    TourSurvey findTourSurveyByTourId(Long tourId);
 
 }

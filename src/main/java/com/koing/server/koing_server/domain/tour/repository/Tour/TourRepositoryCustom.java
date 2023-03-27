@@ -10,8 +10,12 @@ public interface TourRepositoryCustom {
 
     Tour findTourByTourId(Long id);
 
-    List<Tour> findTourByStatusRecruitmentAndStandby();
+    List<Tour> findTourByStatusRecruitment();
 
     List<Tour> findLikeTourByUser(Long userId);
+
+    Tour findTemporaryTourByTourId(Long tourId);
+
+    boolean checkExistByTourId(Long tourId);
 
 }

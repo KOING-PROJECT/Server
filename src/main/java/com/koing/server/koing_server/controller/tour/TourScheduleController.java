@@ -1,7 +1,10 @@
 package com.koing.server.koing_server.controller.tour;
 
+import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.enums.CreateStatus;
+import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.tour.TourScheduleService;
 import com.koing.server.koing_server.service.tour.dto.TourScheduleCreateDto;
 import io.swagger.annotations.Api;
@@ -24,19 +27,31 @@ public class TourScheduleController {
 
     @ApiOperation("TourSchedule - 투어 스케줄을 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 생성 성공"),
+            @ApiResponse(code = 201, message = "TourSchedule - 투어 스케줄 생성 성공"),
             @ApiResponse(code = 401, message = "토큰이 없습니다."),
-            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createTourSchedule(@RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
         LOGGER.info("[TourScheduleController] 투어 스케줄 생성 시도");
-        SuperResponse createTourScheduleResponse = tourScheduleService.createTourSchedule(
-                tourScheduleCreateDto,
-                CreateStatus.COMPLETE
-        );
+
+        SuperResponse createTourScheduleResponse;
+        try {
+            createTourScheduleResponse = tourScheduleService.createTourSchedule(
+                    tourScheduleCreateDto,
+                    CreateStatus.COMPLETE
+            );
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourScheduleController] 투어 스케줄 생성 성공");
+
         return createTourScheduleResponse;
     }
 
@@ -45,17 +60,29 @@ public class TourScheduleController {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 임시 저장 성공"),
             @ApiResponse(code = 401, message = "토큰이 없습니다."),
-            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/temporary")
     public SuperResponse createTemporaryTourSchedule(@RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
         LOGGER.info("[TourScheduleController] 생성 중인 투어 스케줄 임시 저장 시도");
-        SuperResponse createTourScheduleResponse = tourScheduleService.createTourSchedule(
-                tourScheduleCreateDto,
-                CreateStatus.CREATING
-        );
+
+        SuperResponse createTourScheduleResponse;
+        try {
+            createTourScheduleResponse = tourScheduleService.createTourSchedule(
+                    tourScheduleCreateDto,
+                    CreateStatus.CREATING
+            );
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourScheduleController] 생성 중인 투어 스케줄 임시 저장 성공");
+
         return createTourScheduleResponse;
     }
 
@@ -72,9 +99,17 @@ public class TourScheduleController {
             @RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
         // 완성 된 tourSchedule를 수정하거나, 임시 저장 중인 tourSchedule를 다시 임시 저장 할 때 사용
         LOGGER.info("[TourScheduleController] 투어 스케줄 update 시도");
-        SuperResponse updateTourScheduleResponse = tourScheduleService.updateTourSchedule(
-                tourId, tourScheduleCreateDto, null);
+        SuperResponse updateTourScheduleResponse;
+        try {
+            updateTourScheduleResponse = tourScheduleService.updateTourSchedule(
+                    tourId, tourScheduleCreateDto, null);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourScheduleController] 투어 스케줄 update 성공");
+
         return updateTourScheduleResponse;
     }
 
@@ -91,9 +126,17 @@ public class TourScheduleController {
             @RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
         // 임시 저장 중인 tourSchedule를 complete 할 때 사용
         LOGGER.info("[TourScheduleController] 투어 스케줄 complete 시도");
-        SuperResponse completeTourScheduleResponse = tourScheduleService.updateTourSchedule(
-                tourId, tourScheduleCreateDto, CreateStatus.COMPLETE);
+        SuperResponse completeTourScheduleResponse;
+        try {
+            completeTourScheduleResponse = tourScheduleService.updateTourSchedule(
+                    tourId, tourScheduleCreateDto, CreateStatus.COMPLETE);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
         LOGGER.info("[TourScheduleController] 투어 스케줄 complete 성공");
+
         return completeTourScheduleResponse;
     }
 

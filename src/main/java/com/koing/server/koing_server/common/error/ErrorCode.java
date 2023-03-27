@@ -28,7 +28,9 @@ public enum ErrorCode {
     UNAUTHORIZED_TOKEN_NOT_MATCH_WITH_SERVER_EXCEPTION(UNAUTHORIZED, "Request의 token과 Server의 token이 일치하지 않습니다."),
     UNAUTHORIZED_EXPIRE_TOKEN_EXCEPTION(UNAUTHORIZED, "토큰이 만료되었습니다."),
     UNAUTHORIZED_CRYPTOGRAM_NOT_MATCH_EXCEPTION(UNAUTHORIZED, "Cryptogram이 일치하지 않습니다."),
-    UNAUTHORIZED_CRYPTOGRAM_EXPIRE_EXCEPTION(UNAUTHORIZED, "Cryptogram이 만료되었습니다."),
+    UNAUTHORIZED_CRYPTOGRAM_EXPIRE_EXCEPTION(UNAUTHORIZED, "Cryptogram이 만료되었습니다. 이메일 인증을 다시 요청해주세요."),
+    UNAUTHORIZED_CERTIFICATION_NUMBER_EXCEPTION(UNAUTHORIZED, "인증번호가 일치하지 않습니다."),
+    UNAUTHORIZED_CERTIFICATION_NUMBER_EXPIRE_EXCEPTION(UNAUTHORIZED, "인증번호가 만료되었습니다. 휴대폰 인증을 다시 요청해주세요."),
 
     /**
      * 402 DB Fail
@@ -51,6 +53,46 @@ public enum ErrorCode {
     DB_FAIL_UPDATE_TOUR_SURVEY_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 설문 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_PRESS_LIKE_TOUR_FAIL_EXCEPTION(DB_HANDLE_FAIL, "좋아요 처리과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
     DB_FAIL_PRESS_FOLLOW_USER_FAIL_EXCEPTION(DB_HANDLE_FAIL, "팔로우 처리과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_CREATE_CHAT_ROOM_FAIL_EXCEPTION(DB_HANDLE_FAIL, "채팅방 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+    DB_FAIL_CREATE_CHAT_MESSAGE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "메시지 저장 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "이미지 저장 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_REVIEW_TO_GUIDE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "ReviewToGuide 저장과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_REVIEW_TO_TOURIST_FAIL_EXCEPTION(DB_HANDLE_FAIL, "ReviewToTourist 저장과정에서 오류가 발생했습니다."),
+    DB_FAIL_COMPLETE_TOUR_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 완성과정에서 오류가 발생했습니다."),
+    DB_FAIL_COMPLETE_TOUR_SCHEDULE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 스케줄 완성과정에서 오류가 발생했습니다."),
+    DB_FAIL_COMPLETE_TOUR_SURVEY_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 설문 완성과정에서 오류가 발생했습니다."),
+    DB_FAIL_VERIFY_CRYPTOGRAM_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 인증과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_TOUR_PARTICIPANT_FAIL_EXCEPTION(DB_HANDLE_FAIL, "투어 신청 내용 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증을 생성하는 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증을 업데이트하는 과정에서 오류가 발생했습니다."),
+    DB_FAIL_VERIFY_SMS_FAIL_EXCEPTION(DB_HANDLE_FAIL, "문자 인증 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_THUMBNAIL_EXCEPTION(DB_HANDLE_FAIL, "썸네일 저장 과정에서 오류가 발생했습니다."),
+    DB_FAIL_PRESS_START_EXCEPTION(DB_HANDLE_FAIL, "투어 시작 처리 과정에서 오류가 발생했습니다."),
+    DB_FAIL_START_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 시작 과정에서 오류가 발생했습니다."),
+    DB_FAIL_END_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 과정에서 오류가 발생했습니다."),
+    DB_FAIL_PRESS_END_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 처리 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_FCM_TOKEN_EXCEPTION(DB_HANDLE_FAIL, "FCM 토큰 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_FCM_TOKEN_EXCEPTION(DB_HANDLE_FAIL, "FCM 토큰 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_USER_CATEGORY_INDEXES_EXCEPTION(DB_HANDLE_FAIL, "유저 선호 카테고리 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_APPROVAL_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 승인 과정에서 오류가 발생했습니다."),
+    DB_FAIL_REJECTION_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 승인 거절 과정에서 오류가 발생했습니다."),
+    DB_FAIL_RECRUITMENT_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 모집 시작 과정에서 오류가 발생했습니다."),
+    DB_FAIL_DE_ACTIVATE_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 비활성화 과정에서 오류가 발생했습니다."),
+    DB_FAIL_ACTIVATE_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 활성화 과정에서 오류가 발생했습니다."),
+    DB_FAIL_DE_ACTIVATE_TOUR_APPLICATION_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 비활성화 과정에서 오류가 발생했습니다."),
+    DB_FAIL_ACTIVATE_TOUR_APPLICATION_EXCEPTION(DB_HANDLE_FAIL, "투어 신청서 활성화 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_TOUR_PARTICIPANT_EXCEPTION(DB_HANDLE_FAIL, "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_WITHDRAWAL_USER_EXCEPTION(DB_HANDLE_FAIL, "유저 탈퇴 과정에서 오류가 발생했습니다."),
+    DB_FAIL_REQUEST_WITHDRAWAL_USER_EXCEPTION(DB_HANDLE_FAIL, "유저 탈퇴 요청 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_TEMPORARY_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "임시 비밀번호 발급 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_PASSWORD_EXCEPTION(DB_HANDLE_FAIL, "비밀번호 변경 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_ACCOUNT_EXCEPTION(DB_HANDLE_FAIL, "계좌 정보 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_FINISH_TOUR_EXCEPTION(DB_HANDLE_FAIL, "투어 종료 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_PAYMENT_EXCEPTION(DB_HANDLE_FAIL, "결제 정보 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_KEYWORD_EXCEPTION(DB_HANDLE_FAIL, "키워드 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_KEYWORD_EXCEPTION(DB_HANDLE_FAIL, "키워드 업데이트 과정에서 오류가 발생했습니다."),
+
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 
@@ -69,11 +111,23 @@ public enum ErrorCode {
     NOT_FOUND_REFRESH_TOKEN_EXCEPTION(NOT_FOUND, "만료된 리프레시 토큰입니다."),
     NOT_FOUND_WRONG_PASSWORD_EXCEPTION(NOT_FOUND, "잘못된 비밀번호 입니다."),
     NOT_FOUND_TOKEN_EXCEPTION(NOT_FOUND, "Server에 저장된 token이 없습니다. 회원가입을 먼저 진행해주세요."),
-    NOT_FOUND_CRYPTOGRAM_EXCEPTION(NOT_FOUND, "요청된 이메일 요청이 없습니다. 이메일 인증을 요청해주세요."),
+    NOT_FOUND_CRYPTOGRAM_EXCEPTION(NOT_FOUND, "해당 이메일에 Cryptogram이 없습니다. 이메일 인증을 요청해주세요."),
     NOT_FOUND_TOUR_EXCEPTION(NOT_FOUND, "해당 투어를 찾을 수 없습니다."),
     NOT_FOUND_TOUR_APPLICATION_EXCEPTION(NOT_FOUND, "해당 투어 신청서를 찾을 수 없습니다."),
     NOT_FOUND_TOUR_SCHEDULE_EXCEPTION(NOT_FOUND, "해당 투어 스케줄을 찾을 수 없습니다."),
     NOT_FOUND_TOUR_SURVEY_EXCEPTION(NOT_FOUND, "해당 투어 설문을 찾을 수 없습니다."),
+    NOT_FOUND_CHAT_ROOM_EXCEPTION(NOT_FOUND, "해당 채팅방을 찾을 수 없습니다."),
+    NOT_FOUND_TOUR_PARTICIPANT_EXCEPTION(NOT_FOUND, "해당 투어 신청 내용을 찾을 수 없습니다."),
+    NOT_FOUND_TEMPORARY_TOUR_EXCEPTION(NOT_FOUND, "이어서 만들 투어를 찾을 수 없습니다."),
+    NOT_FOUND_USER_OPTIONAL_INFO_EXCEPTION(NOT_FOUND, "해당 유저의 선택사항을 찾을 수 없습니다."),
+    NOT_FOUND_SMS_EXCEPTION(NOT_FOUND, "해당 번호의 문자인증을 찾을 수 없습니다."),
+    NOT_FOUND_THUMBNAIL_EXCEPTION(NOT_FOUND, "해당 썸네일을 찾을 수 없습니다."),
+    NOT_FOUND_TOUR_CATEGORY_EXCEPTION(NOT_FOUND, "존재하지 않는 투어 카테고리 입니다."),
+    NOT_FOUND_FCM_TOKEN_EXCEPTION(NOT_FOUND, "해당 유저와 장치의 FCM 토큰을 찾을 수 없습니다."),
+    NOT_FOUND_USER_CATEGORY_INDEXES_EXCEPTION(NOT_FOUND, "해당 유저의 선호 카테고리를 찾을 수 없습니다."),
+    NOT_FOUND_USER_ACCOUNT_EXCEPTION(NOT_FOUND, "해당 유저의 계좌 정보를 찾을 수 없습니다."),
+    NOT_FOUND_KEYWORD_EXCEPTION(NOT_FOUND, "존재하지 않는 키워드 입니다."),
+
 
     /**
      * 405 Method Not Allowed
@@ -88,11 +142,28 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_NOT_TOUR_CREATOR_EXCEPTION(NOT_ACCEPTABLE, "해당 투어의 생성자가 아닙니다."),
     NOT_ACCEPTABLE_TOUR_APPLICATION_HAVE_PARTICIPANT_EXCEPTION(NOT_ACCEPTABLE, "신청자가 있는 투어는 날짜 변경이 불가능 합니다."),
     NOT_ACCEPTABLE_USER_NOT_HAVE_ROLE_EXCEPTION(NOT_ACCEPTABLE, "해당 유저의 ROLE이 없습니다."),
+    NOT_ACCEPTABLE_ALREADY_PARTICIPATED_TOUR_EXCEPTION(NOT_ACCEPTABLE, "이미 신청한 투어입니다."),
+    NOT_ACCEPTABLE_NOT_GUIDE_EXCEPTION(NOT_ACCEPTABLE, "해당 유저는 가이드가 아니므로 팔로우 할 수 없습니다."),
+    NOT_ACCEPTABLE_CAN_NOT_COGNITION_ORDER_EXCEPTION(NOT_ACCEPTABLE, "해당 사진의 순서를 알 수 없습니다."),
+    NOT_ACCEPTABLE_ALREADY_PRESS_START_EXCEPTION(NOT_ACCEPTABLE, "이미 시작을 누르신 투어입니다."),
+    NOT_ACCEPTABLE_ALREADY_EXCEED_TOUR_APPLICATION_EXCEPTION(NOT_ACCEPTABLE, "이미 신청한 팀이 있는 투어입니다."),
+    NOT_ACCEPTABLE_ALREADY_PRESS_END_EXCEPTION(NOT_ACCEPTABLE, "이미 종료를 누르신 투어입니다."),
+    NOT_ACCEPTABLE_TOUR_DATE_CLOSE_EXCEPTION(NOT_ACCEPTABLE, "투어 취소는 투어 당일 기준 이틀 전까지 가능합니다."),
+    NOT_ACCEPTABLE_WRONG_PASSWORD_EXCEPTION(NOT_ACCEPTABLE, "비밀번호가 틀렸습니다."),
+    NOT_ACCEPTABLE_SAME_ACCOUNT_EXCEPTION(NOT_ACCEPTABLE, "수정할 계좌 정보가 없습니다."),
+    NOT_ACCEPTABLE_ACCOUNT_ALREADY_EXIST_EXCEPTION(NOT_ACCEPTABLE, "해당 유저의 계좌 정보가 이미 존재합니다."),
+    NOT_ACCEPTABLE_ALREADY_EXIST_KEYWORD_EXCEPTION(NOT_ACCEPTABLE, "이미 존재하는 키워드 입니다."),
 
     /**
      * 407 PAYMENT_SERVER_ERROR
      */
     PAYMENT_SERVER_CONNECT_ERROR(PAYMENT_SERVER_ERROR, "결제 서버와의 통신에서 오류가 발생했습니다."),
+    PAYMENT_CANCEL_WHILE_PAYMENT_ERROR(PAYMENT_SERVER_ERROR, "결제 도중에 결제가 취소되었습니다."),
+
+    /**
+     * 408 FILE_CONVERT_ERROR
+     */
+    FILE_CONVERT_ERROR(FILE_CONVERTED_ERROR, "파일 변환과정에서 오류가 발생했습니다."),
 
     /**
      * 409 Conflict
@@ -104,6 +175,26 @@ public enum ErrorCode {
      * 415 Unsupported Media Type
      */
     UNSUPPORTED_MEDIA_TYPE_EXCEPTION(UNSUPPORTED_MEDIA_TYPE, "해당하는 미디어 타입을 지원하지 않습니다."),
+
+    /**
+     * 416 Unsupported Encoding
+     */
+    UNSUPPORTED_ENCODING_EXCEPTION(UNSUPPORTED_ENCODING, "해당하는 인코딩을 지원하지 않습니다."),
+
+    /**
+     * 417 No Such Algorithm
+     */
+    NO_SUCH_ALGORITHM_EXCEPTION(NO_SUCH_ALGORITHM, "해당하는 알고리즘이 없습니다."),
+
+    /**
+     * 418 Invalid Key
+     */
+    INVALID_KEY_EXCEPTION(INVALID_KEY, "유효하지 않은 키 입니다."),
+
+    /**
+     * 419 Json processing
+     */
+    JSON_PROCESSING_EXCEPTION(JSON_PROCESSING, "Json 파일 프로세싱 과정에서 오류가 발생했습니다."),
 
     /**
      * 500 Internal Server Exception

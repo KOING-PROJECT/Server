@@ -4,7 +4,7 @@ import com.koing.server.koing_server.common.model.EnumModel;
 
 public enum GenderType implements EnumModel {
 
-    Man,
+    MAN,
     WOMAN,
     UNKNOWN;
 

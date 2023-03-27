@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.koing.server.koing_server.service.user.dto.UserOptionalInfoCreateDto;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -14,14 +15,15 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserOptionalInfo {
 
-    public UserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto) {
-        this.imageUrl = userOptionalInfoCreateDto.getImageUrl();
+    public UserOptionalInfo(UserOptionalInfoCreateDto userOptionalInfoCreateDto, List<String> imageUrls, boolean isVerified) {
+        this.imageUrls = imageUrls;
         this.description = userOptionalInfoCreateDto.getDescription();
         this.languages = userOptionalInfoCreateDto.getLanguages();
         this.areas = userOptionalInfoCreateDto.getAreas();
         this.job = userOptionalInfoCreateDto.getJob();
         this.universityEmail = userOptionalInfoCreateDto.getUniversityEmail();
         this.company = userOptionalInfoCreateDto.getCompany();
+        this.isCertified = isVerified;
     }
 
     @Id
@@ -29,8 +31,12 @@ public class UserOptionalInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 300)
-    private String imageUrl;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> imageUrls;
 
     @Column(length = 300)
     private String description;

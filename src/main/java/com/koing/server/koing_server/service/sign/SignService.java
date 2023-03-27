@@ -3,6 +3,9 @@ package com.koing.server.koing_server.service.sign;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
+import com.koing.server.koing_server.common.enums.GuideGrade;
+import com.koing.server.koing_server.common.enums.TouristGrade;
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.ConflictEmailException;
 import com.koing.server.koing_server.common.exception.DBFailException;
@@ -21,6 +24,7 @@ import com.koing.server.koing_server.service.jwt.dto.JwtResponseDto;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpEmailCheckDto;
 import com.koing.server.koing_server.service.sign.dto.SignUpRequestDto;
+import com.koing.server.koing_server.service.sign.dto.SignInTemporaryPasswordDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,10 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +65,7 @@ public class SignService {
         }
 
         if (signUpRequestDto.getGender().equalsIgnoreCase("MAN")) {
-            genderType = GenderType.Man;
+            genderType = GenderType.MAN;
         }
         else if (signUpRequestDto.getGender().equalsIgnoreCase("WOMAN")) {
             genderType = GenderType.WOMAN;
@@ -81,13 +82,21 @@ public class SignService {
                 .gender(genderType)
                 .age(signUpRequestDto.getAge())
                 .enabled(true)
+                .attachment(37.0)
                 .userOptionalInfo(null)
-                .tourApplication(new HashSet<>())
+                .tourParticipants(new HashSet<>())
                 .createTours(new HashSet<>())
                 .pressLikeTours(new HashSet<>())
                 .following(new HashSet<>())
                 .follower(new HashSet<>())
+                .categoryIndexes(new HashSet<>())
                 .build();
+
+        if (role.equalsIgnoreCase(UserRole.ROLE_GUIDE.getRole())) {
+            user.setGuideGrade(GuideGrade.BEGINNER);
+        } else {
+            user.setTouristGrade(TouristGrade.BEGINNER);
+        }
 
         User savedUser = userRepository.save(user);
         LOGGER.info("[signUp] 회원가입 완료");
@@ -135,7 +144,7 @@ public class SignService {
         }
         LOGGER.info("[signIn] Password 일치");
 
-        String accessToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles());
+        String accessToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles(), user.getId());
         String refreshToken = jwtTokenUtil.createJwtRefreshToken();
         LOGGER.info(String.format("[signIn] JWT 토큰 생성 성공, Token = %s", accessToken));
 
@@ -159,6 +168,49 @@ public class SignService {
         return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, new JwtResponseDto(jwtDto));
     }
 
+    @Transactional
+    public String createTemporaryPassword(SignInTemporaryPasswordDto signInTemporaryPasswordDto) {
+        LOGGER.info("[UserService] 임시 비밀번호 발급 시도");
 
+        User user = getUserByUserEmail(signInTemporaryPasswordDto.getUserEmail());
+
+        String newPassword = newPassword();
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+
+        User updatedUser = userRepository.save(user);
+
+        if (!passwordEncoder.matches(newPassword, updatedUser.getPassword())) {
+            throw new DBFailException("임시 비밀번호 발급 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_TEMPORARY_PASSWORD_EXCEPTION);
+        }
+
+        LOGGER.info("[UserService] 임시 비밀번호 발급 성공");
+
+        return newPassword;
+    }
+
+    private String newPassword() {
+        // 8자리 문자
+        int leftLimit = 33; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 8;
+        Random random = new Random();
+
+        String newPassword = random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString().toUpperCase();
+
+        return newPassword;
+    }
+
+    private User getUserByUserEmail(String userEmail) {
+        User user = userRepositoryImpl.loadUserByUserEmail(userEmail, true);
+        if (user == null) {
+            throw new NotFoundException("해당 유저를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        return user;
+    }
 
 }

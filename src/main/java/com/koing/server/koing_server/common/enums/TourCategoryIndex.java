@@ -2,19 +2,20 @@ package com.koing.server.koing_server.common.enums;
 
 public enum TourCategoryIndex {
 
-    HISTORY("역사/전통", 1),
-    FOOD("먹방", 2),
-    TOUR("관광명소", 3),
-    HEALING("힐링", 4),
-    ACTIVITY("액티비티", 5),
-    ENTERTAINMENT("엔터테인먼트", 6),
-    SHOPPING("쇼핑", 7),
+    HISTORY("쇼핑", "0"),
+    FOOD("먹방", "1"),
+    TOUR("힐링", "2"),
+    HEALING("관광명소", "3"),
+    ACTIVITY("역사/전통", "4"),
+    ENTERTAINMENT("엔터테인먼트", "5"),
+    SHOPPING("액티비티", "6"),
+    ALL("전체", "7"),
     ;
 
     private String categoryName;
-    private int categoryIndex;
+    private String categoryIndex;
 
-    TourCategoryIndex(String categoryName, int categoryIndex) {
+    TourCategoryIndex(String categoryName, String categoryIndex) {
         this.categoryName = categoryName;
         this.categoryIndex = categoryIndex;
     }
@@ -23,7 +24,7 @@ public enum TourCategoryIndex {
         return categoryName;
     }
 
-    public int getCategoryIndex() {
+    public String getCategoryIndex() {
         return categoryIndex;
     }
 }

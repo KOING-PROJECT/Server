@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.domain.user.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserRepositoryCustom {
 
@@ -16,5 +17,7 @@ public interface UserRepositoryCustom {
     Boolean isExistUserByUserId(Long userId);
 
     User loadUserByUserId(Long userId, boolean enabled);
+
+    List<User> findAllGuideByEnabled(boolean enabled);
 
 }

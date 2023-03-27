@@ -21,7 +21,6 @@ public class TourScheduleRepositoryImpl implements TourScheduleRepositoryCustom 
                 .fetchJoin()
                 .leftJoin(tourSchedule.tourDetailScheduleList, tourDetailSchedule)
                 .fetchJoin()
-                .distinct()
                 .where(
                         tourSchedule.tour.id.eq(tourId)
                 )

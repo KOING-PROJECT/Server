@@ -31,7 +31,7 @@ public class HomeController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/tours/{categoryIndex}")
-    public SuperResponse getToursByCategory(@PathVariable("categoryIndex") int categoryIndex) {
+    public SuperResponse getToursByCategory(@PathVariable("categoryIndex") String categoryIndex) {
         LOGGER.info("[HomeController] 카테고리별 투어 조회 시도");
         SuperResponse getToursByCategoryResponse;
         try {

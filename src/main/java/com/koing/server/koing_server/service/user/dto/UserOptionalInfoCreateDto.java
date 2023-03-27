@@ -4,17 +4,20 @@ import com.koing.server.koing_server.service.sign.dto.SignUpSetCreateDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserOptionalInfoCreateDto {
 
-    public UserOptionalInfoCreateDto(Long userId, SignUpSetCreateDto signUpSetCreateDto) {
+    public UserOptionalInfoCreateDto(Long userId, SignUpSetCreateDto signUpSetCreateDto, List<MultipartFile> imageFiles) {
         this.userId = userId;
-        this.imageUrl = signUpSetCreateDto.getImageUrl();
+//        this.imageUrl = signUpSetCreateDto.getImageUrl();
+        this.imageFiles = imageFiles;
         this.description = signUpSetCreateDto.getDescription();
         this.languages = signUpSetCreateDto.getLanguages();
         this.areas = signUpSetCreateDto.getAreas();
@@ -24,7 +27,8 @@ public class UserOptionalInfoCreateDto {
     }
 
     private Long userId;
-    private String imageUrl;
+//    private String imageUrl;
+    private List<MultipartFile> imageFiles;
     private String description;
     private Set<String> languages;
     private Set<String> areas;

@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - KoingServerApplicationTests</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>KoingServerApplicationTests</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.koing.server.koing_server.html">com.koing.server.koing_server</a> &gt; KoingServerApplicationTests</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.161s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">contextLoads()</td>
+<td class="success">0.161s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>13:12:10.373 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating CacheAwareContextLoaderDelegate from class [org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate]
+13:12:10.395 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating BootstrapContext using constructor [public org.springframework.test.context.support.DefaultBootstrapContext(java.lang.Class,org.springframework.test.context.CacheAwareContextLoaderDelegate)]
+13:12:10.471 [Test worker] DEBUG org.springframework.test.context.BootstrapUtils - Instantiating TestContextBootstrapper for test class [com.koing.server.koing_server.KoingServerApplicationTests] from class [org.springframework.boot.test.context.SpringBootTestContextBootstrapper]
+13:12:10.498 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.koing.server.koing_server.KoingServerApplicationTests], using SpringBootContextLoader
+13:12:10.507 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.koing.server.koing_server.KoingServerApplicationTests]: class path resource [com/koing/server/koing_server/KoingServerApplicationTests-context.xml] does not exist
+13:12:10.508 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Did not detect default resource location for test class [com.koing.server.koing_server.KoingServerApplicationTests]: class path resource [com/koing/server/koing_server/KoingServerApplicationTestsContext.groovy] does not exist
+13:12:10.509 [Test worker] INFO org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.koing.server.koing_server.KoingServerApplicationTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+13:12:10.510 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.koing.server.koing_server.KoingServerApplicationTests]: KoingServerApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:12:10.610 [Test worker] DEBUG org.springframework.test.context.support.ActiveProfilesUtils - Could not find an 'annotation declaring class' for annotation type [org.springframework.test.context.ActiveProfiles] and class [com.koing.server.koing_server.KoingServerApplicationTests]
+13:12:10.750 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [C:\Users\SonMinGyu\KOING\Server\build\classes\java\main\com\koing\server\koing_server\KoingServerApplication.class]
+13:12:10.752 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.koing.server.koing_server.KoingServerApplication for test class com.koing.server.koing_server.KoingServerApplicationTests
+13:12:11.022 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - @TestExecutionListeners is not present for class [com.koing.server.koing_server.KoingServerApplicationTests]: using defaults.
+13:12:11.022 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener, org.springframework.security.test.context.support.ReactorContextTestExecutionListener, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+13:12:11.056 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@60222fd8, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@53bf7094, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@26f1249d, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@710b30ef, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@a68df9, org.springframework.test.context.support.DirtiesContextTestExecutionListener@28b576a9, org.springframework.test.context.transaction.TransactionalTestExecutionListener@7cf7aee, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@2f6bbeb0, org.springframework.security.test.context.support.WithSecurityContextTestExecutionListener@1b1637e1, org.springframework.test.context.event.EventPublishingTestExecutionListener@18151a14, org.springframework.security.test.context.support.ReactorContextTestExecutionListener@64711bf2, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@169da7f2, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@3c1e23ff, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@ceb4bd2, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@60297f36, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@1bf0f6f6, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@56bc3fac]
+13:12:11.065 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: context [DefaultTestContext@2fb69ff6 testClass = KoingServerApplicationTests, testInstance = [null], testMethod = [null], testException = [null], mergedContextConfiguration = [WebMergedContextConfiguration@cda4919 testClass = KoingServerApplicationTests, locations = '{}', classes = '{class com.koing.server.koing_server.KoingServerApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true}', contextCustomizers = set[org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@2c88b9fc, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@30f5a68a, org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@24d4d7c9, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@a8c1f44, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@22d6f11, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@f14a7d4], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]], attributes = map['org.springframework.test.context.web.ServletTestExecutionListener.activateListener' -&gt; true]], class annotated with @DirtiesContext [false] with mode [null].
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.7.4)
+
+13:12:11.796 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - Starting KoingServerApplicationTests using Java 11.0.17 on DESKTOP-N51V7H6 with PID 11752 (started by SonMinGyu in C:\Users\SonMinGyu\KOING\Server)
+13:12:11.798 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - No active profile set, falling back to 1 default profile: &quot;default&quot;
+13:12:13.760 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+13:12:13.764 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+13:12:14.248 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 474 ms. Found 21 JPA repository interfaces.
+13:12:14.300 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+13:12:14.302 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+13:12:14.379 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.account.repository.AccountRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.380 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.chat.repository.ChatMessageRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.381 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.chat.repository.ChatRoomRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.382 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.cryptogram.repository.CryptogramRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.383 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.fcm.repository.FCMTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.384 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.image.repository.ThumbnailRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.385 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.386 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.keyword.repository.KeywordRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.387 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.payment.repository.PaymentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.387 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.review.repository.ReviewToGuideRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.388 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.review.repository.ReviewToTouristRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.389 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.sms.repository.SMSRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.390 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.390 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.391 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourCategory.TourCategoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.392 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourDetailSchedule.TourDetailScheduleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.394 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourParticipant.TourParticipantRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.395 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.396 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.tour.repository.TourSurvey.TourSurveyRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.397 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.398 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationExtensionSupport - Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.koing.server.koing_server.domain.user.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+13:12:14.398 [Test worker] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 80 ms. Found 0 Redis repository interfaces.
+13:12:23.295 [Test worker] WARN  com.amazonaws.util.EC2MetadataUtils - Unable to retrieve the requested metadata (/latest/meta-data/instance-id). Failed to connect to service endpoint: 
+com.amazonaws.SdkClientException: Failed to connect to service endpoint: 
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:100)
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:70)
+	at com.amazonaws.internal.InstanceMetadataServiceResourceFetcher.readResource(InstanceMetadataServiceResourceFetcher.java:75)
+	at com.amazonaws.internal.EC2ResourceFetcher.readResource(EC2ResourceFetcher.java:66)
+	at com.amazonaws.util.EC2MetadataUtils.getItems(EC2MetadataUtils.java:402)
+	at com.amazonaws.util.EC2MetadataUtils.getData(EC2MetadataUtils.java:371)
+	at org.springframework.cloud.aws.context.support.env.AwsCloudEnvironmentCheckUtils.isRunningOnCloudEnvironment(AwsCloudEnvironmentCheckUtils.java:38)
+	at org.springframework.cloud.aws.context.annotation.OnAwsCloudEnvironmentCondition.matches(OnAwsCloudEnvironmentCondition.java:38)
+	at org.springframework.context.annotation.ConditionEvaluator.shouldSkip(ConditionEvaluator.java:108)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader$TrackedConditionEvaluator.shouldSkip(ConfigurationClassBeanDefinitionReader.java:489)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitionsForConfigurationClass(ConfigurationClassBeanDefinitionReader.java:140)
+	at org.springframework.context.annotation.ConfigurationClassBeanDefinitionReader.loadBeanDefinitions(ConfigurationClassBeanDefinitionReader.java:129)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:343)
+	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:247)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:311)
+	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:112)
+	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:746)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:564)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:734)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:132)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
+	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
+	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
+	at org.springframework.test.context.web.ServletTestExecutionListener.setUpRequestContextIfNecessary(ServletTestExecutionListener.java:190)
+	at org.springframework.test.context.web.ServletTestExecutionListener.prepareTestInstance(ServletTestExecutionListener.java:132)
+	at org.springframework.test.context.TestContextManager.prepareTestInstance(TestContextManager.java:248)
+	at org.springframework.test.context.junit.jupiter.SpringExtension.postProcessTestInstance(SpringExtension.java:138)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$8(ClassBasedTestDescriptor.java:363)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.executeAndMaskThrowable(ClassBasedTestDescriptor.java:368)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$invokeTestInstancePostProcessors$9(ClassBasedTestDescriptor.java:363)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:177)
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.invokeTestInstancePostProcessors(ClassBasedTestDescriptor.java:362)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$instantiateAndPostProcessTestInstance$6(ClassBasedTestDescriptor.java:283)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.instantiateAndPostProcessTestInstance(ClassBasedTestDescriptor.java:282)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$4(ClassBasedTestDescriptor.java:272)
+	at java.base/java.util.Optional.orElseGet(Optional.java:369)
+	at org.junit.jupiter.engine.descriptor.ClassBasedTestDescriptor.lambda$testInstancesProvider$5(ClassBasedTestDescriptor.java:271)
+	at org.junit.jupiter.engine.execution.TestInstancesProvider.getTestInstances(TestInstancesProvider.java:31)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$prepare$0(TestMethodTestDescriptor.java:102)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:101)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.prepare(TestMethodTestDescriptor.java:66)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$prepare$2(NodeTestTask.java:123)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.prepare(NodeTestTask.java:123)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:90)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1541)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:155)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:141)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:138)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:95)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:107)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:114)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:86)
+	at org.junit.platform.launcher.core.DefaultLauncherSession$DelegatingLauncher.execute(DefaultLauncherSession.java:86)
+	at org.junit.platform.launcher.core.SessionPerRequestLauncher.execute(SessionPerRequestLauncher.java:53)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:99)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:79)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:75)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:61)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
+	at com.sun.proxy.$Proxy2.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:193)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:129)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:100)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:60)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:133)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+Caused by: java.net.SocketTimeoutException: connect timed out
+	at java.base/java.net.PlainSocketImpl.waitForConnect(Native Method)
+	at java.base/java.net.PlainSocketImpl.socketConnect(PlainSocketImpl.java:107)
+	at java.base/java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:412)
+	at java.base/java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:255)
+	at java.base/java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:237)
+	at java.base/java.net.Socket.connect(Socket.java:608)
+	at java.base/sun.net.NetworkClient.doConnect(NetworkClient.java:177)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:508)
+	at java.base/sun.net.www.http.HttpClient.openServer(HttpClient.java:603)
+	at java.base/sun.net.www.http.HttpClient.&lt;init&gt;(HttpClient.java:276)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:375)
+	at java.base/sun.net.www.http.HttpClient.New(HttpClient.java:396)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.getNewHttpClient(HttpURLConnection.java:1253)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect0(HttpURLConnection.java:1232)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.plainConnect(HttpURLConnection.java:1081)
+	at java.base/sun.net.www.protocol.http.HttpURLConnection.connect(HttpURLConnection.java:1015)
+	at com.amazonaws.internal.ConnectionUtils.connectToEndpoint(ConnectionUtils.java:52)
+	at com.amazonaws.internal.EC2ResourceFetcher.doReadResource(EC2ResourceFetcher.java:80)
+	... 110 common frames omitted
+13:12:23.753 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#581918f6' of type [com.amazonaws.auth.BasicAWSCredentials] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+13:12:23.759 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#7da77305' of type [com.amazonaws.auth.AWSStaticCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+13:12:23.774 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean '(inner bean)#727453a3' of type [com.amazonaws.auth.profile.ProfileCredentialsProvider] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+13:12:23.794 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'credentialsProvider' of type [org.springframework.cloud.aws.core.credentials.CredentialsProviderFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+13:12:23.794 [Test worker] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'credentialsProvider' of type [com.amazonaws.auth.AWSCredentialsProviderChain] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+13:12:24.316 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+13:12:25.088 [Test worker] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+13:12:25.212 [Test worker] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+13:12:25.324 [Test worker] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 5.6.11.Final
+13:12:25.673 [Test worker] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+13:12:25.923 [Test worker] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+Hibernate: 
+    
+    create table account_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        account_number varchar(255),
+        bank_name varchar(255),
+        birth_date varchar(255),
+        registration_number varchar(255),
+        account_owner_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table chat_message_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        message varchar(500),
+        message_type varchar(255),
+        chat_room_id bigint,
+        writer_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table chat_room_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        chat_room_title varchar(200),
+        create_user_id bigint,
+        related_tour_id bigint,
+        room_unique_id varchar(300),
+        tour_date varchar(20),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table chat_room_chatting_user_ids (
+       chat_room_id bigint not null,
+        chatting_user_id bigint
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table cryptogram (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        cryptogram varchar(255),
+        target_email varchar(255),
+        verified bit not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table fcm_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        fcm_token varchar(255),
+        user_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table jwt_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        access_token varchar(255),
+        refresh_token varchar(255),
+        user_email varchar(30) not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table keyword_table (
+       id bigint not null auto_increment,
+        keyword varchar(255),
+        search_amount integer not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table like_guide_table (
+       user_id bigint not null,
+        guide_id bigint not null,
+        primary key (user_id, guide_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table like_tour_table (
+       tour_id bigint not null,
+        user_id bigint not null,
+        primary key (tour_id, user_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table payment_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        imp_uid varchar(255),
+        merchant_uid varchar(255),
+        payment_amount integer not null,
+        payment_gateway_name varchar(255),
+        payment_method varchar(255),
+        payment_status varchar(255),
+        payment_time varchar(255),
+        payment_unit varchar(255),
+        guide_id bigint,
+        payment_product_id bigint,
+        tourist_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_guide_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        attachment double precision not null,
+        total_review varchar(500),
+        related_tour_application_id bigint,
+        write_tourist_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_tourist_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        attachment double precision not null,
+        related_tour_participant_id bigint,
+        write_guide_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_guide_guide_reviews (
+       review_to_guide_id bigint not null,
+        guide_reviews varchar(255) not null,
+        primary key (review_to_guide_id, guide_reviews)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_guide_review_photos (
+       review_to_guide_id bigint not null,
+        review_photos varchar(255) not null
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_guide_tour_reviews (
+       review_to_guide_id bigint not null,
+        tour_reviews varchar(255)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_tourist_progress_reviews (
+       review_to_tourist_id bigint not null,
+        progress_reviews varchar(255) not null,
+        primary key (review_to_tourist_id, progress_reviews)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table review_to_tourist_tourist_reviews (
+       review_to_tourist_id bigint not null,
+        tourist_reviews varchar(255) not null,
+        primary key (review_to_tourist_id, tourist_reviews)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table sms_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        certification_number varchar(255),
+        target_phone_number varchar(255),
+        verified bit not null,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_additional_price (
+       tour_id bigint not null,
+        additional_price tinyblob
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_application_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        current_participants integer not null,
+        guide_progress_status varchar(255) not null,
+        is_exceed bit not null,
+        max_participant integer not null,
+        previous_tour_application_status varchar(255) not null,
+        tour_application_status varchar(255) not null,
+        tour_date varchar(20),
+        tour_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_category_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        category_name varchar(255),
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_detail_schedule_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        description varchar(300),
+        end_time varchar(10) not null,
+        latitude double precision not null,
+        location_name varchar(50) not null,
+        longitude double precision not null,
+        start_time varchar(10) not null,
+        tour_schedule_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_exceed_tour_date (
+       tour_id bigint not null,
+        exceed_tour_date varchar(255)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_participant_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        number_of_participants integer not null,
+        reviewed_to_tourist bit not null,
+        tourist_progress_status varchar(255) not null,
+        participant_id bigint,
+        review_to_tourist_id bigint,
+        tour_application_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_schedule_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        create_status varchar(255) not null,
+        date_negotiation bit not null,
+        tour_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_survey_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        create_status varchar(255) not null,
+        moving_support bit not null,
+        style varchar(30),
+        type varchar(50),
+        tour_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        create_status varchar(255) not null,
+        description varchar(300) not null,
+        has_levy bit not null,
+        participant integer not null,
+        recent_started_tour_date varchar(255),
+        temporary_save_page integer not null,
+        title varchar(30) not null,
+        tour_price integer not null,
+        tour_status varchar(255) not null,
+        create_user_id bigint,
+        tour_schedule_id bigint,
+        tour_survey_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_table_tour_categories (
+       categorized_tours_id bigint not null,
+        tour_categories_id bigint not null,
+        primary key (categorized_tours_id, tour_categories_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_thumbnail_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        file_path varchar(255),
+        origin_name varchar(255),
+        thumbnail_order integer not null,
+        owned_tour_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_tour_detail_types (
+       tour_id bigint not null,
+        detail_types varchar(255) not null,
+        primary key (tour_id, detail_types)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_application_reviewed_tourist_id (
+       tour_application_id bigint not null,
+        reviewed_tourist bigint
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_category_detail_types (
+       tour_category_id bigint not null,
+        detail_type varchar(20) not null,
+        primary key (tour_category_id, detail_type)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table tour_schedule_tour_dates (
+       tour_schedule_id bigint not null,
+        tour_dates varchar(20) not null,
+        primary key (tour_schedule_id, tour_dates)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_category_indexes (
+       user_id bigint not null,
+        category_indexes integer not null,
+        primary key (user_id, category_indexes)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_roles (
+       user_id bigint not null,
+        roles varchar(20) not null,
+        primary key (user_id, roles)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_table (
+       id bigint not null auto_increment,
+        created_at datetime,
+        updated_at datetime,
+        age integer,
+        attachment double precision not null,
+        birth_date varchar(20) not null,
+        country varchar(50) not null,
+        current_remain_amount integer not null,
+        email varchar(30) not null,
+        enabled bit,
+        gender varchar(255),
+        guide_grade varchar(255),
+        name varchar(30) not null,
+        password varchar(100) not null,
+        phone_number varchar(30),
+        total_earn_amount integer not null,
+        total_tourists integer not null,
+        tourist_grade varchar(255),
+        user_status varchar(255),
+        withdraw_amount integer not null,
+        withdrawal_reason varchar(255),
+        account_id bigint,
+        user_optional_info_id bigint,
+        primary key (id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_optional_info (
+       user_optional_info_id bigint not null auto_increment,
+        company varchar(50),
+        description varchar(300),
+        is_certified bit not null,
+        job varchar(20),
+        university_email varchar(50),
+        user_id bigint,
+        primary key (user_optional_info_id)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_optional_info_areas (
+       user_optional_info_user_optional_info_id bigint not null,
+        areas varchar(20)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_optional_info_image_urls (
+       user_optional_info_user_optional_info_id bigint not null,
+        image_urls varchar(255)
+    ) engine=InnoDB
+Hibernate: 
+    
+    create table user_optional_info_languages (
+       user_optional_info_user_optional_info_id bigint not null,
+        languages varchar(20)
+    ) engine=InnoDB
+Hibernate: 
+    
+    alter table jwt_table 
+       drop index UK_oxmy3nsio38uviev36p7jpu73
+Hibernate: 
+    
+    alter table jwt_table 
+       add constraint UK_oxmy3nsio38uviev36p7jpu73 unique (user_email)
+Hibernate: 
+    
+    alter table tour_thumbnail_table 
+       drop index UK_s26cldmlp0n9uaq7p0euy1m1r
+Hibernate: 
+    
+    alter table tour_thumbnail_table 
+       add constraint UK_s26cldmlp0n9uaq7p0euy1m1r unique (file_path)
+Hibernate: 
+    
+    alter table user_table 
+       drop index UK_eamk4l51hm6yqb8xw37i23kb5
+Hibernate: 
+    
+    alter table user_table 
+       add constraint UK_eamk4l51hm6yqb8xw37i23kb5 unique (email)
+Hibernate: 
+    
+    alter table account_table 
+       add constraint FKtlai85n7bptw4m47tn2lbrsof 
+       foreign key (account_owner_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table chat_message_table 
+       add constraint FKjjgbm7l90h6on81vt4h7sh76t 
+       foreign key (chat_room_id) 
+       references chat_room_table (id)
+Hibernate: 
+    
+    alter table chat_message_table 
+       add constraint FKch83ffo0qpd60hw9gdgx4fplb 
+       foreign key (writer_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table chat_room_chatting_user_ids 
+       add constraint FKc0v50c21090pec975ireq4umx 
+       foreign key (chat_room_id) 
+       references chat_room_table (id)
+Hibernate: 
+    
+    alter table like_guide_table 
+       add constraint FKih95hayc9bmw7opqevgsonbl7 
+       foreign key (guide_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table like_guide_table 
+       add constraint FKsosyq5nfg940nu02ttp84i6m9 
+       foreign key (user_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table like_tour_table 
+       add constraint FKfvpjj4h3vrem9xuoov8kj16sx 
+       foreign key (user_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table like_tour_table 
+       add constraint FKga1f3r0hfqgdyai9gjrn5dgbe 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table payment_table 
+       add constraint FKknjg7ncluuynfrp1hafoodhk0 
+       foreign key (guide_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table payment_table 
+       add constraint FK4lw514avo938ov4bvf8n6yl0t 
+       foreign key (payment_product_id) 
+       references tour_application_table (id)
+Hibernate: 
+    
+    alter table payment_table 
+       add constraint FK7l8qqslew4rnb9bp0fvvol9qq 
+       foreign key (tourist_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table review_to_guide_table 
+       add constraint FK6ym2prfvlgaxeuel1mbyif43c 
+       foreign key (related_tour_application_id) 
+       references tour_application_table (id)
+Hibernate: 
+    
+    alter table review_to_guide_table 
+       add constraint FKrnpib4eq8xt2fpfj1snuahxkm 
+       foreign key (write_tourist_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table review_to_tourist_table 
+       add constraint FKawx8x4dt3xv3tbll2g3sbv7pp 
+       foreign key (related_tour_participant_id) 
+       references tour_participant_table (id)
+Hibernate: 
+    
+    alter table review_to_tourist_table 
+       add constraint FKf8tjggog2or17yejuhcy829l4 
+       foreign key (write_guide_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table review_to_guide_guide_reviews 
+       add constraint FKkfntnkyufx96b83ancvuc9jny 
+       foreign key (review_to_guide_id) 
+       references review_to_guide_table (id)
+Hibernate: 
+    
+    alter table review_to_guide_review_photos 
+       add constraint FK64han6ib6reaufdei1rpe4fnq 
+       foreign key (review_to_guide_id) 
+       references review_to_guide_table (id)
+Hibernate: 
+    
+    alter table review_to_guide_tour_reviews 
+       add constraint FKbagt8019imbhmag1s0qnm4vao 
+       foreign key (review_to_guide_id) 
+       references review_to_guide_table (id)
+Hibernate: 
+    
+    alter table review_to_tourist_progress_reviews 
+       add constraint FKh4ntqt5omvwo1guycb54c6xox 
+       foreign key (review_to_tourist_id) 
+       references review_to_tourist_table (id)
+Hibernate: 
+    
+    alter table review_to_tourist_tourist_reviews 
+       add constraint FK7poqd8pk4i5gxeorou3tvs1ga 
+       foreign key (review_to_tourist_id) 
+       references review_to_tourist_table (id)
+Hibernate: 
+    
+    alter table tour_additional_price 
+       add constraint FK3esfy0x9sdlik3ywegkc6aop8 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_application_table 
+       add constraint FKpdq3864knlx9g3sxrrn2gerjl 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_detail_schedule_table 
+       add constraint FK6bwpeev0r4e1i1aylt8sfw06a 
+       foreign key (tour_schedule_id) 
+       references tour_schedule_table (id)
+Hibernate: 
+    
+    alter table tour_exceed_tour_date 
+       add constraint FKmmymjmw8ki7e0egr5151ehho7 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_participant_table 
+       add constraint FK2o59cnamsjkmo618slr2ipcb9 
+       foreign key (participant_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table tour_participant_table 
+       add constraint FKox12hb7i7dc9bv8cwhb13ly0b 
+       foreign key (review_to_tourist_id) 
+       references review_to_tourist_table (id)
+Hibernate: 
+    
+    alter table tour_participant_table 
+       add constraint FKb5xoy7la5w3obi3yi62iatr17 
+       foreign key (tour_application_id) 
+       references tour_application_table (id)
+Hibernate: 
+    
+    alter table tour_schedule_table 
+       add constraint FK4bj90jmohc0i7nh7deir6dnlw 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_survey_table 
+       add constraint FKo6f5nbeb6t0pmb4or6jee2yue 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_table 
+       add constraint FKk5kqnbg1vbrqjwq86ark85wuj 
+       foreign key (create_user_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table tour_table 
+       add constraint FKin478kqatjiob7qkssucvww7s 
+       foreign key (tour_schedule_id) 
+       references tour_schedule_table (id)
+Hibernate: 
+    
+    alter table tour_table 
+       add constraint FKrum0h932813b9k6tgvtdt8xqe 
+       foreign key (tour_survey_id) 
+       references tour_survey_table (id)
+Hibernate: 
+    
+    alter table tour_table_tour_categories 
+       add constraint FK75xcv5qm62w8dx6v7lt5fpb4t 
+       foreign key (tour_categories_id) 
+       references tour_category_table (id)
+Hibernate: 
+    
+    alter table tour_table_tour_categories 
+       add constraint FKsofv1ylqnetd48a9wx1al617e 
+       foreign key (categorized_tours_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_thumbnail_table 
+       add constraint FKlgv0vn4kwl6ei1l3wisj1r4kw 
+       foreign key (owned_tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_tour_detail_types 
+       add constraint FKff7uvrhdp5r9crdgoa37ob6gl 
+       foreign key (tour_id) 
+       references tour_table (id)
+Hibernate: 
+    
+    alter table tour_application_reviewed_tourist_id 
+       add constraint FK79adlpmqgak3u0uop3owmxey4 
+       foreign key (tour_application_id) 
+       references tour_application_table (id)
+Hibernate: 
+    
+    alter table tour_category_detail_types 
+       add constraint FK1rtdhuqvlmn3pk5d1q25hd8wv 
+       foreign key (tour_category_id) 
+       references tour_category_table (id)
+Hibernate: 
+    
+    alter table tour_schedule_tour_dates 
+       add constraint FK9dvrg3g99vnt8ke9xr6fkui6k 
+       foreign key (tour_schedule_id) 
+       references tour_schedule_table (id)
+Hibernate: 
+    
+    alter table user_category_indexes 
+       add constraint FKjkhqtj9y2wngywmets1kwm4cn 
+       foreign key (user_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table user_roles 
+       add constraint FKoxgn0x8mxxu1hovew528qckp9 
+       foreign key (user_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table user_table 
+       add constraint FK3oconn36d1uwd2hnfhg1t4dk3 
+       foreign key (account_id) 
+       references account_table (id)
+Hibernate: 
+    
+    alter table user_table 
+       add constraint FK5v1thfswgfmhhr7l81jrbjgt3 
+       foreign key (user_optional_info_id) 
+       references user_optional_info (user_optional_info_id)
+Hibernate: 
+    
+    alter table user_optional_info 
+       add constraint FKsvanhmu8b0u0owwm1aoa153w6 
+       foreign key (user_id) 
+       references user_table (id)
+Hibernate: 
+    
+    alter table user_optional_info_areas 
+       add constraint FKm9j6rpqa0yqlp3h6dr1ek4i5f 
+       foreign key (user_optional_info_user_optional_info_id) 
+       references user_optional_info (user_optional_info_id)
+Hibernate: 
+    
+    alter table user_optional_info_image_urls 
+       add constraint FK6xsjqlidrvjyybpony22xxiqg 
+       foreign key (user_optional_info_user_optional_info_id) 
+       references user_optional_info (user_optional_info_id)
+Hibernate: 
+    
+    alter table user_optional_info_languages 
+       add constraint FKbvl2x72pwc1wie6r27b7ro59h 
+       foreign key (user_optional_info_user_optional_info_id) 
+       references user_optional_info (user_optional_info_id)
+13:12:34.352 [Test worker] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+13:12:34.367 [Test worker] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+13:12:37.574 [Test worker] WARN  o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+
+Using generated security password: 657da841-b61b-4d99-9efd-929f0a756740
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+13:12:37.911 [Test worker] INFO  o.s.s.web.DefaultSecurityFilterChain - Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@42ffabb, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7a63c618, org.springframework.security.web.context.SecurityContextPersistenceFilter@661fe6c4, org.springframework.security.web.header.HeaderWriterFilter@73e2a3ae, org.springframework.security.web.authentication.logout.LogoutFilter@5f45b3f8, com.koing.server.koing_server.common.filter.JwtAuthenticationFilter@10009505, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@608ccfcd, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@793c2cde, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@8dbe78f, org.springframework.security.web.session.SessionManagementFilter@7cb040b7, org.springframework.security.web.access.ExceptionTranslationFilter@2dad6fc9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@4d4ae76]
+13:12:37.929 [Test worker] WARN  o.s.s.c.a.web.builders.WebSecurity - 
+
+********************************************************************
+**********        Security debugging is enabled.       *************
+**********    This may include sensitive information.  *************
+**********      Do not use in a production system!     *************
+********************************************************************
+
+
+13:12:38.005 [Test worker] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+13:12:39.886 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+13:12:39.920 [Test worker] INFO  s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+13:12:39.994 [Test worker] INFO  s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+13:12:40.434 [Test worker] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: pressLikeTourUsingGET_1
+13:12:40.458 [Test worker] INFO  s.d.s.w.r.o.CachingOperationNameGenerator - Generating unique operation named: updateTourUsingPATCH_1
+13:12:40.479 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+13:12:40.480 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@55002de6]]
+13:12:40.480 [Test worker] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+13:12:40.494 [Test worker] INFO  c.k.s.k.KoingServerApplicationTests - Started KoingServerApplicationTests in 29.365 seconds (JVM running for 31.792)
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.5</a> at 2023. 3. 27. 오후 1:12:40</p>
+</div>
+</div>
+</body>
+</html>

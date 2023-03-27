@@ -44,7 +44,7 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
     }
 
     @Override
-    public List<Tour> findTourByStatusRecruitmentAndStandby() {
+    public List<Tour> findTourByStatusRecruitment() {
         return jpqlQueryFactory
                 .selectFrom(tour)
                 .leftJoin(tour.createUser, user)
@@ -60,8 +60,7 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .leftJoin(tour.tourSchedule, tourSchedule)
                 .fetchJoin()
                 .where(
-                        tour.tourStatus.eq(TourStatus.RECRUITMENT)
-                                .or(tour.tourStatus.eq(TourStatus.STANDBY)),
+                        tour.tourStatus.eq(TourStatus.RECRUITMENT),
                         tour.createStatus.eq(CreateStatus.COMPLETE)
                 )
                 .distinct()
@@ -89,5 +88,40 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 )
                 .distinct()
                 .fetch();
+    }
+
+    @Override
+    public Tour findTemporaryTourByTourId(Long tourId) {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
+                .leftJoin(tour.tourCategories, tourCategory)
+                .fetchJoin()
+                .leftJoin(tour.additionalPrice)
+                .fetchJoin()
+                .leftJoin(tour.tourApplications, tourApplication)
+                .fetchJoin()
+                .leftJoin(tour.pressLikeUsers, user)
+                .fetchJoin()
+                .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .where(
+                        tour.createStatus.eq(CreateStatus.CREATING),
+                        tour.id.eq(tourId)
+                )
+                .distinct()
+                .fetchOne();
+    }
+
+    @Override
+    public boolean checkExistByTourId(Long tourId) {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .where(
+                        tour.id.eq(tourId)
+                )
+                .distinct()
+                .fetchOne() != null;
     }
 }

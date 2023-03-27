@@ -18,6 +18,8 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     private static final long serialVersionUID = -1910557970L;
 
+    private static final PathInits INITS = PathInits.DIRECT2;
+
     public static final QUserOptionalInfo userOptionalInfo = new QUserOptionalInfo("userOptionalInfo");
 
     public final SetPath<String, StringPath> areas = this.<String, StringPath>createSet("areas", String.class, StringPath.class, PathInits.DIRECT2);
@@ -28,7 +30,7 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath imageUrl = createString("imageUrl");
+    public final ListPath<String, StringPath> imageUrls = this.<String, StringPath>createList("imageUrls", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final BooleanPath isCertified = createBoolean("isCertified");
 
@@ -38,16 +40,27 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public final StringPath universityEmail = createString("universityEmail");
 
+    public final QUser user;
+
     public QUserOptionalInfo(String variable) {
-        super(UserOptionalInfo.class, forVariable(variable));
+        this(UserOptionalInfo.class, forVariable(variable), INITS);
     }
 
     public QUserOptionalInfo(Path<? extends UserOptionalInfo> path) {
-        super(path.getType(), path.getMetadata());
+        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
     public QUserOptionalInfo(PathMetadata metadata) {
-        super(UserOptionalInfo.class, metadata);
+        this(metadata, PathInits.getFor(metadata, INITS));
+    }
+
+    public QUserOptionalInfo(PathMetadata metadata, PathInits inits) {
+        this(UserOptionalInfo.class, metadata, inits);
+    }
+
+    public QUserOptionalInfo(Class<? extends UserOptionalInfo> type, PathMetadata metadata, PathInits inits) {
+        super(type, metadata, inits);
+        this.user = inits.isInitialized("user") ? new QUser(forProperty("user"), inits.get("user")) : null;
     }
 
 }

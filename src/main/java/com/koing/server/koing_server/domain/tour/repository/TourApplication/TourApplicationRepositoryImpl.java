@@ -7,8 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.koing.server.koing_server.domain.payment.QPayment.payment;
+import static com.koing.server.koing_server.domain.review.QReviewToGuide.reviewToGuide;
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
+import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
 import static com.koing.server.koing_server.domain.user.QUser.user;
 
 @RequiredArgsConstructor
@@ -17,12 +20,35 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
     private final JPQLQueryFactory jpqlQueryFactory;
 
     @Override
+    public List<TourApplication> findTourApplicationsByTourId(Long tourId) {
+        return jpqlQueryFactory
+                .selectFrom(tourApplication)
+                .leftJoin(tourApplication.tour, tour)
+                .fetchJoin()
+                .leftJoin(tourApplication.tourParticipants, tourParticipant)
+                .fetchJoin()
+                .leftJoin(tourApplication.reviewsToGuide, reviewToGuide)
+                .fetchJoin()
+                .leftJoin(tourApplication.payments, payment)
+                .fetchJoin()
+                .distinct()
+                .where(
+                        tourApplication.tour.id.eq(tourId)
+                )
+                .fetch();
+    }
+
+    @Override
     public TourApplication findTourApplicationByTourIdAndTourDate(Long tourId, String tourDate) {
         return jpqlQueryFactory
                 .selectFrom(tourApplication)
                 .leftJoin(tourApplication.tour, tour)
                 .fetchJoin()
-                .leftJoin(tourApplication.participants, user)
+                .leftJoin(tourApplication.tourParticipants, tourParticipant)
+                .fetchJoin()
+                .leftJoin(tourApplication.reviewsToGuide, reviewToGuide)
+                .fetchJoin()
+                .leftJoin(tourApplication.payments, payment)
                 .fetchJoin()
                 .distinct()
                 .where(
@@ -30,20 +56,5 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                         tourApplication.tourDate.eq(tourDate)
                 )
                 .fetchOne();
-    }
-
-    @Override
-    public List<TourApplication> findTourApplicationsByUser(User participate) {
-        return jpqlQueryFactory
-                .selectFrom(tourApplication)
-                .leftJoin(tourApplication.tour, tour)
-                .fetchJoin()
-                .leftJoin(tourApplication.participants, user)
-                .fetchJoin()
-                .distinct()
-                .where(
-                        tourApplication.participants.contains(participate)
-                )
-                .fetch();
     }
 }

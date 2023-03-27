@@ -30,7 +30,7 @@ public class JwtController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/reIssue")
-    public SuperResponse signUp(@RequestBody JwtDto jwtDto) {
+    public SuperResponse reIssueAccessToken(@RequestBody JwtDto jwtDto) {
         LOGGER.info("[JwtController] token 재발급 시도");
         SuperResponse reIssueResponse = jwtService.reIssueAccessToken(jwtDto);
         LOGGER.info("[JwtController] token 재발급 성공");

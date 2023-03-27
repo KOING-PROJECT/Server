@@ -5,14 +5,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.google.common.collect.Sets;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_CATEGORY_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

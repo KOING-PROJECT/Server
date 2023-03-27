@@ -2,24 +2,41 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.koing.server.koing_server.common.enums.ProgressStatus;
+import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import com.koing.server.koing_server.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.koing.server.koing_server.domain.payment.Payment;
+import com.koing.server.koing_server.domain.review.ReviewToGuide;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "TOUR_APPLICATION_TABLE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class TourApplication extends AuditingTimeEntity {
+
+    public TourApplication(String tourDate, int maxParticipant) {
+        this.tour = null;
+        this.tourParticipants = new ArrayList<>();
+        this.tourDate = tourDate;
+        this.maxParticipant = maxParticipant;
+        this.tourApplicationStatus = TourApplicationStatus.RECRUITMENT;
+        this.previousTourApplicationStatus = TourApplicationStatus.NONE;
+        this.currentParticipants = 0;
+        this.reviewsToGuide = new HashSet<>();
+        this.reviewedTouristId = new HashSet<>();
+        this.guideProgressStatus = ProgressStatus.READY;
+        this.isExceed = false;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,28 +48,36 @@ public class TourApplication extends AuditingTimeEntity {
     @Column(length = 20)
     private String tourDate;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "participants_application",
-            joinColumns = @JoinColumn(name = "tour_application_id"),
-            inverseJoinColumns = @JoinColumn(name = "participants_id"))
-    private List<User> participants;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "tourApplication")
+    private List<TourParticipant> tourParticipants;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private TourStatus tourStatus;
+    private TourApplicationStatus tourApplicationStatus;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TourApplicationStatus previousTourApplicationStatus;
 
     private int maxParticipant;
 
     private int currentParticipants;
 
-    public TourApplication(String tourDate, int maxParticipant) {
-        this.tour = null;
-        this.participants = null;
-        this.tourDate = tourDate;
-        this.maxParticipant = maxParticipant;
-        this.tourStatus = TourStatus.RECRUITMENT;
-        this.currentParticipants = 0;
-    }
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "relatedTourApplication")
+    private Set<ReviewToGuide> reviewsToGuide;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Column(name = "reviewed_tourist")
+    private Set<Long> reviewedTouristId;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ProgressStatus guideProgressStatus;
+
+    private boolean isExceed;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentProduct")
+    private Set<Payment> payments;
 
     public void setTour(Tour tour) {
         this.tour = tour;
