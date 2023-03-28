@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_DETAIL_SCHEDULE_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

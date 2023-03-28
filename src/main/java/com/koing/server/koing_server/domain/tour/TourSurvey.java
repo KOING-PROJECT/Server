@@ -6,14 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.service.tour.dto.TourSurveyCreateDto;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_SURVEY_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)

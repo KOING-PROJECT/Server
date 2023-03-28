@@ -29,7 +29,7 @@ public class UserGuideDetailInfoDto {
             this.area = guide.getUserOptionalInfo().getAreas();
             setJobAndUnivAndCompany(guide);
         }
-        this.attachment = getAttachment();
+        this.attachment = guide.getAttachment();
         this.isFollowing = checkFollowing(guide, loginUser);
         this.otherTours = createOtherTours(guide, tour);
         this.guideGrade = guide.getGuideGrade();
@@ -38,7 +38,7 @@ public class UserGuideDetailInfoDto {
     private String guideName;
     private Set<String> roles;
     private String imageUrl;
-    private int attachment;
+    private double attachment;
     private boolean isFollowing;
     private String introduction;
     private Set<String> language;
