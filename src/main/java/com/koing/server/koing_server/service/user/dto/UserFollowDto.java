@@ -11,19 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserFollowDto {
 
-    public UserFollowDto(User followingUser, UserOptionalInfo userOptionalInfo) {
-        this.followingUserId = followingUser.getId();
-        this.followingUserName = followingUser.getName();
-        if (userOptionalInfo.getImageUrls() != null &&
-                userOptionalInfo.getImageUrls().size() > 0) {
-            this.followingUserThumbnail = userOptionalInfo.getImageUrls().get(0);
-        }
-
-        if (followingUser.getGuideGrade() != null) {
-            this.guideGrade = followingUser.getGuideGrade();
-        }
-    }
-
     public UserFollowDto(User followingUser) {
         this.followingUserId = followingUser.getId();
         this.followingUserName = followingUser.getName();

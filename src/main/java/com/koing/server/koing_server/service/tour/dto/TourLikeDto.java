@@ -19,11 +19,17 @@ public class TourLikeDto {
         this.tourId = tour.getId();
         this.title = tour.getTitle();
         this.thumbnails = getThumbnails(tour);
+        if (tour.getCreateUser().getUserOptionalInfo() != null) {
+            if (tour.getCreateUser().getUserOptionalInfo().getImageUrls() != null
+                    && tour.getCreateUser().getUserOptionalInfo().getImageUrls().size() > 0)
+            this.guideThumbnail = tour.getCreateUser().getUserOptionalInfo().getImageUrls().get(0);
+        }
     }
 
     private Long tourId;
     private String title;
     private List<String> thumbnails;
+    private String guideThumbnail;
 
     private List<String> getThumbnails(Tour tour) {
         List<Thumbnail> thumbnails = tour.getThumbnails()
