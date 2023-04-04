@@ -109,7 +109,7 @@ public class SMSService {
             throw new InternalServerException("예상치 못한 서버 에러가 발생하였습니다.", ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
 
-        String content = createContent(sms.getCertificationNumber());
+        String content = createContent(sms.getCertificationNumber(), smsRequestDto.getCountryCode());
 
         SMSSendDto smsSendDto = createSMSSend(smsRequestDto.getCountryCode(), fromPhoneNumber, content, smsRequestDto.getReceivePhoneNumber());
 
@@ -206,10 +206,16 @@ public class SMSService {
         return SMSSendDto;
     }
 
-    private String createContent(String certificationNumber) {
+    private String createContent(String certificationNumber, String countryCode) {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("안녕하세요!\n");
-        stringBuffer.append("KOING 회원가입 인증번호는 " + certificationNumber + "입니다.");
+
+        if (countryCode.equals("82")) {
+            stringBuffer.append("안녕하세요!\n");
+            stringBuffer.append("KOING 회원가입 인증번호는 " + certificationNumber + "입니다.");
+        }
+        else {
+            stringBuffer.append("[KOING] verification: " + certificationNumber);
+        }
 
         return stringBuffer.toString();
     }

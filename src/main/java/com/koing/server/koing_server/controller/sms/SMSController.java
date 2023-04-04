@@ -64,6 +64,8 @@ public class SMSController {
         } catch (JsonProcessingException jsonProcessingException) {
             return ErrorResponse.error(ErrorCode.JSON_PROCESSING_EXCEPTION);
         } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[SMSController] 회원가입 인증번호 전송 성공");
