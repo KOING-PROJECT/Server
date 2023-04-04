@@ -66,7 +66,7 @@ public class TourService {
 
         // 모집중이거나 모집이 완료되었지만 아직 시작안한(대기 가능하게) tour list 반환
         List<Tour> tours;
-        if (categories.contains("전체")) {
+        if (categories.contains(TourCategoryIndex.ALL.getCategoryIndex())) {
             tours = tourRepositoryImpl.findTourByStatusRecruitment();
         }
         else {

@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.service.tour.dto;
 
+import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.tour.Tour;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class TourDto {
         this.maxParticipant = tour.getParticipant();
         getThumbnails(tour);
         this.guideName = tour.getCreateUser().getName();
+        this.guideGrade = tour.getCreateUser().getGuideGrade();
         if (tour.getCreateUser().getUserOptionalInfo() != null) {
             if (tour.getCreateUser().getUserOptionalInfo().getImageUrls() != null &&
                     tour.getCreateUser().getUserOptionalInfo().getImageUrls().size() > 0) {
@@ -47,6 +49,7 @@ public class TourDto {
     private List<String> thumbnails;
     private String guideName;
     private String guideThumbnail;
+    private GuideGrade guideGrade;
     private List<String> tourDates;
     private Set<String> exceedTourDate;
 
