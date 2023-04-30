@@ -140,7 +140,9 @@ public class UserGuideMyPageDto {
         List<Tour> createTours = user.getCreateTours()
                 .stream()
                 .filter(tour -> tour.getCreateStatus().equals(CreateStatus.COMPLETE)
-                        && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)))
+                        && (tour.getTourStatus().equals(TourStatus.RECRUITMENT)
+                        || tour.getTourStatus().equals(TourStatus.DE_ACTIVATE))
+                )
                 .collect(Collectors.toList());
 
         List<TourMyTourDto> tourMyTourDtos = new ArrayList<>();

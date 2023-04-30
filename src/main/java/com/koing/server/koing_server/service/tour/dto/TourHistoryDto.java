@@ -8,6 +8,7 @@ import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
+import com.koing.server.koing_server.domain.user.UserOptionalInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,13 @@ public class TourHistoryDto {
         this.tourId = tourApplication.getTour().getId();
         this.title = tourApplication.getTour().getTitle();
         this.guideName = tourApplication.getTour().getCreateUser().getName();
+        UserOptionalInfo userOptionalInfo = tourApplication.getTour().getCreateUser().getUserOptionalInfo();
+        if (userOptionalInfo != null) {
+            if (userOptionalInfo.getImageUrls() != null
+                    && userOptionalInfo.getImageUrls().size() > 0) {
+                this.guideImage = userOptionalInfo.getImageUrls().get(0);
+            }
+        }
         this.guideId = tourApplication.getTour().getCreateUser().getId();
         this.thumbnails = getThumbnails(tourApplication.getTour());
         this.tourDate = tourApplication.getTourDate();
@@ -35,6 +43,7 @@ public class TourHistoryDto {
     private Long tourId;
     private String title;
     private String guideName;
+    private String guideImage;
     private Long guideId;
     private List<String> thumbnails;
     private String tourDate;

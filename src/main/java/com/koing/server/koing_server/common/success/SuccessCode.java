@@ -55,7 +55,8 @@ public enum SuccessCode {
     DELETE_KEYWORD_SUCCESS(OK, "keyword : 키워드 삭제 성공입니다."),
 
     // 인증
-    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
+//    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
+    LOGIN_SUCCESS(OK, "Login Success"),
     RE_ISSUE_TOKEN_SUCCESS(OK, "reIssue : 토큰 재발급 성공입니다."),
     CRYPTOGRAM_CERTIFICATION_SUCCESS(OK, "cryptogram : 이메일 인증 성공입니다."),
     EMAIL_SEND_SUCCESS(OK, "eamil-send : Email send 성공입니다."),

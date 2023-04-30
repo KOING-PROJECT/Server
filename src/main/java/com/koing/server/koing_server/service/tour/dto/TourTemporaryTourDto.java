@@ -49,7 +49,8 @@ public class TourTemporaryTourDto {
     private List<String> additionalPrice;
     private List<String> tourDates;
     private boolean dateNegotiation;
-    private HashMap<String, HashMap<String, String>> tourDetailScheduleHashMap;
+//    private HashMap<String, HashMap<String, String>> tourDetailScheduleHashMap;
+    private Map<String, HashMap<String, String>> tourDetailScheduleHashMap;
     private String style;
     private String type;
     private boolean movingSupport;
@@ -94,9 +95,9 @@ public class TourTemporaryTourDto {
         return newAdditionalPrice;
     }
 
-    private HashMap<String, HashMap<String, String>> getTourDetailScheduleHashMapFromTour(List<TourDetailSchedule> tourDetailSchedules) {
+    private TreeMap<String, HashMap<String, String>> getTourDetailScheduleHashMapFromTour(List<TourDetailSchedule> tourDetailSchedules) {
         if (tourDetailSchedules == null) {
-            return new HashMap<>();
+            return new TreeMap<>();
         }
 
         HashMap<String, HashMap<String, String>> newHashMap = new HashMap<>();
@@ -116,7 +117,16 @@ public class TourTemporaryTourDto {
             newHashMap.put(key.toString(), schedule);
         }
 
-        return newHashMap;
+        List<String> keyList = new ArrayList<>(newHashMap.keySet());
+        keyList.sort((s1, s2) -> s1.compareTo(s2));
+
+        TreeMap<String, HashMap<String, String>> newTempHashMap = new TreeMap<>();
+
+        for (String key : keyList) {
+            newTempHashMap.put(key, newHashMap.get(key));
+        }
+
+        return newTempHashMap;
     }
 
     private List<String> getThumbnails(Tour tour) {
