@@ -32,90 +32,7 @@ public class SurveyService {
     private final Logger LOGGER = LoggerFactory.getLogger(SurveyService.class);
     private final TourRepositoryImpl tourRepositoryImpl;
     private final TourCategoryRepositoryImpl tourCategoryRepositoryImpl;
-    private final TourScheduleRepositoryImpl tourScheduleRepositoryImpl;
 
-
-//    @Transactional
-//    public SuperResponse recommendSurvey(SurveyInfoDto surveyInfoDto) {
-//
-////        1. 날짜
-////        2. 카테고리 맞는 개수
-////        3. 스타일
-////        4. ABC 순서? 가나다 순서
-//
-//        LOGGER.info("[SurveyService] 추천 투어 요청");
-//
-//        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitment();
-//        Set<Tour> tourSets = tours.stream().collect(Collectors.toSet());
-//
-//        LOGGER.info("[SurveyService] 모집 중인 투어 조회 성공");
-//
-//        Set<Tour> allFilteredResult = new HashSet<>();
-//        Set<Tour> filteredByScheduleTours = new HashSet<>();
-//
-//        if (surveyInfoDto.getHasDate() == 0) {
-//            // 날짜로 tour 찾아서 recommendTours에 추가
-//
-//            for (String tourDate : surveyInfoDto.getExpeditionDates()) {
-//                Set<Tour> filteredTemp = tours.stream().filter(tour -> tour.getTourSchedule().getTourDates().contains(tourDate)).collect(Collectors.toSet());
-//                filteredByScheduleTours.addAll(filteredTemp);
-//                allFilteredResult.addAll(filteredTemp);
-//            };
-//        }
-//
-//        // filteredTemp 에 계속 filter 정보 담아주기
-//
-//        Set<Tour> filteredByCategoryTours = new HashSet<>();
-//        Set<Tour> filteredByTourDetailTours = new HashSet<>();
-//
-//        if (surveyInfoDto.getExpeditionCategory() != 7) {
-//            if (filteredByScheduleTours != null && filteredByScheduleTours.size() > 0) {
-//                filteredByCategoryTours = filterByTourCategory(surveyInfoDto.getExpeditionCategory(), filteredByScheduleTours);
-//            }
-//            else {
-//                filteredByCategoryTours = filterByTourCategory(surveyInfoDto.getExpeditionCategory(), tourSets);
-//            }
-//
-//            int tourDetailType = getTourDetailType(surveyInfoDto.getExpeditionCategory(), surveyInfoDto.getExpeditionDetailType());
-//
-//            // tourCategory가 맞는게 없으면 tourDetail로 조회가 불가능 하므로 tourSets를 넣는 경우는 필요없음
-//            filteredByTourDetailTours = filterByTourDetail(filteredByCategoryTours, tourDetailType);
-//        }
-//
-//        Set<Tour> filteredBtStyleTours = new HashSet<>();
-//
-//        if (surveyInfoDto.getExpeditionStyle() != 2) {
-//            String style = getStyle(surveyInfoDto.getExpeditionStyle());
-//
-//            if (filteredByTourDetailTours != null && filteredByTourDetailTours.size() > 0) {
-//                filteredBtStyleTours = filterByTourStyle(style, filteredByTourDetailTours);
-//            }
-//            else {
-//                filteredBtStyleTours = filterByTourStyle(style, tourSets);
-//            }
-//        }
-//
-//        Set<Tour> filteredByCharacterTours = new HashSet<>();
-//
-//        if (surveyInfoDto.getExpeditionCharacter() != 3) {
-//            String character = getCharacter(surveyInfoDto.getExpeditionCharacter());
-//
-//            if (filteredBtStyleTours != null && filteredBtStyleTours.size() > 0) {
-//                filteredByCharacterTours = filterByTourCharacter(character, filteredBtStyleTours);
-//            }
-//            else {
-//                filteredByCharacterTours = filterByTourCharacter(character, tourSets);
-//            }
-//        }
-//
-//        Set<Tour> filteredByCharacterTours
-//        if (surveyInfoDto.getNeedMoveSupport()) {
-//
-//        }
-//
-//
-//        return SuccessResponse.success(SuccessCode.SURVEY_CREATE_SUCCESS, null);
-//    }
 
     @Transactional
     public SuperResponse recommendSurvey(SurveyInfoDto surveyInfoDto) {
@@ -126,6 +43,8 @@ public class SurveyService {
 //        4. ABC 순서? 가나다 순서
 
         LOGGER.info("[SurveyService] 추천 투어 요청");
+
+        boolean checkThroughAllFilter = true;
 
         List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitment();
         Set<Tour> tourSets = tours.stream().collect(Collectors.toSet());
@@ -146,14 +65,14 @@ public class SurveyService {
 //                filteredByScheduleTours.addAll(filteredTemp);
             };
 
-//            if (allFilteredResult == null || allFilteredResult.size() < 1) {
-//                return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS , new ArrayList<>());
-//            }
+            if (allFilteredResult == null || allFilteredResult.size() < 1) {
+                checkThroughAllFilter = false;
+            }
         }
 
-        for (Tour tour : allFilteredResult) {
-            System.out.println("tourDateFiltered = " + tour.getId());
-        }
+//        for (Tour tour : allFilteredResult) {
+//            System.out.println("tourDateFiltered = " + tour.getId());
+//        }
 
         // filteredTemp 에 계속 filter 정보 담아주기
 
@@ -167,17 +86,16 @@ public class SurveyService {
                 Set<Tour> filterByTourCategoryTemp = filterByTourCategory(surveyInfoDto.getExpeditionCategory(), allFilteredResult);
                 if (filterByTourCategoryTemp == null || filterByTourCategoryTemp.size() < 1) {
                     List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
                 }
 
                 // 이전 filter를 통과한 tour가 있을 때 현재 filter를 통과한 tour가 있으면 allFilteredResult에 값 저장
                 allFilteredResult = filterByTourCategoryTemp;
 //                similarResult = filterByTourCategoryTemp;
 
-
-                for (Tour tour : allFilteredResult) {
-                    System.out.println("tourCategoryFiltered = " + tour.getId());
-                }
+//                for (Tour tour : allFilteredResult) {
+//                    System.out.println("tourCategoryFiltered = " + tour.getId());
+//                }
 
                 // category detail filter
                 // 이전 filter를 통과한 투어가 있을 때
@@ -195,17 +113,14 @@ public class SurveyService {
             else {
                 // 이전 filter를 통과한 투어 없을 때
                 allFilteredResult = filterByTourCategory(surveyInfoDto.getExpeditionCategory(), tourSets);
-                System.out.println("실행!!!!!!!!!!!!!!!");
-                for (Tour tour : allFilteredResult) {
-                    System.out.println("tourDetailFiltered = " + tour.getId());
-                }
+                checkThroughAllFilter = false;
 //                filteredByCategoryTours = filterByTourCategoryTemp;
             }
         }
 
-        for (Tour tour : allFilteredResult) {
-            System.out.println("tourDetailFiltered = " + tour.getId());
-        }
+//        for (Tour tour : allFilteredResult) {
+//            System.out.println("tourDetailFiltered = " + tour.getId());
+//        }
 //        Set<Tour> filteredBtStyleTours = new HashSet<>();
 
         if (surveyInfoDto.getExpeditionStyle() != 2) {
@@ -216,7 +131,7 @@ public class SurveyService {
 
                 if (filterByTourStyleTemp == null || filterByTourStyleTemp.size() < 1) {
                     List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
                 }
 
                 allFilteredResult = filterByTourStyleTemp;
@@ -224,12 +139,13 @@ public class SurveyService {
             }
             else {
                 allFilteredResult = filterByTourStyle(style, tourSets);
+                checkThroughAllFilter = false;
             }
         }
 
-        for (Tour tour : allFilteredResult) {
-            System.out.println("tourStyleFiltered = " + tour.getId());
-        }
+//        for (Tour tour : allFilteredResult) {
+//            System.out.println("tourStyleFiltered = " + tour.getId());
+//        }
 //        Set<Tour> filteredByCharacterTours = new HashSet<>();
 
         if (surveyInfoDto.getExpeditionCharacter() != 3) {
@@ -238,23 +154,22 @@ public class SurveyService {
             if (allFilteredResult != null && allFilteredResult.size() > 0) {
                 Set<Tour> filteredByCharacterToursTemp = filterByTourCharacter(character, allFilteredResult);
 
-                System.out.println("filteredByCharacterToursTemp = " + filteredByCharacterToursTemp);
-
                 if (filteredByCharacterToursTemp == null || filteredByCharacterToursTemp.size() < 1) {
                     List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
                 }
 
                 allFilteredResult = filteredByCharacterToursTemp;
             }
             else {
                 allFilteredResult = filterByTourCharacter(character, tourSets);
+                checkThroughAllFilter = false;
             }
         }
 
-        for (Tour tour : allFilteredResult) {
-            System.out.println("tourCharacterFiltered = " + tour.getId());
-        }
+//        for (Tour tour : allFilteredResult) {
+//            System.out.println("tourCharacterFiltered = " + tour.getId());
+//        }
 
         if (surveyInfoDto.getNeedMoveSupport() == 0) {
             if (allFilteredResult != null && allFilteredResult.size() > 0) {
@@ -262,23 +177,29 @@ public class SurveyService {
 
                 if (filteredByMovingSupportTemp == null || filteredByMovingSupportTemp.size() < 1) {
                     List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
                 }
 
                 allFilteredResult = filteredByMovingSupportTemp;
             }
             else {
                 allFilteredResult = filterByMovingSupport(tourSets);
+                checkThroughAllFilter = false;
             }
         }
 
-        for (Tour tour : allFilteredResult) {
-            System.out.println("tourMovingSupportFiltered = " + tour.getId());
-        }
+//        for (Tour tour : allFilteredResult) {
+//            System.out.println("tourMovingSupportFiltered = " + tour.getId());
+//        }
 
         List<TourDto> result = setToSortedList(allFilteredResult);
 
-        return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+        if (checkThroughAllFilter) {
+            return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+        }
+        else {
+            return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
+        }
     }
 
     private Set<Tour> filterByTourCategory(int inputTourCategory, Set<Tour> filteredTours) {

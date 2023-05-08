@@ -4,9 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import static com.koing.server.koing_server.common.success.SuccessStatusCode.CREATED;
-import static com.koing.server.koing_server.common.success.SuccessStatusCode.OK;
-import static com.koing.server.koing_server.common.success.SuccessStatusCode.ACCEPTED;
+import static com.koing.server.koing_server.common.success.SuccessStatusCode.*;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
@@ -111,16 +109,20 @@ public enum SuccessCode {
     PAYMENT_CREATE_SUCCESS(OK, "payment : 결제 정보 생성 성공입니다."),
     KEYWORD_CREATE_SUCCESS(OK, "keyword : 키워드 생성 성공입니다."),
     KEYWORD_UPDATE_SUCCESS(OK, "keyword : 키워드 업데이트 성공입니다."),
-    SURVEY_CREATE_SUCCESS(OK, "Survey : 설문 생성 성공입니다."),
 
     /**
      * 202 ACCEPTED
      */
-    SIGN_UP_EMAIL_CHECK_SUCCESS(ACCEPTED, "sign-up/email-check : 사용가능한 이메일 입니다.")
+    SIGN_UP_EMAIL_CHECK_SUCCESS(ACCEPTED, "sign-up/email-check : 사용가능한 이메일 입니다."),
 
     /**
      * 204 NO_CONTENT
      */
+
+    /**
+     * 205 SIMILAR_TOUR
+     */
+    SIMILAR_TOUR_RECOMMEND_SUCCESS(SIMILAR_TOUR, "survey : 비슷한 투어 추천 성공입니다.")
     ;
 
     private final SuccessStatusCode statusCode;

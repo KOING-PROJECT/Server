@@ -14,7 +14,8 @@ public enum SuccessStatusCode {
     OK(200),
     CREATED(201),
     ACCEPTED(202),
-    NO_CONTENT(204);
+    NO_CONTENT(204),
+    SIMILAR_TOUR(205);
 
     private final int status;
 }
