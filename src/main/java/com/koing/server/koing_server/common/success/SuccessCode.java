@@ -53,6 +53,7 @@ public enum SuccessCode {
     GET_ACCOUNT_SUCCESS(OK, "account : 계좌 정보 조회 성공입니다."),
     GET_KEYWORD_SUCCESS(OK, "keyword : 키워드 조회 성공입니다."),
     DELETE_KEYWORD_SUCCESS(OK, "keyword : 키워드 삭제 성공입니다."),
+    RECOMMEND_TOUR_SUCCESS(OK, "survey : 설문기반 투어 추천 성공입니다."),
 
     // 인증
 //    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
@@ -110,6 +111,7 @@ public enum SuccessCode {
     PAYMENT_CREATE_SUCCESS(OK, "payment : 결제 정보 생성 성공입니다."),
     KEYWORD_CREATE_SUCCESS(OK, "keyword : 키워드 생성 성공입니다."),
     KEYWORD_UPDATE_SUCCESS(OK, "keyword : 키워드 업데이트 성공입니다."),
+    SURVEY_CREATE_SUCCESS(OK, "Survey : 설문 생성 성공입니다."),
 
     /**
      * 202 ACCEPTED

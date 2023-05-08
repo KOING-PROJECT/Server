@@ -13,6 +13,7 @@ import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourCategory.tourCategory;
 import static com.koing.server.koing_server.domain.tour.QTourSchedule.tourSchedule;
+import static com.koing.server.koing_server.domain.tour.QTourSurvey.tourSurvey;
 import static com.koing.server.koing_server.domain.user.QUser.user;
 
 @RequiredArgsConstructor
@@ -59,6 +60,7 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(tour.tourSchedule, tourSchedule)
                 .fetchJoin()
+                .leftJoin(tour.tourSurvey, tourSurvey)
                 .where(
                         tour.tourStatus.eq(TourStatus.RECRUITMENT),
                         tour.createStatus.eq(CreateStatus.COMPLETE)

@@ -4,6 +4,8 @@ import com.koing.server.koing_server.domain.tour.TourSchedule;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourDetailSchedule.tourDetailSchedule;
 import static com.koing.server.koing_server.domain.tour.QTourSchedule.tourSchedule;

@@ -92,6 +92,7 @@ public enum ErrorCode {
     DB_FAIL_CREATE_PAYMENT_EXCEPTION(DB_HANDLE_FAIL, "결제 정보 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_KEYWORD_EXCEPTION(DB_HANDLE_FAIL, "키워드 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_KEYWORD_EXCEPTION(DB_HANDLE_FAIL, "키워드 업데이트 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_SURVEY_EXCEPTION(DB_HANDLE_FAIL, "설문 생성 과정에서 오류가 발생했습니다."),
 
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),

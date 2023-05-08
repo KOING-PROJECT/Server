@@ -30,11 +30,6 @@ import java.util.List;
 public class TourSetController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TourSetController.class);
-//    private final TourService tourService;
-//    private final TourScheduleService tourScheduleService;
-//    private final TourApplicationService tourApplicationService;
-//    private final TourSurveyService tourSurveyService;
-
     private final TourSetService tourSetService;
     private final TourService tourService;
 
