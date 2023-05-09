@@ -126,4 +126,54 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .distinct()
                 .fetchOne() != null;
     }
+
+    @Override
+    public List<Tour> findNotFinishTour() {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
+                .leftJoin(tour.tourCategories, tourCategory)
+                .fetchJoin()
+                .leftJoin(tour.additionalPrice)
+                .fetchJoin()
+                .leftJoin(tour.tourApplications, tourApplication)
+                .fetchJoin()
+                .leftJoin(tour.pressLikeUsers, user)
+                .fetchJoin()
+                .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .leftJoin(tour.tourSurvey, tourSurvey)
+                .where(
+                        tour.createStatus.eq(CreateStatus.COMPLETE),
+                        tour.tourStatus.ne(TourStatus.FINISH)
+                )
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<Tour> findFinishedTour() {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
+                .leftJoin(tour.tourCategories, tourCategory)
+                .fetchJoin()
+                .leftJoin(tour.additionalPrice)
+                .fetchJoin()
+                .leftJoin(tour.tourApplications, tourApplication)
+                .fetchJoin()
+                .leftJoin(tour.pressLikeUsers, user)
+                .fetchJoin()
+                .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .leftJoin(tour.tourSurvey, tourSurvey)
+                .where(
+                        tour.createStatus.eq(CreateStatus.COMPLETE),
+                        tour.tourStatus.eq(TourStatus.FINISH)
+                )
+                .distinct()
+                .fetch();
+    }
 }

@@ -18,4 +18,8 @@ public interface TourRepositoryCustom {
 
     boolean checkExistByTourId(Long tourId);
 
+    List<Tour> findNotFinishTour();
+
+    List<Tour> findFinishedTour();
+
 }
