@@ -8,8 +8,10 @@ import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourCategory;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
+import com.koing.server.koing_server.service.admin.dto.AdminTourDetailResponseDto;
 import com.koing.server.koing_server.service.admin.dto.AdminTourListResponseDto;
 import com.koing.server.koing_server.service.admin.dto.AdminTourResponseDto;
+import com.koing.server.koing_server.service.admin.dto.AdminTourResponseWrapperDto;
 import com.koing.server.koing_server.service.survey.SurveyService;
 import com.koing.server.koing_server.service.tour.dto.TourDto;
 import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
@@ -65,6 +67,20 @@ public class AdminTourService {
         }
 
         return SuccessResponse.success(SuccessCode.ADMIN_GET_FINISHED_TOURS_SUCCESS, new AdminTourListResponseDto(adminTourResponseDtos));
+    }
+
+    @Transactional
+    public SuperResponse getTourDetail(Long tourId) {
+
+        LOGGER.info("[AdminTourService] 관리자 페이지의 투어 세부내용 조회 시도");
+
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+
+        LOGGER.info("[AdminTourService] 관리자 페이지의 투어 세부내용 조회 성공");
+
+        AdminTourDetailResponseDto adminTourDetailResponseDto = new AdminTourDetailResponseDto(tour);
+
+        return SuccessResponse.success(SuccessCode.ADMIN_GET_TOUR_DETAIL_SUCCESS, new AdminTourResponseWrapperDto(adminTourDetailResponseDto));
     }
 
 }

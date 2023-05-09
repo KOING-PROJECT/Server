@@ -54,6 +54,7 @@ public enum SuccessCode {
     RECOMMEND_TOUR_SUCCESS(OK, "survey : 설문기반 투어 추천 성공입니다."),
     ADMIN_GET_NOT_FINISH_TOURS_SUCCESS(OK, "admin : 관리자 페이지 진행중인 투어 조회 성공입니다."),
     ADMIN_GET_FINISHED_TOURS_SUCCESS(OK, "admin : 관리자 페이지 종료된 투어 조회 성공입니다."),
+    ADMIN_GET_TOUR_DETAIL_SUCCESS(OK, "admin : 관리자 페이지 투어 세부내용 조회 성공입니다."),
 
     // 인증
 //    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

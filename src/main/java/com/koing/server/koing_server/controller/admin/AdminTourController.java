@@ -66,4 +66,25 @@ public class AdminTourController {
         return finishedToursResponse;
     }
 
+    @ApiOperation("AdminTour - 관리자 페이지의 투어 세부내용을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "AdminTour - 관리자 페이지의 투어 세부내용 조회 성공"),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/{tourId}")
+    public SuperResponse getFinishedTours(@PathVariable("tourId") Long tourId) {
+        LOGGER.info("[AdminTourController] 관리자 페이지 투어 세부내용 조회 시도");
+        SuperResponse tourDetailResponse;
+        try {
+            tourDetailResponse = adminTourService.getTourDetail(tourId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[AdminTourController] 관리자 페이지 투어 세부내용 조회 성공");
+
+        return tourDetailResponse;
+    }
+
 }
