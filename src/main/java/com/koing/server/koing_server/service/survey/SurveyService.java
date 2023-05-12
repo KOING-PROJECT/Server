@@ -286,22 +286,22 @@ public class SurveyService {
 
     private String getStyle(int inputStyle) {
         if (inputStyle == 0) {
-            return "계획형";
+            return "0";
         }
         else {
-            return "자유형";
+            return "1";
         }
     }
 
     private String getCharacter(int inputCharacter) {
         if (inputCharacter == 0) {
-            return "다양한 체험 중심";
+            return "0";
         }
         else if (inputCharacter == 1){
-            return "SNS 인생샷, 핫플 방문";
+            return "1";
         }
         else {
-            return "여유롭게 힐링";
+            return "2";
         }
     }
 
