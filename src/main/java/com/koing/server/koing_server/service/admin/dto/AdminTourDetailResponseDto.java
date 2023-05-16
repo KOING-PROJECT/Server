@@ -33,7 +33,7 @@ public class AdminTourDetailResponseDto {
         this.tourThumbnails = getThumbnails(tour.getThumbnails());
         this.guideName = tour.getCreateUser().getName();
         this.guideGrade = tour.getCreateUser().getGuideGrade().getGrade();
-        this.accumulatedApprovalCount = 0;
+        this.accumulatedApprovalCount = tour.getCreateUser().getAccumulatedApprovalTourCount();
         this.tourStatus = tour.getTourStatus().getStatus();
         this.createdAt = createdAtFormatting(tour.getCreatedAt());
         this.tourDetailSchedules = getSortedTourDetailSchedule(tour.getTourSchedule().getTourDetailScheduleList());

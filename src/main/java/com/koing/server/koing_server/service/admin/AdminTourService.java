@@ -13,6 +13,8 @@ import com.koing.server.koing_server.domain.review.repository.ReviewToGuideRepos
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
+import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.service.admin.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -31,6 +33,7 @@ public class AdminTourService {
     private final TourRepositoryImpl tourRepositoryImpl;
     private final TourRepository tourRepository;
     private final ReviewToGuideRepositoryImpl reviewToGuideRepositoryImpl;
+    private final UserRepository userRepository;
 
     @Transactional
     public SuperResponse adminGetNotFinishTours() {
@@ -137,11 +140,22 @@ public class AdminTourService {
             if (!approvalTour.getTourStatus().equals(TourStatus.APPROVAL)) {
                 throw new DBFailException("투어 승인 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_APPROVAL_TOUR_EXCEPTION);
             }
+
+            User createdUser = tour.getCreateUser();
+
+            int currentAccumulatedApprovalCount = createdUser.getAccumulatedApprovalTourCount();
+            System.out.println("currentAccumulatedApprovalCount = " + currentAccumulatedApprovalCount);
+            createdUser.setAccumulatedApprovalTourCount(currentAccumulatedApprovalCount + 1);
+
+            User savedUser = userRepository.save(createdUser);
+
+            System.out.println("updatedAccumulatedApprovalCount = " + savedUser.getAccumulatedApprovalTourCount());
+
         }
 
         LOGGER.info("[AdminTourService] Tour 승인 성공");
 
-        return SuccessResponse.success(SuccessCode.TOUR_APPROVAL_SUCCESS, null);
+        return SuccessResponse.success(SuccessCode.ADMIN_TOUR_APPROVAL_SUCCESS, null);
     }
 
     @Transactional

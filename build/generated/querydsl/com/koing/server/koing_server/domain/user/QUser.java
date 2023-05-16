@@ -26,6 +26,10 @@ public class QUser extends EntityPathBase<User> {
 
     public final com.koing.server.koing_server.domain.account.QAccount account;
 
+    public final NumberPath<Integer> accumulatedApprovalTourCount = createNumber("accumulatedApprovalTourCount", Integer.class);
+
+    public final NumberPath<Integer> accumulatedReportedCount = createNumber("accumulatedReportedCount", Integer.class);
+
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
     public final NumberPath<Double> attachment = createNumber("attachment", Double.class);
