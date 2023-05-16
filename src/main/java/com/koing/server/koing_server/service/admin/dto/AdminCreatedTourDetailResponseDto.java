@@ -35,7 +35,7 @@ public class AdminCreatedTourDetailResponseDto {
         this.accumulatedApprovalCount = 0;
         this.createdAt = createdAtFormatting(tour.getCreatedAt());
         this.tourDetailSchedules = getSortedTourDetailSchedule(tour.getTourSchedule().getTourDetailScheduleList());
-        this.tourSurvey = tour.getTourSurvey();
+        this.tourSurvey = new AdminTourSurveyDto(tour.getTourSurvey());
     }
 
     private Long tourId;
@@ -54,7 +54,7 @@ public class AdminCreatedTourDetailResponseDto {
     private int accumulatedApprovalCount;
     private String createdAt;
     private List<TourDetailSchedule> tourDetailSchedules;
-    private TourSurvey tourSurvey;
+    private AdminTourSurveyDto tourSurvey;
 
     private List<String> getTourCategoryName(Set<TourCategory> tourCategories) {
         List<String> tourCategoryNames = new ArrayList<>();
