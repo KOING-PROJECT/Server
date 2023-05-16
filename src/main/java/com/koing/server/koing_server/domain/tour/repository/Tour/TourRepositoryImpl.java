@@ -3,7 +3,6 @@ package com.koing.server.koing_server.domain.tour.repository.Tour;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
 import com.koing.server.koing_server.domain.tour.Tour;
-import com.koing.server.koing_server.domain.user.User;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -36,6 +35,8 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .leftJoin(tour.pressLikeUsers, user)
                 .fetchJoin()
                 .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .leftJoin(tour.tourSurvey, tourSurvey)
                 .fetchJoin()
                 .where(
                         tour.id.eq(id)
@@ -172,6 +173,31 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .where(
                         tour.createStatus.eq(CreateStatus.COMPLETE),
                         tour.tourStatus.eq(TourStatus.FINISH)
+                )
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<Tour> findCreatedTour() {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
+                .leftJoin(tour.tourCategories, tourCategory)
+                .fetchJoin()
+                .leftJoin(tour.additionalPrice)
+                .fetchJoin()
+                .leftJoin(tour.tourApplications, tourApplication)
+                .fetchJoin()
+                .leftJoin(tour.pressLikeUsers, user)
+                .fetchJoin()
+                .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .leftJoin(tour.tourSurvey, tourSurvey)
+                .where(
+                        tour.createStatus.eq(CreateStatus.COMPLETE),
+                        tour.tourStatus.eq(TourStatus.CREATED)
                 )
                 .distinct()
                 .fetch();

@@ -2,8 +2,11 @@ package com.koing.server.koing_server.service.admin.dto;
 
 import com.koing.server.koing_server.common.enums.TourCategoryIndex;
 import com.koing.server.koing_server.domain.image.Thumbnail;
+import com.koing.server.koing_server.domain.review.ReviewToGuide;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourCategory;
+import com.koing.server.koing_server.domain.tour.TourDetailSchedule;
+import com.koing.server.koing_server.domain.tour.TourSurvey;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +19,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class AdminTourDetailResponseDto {
 
-    public AdminTourDetailResponseDto(Tour tour) {
+    public AdminTourDetailResponseDto(Tour tour, List<ReviewToGuide> reviewToGuides) {
+        this.tourId = tour.getId();
         this.tourTitle = tour.getTitle();
         this.tourDescription = tour.getDescription();
         this.categoryNames = getTourCategoryName(tour.getTourCategories());
@@ -32,8 +36,12 @@ public class AdminTourDetailResponseDto {
         this.accumulatedApprovalCount = 0;
         this.tourStatus = tour.getTourStatus().getStatus();
         this.createdAt = createdAtFormatting(tour.getCreatedAt());
+        this.tourDetailSchedules = getSortedTourDetailSchedule(tour.getTourSchedule().getTourDetailScheduleList());
+        this.tourSurvey = new AdminTourSurveyDto(tour.getTourSurvey());
+        this.tourReviews = getTourReviewDtos(reviewToGuides);
     }
 
+    private Long tourId;
     private String tourTitle;
     private String tourDescription;
     private List<String> categoryNames;
@@ -49,6 +57,9 @@ public class AdminTourDetailResponseDto {
     private int accumulatedApprovalCount;
     private String tourStatus;
     private String createdAt;
+    private List<TourDetailSchedule> tourDetailSchedules;
+    private AdminTourSurveyDto tourSurvey;
+    private List<AdminTourReviewDto> tourReviews;
 
     private List<String> getTourCategoryName(Set<TourCategory> tourCategories) {
         List<String> tourCategoryNames = new ArrayList<>();
@@ -105,6 +116,16 @@ public class AdminTourDetailResponseDto {
 
     private String createdAtFormatting(LocalDateTime createdAt) {
         return createdAt.format(DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
+    }
+
+    private List<AdminTourReviewDto> getTourReviewDtos(List<ReviewToGuide> reviewToGuides) {
+        List<AdminTourReviewDto> adminTourReviewDtos = new ArrayList<>();
+
+        for (ReviewToGuide reviewToGuide : reviewToGuides) {
+            adminTourReviewDtos.add(new AdminTourReviewDto(reviewToGuide));
+        }
+
+        return adminTourReviewDtos;
     }
 
     private String detailTypeNumberToName(String detailTypeNumber) {
@@ -207,6 +228,14 @@ public class AdminTourDetailResponseDto {
         else {
             return "확인 불가";
         }
+    }
+
+    private List<TourDetailSchedule> getSortedTourDetailSchedule(List<TourDetailSchedule> tourDetailSchedules) {
+        if (tourDetailSchedules == null || tourDetailSchedules.size() < 1) {
+            return new ArrayList<>();
+        }
+
+        return tourDetailSchedules.stream().sorted((tds1, tds2) -> tds1.getStartTime().compareTo(tds2.getStartTime())).collect(Collectors.toList());
     }
 
 }

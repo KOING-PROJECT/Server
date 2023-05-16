@@ -22,4 +22,6 @@ public interface TourRepositoryCustom {
 
     List<Tour> findFinishedTour();
 
+    List<Tour> findCreatedTour(); // 투어를 만들었지만 승인이 나지 않은 투어
+
 }
