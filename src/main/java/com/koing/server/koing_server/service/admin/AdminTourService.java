@@ -15,7 +15,7 @@ import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepository;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
-import com.koing.server.koing_server.service.admin.dto.*;
+import com.koing.server.koing_server.service.admin.dto.tour.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

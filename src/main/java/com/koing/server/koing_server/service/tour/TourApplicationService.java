@@ -581,6 +581,83 @@ public class TourApplicationService {
         return SuccessResponse.success(SuccessCode.PRESS_END_SUCCESS, null);
     }
 
+    ///////////////////////////// 결제하고 끝까지 진행해보고 삭제하기
+//    @Transactional
+//    public SuperResponse checkEndTour(Long tourId, String date) {
+//
+//        Tour tour = getTour(tourId);
+//
+//        String recentStartedTourDate = tour.getRecentStartedTourDate();
+//
+//        TourApplication tourApplication = getTourApplication(tourId, recentStartedTourDate);
+//        TourApplicationStatus tourApplicationStatus = null;
+//
+//        boolean checkTouristProgressStatus = true;
+//        for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+//            if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
+//                checkTouristProgressStatus = false;
+//            }
+//        }
+//
+//        if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)
+//                && checkTouristProgressStatus) {
+//            tourApplication.setTourApplicationStatus(TourApplicationStatus.NO_REVIEW);
+//            tourApplicationStatus = TourApplicationStatus.NO_REVIEW;
+//
+//            Long guideId = tour.getCreateUser().getId();
+//            for (Payment payment : tourApplication.getPayments()) {
+//                if (payment.getGuide().getId() == guideId) {
+//                    User guide = getUser(guideId);
+//
+//                    int previousTotalEarnAmount = guide.getTotalEarnAmount();
+//                    int previousCurrentRemainAmount = guide.getCurrentRemainAmount();
+//                    int paymentAmount = payment.getPaymentAmount();
+//                    int previousTotalTourists = guide.getTotalTourists();
+//
+//                    guide.setTotalEarnAmount(previousTotalEarnAmount + paymentAmount);
+//                    guide.setCurrentRemainAmount(previousCurrentRemainAmount + paymentAmount);
+//                    guide.setTotalTourists(previousTotalTourists + tourApplication.getCurrentParticipants());
+//
+//                    User updatedUser = userRepository.save(guide);
+//
+//                    if (updatedUser.getTotalEarnAmount() == previousTotalEarnAmount) {
+//                        throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//                    }
+//                }
+//            }
+//
+//            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+//
+//            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.NO_REVIEW)) {
+//                throw new DBFailException("투어 종료 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_END_TOUR_EXCEPTION);
+//            }
+//        }
+//        else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_END)
+//                && !checkTouristProgressStatus) {
+//            tourApplication.setTourApplicationStatus(TourApplicationStatus.GUIDE_END);
+//            tourApplicationStatus = TourApplicationStatus.GUIDE_END;
+//
+//            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+//
+//            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.GUIDE_END)) {
+//                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+//            }
+//        }
+//        else if (tourApplication.getGuideProgressStatus().equals(ProgressStatus.PRESS_START)
+//                && checkTouristProgressStatus) {
+//            tourApplication.setTourApplicationStatus(TourApplicationStatus.TOURIST_END);
+//            tourApplicationStatus = TourApplicationStatus.TOURIST_END;
+//
+//            TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);
+//
+//            if (!updatedTourApplication.getTourApplicationStatus().equals(TourApplicationStatus.TOURIST_END)) {
+//                throw new DBFailException("투어 시작 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_START_TOUR_EXCEPTION);
+//            }
+//        }
+//
+//        return SuccessResponse.success(SuccessCode.END_TOUR_SUCCESS, tourApplicationStatus);
+//    }
+
     @Transactional
     public SuperResponse checkEndTour(Long tourId, String date) {
 
@@ -592,7 +669,9 @@ public class TourApplicationService {
         TourApplicationStatus tourApplicationStatus = null;
 
         boolean checkTouristProgressStatus = true;
-        for (TourParticipant tourParticipant : tourApplication.getTourParticipants()) {
+        List<TourParticipant> tourParticipants = tourApplication.getTourParticipants();
+
+        for (TourParticipant tourParticipant : tourParticipants) {
             if (tourParticipant.getTouristProgressStatus().equals(ProgressStatus.PRESS_START)) {
                 checkTouristProgressStatus = false;
             }
@@ -604,9 +683,9 @@ public class TourApplicationService {
             tourApplicationStatus = TourApplicationStatus.NO_REVIEW;
 
             Long guideId = tour.getCreateUser().getId();
+            User guide = getUser(guideId);
             for (Payment payment : tourApplication.getPayments()) {
                 if (payment.getGuide().getId() == guideId) {
-                    User guide = getUser(guideId);
 
                     int previousTotalEarnAmount = guide.getTotalEarnAmount();
                     int previousCurrentRemainAmount = guide.getCurrentRemainAmount();
@@ -617,12 +696,28 @@ public class TourApplicationService {
                     guide.setCurrentRemainAmount(previousCurrentRemainAmount + paymentAmount);
                     guide.setTotalTourists(previousTotalTourists + tourApplication.getCurrentParticipants());
 
-                    User updatedUser = userRepository.save(guide);
-
-                    if (updatedUser.getTotalEarnAmount() == previousTotalEarnAmount) {
-                        throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
-                    }
+//                    if (updatedUser.getTotalEarnAmount() == previousTotalEarnAmount) {
+//                        throw new DBFailException("유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요.", ErrorCode.DB_FAIL_UPDATE_USER_FAIL_EXCEPTION);
+//                    }
                 }
+            }
+
+            int previousGuideTourProgressCount = guide.getTourProgressCount();
+            guide.setTourProgressCount(previousGuideTourProgressCount + 1);
+
+            User updatedUser = userRepository.save(guide);
+
+            List<Long> touristIdx = new ArrayList<>();
+            for (TourParticipant tourParticipant : tourParticipants) {
+                touristIdx.add(tourParticipant.getParticipant().getId());
+            }
+
+            for (Long touristId : touristIdx) {
+                User tourist = getUser(touristId);
+                int previousTouristTourProgressCount = tourist.getTourProgressCount();
+                tourist.setTourProgressCount(previousTouristTourProgressCount + 1);
+
+                User updatedTourist = userRepository.save(tourist);
             }
 
             TourApplication updatedTourApplication = tourApplicationRepository.save(tourApplication);

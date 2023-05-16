@@ -72,6 +72,7 @@ public class User extends AuditingTimeEntity {
         this.withdrawAmount = 0;
         this.userStatus = UserStatus.ACTIVATE;
         this.totalTourists = 0;
+        this.tourProgressCount = 0;
         this.accumulatedApprovalTourCount = 0;
         this.accumulatedReportedCount = 0;
     }
@@ -182,6 +183,8 @@ public class User extends AuditingTimeEntity {
     private UserStatus userStatus;
 
     private int totalTourists;
+
+    private int tourProgressCount;
 
     private int accumulatedApprovalTourCount;
 

@@ -83,6 +83,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final SetPath<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant> tourParticipants = this.<com.koing.server.koing_server.domain.tour.TourParticipant, com.koing.server.koing_server.domain.tour.QTourParticipant>createSet("tourParticipants", com.koing.server.koing_server.domain.tour.TourParticipant.class, com.koing.server.koing_server.domain.tour.QTourParticipant.class, PathInits.DIRECT2);
 
+    public final NumberPath<Integer> tourProgressCount = createNumber("tourProgressCount", Integer.class);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> updatedAt = _super.updatedAt;
 

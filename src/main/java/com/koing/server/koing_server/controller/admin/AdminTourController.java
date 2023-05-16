@@ -6,7 +6,7 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.admin.AdminTourService;
-import com.koing.server.koing_server.service.admin.dto.AdminChangeToursRequestDto;
+import com.koing.server.koing_server.service.admin.dto.tour.AdminChangeToursRequestDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "Admin")
+@Api(tags = "Admin-Tour")
 @RequestMapping("/admin/tour")
 @RestController
 @RequiredArgsConstructor
