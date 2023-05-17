@@ -249,6 +249,10 @@ public class TourService {
 
         LOGGER.info("[TourService] 모집 시작 할 Tour 조회 성공");
 
+        if (!tour.getTourStatus().equals(TourStatus.APPROVAL)) {
+            throw new NotAcceptableException("승인되지 않은 투어는 시작할 수 없습니다.", ErrorCode.NOT_ACCEPTABLE_TOUR_NOT_APPROVAL_EXCEPTION);
+        }
+
         tour.setTourStatus(TourStatus.RECRUITMENT);
 
         Tour recruitmentTour = tourRepository.save(tour);

@@ -7,19 +7,14 @@ import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
-import com.koing.server.koing_server.common.exception.IOFailException;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
-import com.koing.server.koing_server.domain.user.UserOptionalInfo;
-import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepository;
-import com.koing.server.koing_server.domain.user.repository.UserOptionalInfoRepositoryImpl;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,9 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -250,6 +245,7 @@ public class UserService {
 
         user.setUserStatus(UserStatus.REQUEST_WITHDRAWAL);
         user.setWithdrawalReason(user.getWithdrawalReason());
+        user.setWithdrawalAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
 
         User updatedUser = userRepository.save(user);
 

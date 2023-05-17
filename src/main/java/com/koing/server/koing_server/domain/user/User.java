@@ -11,7 +11,6 @@ import com.koing.server.koing_server.domain.account.Account;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.tour.Tour;
-import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -75,6 +74,7 @@ public class User extends AuditingTimeEntity {
         this.tourProgressCount = 0;
         this.accumulatedApprovalTourCount = 0;
         this.accumulatedReportedCount = 0;
+        this.withdrawalAt = "";
     }
 
     @Id
@@ -114,6 +114,8 @@ public class User extends AuditingTimeEntity {
 
     @Column
     private boolean enabled;
+
+    private String withdrawalAt;
 
     private double attachment;
 

@@ -57,6 +57,9 @@ public enum SuccessCode {
     ADMIN_GET_TOUR_DETAIL_SUCCESS(OK, "admin : 관리자 페이지 투어 세부내용 조회 성공입니다."),
     ADMIN_GET_CREATED_TOUR_SUCCESS(OK, "admin : 관리자 페이지 미승인 투어 조회 성공입니다."),
     ADMIN_GET_CREATED_TOUR_DETAIL_SUCCESS(OK, "admin : 관리자 페이지 미승인 투어 세부내용 조회 성공입니다."),
+    ADMIN_GET_USERS_SUCCESS(OK, "admin : 관리자 페이지 유저 조회 성공입니다."),
+    ADMIN_GET_USER_DETAIL_SUCCESS(OK, "admin : 관리자 페이지 유저 세부내용 조회 성공입니다."),
+    ADMIN_GET_DEACTIVATE_USERS_SUCCESS(OK, "admin : 관리자 페이지 탈퇴 유저 조회 성공입니다."),
 
     // 인증
 //    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

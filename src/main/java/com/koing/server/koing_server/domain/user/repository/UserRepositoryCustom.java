@@ -20,4 +20,8 @@ public interface UserRepositoryCustom {
 
     List<User> findAllGuideByEnabled(boolean enabled);
 
+    List<User> findAllUsers();
+
+    List<User> findWithdrawalUsers();
+
 }

@@ -92,6 +92,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final EnumPath<com.koing.server.koing_server.common.enums.UserStatus> userStatus = createEnum("userStatus", com.koing.server.koing_server.common.enums.UserStatus.class);
 
+    public final StringPath withdrawalAt = createString("withdrawalAt");
+
     public final StringPath withdrawalReason = createString("withdrawalReason");
 
     public final NumberPath<Integer> withdrawAmount = createNumber("withdrawAmount", Integer.class);

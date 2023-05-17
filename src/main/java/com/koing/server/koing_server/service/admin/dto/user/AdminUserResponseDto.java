@@ -14,6 +14,7 @@ import java.util.Set;
 public class AdminUserResponseDto {
 
     public AdminUserResponseDto(User user) {
+        this.userId = user.getId();
         this.userName = user.getName();
         getRoleAndGrade(user);
         this.country = user.getCountry();
@@ -23,6 +24,7 @@ public class AdminUserResponseDto {
         this.accumulatedReportedCount = user.getAccumulatedReportedCount();
     }
 
+    private Long userId;
     private String userName;
     private String userRole;
     private String userGrade;

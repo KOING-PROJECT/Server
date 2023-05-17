@@ -181,13 +181,13 @@ public class AdminTourService {
         return SuccessResponse.success(SuccessCode.ADMIN_TOUR_REJECTION_SUCCESS, null);
     }
 
-    private Tour getTourAtDB(Long temporaryTourId) {
-        Tour temporaryTour = tourRepositoryImpl.findTourByTourId(temporaryTourId);
-        if (temporaryTour == null) {
+    private Tour getTourAtDB(Long tourId) {
+        Tour tour = tourRepositoryImpl.findTourByTourId(tourId);
+        if (tour == null) {
             throw new NotFoundException("해당 투어를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_EXCEPTION);
         }
 
-        return temporaryTour;
+        return tour;
     }
 
 }

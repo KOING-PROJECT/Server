@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.domain.user.repository;
 
 import com.koing.server.koing_server.common.enums.UserRole;
+import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.domain.user.User;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -151,8 +152,47 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .leftJoin(user.buyPayments, payment)
                 .fetchJoin()
                 .where(
-                        user.enabled.eq(true),
+                        user.userStatus.eq(UserStatus.ACTIVATE),
                         user.roles.contains(UserRole.ROLE_GUIDE.getRole())
+                )
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return jpqlQueryFactory
+                .selectFrom(user)
+                .leftJoin(user.roles)
+                .fetchJoin()
+                .leftJoin(user.createTours, tour)
+                .fetchJoin()
+                .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<User> findWithdrawalUsers() {
+        return jpqlQueryFactory
+                .selectFrom(user)
+                .leftJoin(user.roles)
+                .fetchJoin()
+                .leftJoin(user.createTours, tour)
+                .fetchJoin()
+                .leftJoin(user.tourParticipants, tourParticipant)
+                .fetchJoin()
+                .leftJoin(user.userOptionalInfo, userOptionalInfo)
+                .fetchJoin()
+                .leftJoin(user.pressLikeTours, tour)
+                .fetchJoin()
+                .leftJoin(user.earnPayments, payment)
+                .fetchJoin()
+                .leftJoin(user.buyPayments, payment)
+                .fetchJoin()
+                .where(
+                        user.userStatus.eq(UserStatus.REQUEST_WITHDRAWAL).or(user.userStatus.eq(UserStatus.WITHDRAWAL))
                 )
                 .distinct()
                 .fetch();
