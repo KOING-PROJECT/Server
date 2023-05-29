@@ -10,6 +10,7 @@ import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.domain.account.Account;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
+import com.koing.server.koing_server.domain.post.Post;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
 import lombok.*;
@@ -19,6 +20,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +44,9 @@ public class User extends AuditingTimeEntity {
                 Set<Tour> pressLikeTours,
                 Set<User> following,
                 Set<User> follower,
-                Set<Integer> categoryIndexes
+                Set<Integer> categoryIndexes,
+                List<Post> createPosts,
+                List<Post> likePosts
                 ) {
         this.email = email;
         this.password = password;
@@ -75,6 +79,8 @@ public class User extends AuditingTimeEntity {
         this.accumulatedApprovalTourCount = 0;
         this.accumulatedReportedCount = 0;
         this.withdrawalAt = "";
+        this.createPosts = createPosts;
+        this.likePosts = likePosts;
     }
 
     @Id
@@ -191,6 +197,12 @@ public class User extends AuditingTimeEntity {
     private int accumulatedApprovalTourCount;
 
     private int accumulatedReportedCount;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Post> createPosts;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Post> likePosts;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;

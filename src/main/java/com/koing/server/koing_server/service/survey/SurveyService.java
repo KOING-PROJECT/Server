@@ -10,6 +10,8 @@ import com.koing.server.koing_server.domain.tour.TourCategory;
 import com.koing.server.koing_server.domain.tour.repository.Tour.TourRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourCategory.TourCategoryRepositoryImpl;
 import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourScheduleRepositoryImpl;
+import com.koing.server.koing_server.service.survey.dto.RecommendTourListResponseDto;
+import com.koing.server.koing_server.service.survey.dto.RecommendTourResponseDto;
 import com.koing.server.koing_server.service.survey.dto.SurveyInfoDto;
 import com.koing.server.koing_server.service.tour.dto.TourDto;
 import com.koing.server.koing_server.service.tour.dto.TourListResponseDto;
@@ -43,6 +45,8 @@ public class SurveyService {
 //        4. ABC 순서? 가나다 순서
 
         LOGGER.info("[SurveyService] 추천 투어 요청");
+
+        List<String> keywords = createKeywords(surveyInfoDto);
 
         boolean checkThroughAllFilter = true;
 
@@ -85,8 +89,8 @@ public class SurveyService {
                 // 이전 filter를 통과한 투어가 있을 때 현재 filter를 통과한 투어가 없으면 값을 return
                 Set<Tour> filterByTourCategoryTemp = filterByTourCategory(surveyInfoDto.getExpeditionCategory(), allFilteredResult);
                 if (filterByTourCategoryTemp == null || filterByTourCategoryTemp.size() < 1) {
-                    List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
+                    List<RecommendTourResponseDto> result = setToSortedList(allFilteredResult);
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new RecommendTourListResponseDto(keywords, result));
                 }
 
                 // 이전 filter를 통과한 tour가 있을 때 현재 filter를 통과한 tour가 있으면 allFilteredResult에 값 저장
@@ -130,8 +134,8 @@ public class SurveyService {
                 Set<Tour> filterByTourStyleTemp = filterByTourStyle(style, allFilteredResult);
 
                 if (filterByTourStyleTemp == null || filterByTourStyleTemp.size() < 1) {
-                    List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
+                    List<RecommendTourResponseDto> result = setToSortedList(allFilteredResult);
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new RecommendTourListResponseDto(keywords, result));
                 }
 
                 allFilteredResult = filterByTourStyleTemp;
@@ -155,8 +159,8 @@ public class SurveyService {
                 Set<Tour> filteredByCharacterToursTemp = filterByTourCharacter(character, allFilteredResult);
 
                 if (filteredByCharacterToursTemp == null || filteredByCharacterToursTemp.size() < 1) {
-                    List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
+                    List<RecommendTourResponseDto> result = setToSortedList(allFilteredResult);
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new RecommendTourListResponseDto(keywords, result));
                 }
 
                 allFilteredResult = filteredByCharacterToursTemp;
@@ -176,8 +180,8 @@ public class SurveyService {
                 Set<Tour> filteredByMovingSupportTemp = filterByMovingSupport(allFilteredResult);
 
                 if (filteredByMovingSupportTemp == null || filteredByMovingSupportTemp.size() < 1) {
-                    List<TourDto> result = setToSortedList(allFilteredResult);
-                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
+                    List<RecommendTourResponseDto> result = setToSortedList(allFilteredResult);
+                    return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new RecommendTourListResponseDto(keywords, result));
                 }
 
                 allFilteredResult = filteredByMovingSupportTemp;
@@ -192,13 +196,13 @@ public class SurveyService {
 //            System.out.println("tourMovingSupportFiltered = " + tour.getId());
 //        }
 
-        List<TourDto> result = setToSortedList(allFilteredResult);
+        List<RecommendTourResponseDto> result = setToSortedList(allFilteredResult);
 
         if (checkThroughAllFilter) {
-            return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new TourListResponseDto(result));
+            return SuccessResponse.success(SuccessCode.RECOMMEND_TOUR_SUCCESS, new RecommendTourListResponseDto(keywords, result));
         }
         else {
-            return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new TourListResponseDto(result));
+            return SuccessResponse.success(SuccessCode.SIMILAR_TOUR_RECOMMEND_SUCCESS, new RecommendTourListResponseDto(keywords, result));
         }
     }
 
@@ -250,14 +254,14 @@ public class SurveyService {
         return filteredTours.stream().filter(tour -> tour.getTourSurvey().isMovingSupport()).collect(Collectors.toSet());
     }
 
-    private List<TourDto> setToSortedList(Set<Tour> allFilteredTours) {
+    private List<RecommendTourResponseDto> setToSortedList(Set<Tour> allFilteredTours) {
 
-        List<TourDto> tourDtos = new ArrayList<>();
+        List<RecommendTourResponseDto> recommendTourDtos = new ArrayList<>();
         for (Tour tour : allFilteredTours) {
-            tourDtos.add(new TourDto(tour));
+            recommendTourDtos.add(new RecommendTourResponseDto(tour));
         }
 
-        return tourDtos.stream().sorted((tour1, tour2) -> -tour1.getTourTitle().compareTo(tour2.getTourTitle())).collect(Collectors.toList());
+        return recommendTourDtos.stream().sorted((tour1, tour2) -> -tour1.getTourTitle().compareTo(tour2.getTourTitle())).collect(Collectors.toList());
     }
 
     private String getTourCategoryName(int inputTourCategory) {
@@ -475,6 +479,160 @@ public class SurveyService {
         }
         else {
             return -1;
+        }
+    }
+
+    private List<String> createKeywords(SurveyInfoDto surveyInfoDto) {
+
+        List<String> keywords = new ArrayList<>();
+
+        if (surveyInfoDto.getHasDate() == 0) {
+            List<String> expeditionDates = surveyInfoDto.getExpeditionDates();
+
+            if (expeditionDates.size() > 1) {
+                expeditionDates = expeditionDates.stream().sorted((date1, date2) -> date1.compareTo(date2)).collect(Collectors.toList());
+                keywords.add(expeditionDates.get(0) + " 외 다수");
+            }
+            else {
+                expeditionDates.add(expeditionDates.get(0));
+            }
+        }
+
+        keywords.add(Integer.toString(surveyInfoDto.getNumberOfTourist()));
+
+        int categoryIdx = surveyInfoDto.getExpeditionCategory();
+
+        if (categoryIdx == 0) {
+            keywords.add("쇼핑");
+        }
+        else if (categoryIdx == 1) {
+            keywords.add("힐링");
+        }
+        else if (categoryIdx == 2) {
+            keywords.add("먹방");
+        }
+        else if (categoryIdx == 3) {
+            keywords.add("역사/전통");
+        }
+        else if (categoryIdx == 4) {
+            keywords.add("관광명소");
+        }
+        else if (categoryIdx == 5) {
+            keywords.add("엔터테인먼트");
+        }
+        else if (categoryIdx == 6) {
+            keywords.add("액티비티");
+        }
+        else if (categoryIdx == 7) {
+            keywords.add("다 좋아요:)");
+        }
+
+        if (categoryIdx != 7) {
+            int tourDetailTypeIdx = getTourDetailType(getTourCategoryName(categoryIdx), surveyInfoDto.getExpeditionDetailType());
+
+            keywords.add(getTourDetailTypeName(tourDetailTypeIdx));
+        }
+
+        return keywords;
+    }
+
+    private String getTourDetailTypeName(int tourDetailTypeIdx) {
+
+        if (tourDetailTypeIdx == 0) {
+            return "뷰티";
+        }
+        else if (tourDetailTypeIdx == 1) {
+            return "패션";
+        }
+        else if (tourDetailTypeIdx == 2) {
+            return "전통시장";
+        }
+        else if (tourDetailTypeIdx == 3) {
+            return "전자";
+        }
+        else if (tourDetailTypeIdx == 4) {
+            return "굿즈";
+        }
+        else if (tourDetailTypeIdx == 5) {
+            return "쇼핑몰투어";
+        }
+        else if (tourDetailTypeIdx == 7) {
+            return "한식";
+        }
+        else if (tourDetailTypeIdx == 8) {
+            return "디저트";
+        }
+        else if (tourDetailTypeIdx == 9) {
+            return "매콤매콤";
+        }
+        else if (tourDetailTypeIdx == 10) {
+            return "술";
+        }
+        else if (tourDetailTypeIdx == 11) {
+            return "유튜버 맛집";
+        }
+        else if (tourDetailTypeIdx == 12) {
+            return "길거리 음식";
+        }
+        else if (tourDetailTypeIdx == 13) {
+            return "산책";
+        }
+        else if (tourDetailTypeIdx == 14) {
+            return "등산";
+        }
+        else if (tourDetailTypeIdx == 15) {
+            return "한강 투어";
+        }
+        else if (tourDetailTypeIdx == 16) {
+            return "테라피";
+        }
+        else if (tourDetailTypeIdx == 17) {
+            return "뷰 맛집";
+        }
+        else if (tourDetailTypeIdx == 18) {
+            return "핫플레이스";
+        }
+        else if (tourDetailTypeIdx == 19) {
+            return "유적지";
+        }
+        else if (tourDetailTypeIdx == 20) {
+            return "박물관";
+        }
+        else if (tourDetailTypeIdx == 21) {
+            return "전통미술";
+        }
+        else if (tourDetailTypeIdx == 22) {
+            return "e스포츠";
+        }
+        else if (tourDetailTypeIdx == 23) {
+            return "아이돌/연예";
+        }
+        else if (tourDetailTypeIdx == 24) {
+            return "드라마/영화";
+        }
+        else if (tourDetailTypeIdx == 25) {
+            return "웹툰";
+        }
+        else if (tourDetailTypeIdx == 26) {
+            return "전시";
+        }
+        else if (tourDetailTypeIdx == 27) {
+            return "공연";
+        }
+        else if (tourDetailTypeIdx == 28) {
+            return "놀이공원/테마파크";
+        }
+        else if (tourDetailTypeIdx == 29) {
+            return "스포츠/액티비티";
+        }
+        else if (tourDetailTypeIdx == 30) {
+            return "스포츠 경기 관람";
+        }
+        else if (tourDetailTypeIdx == 31) {
+            return "야외활동";
+        }
+        else {
+            return "공예/제작";
         }
     }
 

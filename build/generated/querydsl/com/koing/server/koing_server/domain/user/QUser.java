@@ -45,6 +45,8 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
+    public final ListPath<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost> createPosts = this.<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost>createList("createPosts", com.koing.server.koing_server.domain.post.Post.class, com.koing.server.koing_server.domain.post.QPost.class, PathInits.DIRECT2);
+
     public final SetPath<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour> createTours = this.<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour>createSet("createTours", com.koing.server.koing_server.domain.tour.Tour.class, com.koing.server.koing_server.domain.tour.QTour.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> currentRemainAmount = createNumber("currentRemainAmount", Integer.class);
@@ -64,6 +66,8 @@ public class QUser extends EntityPathBase<User> {
     public final EnumPath<com.koing.server.koing_server.common.enums.GuideGrade> guideGrade = createEnum("guideGrade", com.koing.server.koing_server.common.enums.GuideGrade.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    public final ListPath<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost> likePosts = this.<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost>createList("likePosts", com.koing.server.koing_server.domain.post.Post.class, com.koing.server.koing_server.domain.post.QPost.class, PathInits.DIRECT2);
 
     public final StringPath name = createString("name");
 
