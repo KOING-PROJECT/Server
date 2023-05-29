@@ -12,5 +12,7 @@ public class PostCreateDto {
     private Long writerId;
     private String description;
     private List<String> tags;
+    private List<String> uploadedPostPhotoUrls;
+    private List<String> postPhotoOrders;
 
 }

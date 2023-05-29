@@ -37,7 +37,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
-    public final ListPath<String, StringPath> photos = this.<String, StringPath>createList("photos", String.class, StringPath.class, PathInits.DIRECT2);
+    public final ListPath<com.koing.server.koing_server.domain.image.PostPhoto, com.koing.server.koing_server.domain.image.QPostPhoto> photos = this.<com.koing.server.koing_server.domain.image.PostPhoto, com.koing.server.koing_server.domain.image.QPostPhoto>createList("photos", com.koing.server.koing_server.domain.image.PostPhoto.class, com.koing.server.koing_server.domain.image.QPostPhoto.class, PathInits.DIRECT2);
 
     public final ListPath<String, StringPath> tags = this.<String, StringPath>createList("tags", String.class, StringPath.class, PathInits.DIRECT2);
 

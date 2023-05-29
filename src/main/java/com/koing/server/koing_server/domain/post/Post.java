@@ -4,13 +4,16 @@ package com.koing.server.koing_server.domain.post;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.image.PostPhoto;
 import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.service.post.dto.PostCreateDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,6 +23,15 @@ import java.util.List;
 @Table(name = "POST_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class Post extends AuditingTimeEntity {
+
+    public Post(PostCreateDto postCreateDto) {
+        this.createUser = null;
+        this.description = postCreateDto.getDescription();
+        this.tags = postCreateDto.getTags();
+        this.photos = new ArrayList<>();
+        this.likeCount = 0;
+        this.comments = new ArrayList<>();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,13 +46,28 @@ public class Post extends AuditingTimeEntity {
     @Column(name = "tags")
     private List<String> tags;
 
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Column(name = "photos")
-    private List<String> photos;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ownedPost")
+    private List<PostPhoto> photos;
 
     private int likeCount;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    public void setCreateUser(User user) {
+        this.createUser = user;
+
+        if (user.getCreatePosts() == null) {
+            user.setCreatePosts(new ArrayList<>());
+        }
+
+        user.getCreatePosts().add(this);
+    }
+
+    public void deleteCreateUser(User user) {
+        this.createUser = null;
+
+        user.getCreatePosts().remove(this);
+    }
 
 }

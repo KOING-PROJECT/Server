@@ -119,6 +119,7 @@ public enum SuccessCode {
     KEYWORD_UPDATE_SUCCESS(CREATED, "keyword : 키워드 업데이트 성공입니다."),
     ADMIN_TOUR_APPROVAL_SUCCESS(CREATED, "admin : 투어 승인 성공입니다."),
     ADMIN_TOUR_REJECTION_SUCCESS(CREATED, "admin : 투어 거절 성공입니다."),
+    POST_CREATE_SUCCESS(CREATED, "post : 게시글 작성 성공입니다."),
 
     /**
      * 202 ACCEPTED

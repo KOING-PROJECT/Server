@@ -93,6 +93,9 @@ public enum ErrorCode {
     DB_FAIL_CREATE_KEYWORD_EXCEPTION(DB_HANDLE_FAIL, "키워드 생성 과정에서 오류가 발생했습니다."),
     DB_FAIL_UPDATE_KEYWORD_EXCEPTION(DB_HANDLE_FAIL, "키워드 업데이트 과정에서 오류가 발생했습니다."),
     DB_FAIL_CREATE_SURVEY_EXCEPTION(DB_HANDLE_FAIL, "설문 생성 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_POST_PHOTO_EXCEPTION(DB_HANDLE_FAIL, "게시글 사진 저장 과정에서 오류가 발생했습니다."),
+    DB_FAIL_CREATE_POST_EXCEPTION(DB_HANDLE_FAIL, "게시글 저장 과정에서 오류가 발생했습니다."),
+    DB_FAIL_UPDATE_POST_EXCEPTION(DB_HANDLE_FAIL, "게시글 업데이트 과정에서 오류가 발생했습니다."),
 
 //    DB_FAIL_CRYPTOGRAM_CREATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
 //    DB_FAIL_CRYPTOGRAM_UPDATE_FAIL_EXCEPTION(DB_HANDLE_FAIL, "Cryptogram 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
@@ -128,6 +131,7 @@ public enum ErrorCode {
     NOT_FOUND_USER_CATEGORY_INDEXES_EXCEPTION(NOT_FOUND, "해당 유저의 선호 카테고리를 찾을 수 없습니다."),
     NOT_FOUND_USER_ACCOUNT_EXCEPTION(NOT_FOUND, "해당 유저의 계좌 정보를 찾을 수 없습니다."),
     NOT_FOUND_KEYWORD_EXCEPTION(NOT_FOUND, "존재하지 않는 키워드 입니다."),
+    NOT_FOUND_POST_PHOTO_EXCEPTION(NOT_FOUND, "해당 게시글 사진을 찾을 수 없습니다."),
 
 
     /**
