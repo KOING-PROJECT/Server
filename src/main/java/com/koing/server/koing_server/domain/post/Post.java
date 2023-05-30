@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.image.PostPhoto;
 import com.koing.server.koing_server.domain.user.User;
-import com.koing.server.koing_server.service.post.dto.PostCreateDto;
+import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,10 +26,11 @@ public class Post extends AuditingTimeEntity {
 
     public Post(PostCreateDto postCreateDto) {
         this.createUser = null;
-        this.description = postCreateDto.getDescription();
+        this.content = postCreateDto.getContent();
         this.tags = postCreateDto.getTags();
         this.photos = new ArrayList<>();
         this.likeCount = 0;
+        this.commentCount = 0;
         this.comments = new ArrayList<>();
     }
 
@@ -40,9 +41,9 @@ public class Post extends AuditingTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User createUser;
 
-    private String description;
+    private String content;
 
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "tags")
     private List<String> tags;
 
@@ -50,6 +51,8 @@ public class Post extends AuditingTimeEntity {
     private List<PostPhoto> photos;
 
     private int likeCount;
+
+    private int commentCount;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Comment> comments;

@@ -24,14 +24,16 @@ public class QPost extends EntityPathBase<Post> {
 
     public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
 
+    public final NumberPath<Integer> commentCount = createNumber("commentCount", Integer.class);
+
     public final ListPath<Comment, QComment> comments = this.<Comment, QComment>createList("comments", Comment.class, QComment.class, PathInits.DIRECT2);
+
+    public final StringPath content = createString("content");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
     public final com.koing.server.koing_server.domain.user.QUser createUser;
-
-    public final StringPath description = createString("description");
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

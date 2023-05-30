@@ -13,9 +13,12 @@ import com.koing.server.koing_server.domain.image.repository.PostPhotoRepository
 import com.koing.server.koing_server.domain.image.repository.PostPhotoRepositoryImpl;
 import com.koing.server.koing_server.domain.post.Post;
 import com.koing.server.koing_server.domain.post.repository.PostRepository;
+import com.koing.server.koing_server.domain.post.repository.PostRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
-import com.koing.server.koing_server.service.post.dto.PostCreateDto;
+import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
+import com.koing.server.koing_server.service.post.dto.post.PostListResponseDto;
+import com.koing.server.koing_server.service.post.dto.post.PostResponseDto;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,6 +41,7 @@ public class PostService {
     private final AWSS3Component awss3Component;
     private final UserRepositoryImpl userRepositoryImpl;
     private final PostRepository postRepository;
+    private final PostRepositoryImpl postRepositoryImpl;
 
     @Transactional
     public SuperResponse createPost(PostCreateDto postCreateDto, List<MultipartFile> postPhotos) {
@@ -67,6 +72,25 @@ public class PostService {
 
         return SuccessResponse.success(SuccessCode.POST_CREATE_SUCCESS, null);
     }
+
+    @Transactional
+    public SuperResponse getPosts() {
+        LOGGER.info("[PostService] POST 조회 시도");
+
+        List<Post> posts = postRepositoryImpl.findAllPosts();
+
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            postResponseDtos.add(new PostResponseDto(post));
+        }
+
+        LOGGER.info("[PostService] POST 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
+    }
+
+
 
     private void uploadPhotos(Post post, List<String> postPhotoOrders, List<String> uploadedPostPhotoUrls, List<MultipartFile> multipartFiles) {
         LOGGER.info("[PostService] 게시글 사진 s3에 upload 시도");
