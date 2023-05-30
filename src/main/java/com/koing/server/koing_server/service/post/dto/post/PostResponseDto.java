@@ -1,8 +1,10 @@
 package com.koing.server.koing_server.service.post.dto.post;
 
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.domain.image.PostPhoto;
 import com.koing.server.koing_server.domain.post.Comment;
 import com.koing.server.koing_server.domain.post.Post;
+import com.koing.server.koing_server.domain.user.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,11 +21,14 @@ public class PostResponseDto {
 
     public PostResponseDto(Post post) {
         this.postId = post.getId();
+
         if (post.getCreateUser().getUserOptionalInfo() != null) {
             if (post.getCreateUser().getUserOptionalInfo().getImageUrls() != null && post.getCreateUser().getUserOptionalInfo().getImageUrls().size() > 0) {
                 this.writeUserImage = post.getCreateUser().getUserOptionalInfo().getImageUrls().get(0);
             }
         }
+
+        this.userGrade = getUserGrade(post.getCreateUser());
         this.writeUserName = post.getCreateUser().getName();
         this.createdDate = createdAtFormatting(post.getCreatedAt());
         this.postPhotos = getPostPhotoUrls(post);
@@ -34,6 +39,7 @@ public class PostResponseDto {
 
     private Long postId;
     private String writeUserImage;
+    private String userGrade;
     private String writeUserName;
     private String createdDate;
     private List<String> postPhotos;
@@ -58,6 +64,15 @@ public class PostResponseDto {
         }
 
         return postPhotoUrls;
+    }
+
+    private String getUserGrade(User createUser) {
+        if (createUser.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
+            return createUser.getGuideGrade().getGrade();
+        }
+        else {
+            return createUser.getTouristGrade().getGrade();
+        }
     }
 
 }
