@@ -27,4 +27,17 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .distinct()
                 .fetch();
     }
+
+    @Override
+    public Post findPostByPostId(Long postId) {
+        return jpqlQueryFactory
+                .selectFrom(post)
+                .leftJoin(post.comments, comment1)
+                .fetchJoin()
+                .where(
+                        post.id.eq(postId)
+                )
+                .distinct()
+                .fetchOne();
+    }
 }

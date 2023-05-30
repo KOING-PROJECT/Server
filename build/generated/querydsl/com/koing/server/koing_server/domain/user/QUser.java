@@ -42,6 +42,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath country = createString("country");
 
+    public final ListPath<com.koing.server.koing_server.domain.post.Comment, com.koing.server.koing_server.domain.post.QComment> createComments = this.<com.koing.server.koing_server.domain.post.Comment, com.koing.server.koing_server.domain.post.QComment>createList("createComments", com.koing.server.koing_server.domain.post.Comment.class, com.koing.server.koing_server.domain.post.QComment.class, PathInits.DIRECT2);
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 

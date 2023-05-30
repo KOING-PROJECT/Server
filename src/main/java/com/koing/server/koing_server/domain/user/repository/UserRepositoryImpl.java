@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.koing.server.koing_server.domain.payment.QPayment.payment;
+import static com.koing.server.koing_server.domain.post.QComment.comment1;
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
@@ -125,6 +126,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .leftJoin(user.earnPayments, payment)
                 .fetchJoin()
                 .leftJoin(user.buyPayments, payment)
+                .fetchJoin()
+                .leftJoin(user.createComments, comment1)
                 .fetchJoin()
                 .where(
                         user.id.eq(userId)

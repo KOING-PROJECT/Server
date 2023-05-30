@@ -8,4 +8,6 @@ public interface PostRepositoryCustom {
 
     List<Post> findAllPosts();
 
+    Post findPostByPostId(Long postId);
+
 }

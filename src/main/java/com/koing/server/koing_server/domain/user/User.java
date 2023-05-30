@@ -10,6 +10,7 @@ import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.domain.account.Account;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
+import com.koing.server.koing_server.domain.post.Comment;
 import com.koing.server.koing_server.domain.post.Post;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
@@ -200,6 +201,9 @@ public class User extends AuditingTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Post> createPosts;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Comment> createComments;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Post> likePosts;
