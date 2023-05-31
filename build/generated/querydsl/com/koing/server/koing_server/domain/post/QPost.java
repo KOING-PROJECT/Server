@@ -26,7 +26,7 @@ public class QPost extends EntityPathBase<Post> {
 
     public final NumberPath<Integer> commentCount = createNumber("commentCount", Integer.class);
 
-    public final ListPath<Comment, QComment> comments = this.<Comment, QComment>createList("comments", Comment.class, QComment.class, PathInits.DIRECT2);
+    public final SetPath<Comment, QComment> comments = this.<Comment, QComment>createSet("comments", Comment.class, QComment.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
 
@@ -38,6 +38,8 @@ public class QPost extends EntityPathBase<Post> {
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
+
+    public final SetPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> likedUsers = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createSet("likedUsers", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
 
     public final ListPath<com.koing.server.koing_server.domain.image.PostPhoto, com.koing.server.koing_server.domain.image.QPostPhoto> photos = this.<com.koing.server.koing_server.domain.image.PostPhoto, com.koing.server.koing_server.domain.image.QPostPhoto>createList("photos", com.koing.server.koing_server.domain.image.PostPhoto.class, com.koing.server.koing_server.domain.image.QPostPhoto.class, PathInits.DIRECT2);
 

@@ -34,7 +34,7 @@ public class PostResponseDto {
         this.postPhotos = getPostPhotoUrls(post);
         this.postContent = post.getContent();
         this.likeCount = post.getLikeCount();
-        this.commentCount = post.getCommentCount();
+        this.commentCount = post.getComments().size();
     }
 
     private Long postId;
@@ -57,12 +57,13 @@ public class PostResponseDto {
                 .sorted(Comparator.comparing((PostPhoto p) -> p.getPostPhotoOrder()))
                 .collect(Collectors.toList());
 
+        System.out.println(postPhotos);
+
         List<String> postPhotoUrls = new ArrayList<>();
 
         for (PostPhoto postPhoto : postPhotos) {
             postPhotoUrls.add(postPhoto.getFilePath());
         }
-
         return postPhotoUrls;
     }
 

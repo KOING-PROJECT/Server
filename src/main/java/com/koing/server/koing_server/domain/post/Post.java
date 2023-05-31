@@ -14,7 +14,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,7 +33,7 @@ public class Post extends AuditingTimeEntity {
         this.photos = new ArrayList<>();
         this.likeCount = 0;
         this.commentCount = 0;
-        this.comments = new ArrayList<>();
+        this.comments = new HashSet<>();
     }
 
     @Id
@@ -50,18 +52,21 @@ public class Post extends AuditingTimeEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "ownedPost")
     private List<PostPhoto> photos;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<User> likedUsers;
+
     private int likeCount;
 
     private int commentCount;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commendedPost")
+    private Set<Comment> comments;
 
     public void setCreateUser(User user) {
         this.createUser = user;
 
         if (user.getCreatePosts() == null) {
-            user.setCreatePosts(new ArrayList<>());
+            user.setCreatePosts(new HashSet<>());
         }
 
         user.getCreatePosts().add(this);

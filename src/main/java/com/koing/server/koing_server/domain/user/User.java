@@ -46,8 +46,9 @@ public class User extends AuditingTimeEntity {
                 Set<User> following,
                 Set<User> follower,
                 Set<Integer> categoryIndexes,
-                List<Post> createPosts,
-                List<Post> likePosts
+                Set<Post> createPosts,
+                Set<Post> likePosts,
+                Set<Comment> createComments
                 ) {
         this.email = email;
         this.password = password;
@@ -81,6 +82,7 @@ public class User extends AuditingTimeEntity {
         this.accumulatedReportedCount = 0;
         this.withdrawalAt = "";
         this.createPosts = createPosts;
+        this.createComments = createComments;
         this.likePosts = likePosts;
     }
 
@@ -199,14 +201,14 @@ public class User extends AuditingTimeEntity {
 
     private int accumulatedReportedCount;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Post> createPosts;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "createUser")
+    private Set<Post> createPosts;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Comment> createComments;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "commendUser")
+    private Set<Comment> createComments;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Post> likePosts;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "likedUsers")
+    private Set<Post> likePosts;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;

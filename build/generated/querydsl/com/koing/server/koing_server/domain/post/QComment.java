@@ -24,14 +24,14 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
 
-    public final QPost commenededPost;
+    public final QPost commendedPost;
+
+    public final com.koing.server.koing_server.domain.user.QUser commendUser;
 
     public final StringPath comment = createString("comment");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
-
-    public final com.koing.server.koing_server.domain.user.QUser createUser;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -56,8 +56,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public QComment(Class<? extends Comment> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.commenededPost = inits.isInitialized("commenededPost") ? new QPost(forProperty("commenededPost"), inits.get("commenededPost")) : null;
-        this.createUser = inits.isInitialized("createUser") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("createUser"), inits.get("createUser")) : null;
+        this.commendedPost = inits.isInitialized("commendedPost") ? new QPost(forProperty("commendedPost"), inits.get("commendedPost")) : null;
+        this.commendUser = inits.isInitialized("commendUser") ? new com.koing.server.koing_server.domain.user.QUser(forProperty("commendUser"), inits.get("commendUser")) : null;
     }
 
 }

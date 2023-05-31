@@ -42,12 +42,12 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath country = createString("country");
 
-    public final ListPath<com.koing.server.koing_server.domain.post.Comment, com.koing.server.koing_server.domain.post.QComment> createComments = this.<com.koing.server.koing_server.domain.post.Comment, com.koing.server.koing_server.domain.post.QComment>createList("createComments", com.koing.server.koing_server.domain.post.Comment.class, com.koing.server.koing_server.domain.post.QComment.class, PathInits.DIRECT2);
+    public final SetPath<com.koing.server.koing_server.domain.post.Comment, com.koing.server.koing_server.domain.post.QComment> createComments = this.<com.koing.server.koing_server.domain.post.Comment, com.koing.server.koing_server.domain.post.QComment>createSet("createComments", com.koing.server.koing_server.domain.post.Comment.class, com.koing.server.koing_server.domain.post.QComment.class, PathInits.DIRECT2);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdAt = _super.createdAt;
 
-    public final ListPath<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost> createPosts = this.<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost>createList("createPosts", com.koing.server.koing_server.domain.post.Post.class, com.koing.server.koing_server.domain.post.QPost.class, PathInits.DIRECT2);
+    public final SetPath<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost> createPosts = this.<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost>createSet("createPosts", com.koing.server.koing_server.domain.post.Post.class, com.koing.server.koing_server.domain.post.QPost.class, PathInits.DIRECT2);
 
     public final SetPath<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour> createTours = this.<com.koing.server.koing_server.domain.tour.Tour, com.koing.server.koing_server.domain.tour.QTour>createSet("createTours", com.koing.server.koing_server.domain.tour.Tour.class, com.koing.server.koing_server.domain.tour.QTour.class, PathInits.DIRECT2);
 
@@ -69,7 +69,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final ListPath<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost> likePosts = this.<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost>createList("likePosts", com.koing.server.koing_server.domain.post.Post.class, com.koing.server.koing_server.domain.post.QPost.class, PathInits.DIRECT2);
+    public final SetPath<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost> likePosts = this.<com.koing.server.koing_server.domain.post.Post, com.koing.server.koing_server.domain.post.QPost>createSet("likePosts", com.koing.server.koing_server.domain.post.Post.class, com.koing.server.koing_server.domain.post.QPost.class, PathInits.DIRECT2);
 
     public final StringPath name = createString("name");
 

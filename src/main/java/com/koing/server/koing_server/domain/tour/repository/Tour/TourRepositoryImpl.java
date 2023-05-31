@@ -62,6 +62,7 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .leftJoin(tour.tourSchedule, tourSchedule)
                 .fetchJoin()
                 .leftJoin(tour.tourSurvey, tourSurvey)
+                .fetchJoin()
                 .where(
                         tour.tourStatus.eq(TourStatus.RECRUITMENT),
                         tour.createStatus.eq(CreateStatus.COMPLETE)

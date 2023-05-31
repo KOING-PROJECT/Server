@@ -23,8 +23,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .selectFrom(post)
                 .leftJoin(post.createUser, user)
                 .fetchJoin()
-                .leftJoin(post.photos, postPhoto)
+                .leftJoin(post.comments, comment1)
                 .fetchJoin()
+//                .leftJoin(post.photos, postPhoto)
+//                .fetchJoin()
                 .distinct()
                 .fetch();
     }

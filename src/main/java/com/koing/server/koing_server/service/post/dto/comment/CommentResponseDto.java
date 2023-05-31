@@ -14,12 +14,12 @@ import java.time.format.DateTimeFormatter;
 public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment) {
-        this.writeUserName = comment.getCreateUser().getName();
-        this.writeUserGrade = getUserGrade(comment.getCreateUser());
+        this.writeUserName = comment.getCommendUser().getName();
+        this.writeUserGrade = getUserGrade(comment.getCommendUser());
 
-        if (comment.getCreateUser().getUserOptionalInfo() != null) {
-            if (comment.getCreateUser().getUserOptionalInfo().getImageUrls() != null && comment.getCreateUser().getUserOptionalInfo().getImageUrls().size() > 0) {
-                this.writeUserImage = comment.getCreateUser().getUserOptionalInfo().getImageUrls().get(0);
+        if (comment.getCommendUser().getUserOptionalInfo() != null) {
+            if (comment.getCommendUser().getUserOptionalInfo().getImageUrls() != null && comment.getCommendUser().getUserOptionalInfo().getImageUrls().size() > 0) {
+                this.writeUserImage = comment.getCommendUser().getUserOptionalInfo().getImageUrls().get(0);
             }
         }
         this.content = comment.getComment();

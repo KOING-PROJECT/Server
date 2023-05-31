@@ -19,13 +19,13 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     public List<Comment> findCommentByPostId(Long postId) {
         return jpqlQueryFactory
                 .selectFrom(comment1)
-                .leftJoin(comment1.commenededPost, post)
+                .leftJoin(comment1.commendedPost, post)
                 .fetchJoin()
-                .leftJoin(comment1.createUser, user)
+                .leftJoin(comment1.commendUser, user)
                 .fetchJoin()
                 .distinct()
                 .where(
-                        comment1.commenededPost.id.eq(postId)
+                        comment1.commendedPost.id.eq(postId)
                 )
                 .fetch();
     }

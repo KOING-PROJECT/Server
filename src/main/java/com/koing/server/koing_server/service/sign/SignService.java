@@ -90,8 +90,9 @@ public class SignService {
                 .following(new HashSet<>())
                 .follower(new HashSet<>())
                 .categoryIndexes(new HashSet<>())
-//                .createPosts(new ArrayList<>())
-//                .likePosts(new ArrayList<>())
+                .createPosts(new HashSet<>())
+                .likePosts(new HashSet<>())
+                .createComments(new HashSet<>())
                 .build();
 
         if (role.equalsIgnoreCase(UserRole.ROLE_GUIDE.getRole())) {

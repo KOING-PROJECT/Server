@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 @Entity
 @Getter
@@ -23,9 +23,9 @@ import java.util.ArrayList;
 public class Comment extends AuditingTimeEntity {
 
     public Comment(CommentCreateDto commentCreateDto) {
-        this.createUser = null;
+        this.commendUser = null;
         this.comment = commentCreateDto.getComment();
-        this.commenededPost = null;
+        this.commendedPost = null;
     }
 
     @Id
@@ -33,41 +33,41 @@ public class Comment extends AuditingTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User createUser;
+    private User commendUser;
 
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Post commenededPost;
+    private Post commendedPost;
 
     public void setCreateUser(User user) {
-        this.createUser = user;
+        this.commendUser = user;
 
         if (user.getCreateComments() == null) {
-            user.setCreateComments(new ArrayList<>());
+            user.setCreateComments(new HashSet<>());
         }
 
         user.getCreateComments().add(this);
     }
 
     public void deleteCreateUser(User user) {
-        this.createUser = null;
+        this.commendUser = null;
 
         user.getCreateComments().remove(this);
     }
 
     public void setCommendedPost(Post post) {
-        this.commenededPost = post;
+        this.commendedPost = post;
 
         if (post.getComments() == null) {
-            post.setComments(new ArrayList<>());
+            post.setComments(new HashSet<>());
         }
 
         post.getComments().add(this);
     }
 
     public void deleteCommendedPost(Post post) {
-        this.commenededPost = null;
+        this.commendedPost = null;
 
         post.getComments().remove(this);
     }

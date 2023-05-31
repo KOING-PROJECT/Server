@@ -75,7 +75,7 @@ public class PostService {
 
     @Transactional
     public SuperResponse getPosts() {
-        LOGGER.info("[PostService] POST 조회 시도");
+        LOGGER.info("[PostService] Post 조회 시도");
 
         List<Post> posts = postRepositoryImpl.findAllPosts();
 
@@ -85,7 +85,7 @@ public class PostService {
             postResponseDtos.add(new PostResponseDto(post));
         }
 
-        LOGGER.info("[PostService] POST 조회 성공");
+        LOGGER.info("[PostService] Post 조회 성공");
 
         return SuccessResponse.success(SuccessCode.GET_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
     }
