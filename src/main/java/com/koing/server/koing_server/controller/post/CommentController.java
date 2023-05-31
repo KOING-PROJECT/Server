@@ -56,4 +56,28 @@ public class CommentController {
         return commentCreateResponse;
     }
 
+    @ApiOperation("Comment - comment 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Comment - comment 리스트 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 게시글을 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/{postId}")
+    public SuperResponse getComments(@PathVariable("postId") Long postId) {
+        LOGGER.info("[CommentController] Comment 리스트 조회 시도");
+        SuperResponse commentGetResponse;
+        try {
+            commentGetResponse = commentService.getComments(postId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[CommentController] Comment 리스트 조회 성공");
+
+        return commentGetResponse;
+    }
+
 }

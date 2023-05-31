@@ -9,6 +9,7 @@ import java.util.List;
 import static com.koing.server.koing_server.domain.image.QPostPhoto.postPhoto;
 import static com.koing.server.koing_server.domain.post.QPost.post;
 import static com.koing.server.koing_server.domain.post.QComment.comment1;
+import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.user.QUser.user;
 
 @RequiredArgsConstructor
@@ -39,5 +40,16 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 )
                 .distinct()
                 .fetchOne();
+    }
+
+    @Override
+    public boolean checkExistPostByPostId(Long postId) {
+        return jpqlQueryFactory
+                .selectFrom(post)
+                .where(
+                        post.id.eq(postId)
+                )
+                .distinct()
+                .fetchOne() != null;
     }
 }

@@ -10,4 +10,6 @@ public interface PostRepositoryCustom {
 
     Post findPostByPostId(Long postId);
 
+    boolean checkExistPostByPostId(Long postId);
+
 }
