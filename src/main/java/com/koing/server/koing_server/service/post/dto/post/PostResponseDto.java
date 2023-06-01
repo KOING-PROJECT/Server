@@ -33,7 +33,7 @@ public class PostResponseDto {
         this.createdDate = createdAtFormatting(post.getCreatedAt());
         this.postPhotos = getPostPhotoUrls(post);
         this.postContent = post.getContent();
-        this.likeCount = post.getLikeCount();
+        this.likeCount = post.getLikedUsers().size();
         this.commentCount = post.getComments().size();
     }
 

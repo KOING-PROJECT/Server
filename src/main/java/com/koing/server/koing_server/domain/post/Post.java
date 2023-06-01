@@ -31,8 +31,6 @@ public class Post extends AuditingTimeEntity {
         this.content = postCreateDto.getContent();
         this.tags = postCreateDto.getTags();
         this.photos = new ArrayList<>();
-        this.likeCount = 0;
-        this.commentCount = 0;
         this.comments = new HashSet<>();
     }
 
@@ -54,10 +52,6 @@ public class Post extends AuditingTimeEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> likedUsers;
-
-    private int likeCount;
-
-    private int commentCount;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "commendedPost")
     private Set<Comment> comments;

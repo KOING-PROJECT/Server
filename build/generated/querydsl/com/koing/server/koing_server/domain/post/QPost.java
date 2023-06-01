@@ -24,8 +24,6 @@ public class QPost extends EntityPathBase<Post> {
 
     public final com.koing.server.koing_server.domain.common.QAuditingTimeEntity _super = new com.koing.server.koing_server.domain.common.QAuditingTimeEntity(this);
 
-    public final NumberPath<Integer> commentCount = createNumber("commentCount", Integer.class);
-
     public final SetPath<Comment, QComment> comments = this.<Comment, QComment>createSet("comments", Comment.class, QComment.class, PathInits.DIRECT2);
 
     public final StringPath content = createString("content");
@@ -36,8 +34,6 @@ public class QPost extends EntityPathBase<Post> {
     public final com.koing.server.koing_server.domain.user.QUser createUser;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
-
-    public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
     public final SetPath<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser> likedUsers = this.<com.koing.server.koing_server.domain.user.User, com.koing.server.koing_server.domain.user.QUser>createSet("likedUsers", com.koing.server.koing_server.domain.user.User.class, com.koing.server.koing_server.domain.user.QUser.class, PathInits.DIRECT2);
 
