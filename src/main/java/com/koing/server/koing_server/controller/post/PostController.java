@@ -6,6 +6,7 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.post.PostService;
 import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
+import com.koing.server.koing_server.service.post.dto.post.PostLikeRequestDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -75,6 +76,29 @@ public class PostController {
         LOGGER.info("[PostController] Post 리스트 조회 성공");
 
         return postsGetResponse;
+    }
+
+    @ApiOperation("Post - Post 좋아요를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Post - Post 좋아요 수정 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 404, message = "해당 게시글을 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PatchMapping("/like")
+    public SuperResponse pressLikePost(PostLikeRequestDto postLikeRequestDto) {
+        LOGGER.info("[PostController] Post 좋아요 수정 시도");
+        SuperResponse postPressLikeResponse;
+        try {
+            postPressLikeResponse = postService.pressLikePost(postLikeRequestDto);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] Post 좋아요 수정 성공");
+
+        return postPressLikeResponse;
     }
 
 }

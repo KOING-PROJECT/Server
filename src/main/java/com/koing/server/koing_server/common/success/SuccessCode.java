@@ -123,6 +123,7 @@ public enum SuccessCode {
     ADMIN_TOUR_REJECTION_SUCCESS(CREATED, "admin : 투어 거절 성공입니다."),
     POST_CREATE_SUCCESS(CREATED, "post : 게시글 작성 성공입니다."),
     COMMENT_CREATE_SUCCESS(CREATED, "post : 댓글 작성 성공입니다."),
+    POST_PRESS_LIKE_SUCCESS(CREATED, "post : 게시글 좋아요 수정 성공입니다."),
 
     /**
      * 202 ACCEPTED

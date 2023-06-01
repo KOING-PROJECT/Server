@@ -17,6 +17,7 @@ import com.koing.server.koing_server.domain.post.repository.PostRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
+import com.koing.server.koing_server.service.post.dto.post.PostLikeRequestDto;
 import com.koing.server.koing_server.service.post.dto.post.PostListResponseDto;
 import com.koing.server.koing_server.service.post.dto.post.PostResponseDto;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
@@ -90,6 +91,26 @@ public class PostService {
         return SuccessResponse.success(SuccessCode.GET_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
     }
 
+    @Transactional
+    public SuperResponse pressLikePost(PostLikeRequestDto postLikeRequestDto) {
+
+        LOGGER.info("[PostService] Post 조회 시도");
+
+        Post post = getPost(postLikeRequestDto.getPostId());
+
+        User user = getUser(postLikeRequestDto.getUserId());
+
+        if (post.getLikedUsers().contains(user)) {
+            post.deleteLikedUser(user);
+        }
+        else {
+            post.addLikedUser(user);
+        }
+
+        Post savedPost = postRepository.save(post);
+
+        return SuccessResponse.success(SuccessCode.POST_PRESS_LIKE_SUCCESS, null);
+    }
 
 
     private void uploadPhotos(Post post, List<String> postPhotoOrders, List<String> uploadedPostPhotoUrls, List<MultipartFile> multipartFiles) {
@@ -164,6 +185,16 @@ public class PostService {
         }
 
         return user;
+    }
+
+    private Post getPost(Long postId) {
+        Post post = postRepositoryImpl.findPostByPostId(postId);
+
+        if (post == null) {
+            throw new NotFoundException("해당 게시글을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_POST_EXCEPTION);
+        }
+
+        return post;
     }
 
 

@@ -78,4 +78,32 @@ public class Post extends AuditingTimeEntity {
         user.getCreatePosts().remove(this);
     }
 
+    public void addLikedUser(User user) {
+        if (this.likedUsers == null) {
+            this.likedUsers = new HashSet<>();
+        }
+
+        if (!this.likedUsers.contains(user)) {
+            this.likedUsers.add(user);
+        }
+
+        if (user.getLikePosts() == null) {
+            user.setLikePosts(new HashSet<>());
+        }
+
+        if (!user.getLikePosts().contains(this)) {
+            user.getLikePosts().add(this);
+        }
+    }
+
+    public void deleteLikedUser(User user) {
+        if (this.likedUsers.contains(user)) {
+            this.likedUsers.remove(user);
+        }
+
+        if (user.getLikePosts().contains(this)) {
+            user.getLikePosts().remove(this);
+        }
+    }
+
 }
