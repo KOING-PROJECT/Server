@@ -24,4 +24,6 @@ public interface UserRepositoryCustom {
 
     List<User> findWithdrawalUsers();
 
+    User findLikePostByUserLikedPost(Long userId);
+
 }

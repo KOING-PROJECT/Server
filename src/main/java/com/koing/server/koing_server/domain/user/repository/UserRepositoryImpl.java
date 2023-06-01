@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import static com.koing.server.koing_server.domain.payment.QPayment.payment;
 import static com.koing.server.koing_server.domain.post.QComment.comment1;
+import static com.koing.server.koing_server.domain.post.QPost.post;
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
@@ -199,6 +200,19 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 )
                 .distinct()
                 .fetch();
+    }
+
+    @Override
+    public User findLikePostByUserLikedPost(Long userId) {
+        return jpqlQueryFactory
+                .selectFrom(user)
+                .leftJoin(user.likePosts, post)
+                .fetchJoin()
+                .where(
+                        user.id.eq(userId)
+                )
+                .distinct()
+                .fetchOne();
     }
 
 }

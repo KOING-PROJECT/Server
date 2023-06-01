@@ -30,7 +30,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -94,7 +96,7 @@ public class PostService {
     @Transactional
     public SuperResponse pressLikePost(PostLikeRequestDto postLikeRequestDto) {
 
-        LOGGER.info("[PostService] Post 조회 시도");
+        LOGGER.info("[PostService] Post 좋아요 수정 시도");
 
         Post post = getPost(postLikeRequestDto.getPostId());
 
@@ -109,7 +111,47 @@ public class PostService {
 
         Post savedPost = postRepository.save(post);
 
+        LOGGER.info("[PostService] Post 좋아요 수정 성공");
+
         return SuccessResponse.success(SuccessCode.POST_PRESS_LIKE_SUCCESS, null);
+    }
+
+    @Transactional
+    public SuperResponse getMyPosts(Long userId) {
+
+        LOGGER.info("[PostService] 생성한 post 리스트 조회 시도");
+
+        List<Post> createPosts = postRepositoryImpl.findPostByUserId(userId);
+
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        for (Post post : createPosts) {
+            postResponseDtos.add(new PostResponseDto(post));
+        }
+
+        LOGGER.info("[PostService] 생성한 post 리스트 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_CREATE_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
+    }
+
+    @Transactional
+    public SuperResponse getLikePosts(Long userId) {
+
+        LOGGER.info("[PostService] 좋아요 누른 post 리스트 조회 시도");
+
+        User user = userRepositoryImpl.findLikePostByUserLikedPost(userId);
+
+        List<Post> likedPost = user.getLikePosts().stream().sorted((p1, p2) -> p1.getCreatedAt().compareTo(p2.getCreatedAt())).collect(Collectors.toList());
+
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        for (Post post : likedPost) {
+            postResponseDtos.add(new PostResponseDto(post));
+        }
+
+        LOGGER.info("[PostService] 좋아요 누른 post 리스트 조회 성공");
+
+        return SuccessResponse.success(SuccessCode.GET_LIKE_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
     }
 
 

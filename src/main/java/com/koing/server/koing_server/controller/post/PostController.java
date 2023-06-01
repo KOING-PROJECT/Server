@@ -86,7 +86,7 @@ public class PostController {
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/like")
-    public SuperResponse pressLikePost(PostLikeRequestDto postLikeRequestDto) {
+    public SuperResponse pressLikePost(@RequestBody PostLikeRequestDto postLikeRequestDto) {
         LOGGER.info("[PostController] Post 좋아요 수정 시도");
         SuperResponse postPressLikeResponse;
         try {
@@ -99,6 +99,50 @@ public class PostController {
         LOGGER.info("[PostController] Post 좋아요 수정 성공");
 
         return postPressLikeResponse;
+    }
+
+    @ApiOperation("Post - 생성한 post 리스트를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Post - 생성한 post 리스트 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/{userId}")
+    public SuperResponse getCreatedPosts(@PathVariable("userId") Long userId) {
+        LOGGER.info("[PostController] 생성한 post 리스트 조회 시도");
+        SuperResponse getMyPostResponse;
+        try {
+            getMyPostResponse = postService.getMyPosts(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] 생성한 post 리스트 조회 성공");
+
+        return getMyPostResponse;
+    }
+
+    @ApiOperation("Post - 좋아요 누른 post 리스트를 가져옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Post - 좋아요 누른 post 리스트 조회 성공"),
+            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/like/{userId}")
+    public SuperResponse getLikedPosts(@PathVariable("userId") Long userId) {
+        LOGGER.info("[PostController] 좋아요 누른 post 리스트 조회 시도");
+        SuperResponse getLikedPostResponse;
+        try {
+            getLikedPostResponse = postService.getLikePosts(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] 좋아요 누른 post 리스트 조회 성공");
+
+        return getLikedPostResponse;
     }
 
 }

@@ -54,4 +54,19 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .distinct()
                 .fetchOne() != null;
     }
+
+    @Override
+    public List<Post> findPostByUserId(Long userId) {
+        return jpqlQueryFactory
+                .selectFrom(post)
+                .leftJoin(post.createUser, user)
+                .fetchJoin()
+                .leftJoin(post.comments, comment1)
+                .fetchJoin()
+                .where(
+                        post.createUser.id.eq(userId)
+                )
+                .distinct()
+                .fetch();
+    }
 }

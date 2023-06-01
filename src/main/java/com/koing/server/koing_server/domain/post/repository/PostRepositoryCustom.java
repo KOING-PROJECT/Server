@@ -12,4 +12,6 @@ public interface PostRepositoryCustom {
 
     boolean checkExistPostByPostId(Long postId);
 
+    List<Post> findPostByUserId(Long userId);
+
 }
