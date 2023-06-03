@@ -77,18 +77,33 @@ public class PostService {
     }
 
     @Transactional
-    public SuperResponse getPosts() {
+    public SuperResponse getPosts(Long userId) {
         LOGGER.info("[PostService] Post 조회 시도");
 
         List<Post> posts = postRepositoryImpl.findAllPosts();
 
+        User loginUser = getUser(userId);
+
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
         for (Post post : posts) {
-            postResponseDtos.add(new PostResponseDto(post));
+            postResponseDtos.add(new PostResponseDto(post, loginUser));
         }
 
         LOGGER.info("[PostService] Post 조회 성공");
+
+        if (loginUser.getUserOptionalInfo() != null) {
+            if (loginUser.getUserOptionalInfo().getImageUrls() != null && loginUser.getUserOptionalInfo().getImageUrls().size() > 0) {
+
+                return SuccessResponse.success(
+                        SuccessCode.GET_POSTS_SUCCESS,
+                        new PostListResponseDto(
+                                loginUser.getUserOptionalInfo().getImageUrls().get(0),
+                                postResponseDtos
+                        )
+                );
+            }
+        }
 
         return SuccessResponse.success(SuccessCode.GET_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
     }
@@ -123,10 +138,12 @@ public class PostService {
 
         List<Post> createPosts = postRepositoryImpl.findPostByUserId(userId);
 
+        User loginUser = getUser(userId);
+
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
         for (Post post : createPosts) {
-            postResponseDtos.add(new PostResponseDto(post));
+            postResponseDtos.add(new PostResponseDto(post, loginUser));
         }
 
         LOGGER.info("[PostService] 생성한 post 리스트 조회 성공");
@@ -146,7 +163,7 @@ public class PostService {
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
         for (Post post : likedPost) {
-            postResponseDtos.add(new PostResponseDto(post));
+            postResponseDtos.add(new PostResponseDto(post, user));
         }
 
         LOGGER.info("[PostService] 좋아요 누른 post 리스트 조회 성공");

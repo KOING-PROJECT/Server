@@ -62,12 +62,12 @@ public class PostController {
             @ApiResponse(code = 200, message = "Post - Post 리스트 조회 성공"),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @GetMapping("")
-    public SuperResponse getPosts() {
+    @GetMapping("/{userId}")
+    public SuperResponse getPosts(@PathVariable("userId") Long userId) {
         LOGGER.info("[PostController] Post 리스트 조회 시도");
         SuperResponse postsGetResponse;
         try {
-            postsGetResponse = postService.getPosts();
+            postsGetResponse = postService.getPosts(userId);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
@@ -107,7 +107,7 @@ public class PostController {
             @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
             @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
     })
-    @GetMapping("/{userId}")
+    @GetMapping("/create/{userId}")
     public SuperResponse getCreatedPosts(@PathVariable("userId") Long userId) {
         LOGGER.info("[PostController] 생성한 post 리스트 조회 시도");
         SuperResponse getMyPostResponse;

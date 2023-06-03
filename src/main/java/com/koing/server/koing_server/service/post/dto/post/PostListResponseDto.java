@@ -9,10 +9,17 @@ import java.util.List;
 @NoArgsConstructor
 public class PostListResponseDto {
 
-    public PostListResponseDto(List<PostResponseDto> posts) {
+    public PostListResponseDto(String loginUserImage, List<PostResponseDto> posts) {
+        this.loginUserImage = loginUserImage;
         this.posts = posts;
     }
 
+    public PostListResponseDto(List<PostResponseDto> posts) {
+        this.loginUserImage = null;
+        this.posts = posts;
+    }
+
+    private String loginUserImage;
     private List<PostResponseDto> posts;
 
 }

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class PostResponseDto {
 
-    public PostResponseDto(Post post) {
+    public PostResponseDto(Post post, User loginUser) {
         this.postId = post.getId();
 
         if (post.getCreateUser().getUserOptionalInfo() != null) {
@@ -28,22 +28,27 @@ public class PostResponseDto {
             }
         }
 
-        this.userGrade = getUserGrade(post.getCreateUser());
+        getUserRoleAndUserGrade(post.getCreateUser());
         this.writeUserName = post.getCreateUser().getName();
         this.createdDate = createdAtFormatting(post.getCreatedAt());
         this.postPhotos = getPostPhotoUrls(post);
         this.postContent = post.getContent();
+        this.tags = post.getTags();
+        this.checkLike = checkLike(post, loginUser);
         this.likeCount = post.getLikedUsers().size();
         this.commentCount = post.getComments().size();
     }
 
     private Long postId;
     private String writeUserImage;
+    private String userRole;
     private String userGrade;
     private String writeUserName;
     private String createdDate;
     private List<String> postPhotos;
     private String postContent;
+    private List<String> tags;
+    private boolean checkLike;
     private int likeCount;
     private int commentCount;
 
@@ -67,12 +72,23 @@ public class PostResponseDto {
         return postPhotoUrls;
     }
 
-    private String getUserGrade(User createUser) {
+    private void getUserRoleAndUserGrade(User createUser) {
         if (createUser.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
-            return createUser.getGuideGrade().getGrade();
+            this.userRole = UserRole.ROLE_GUIDE.getRole();
+            this.userGrade = createUser.getGuideGrade().getGrade();
         }
         else {
-            return createUser.getTouristGrade().getGrade();
+            this.userRole = UserRole.ROLE_TOURIST.getRole();
+            this.userGrade = createUser.getTouristGrade().getGrade();
+        }
+    }
+
+    private boolean checkLike(Post post, User loginUser) {
+        if (post.getLikedUsers().contains(loginUser)) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
