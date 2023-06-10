@@ -12,6 +12,7 @@ import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.post.Comment;
 import com.koing.server.koing_server.domain.post.Post;
+import com.koing.server.koing_server.domain.report.Report;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
 import lombok.*;
@@ -209,6 +210,12 @@ public class User extends AuditingTimeEntity {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "likedUsers")
     private Set<Post> likePosts;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reportUser")
+    private Set<Report> reporting;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reportedUser")
+    private Set<Report> reported;
 
 //    소셜 로그인시 사용
 //    private SocialInfo socialInfo;
