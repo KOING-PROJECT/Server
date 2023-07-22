@@ -13,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,6 +33,9 @@ public class UserTouristMyPageDto {
         this.likeTours = createTourLikeDtos(user);
         this.tourHistories = createTourHistoryDtos(user, today);
         this.touristGrade = user.getTouristGrade();
+        this.country = user.getCountry();
+        this.age = calculateAge(user.getBirthDate());
+        this.gender = user.getGender().getGender();
     }
 
     private String touristName;
@@ -44,6 +48,9 @@ public class UserTouristMyPageDto {
     private String job;
     private String universityName;
     private String company;
+    private String country;
+    private int age;
+    private String gender;
 
     private List<UserFollowDto> createUserFollowDtos(User user) {
         List<User> followingUsers = user.getFollowing().stream().collect(Collectors.toList());
@@ -110,4 +117,25 @@ public class UserTouristMyPageDto {
         }
     }
 
+    private int calculateAge(String brithDay) {
+        String[] yearMonthDay = brithDay.split("/");
+
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
+
+        int age = year - Integer.parseInt(yearMonthDay[0]);
+
+        if (Integer.parseInt(yearMonthDay[1]) > month) {
+            age -= 1;
+        }
+        else if (Integer.parseInt(yearMonthDay[1]) == month) {
+            if (Integer.parseInt(yearMonthDay[2]) >=  day) {
+                age -= 1;
+            }
+        }
+
+        return age;
+    }
 }

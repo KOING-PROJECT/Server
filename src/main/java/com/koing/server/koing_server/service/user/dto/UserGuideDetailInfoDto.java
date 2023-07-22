@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +34,9 @@ public class UserGuideDetailInfoDto {
         this.isFollowing = checkFollowing(guide, loginUser);
         this.otherTours = createOtherTours(guide, tour);
         this.guideGrade = guide.getGuideGrade();
+        this.country = guide.getCountry();
+        this.age = calculateAge(guide.getBirthDate());
+        this.gender = guide.getGender().getGender();
     }
 
     private String guideName;
@@ -48,6 +52,9 @@ public class UserGuideDetailInfoDto {
     private String job;
     private String universityName;
     private String company;
+    private String country;
+    private int age;
+    private String gender;
 
     private boolean checkFollowing(User guide, User loginUser) {
         return loginUser.getFollowing().contains(guide);
@@ -85,4 +92,25 @@ public class UserGuideDetailInfoDto {
         }
     }
 
+    private int calculateAge(String brithDay) {
+        String[] yearMonthDay = brithDay.split("/");
+
+        LocalDate today = LocalDate.now();
+        int year = today.getYear();
+        int month = today.getMonthValue();
+        int day = today.getDayOfMonth();
+
+        int age = year - Integer.parseInt(yearMonthDay[0]);
+
+        if (Integer.parseInt(yearMonthDay[1]) > month) {
+            age -= 1;
+        }
+        else if (Integer.parseInt(yearMonthDay[1]) == month) {
+            if (Integer.parseInt(yearMonthDay[2]) >=  day) {
+                age -= 1;
+            }
+        }
+
+        return age;
+    }
 }
