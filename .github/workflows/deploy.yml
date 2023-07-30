@@ -27,8 +27,8 @@ jobs:
         run: chmod +x ./gradlew
         shell: bash
 
-      - name: Build and Test
-        run: ./gradlew build test
+      - name: Build
+        run: ./gradlew build
       
 # --------------------------추가      
       - name: Make Zip File
