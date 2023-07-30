@@ -25,7 +25,5 @@ echo "> Jar Name: $JAR_NAME"
 echo "> $JAR_NAME에 실행권한 추가"
 chmod +x $JAR_NAME
 
-ls
-cd koing_server
 echo "> $JAR_NAME 실행"
-nohup java -jar KOING_server-0.0.1-SNAPSHOT-boot.jar &
+nohup java -jar $JAR_NAME &
