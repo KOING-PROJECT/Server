@@ -139,7 +139,7 @@
       <recent name="com.koing.server.koing_server.common.exception" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.KoingServerApplication">
+  <component name="RunManager" selected="Gradle.Server [wrapper]">
     <configuration name="Server [compileQuerydsl]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -182,6 +182,27 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="Server [wrapper]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="wrapper" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
     <configuration name="KoingServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="KOING_server.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.koing.server.koing_server.KoingServerApplication" />
@@ -191,6 +212,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Server [wrapper]" />
         <item itemvalue="Gradle.Server [compileQuerydsl]" />
         <item itemvalue="Gradle.Server [querydslClasses]" />
       </list>
@@ -209,13 +231,10 @@
       <workItem from="1669278961972" duration="515000" />
       <workItem from="1669279523130" duration="11555000" />
       <workItem from="1669812920462" duration="14404000" />
-<<<<<<< HEAD
       <workItem from="1670076869351" duration="22066000" />
-=======
       <workItem from="1670076869351" duration="17734000" />
       <workItem from="1670172156803" duration="14443000" />
       <workItem from="1670310756050" duration="5491000" />
->>>>>>> tour_model
     </task>
     <servers />
   </component>
