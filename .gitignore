@@ -1,6 +1,5 @@
 #### application.yml ###
-application.yml
-application.properties
+application.*
 #./src/main/resources/import.sql
 
 HELP.md
