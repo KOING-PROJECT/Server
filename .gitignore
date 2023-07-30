@@ -5,7 +5,7 @@ application-local.yml
 #./src/main/resources/import.sql
 
 HELP.md
-#.gradle
+.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
