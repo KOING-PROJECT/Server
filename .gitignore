@@ -1,5 +1,6 @@
 #### application.yml ###
-application.*
+application-dev.*
+application-local.*
 #./src/main/resources/import.sql
 
 HELP.md
