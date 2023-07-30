@@ -1,0 +1,111 @@
+spring:
+  profiles:
+    active: local
+
+  servlet:
+    multipart:
+      maxFileSize: 50MB
+      maxRequestSize: 50MB
+  devtools:
+    livereload:
+      enabled: 'true'
+## h2 DB
+#  h2:
+#    console:
+#      enabled: true
+#
+#  datasource:
+#    url: jdbc:h2:~/test
+#
+#  jpa:
+#    defer-datasource-initialization: true # version up 으로 인한 추가(h2 db)
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#    generate-ddl: true # 자동으로 db table 생성(mysql)
+#    hibernate:
+#      ddl-auto: create-drop # 임베이디드 db 사용할 경우 자동으로 create-drop으로 설정 (mysql)
+#    # create -> 실행 전에 drop하고 create / create-drop -> create 하고 종료시 drop
+#    # update -> schema에 적용 / validate -> schema 하고 내용 다르면 오류 발생
+#  ###
+
+# mysql DB
+  datasource:
+    ## aws 배포
+    url: jdbc:mysql://koingserver1datebase.cgu47khukeq0.ap-northeast-2.rds.amazonaws.com:3306/koing?createDatabaseIfNotExist=true
+    ## local 환경
+#    url: jdbc:mysql://localhost:3306/koing?createDatabaseIfNotExist=true
+    username: admin
+    password: Kkoing1234!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#  sql:
+#    init:
+#      mode: always # db 초기화, import.sql 읽고 실행 (mysql)
+#      # 초기 db 이름을 schema.sql 로 하면 hibernate: ddl-auto: create-drop과 충돌하여 create-drop 실행 X
+#      # import.sql 일 경우는 충돌하지 않아서 둘다실행
+
+  jpa:
+    show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: false
+    generate-ddl: true
+    properties:
+      show_sql: true
+      hibernate:
+        format_sql: true
+        ddl-auto: update
+
+  redis:
+    host: localhost
+    port: 6379
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+    credentials:
+      access-key: AKIAQ4RPXCPK2MX6J65C
+      secret-key: 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
+    s3:
+      bucket: koing-server1-s3
+
+email:
+  properties:
+    email: kkoing.official@gmail.com
+    password: zcrhzahgttuoibld
+
+account:
+  privacy:
+    secret: z'kdwh!2ja2$aia{
+    vector: ln%9!*@[s+wo3jp2
+
+iamport:
+  imp:
+    key: 0428352841086548
+    secret: 1R6P0fX7wTUcTDavkxor6ISgvKTpsd3eUc98TWhdaxdUxTs7JbUhZrM7YfpdC5tW9iEAmXYLt7Ugp5pn
+
+logging:
+  level:
+    com:
+      azurealstn:
+        codespringweb:
+          mapper: TRACE
+    root: info
+
+naver:
+  cloud:
+    platform:
+      service:
+        id: ncp:sms:kr:302133616007:koing
+      secret-key: l3D5SYkoLoz5b6YAcC7kPPuQs6qNxWqxxXkCQnhb
+      access-key: Ta3qBszLp3v3OKJCsN9c
+      from-phone-number: 01071931623
+      
+springboot:
+  jwt:
+    secret: se#ko*INg@cREtKEYTKOhIIIINiNNGsVERRRRSER!
