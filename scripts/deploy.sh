@@ -1,10 +1,10 @@
 #!/bin/bash
 
-REPOSITORY=/build/libs
+REPOSITORY=/home/ec2-user/koing_server
 PROJECT_NAME=KOING_server-0.0.1-SNAPSHOT-boot
 
 echo "> Build 파일 복사"
-cp $REPOSITORY/zip/*.jar $REPOSITORY/
+cp $REPOSITORY/build/libs/$PROJECT_NAME.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 CURRENT_PID=$(pgrep -fl $PROJECT_NAME | grep jar | awk '{print $1}')
