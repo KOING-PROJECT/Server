@@ -3,8 +3,6 @@ name: Build and Deploy Spring Boot to AWS EC2
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
     
 # --------------------------추가
 env:
@@ -25,7 +23,7 @@ jobs:
         with:
           java-version: 11
 
-      - name: Permission for gradlew
+      - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
 
