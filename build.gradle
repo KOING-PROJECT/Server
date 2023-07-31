@@ -83,6 +83,9 @@ dependencies {
     // s3
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+    // portOne
+    implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
+
     //JUnit4 추가
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude group: "org.hamcrest", module: "hamcrest-core"
@@ -120,4 +123,10 @@ compileQuerydsl{
 
 configurations {
     querydsl.extendsFrom compileClasspath
+}
+
+allprojects {
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }

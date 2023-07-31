@@ -31,6 +31,16 @@ public class Swagger3Config {
     }
 
     @Bean
+    public GroupedOpenApi openApiV2() {
+        String[] paths = {"/v2/**"};
+
+        return GroupedOpenApi.builder()
+                .group("V2 API")
+                .pathsToMatch(paths)
+                .build();
+    }
+
+    @Bean
     public OpenAPI openAPI(){
         SecurityScheme securityScheme = new SecurityScheme()
                 .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
