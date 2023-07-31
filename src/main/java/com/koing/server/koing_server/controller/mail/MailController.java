@@ -7,10 +7,10 @@ import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.mail.MailService;
 import com.koing.server.koing_server.service.mail.dto.MailSendDto;
 import com.koing.server.koing_server.service.sign.dto.SignInTemporaryPasswordDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,20 +19,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "Mail")
-@RequestMapping("/mail")
+@Tag(name = "Mail", description = "Mail API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/mail")
 public class MailController {
 
     private final Logger LOGGER = (Logger) LoggerFactory.getLogger(MailController.class);
     private final MailService mailService;
 
-    @ApiOperation("MailSend : 인증메일을 보냅니다.")
+    @Operation(description = "MailSend : 인증메일을 보냅니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "mail-send : 인증메일 전송 성공"),
-            @ApiResponse(code = 401, message = "DB처리 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "mail-send : 인증메일 전송 성공"),
+            @ApiResponse(responseCode = "401", description = "DB처리 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse sendMail(@RequestBody MailSendDto mailSendDto) {
@@ -52,11 +52,11 @@ public class MailController {
     }
 
 
-    @ApiOperation("MailSend : 임시 비밀번호를 발급합니다.")
+    @Operation(description = "MailSend : 임시 비밀번호를 발급합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "mail-send : 임시 비밀번호 발급성공"),
-            @ApiResponse(code = 401, message = "DB처리 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "mail-send : 임시 비밀번호 발급성공"),
+            @ApiResponse(responseCode = "401", description = "DB처리 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/temporary-password")
     public SuperResponse createTemporaryPasswordMail(@RequestBody SignInTemporaryPasswordDto signInTemporaryPasswordDto) {

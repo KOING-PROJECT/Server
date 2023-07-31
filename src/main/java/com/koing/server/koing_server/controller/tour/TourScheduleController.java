@@ -7,33 +7,33 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.tour.TourScheduleService;
 import com.koing.server.koing_server.service.tour.dto.TourScheduleCreateDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "TourSchedule")
-@RequestMapping("/tour-schedule")
+@Tag(name = "TourSchedule", description = "TourSchedule API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/tour-schedule")
 public class TourScheduleController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TourScheduleController.class);
     private final TourScheduleService tourScheduleService;
 
-    @ApiOperation("TourSchedule - 투어 스케줄을 생성합니다.")
+    @Operation(description = "TourSchedule - 투어 스케줄을 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourSchedule - 투어 스케줄 생성 성공"),
-            @ApiResponse(code = 401, message = "토큰이 없습니다."),
-            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourSchedule - 투어 스케줄 생성 성공"),
+            @ApiResponse(responseCode = "401", description = "토큰이 없습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createTourSchedule(@RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
@@ -56,15 +56,15 @@ public class TourScheduleController {
     }
 
 
-    @ApiOperation("TourSchedule - 생성 중인 투어 스케줄을 임시 저장 생성합니다.")
+    @Operation(description = "TourSchedule - 생성 중인 투어 스케줄을 임시 저장 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 임시 저장 성공"),
-            @ApiResponse(code = 401, message = "토큰이 없습니다."),
-            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "TourSchedule - 투어 스케줄 임시 저장 성공"),
+            @ApiResponse(responseCode = "401", description = "토큰이 없습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/temporary")
     public SuperResponse createTemporaryTourSchedule(@RequestBody TourScheduleCreateDto tourScheduleCreateDto) {
@@ -87,11 +87,11 @@ public class TourScheduleController {
     }
 
 
-    @ApiOperation("TourSchedule - 투어 스케줄을 update 합니다.(완성 tourSchedule 혹은 임시저장 tourSchedule를 업데이트)")
+    @Operation(description = "TourSchedule - 투어 스케줄을 update 합니다.(완성 tourSchedule 혹은 임시저장 tourSchedule를 업데이트)")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 update 성공"),
-            @ApiResponse(code = 404, message = "해당 tourSchedule이 존재하지 않습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "TourSchedule - 투어 스케줄 update 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 tourSchedule이 존재하지 않습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/{tourId}")
     public SuperResponse updateTourSchedule(
@@ -114,11 +114,11 @@ public class TourScheduleController {
     }
 
 
-    @ApiOperation("TourSchedule - 투어 스케줄을 complete 합니다.(임시저장 tourSchedule를 완성)")
+    @Operation(description = "TourSchedule - 투어 스케줄을 complete 합니다.(임시저장 tourSchedule를 완성)")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "TourSchedule - 투어 스케줄 complete 성공"),
-            @ApiResponse(code = 404, message = "해당 tourSchedule이 존재하지 않습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "TourSchedule - 투어 스케줄 complete 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 tourSchedule이 존재하지 않습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/complete/{tourId}")
     public SuperResponse completeTourSchedule(

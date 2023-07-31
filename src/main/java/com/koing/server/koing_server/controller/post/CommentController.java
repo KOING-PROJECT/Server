@@ -5,38 +5,32 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.post.CommentService;
-import com.koing.server.koing_server.service.post.PostService;
 import com.koing.server.koing_server.service.post.dto.comment.CommentCreateDto;
-import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
-@Api(tags = "Post")
-@RequestMapping("/comment")
+@Tag(name = "Post", description = "Post API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/comment")
 public class CommentController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
     private final CommentService commentService;
 
-    @ApiOperation("Comment - comment를 작성합니다.")
+    @Operation(description = "Comment - comment를 작성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Comment - comment 작성 성공"),
-            @ApiResponse(code = 402, message = "Comment 저장과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 게시글을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Comment - comment 작성 성공"),
+            @ApiResponse(responseCode = "402", description = "Comment 저장과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 게시글을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createComment(@RequestBody CommentCreateDto commentCreateDto) {
@@ -56,11 +50,11 @@ public class CommentController {
         return commentCreateResponse;
     }
 
-    @ApiOperation("Comment - comment 리스트를 조회합니다.")
+    @Operation(description = "Comment - comment 리스트를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Comment - comment 리스트 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 게시글을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Comment - comment 리스트 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 게시글을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/{postId}")
     public SuperResponse getComments(@PathVariable("postId") Long postId) {

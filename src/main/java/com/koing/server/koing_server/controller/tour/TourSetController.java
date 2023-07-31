@@ -1,52 +1,50 @@
 package com.koing.server.koing_server.controller.tour;
 
 import com.koing.server.koing_server.common.dto.ErrorResponse;
-import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
-import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
-import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.service.tour.*;
-import com.koing.server.koing_server.service.tour.dto.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import com.koing.server.koing_server.service.tour.dto.TourSetCreateDto;
+import com.koing.server.koing_server.service.tour.dto.TourSurveyCreateDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Api(tags = "TourSet")
-@RequestMapping("/tour-set")
+
+@Tag(name = "TourSet", description = "TourSet API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/tour-set")
 public class TourSetController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TourSetController.class);
     private final TourSetService tourSetService;
     private final TourService tourService;
 
-    @ApiOperation("TourSet - 임시 투어 세트를 생성 합니다.")
+    @Operation(description = "TourSet - 임시 투어 세트를 생성 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourSet - 임시 투어 세트를 생성 성공"),
-            @ApiResponse(code = 402, message = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 설문 생성에 실패했습니다."),
-            @ApiResponse(code = 402, message = "투어 설문 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourSet - 임시 투어 세트를 생성 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 설문 생성에 실패했습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 설문 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "이미지 저장 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping(value = "/temporary",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -71,18 +69,18 @@ public class TourSetController {
     }
 
 
-    @ApiOperation("TourSet - 임시 투어 세트를 완성 합니다.")
+    @Operation(description = "TourSet - 임시 투어 세트를 완성 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourSet - 임시 투어 세트를 완성 성공"),
-            @ApiResponse(code = 402, message = "투어 완성과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "투어 스케줄 완성과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "투어 설문 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 스케줄을 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 설문을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourSet - 임시 투어 세트를 완성 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 완성과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 스케줄 완성과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 설문 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 스케줄을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 설문을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/complete/{tourId}")
     public SuperResponse completeTemporaryTourSet(
@@ -109,18 +107,18 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 투어, 투어 스케줄, 투어 설문, 투어 신청서를 생성 합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "TourSet - 투어, 투어 스케줄, 투어 설문, 투어 신청서 생성 성공"),
-//            @ApiResponse(code = 402, message = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 설문 생성에 실패했습니다."),
-//            @ApiResponse(code = 402, message = "투어에 투어 설문 업데이트를 실패했습니다."),
-//            @ApiResponse(code = 402, message = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 201, description = "TourSet - 투어, 투어 스케줄, 투어 설문, 투어 신청서 생성 성공"),
+//            @description(responseCode = 402, description = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 설문 생성에 실패했습니다."),
+//            @description(responseCode = 402, description = "투어에 투어 설문 업데이트를 실패했습니다."),
+//            @description(responseCode = 402, description = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "탈퇴했거나 존재하지 않는 유저입니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PostMapping(value = "",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -200,18 +198,18 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 투어, 투어 스케줄, 투어 설문, 투어 신청서를 업데이트 합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Tour - 투어, 투어 스케줄, 투어 설문, 투어 신청서 업데이트 성공"),
-//            @ApiResponse(code = 402, message = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 설문 업데이트에 실패했습니다."),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 스케줄을 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 설문을 찾을 수 없습니다."),
-//            @ApiResponse(code = 406, message = "해당 투어의 생성자가 아닙니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 200, description = "Tour - 투어, 투어 스케줄, 투어 설문, 투어 신청서 업데이트 성공"),
+//            @description(responseCode = 402, description = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 설문 업데이트에 실패했습니다."),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 스케줄을 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 설문을 찾을 수 없습니다."),
+//            @description(responseCode = 406, description = "해당 투어의 생성자가 아닙니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PatchMapping(value = "/{tourId}",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -311,17 +309,17 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 투어, 투어 스케줄, 투어 설문을 임시 저장합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "Tour - 투어, 투어 스케줄, 투어 설문 임시 저장 성공"),
-//            @ApiResponse(code = 402, message = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 설문 생성에 실패했습니다."),
-//            @ApiResponse(code = 402, message = "투어에 투어 설문 업데이트를 실패했습니다."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 201, description = "Tour - 투어, 투어 스케줄, 투어 설문 임시 저장 성공"),
+//            @description(responseCode = 402, description = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 설문 생성에 실패했습니다."),
+//            @description(responseCode = 402, description = "투어에 투어 설문 업데이트를 실패했습니다."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "탈퇴했거나 존재하지 않는 유저입니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PostMapping(value = "/temporary/tour-survey",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -390,15 +388,15 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 투어, 투어 스케줄을 임시 저장합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 201, message = "Tour - 투어, 투어 스케줄 임시 저장 성공"),
-//            @ApiResponse(code = 402, message = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 201, description = "Tour - 투어, 투어 스케줄 임시 저장 성공"),
+//            @description(responseCode = 402, description = "투어 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "탈퇴했거나 존재하지 않는 유저입니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PostMapping(value = "/temporary/tour-schedule",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -454,17 +452,17 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 임시 저장한 투어, 투어 스케줄, 투어 설문을 update 합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Tour - 임시 저장한 투어, 투어 스케줄, 투어 설문 update 성공"),
-//            @ApiResponse(code = 402, message = "투어 설문 업데이트에 실패했습니다."),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 스케줄을 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 설문을 찾을 수 없습니다."),
-//            @ApiResponse(code = 406, message = "해당 투어의 생성자가 아닙니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 200, description = "Tour - 임시 저장한 투어, 투어 스케줄, 투어 설문 update 성공"),
+//            @description(responseCode = 402, description = "투어 설문 업데이트에 실패했습니다."),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 스케줄을 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 설문을 찾을 수 없습니다."),
+//            @description(responseCode = 406, description = "해당 투어의 생성자가 아닙니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PatchMapping(value = "/temporary/tour-survey/{tourId}",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -531,15 +529,15 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 임시 저장한 투어, 투어 스케줄을 update 합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Tour - 임시 저장한 투어, 투어 스케줄 update 성공"),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 스케줄을 찾을 수 없습니다."),
-//            @ApiResponse(code = 406, message = "해당 투어의 생성자가 아닙니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 200, description = "Tour - 임시 저장한 투어, 투어 스케줄 update 성공"),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 스케줄을 찾을 수 없습니다."),
+//            @description(responseCode = 406, description = "해당 투어의 생성자가 아닙니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PatchMapping(value = "/temporary/tour-schedule/{tourId}",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -591,18 +589,18 @@ public class TourSetController {
 //
 //    @ApiOperation("TourSet - 임시 저장한 투어, 투어 스케줄, 투어 설문을 완성하고 투어 신청서를 생성합니다.")
 //    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Tour - 임시 저장한 투어, 투어 스케줄, 투어 설문을 완성하고 투어 신청서 생성 성공"),
-//            @ApiResponse(code = 402, message = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 설문 업데이트에 실패했습니다."),
-//            @ApiResponse(code = 402, message = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-//            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 스케줄을 찾을 수 없습니다."),
-//            @ApiResponse(code = 404, message = "해당 투어 설문을 찾을 수 없습니다."),
-//            @ApiResponse(code = 406, message = "해당 투어의 생성자가 아닙니다."),
-//            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+//            @description(responseCode = 200, description = "Tour - 임시 저장한 투어, 투어 스케줄, 투어 설문을 완성하고 투어 신청서 생성 성공"),
+//            @description(responseCode = 402, description = "투어 신청서 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 설문 업데이트에 실패했습니다."),
+//            @description(responseCode = 402, description = "투어 세부 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 스케줄 생성 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+//            @description(responseCode = 402, description = "이미지 저장 과정에서 오류가 발생했습니다."),
+//            @description(responseCode = 404, description = "해당 투어를 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 스케줄을 찾을 수 없습니다."),
+//            @description(responseCode = 404, description = "해당 투어 설문을 찾을 수 없습니다."),
+//            @description(responseCode = 406, description = "해당 투어의 생성자가 아닙니다."),
+//            @description(responseCode = 500, description = "예상치 못한 서버 에러가 발생했습니다.")
 //    })
 //    @PatchMapping(value = "/complete/{tourId}",
 //            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -680,12 +678,12 @@ public class TourSetController {
 //    }
 //
 //
-    @ApiOperation("TourSet - 이어서 만들 투어를 가져옵니다.")
+    @Operation(description = "TourSet - 이어서 만들 투어를 가져옵니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "TourSet - 이어서 만들 투어 가져오기 성공"),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "존재하지 않는 페이지 입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "TourSet - 이어서 만들 투어 가져오기 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 페이지 입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/temporary/{tourId}")
     public SuperResponse getTemporaryTour(

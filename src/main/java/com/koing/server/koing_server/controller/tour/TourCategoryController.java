@@ -3,29 +3,29 @@ package com.koing.server.koing_server.controller.tour;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.service.tour.TourCategoryService;
 import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "TourCategory")
-@RequestMapping("/tour-category")
+@Tag(name = "TourCategory", description = "TourCategory API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/tour-category")
 public class TourCategoryController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TourCategoryController.class);
     private final TourCategoryService tourCategoryService;
 
 
-    @ApiOperation("TourCategories - 투어 카테고리 리스트를 조회합니다.")
+    @Operation(description = "TourCategories - 투어 카테고리 리스트를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "TourCategories - 투어 카테고리 리스트 조회 성공"),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "TourCategories - 투어 카테고리 리스트 조회 성공"),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("")
     public SuperResponse getTourCategories() {
@@ -36,11 +36,11 @@ public class TourCategoryController {
     }
 
 
-    @ApiOperation("TourCategory - 투어 카테고리를 생성합니다.")
+    @Operation(description = "TourCategory - 투어 카테고리를 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourCategory - 투어 카테고리 생성 성공"),
-            @ApiResponse(code = 402, message = "투어 카테고리 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourCategory - 투어 카테고리 생성 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 카테고리 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createTourCategory(@RequestBody TourCategoryCreateDto tourCategoryCreateDto) {

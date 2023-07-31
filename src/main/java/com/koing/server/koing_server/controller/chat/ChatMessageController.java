@@ -10,17 +10,13 @@ import com.koing.server.koing_server.domain.Greeting;
 import com.koing.server.koing_server.domain.HelloMessage;
 import com.koing.server.koing_server.service.chat.ChatMessageService;
 import com.koing.server.koing_server.service.chat.dto.ChatMessageSendDto;
-import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.util.HtmlUtils;
 
 //@Api(tags = "ChatMessage")

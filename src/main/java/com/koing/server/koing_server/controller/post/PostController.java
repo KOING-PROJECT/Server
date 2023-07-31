@@ -7,10 +7,10 @@ import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.post.PostService;
 import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
 import com.koing.server.koing_server.service.post.dto.post.PostLikeRequestDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,22 +20,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Api(tags = "Post")
-@RequestMapping("/post")
+@Tag(name = "Post", description = "Post API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/post")
 public class PostController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
     private final PostService postService;
 
-    @ApiOperation("Post - Post를 작성합니다.")
+    @Operation(description = "Post - Post를 작성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Post - Post 작성 성공"),
-            @ApiResponse(code = 402, message = "Post 저장과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "게시글 사진 저장 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Post - Post 작성 성공"),
+            @ApiResponse(responseCode = "402", description = "Post 저장과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "게시글 사진 저장 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping(value = "",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -57,10 +57,10 @@ public class PostController {
         return postCreateResponse;
     }
 
-    @ApiOperation("Post - Post 리스트를 조회합니다.")
+    @Operation(description = "Post - Post 리스트를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Post - Post 리스트 조회 성공"),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "Post - Post 리스트 조회 성공"),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/{userId}")
     public SuperResponse getPosts(@PathVariable("userId") Long userId) {
@@ -78,12 +78,12 @@ public class PostController {
         return postsGetResponse;
     }
 
-    @ApiOperation("Post - Post 좋아요를 수정합니다.")
+    @Operation(description = "Post - Post 좋아요를 수정합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Post - Post 좋아요 수정 성공"),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 게시글을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Post - Post 좋아요 수정 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 게시글을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/like")
     public SuperResponse pressLikePost(@RequestBody PostLikeRequestDto postLikeRequestDto) {
@@ -101,11 +101,11 @@ public class PostController {
         return postPressLikeResponse;
     }
 
-    @ApiOperation("Post - 생성한 post 리스트를 가져옵니다.")
+    @Operation(description = "Post - 생성한 post 리스트를 가져옵니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Post - 생성한 post 리스트 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "Post - 생성한 post 리스트 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/create/{userId}")
     public SuperResponse getCreatedPosts(@PathVariable("userId") Long userId) {
@@ -123,11 +123,11 @@ public class PostController {
         return getMyPostResponse;
     }
 
-    @ApiOperation("Post - 좋아요 누른 post 리스트를 가져옵니다.")
+    @Operation(description = "Post - 좋아요 누른 post 리스트를 가져옵니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Post - 좋아요 누른 post 리스트 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "Post - 좋아요 누른 post 리스트 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/like/{userId}")
     public SuperResponse getLikedPosts(@PathVariable("userId") Long userId) {

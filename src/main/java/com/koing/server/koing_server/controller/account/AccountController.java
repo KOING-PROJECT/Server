@@ -7,32 +7,32 @@ import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.controller.review.ReviewController;
 import com.koing.server.koing_server.service.account.AccountService;
 import com.koing.server.koing_server.service.account.dto.AccountCreateDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "Account")
-@RequestMapping("/account")
+@Tag(name = "Account", description = "Account API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/account")
 public class AccountController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ReviewController.class);
     private final AccountService accountService;
 
-    @ApiOperation("Account - 계좌 정보를 생성합니다.")
+    @Operation(description = "Account - 계좌 정보를 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Account - 계좌 정보 생성 성공"),
-            @ApiResponse(code = 402, message = "계좌 생성 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 406, message = "해당 유저의 계좌 정보가 이미 존재합니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Account - 계좌 정보 생성 성공"),
+            @ApiResponse(responseCode = "402", description = "계좌 생성 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "406", description = "해당 유저의 계좌 정보가 이미 존재합니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createAccount(@RequestBody AccountCreateDto accountCreateDto) {
@@ -51,11 +51,11 @@ public class AccountController {
     }
 
 
-    @ApiOperation("Account - 계좌 정보를 조회합니다.")
+    @Operation(description = "Account - 계좌 정보를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Account - 계좌 정보 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 유저의 계좌 정보를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "200", description = "Account - 계좌 정보 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 유저의 계좌 정보를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/{userId}")
     public SuperResponse getAccountInfo(@PathVariable("userId") Long userId) {
@@ -73,13 +73,13 @@ public class AccountController {
         return accountGetResponse;
     }
 
-    @ApiOperation("Account - 계좌 정보를 업데이트 합니다.")
+    @Operation(description = "Account - 계좌 정보를 업데이트 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Account - 계좌 정보 업데이트 성공"),
-            @ApiResponse(code = 402, message = "계좌 업데이트 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 404, message = "해당 유저의 계좌 정보를 찾을 수 없습니다."),
-            @ApiResponse(code = 406, message = "수정할 계좌 정보가 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Account - 계좌 정보 업데이트 성공"),
+            @ApiResponse(responseCode = "402", description = "계좌 업데이트 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 유저의 계좌 정보를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "406", description = "수정할 계좌 정보가 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("")
     public SuperResponse updateAccount(@RequestBody AccountCreateDto accountCreateDto) {
@@ -98,5 +98,4 @@ public class AccountController {
 
         return accountUpdateResponse;
     }
-
 }

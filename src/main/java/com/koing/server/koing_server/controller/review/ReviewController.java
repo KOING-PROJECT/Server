@@ -7,11 +7,10 @@ import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.service.review.ReviewService;
 import com.koing.server.koing_server.service.review.dto.ReviewToGuideCreateDto;
 import com.koing.server.koing_server.service.review.dto.ReviewToTouristCreateDto;
-import com.koing.server.koing_server.service.sign.dto.SignUpSetCreateDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,23 +20,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@Api(tags = "Review")
-@RequestMapping("/review")
+@Tag(name = "Review", description = "Review API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/review")
 public class ReviewController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ReviewController.class);
     private final ReviewService reviewService;
 
-    @ApiOperation("Review - ReviewToGuide를 작성합니다.")
+    @Operation(description = "Review - ReviewToGuide를 작성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Review - ReviewToGuide 작성 성공"),
-            @ApiResponse(code = 402, message = "ReviewToGuide 저장과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "이미지 저장 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Review - ReviewToGuide 작성 성공"),
+            @ApiResponse(responseCode = "402", description = "ReviewToGuide 저장과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "이미지 저장 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping(value = "/guide",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
@@ -60,14 +59,14 @@ public class ReviewController {
     }
 
 
-    @ApiOperation("Review - ReviewToTourist를 작성합니다.")
+    @Operation(description = "Review - ReviewToTourist를 작성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Review - ReviewToTourist 작성 성공"),
-            @ApiResponse(code = 402, message = "ReviewToTourist 저장과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "투어 신청 내용 업데이트 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 404, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청 내용을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Review - ReviewToTourist 작성 성공"),
+            @ApiResponse(responseCode = "402", description = "ReviewToTourist 저장과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 신청 내용 업데이트 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청 내용을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/tourist")
     public SuperResponse reviewToTourist(@RequestBody ReviewToTouristCreateDto reviewToTouristCreateDto) {
@@ -86,11 +85,11 @@ public class ReviewController {
     }
 
 
-    @ApiOperation("Review - Guide가 리뷰를 작성할 투어리스트를 조회합니다.(날짜 형식을 20221225 이런 식으로 줘야합니다)")
+    @Operation(description = "Review - Guide가 리뷰를 작성할 투어리스트를 조회합니다.(날짜 형식을 20221225 이런 식으로 줘야합니다)")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Review - Guide가 리뷰를 작성할 투어리스트를 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 투어 신청 내용을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Review - Guide가 리뷰를 작성할 투어리스트를 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청 내용을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/guide/{tourId}/{tourDate}")
     public SuperResponse getGuideMyPageReviewList(
@@ -114,11 +113,11 @@ public class ReviewController {
     }
 
 
-    @ApiOperation("Review - Guide가 보낸 리뷰, 받은 리뷰를 조회합니다.")
+    @Operation(description = "Review - Guide가 보낸 리뷰, 받은 리뷰를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Review - Guide가 보낸 리뷰, 받은 리뷰를 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 투어 신청 내용을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Review - Guide가 보낸 리뷰, 받은 리뷰를 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청 내용을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/guide/{tourId}/{tourDate}/{touristId}")
     public SuperResponse getGuideMyPageReviews(
@@ -143,11 +142,11 @@ public class ReviewController {
     }
 
 
-    @ApiOperation("Review - Tourist가 보낸 리뷰, 받은 리뷰를 조회합니다.")
+    @Operation(description = "Review - Tourist가 보낸 리뷰, 받은 리뷰를 조회합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "Review - Tourist가 보낸 리뷰, 받은 리뷰를 조회 성공"),
-            @ApiResponse(code = 404, message = "해당 투어 신청 내용을 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "Review - Tourist가 보낸 리뷰, 받은 리뷰를 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청 내용을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/tourist/{tourId}/{tourDate}/{userId}")
     public SuperResponse getTouristMyPageReviews(

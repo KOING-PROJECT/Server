@@ -2,12 +2,12 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.google.common.collect.Sets;
 import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
 import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 @Entity
 @Getter
@@ -19,7 +19,7 @@ public class TourCategory extends AuditingTimeEntity {
 
     public TourCategory(TourCategoryCreateDto tourCategoryCreateDto) {
         this.categoryName = tourCategoryCreateDto.getCategoryName();
-        this.detailTypes = Sets.newHashSet(tourCategoryCreateDto.getDetailTypes());
+        this.detailTypes = new HashSet<>(tourCategoryCreateDto.getDetailTypes());
     }
 
     @Id

@@ -4,36 +4,35 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
-import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.service.tour.TourApplicationService;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationCancelDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationCreateDto;
 import com.koing.server.koing_server.service.tour.dto.TourApplicationParticipateDto;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
-@Api(tags = "TourApplication")
-@RequestMapping("/tour-application")
+@Tag(name = "TourApplication", description = "TourApplication API 입니다.")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/tour-application")
 public class TourApplicationController {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TourApplicationController.class);
     private final TourApplicationService tourApplicationService;
 
-    @ApiOperation("TourApplication - 투어 신청서를 생성합니다.")
+    @Operation(description = "TourApplication - 투어 신청서를 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어 신청서 생성 성공"),
-            @ApiResponse(code = 402, message = "투어 카테고리 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어 신청서 생성 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 카테고리 생성과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("")
     public SuperResponse createTourApplication(@RequestBody TourApplicationCreateDto tourApplicationCreateDto) {
@@ -51,18 +50,18 @@ public class TourApplicationController {
         return createTourApplicationResponse;
     }
 
-    @ApiOperation("TourApplication - 투어를 신청합니다.")
+    @Operation(description = "TourApplication - 투어를 신청합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어 신청 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 406, message = "해당 투어의 정원을 초과했습니다."),
-            @ApiResponse(code = 406, message = "이미 신청한 팀이 있는 투어입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어 신청 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 신청 내역 생성 과정에서 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "406", description = "해당 투어의 정원을 초과했습니다."),
+            @ApiResponse(responseCode = "406", description = "이미 신청한 팀이 있는 투어입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PostMapping("/participate")
     public SuperResponse participateTour(@RequestBody TourApplicationParticipateDto tourApplicationParticipateDto) {
@@ -83,16 +82,16 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 신청한 투어를 취소합니다.")
+    @Operation(description = "TourApplication - 신청한 투어를 취소합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어 취소 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 402, message = "유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어 취소 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "투어 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "402", description = "유저 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @DeleteMapping("/cancel")
     public SuperResponse cancelTour(@RequestBody TourApplicationCancelDto tourApplicationCancelDto) {
@@ -113,12 +112,12 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 투어 신청서 리스트를 가져옵니다.")
+    @Operation(description = "TourApplication - 투어 신청서 리스트를 가져옵니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어 신청서 리스트 조회 성공"),
-            @ApiResponse(code = 402, message = "해당 유저를 찾을 수 없습니다."),
-            @ApiResponse(code = 402, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어 신청서 리스트 조회 성공"),
+            @ApiResponse(responseCode = "402", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "402", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/{userId}")
     public SuperResponse getTourApplications(@PathVariable("userId") Long userId) {
@@ -138,11 +137,11 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 투어에 참가하는 투어리스트 리스트를 가져옵니다. (날짜 형식을 20221225 이런 식으로 줘야합니다)")
+    @Operation(description = "TourApplication - 투어에 참가하는 투어리스트 리스트를 가져옵니다. (날짜 형식을 20221225 이런 식으로 줘야합니다)")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어에 참가하는 투어리스트 리스트를 조회 성공"),
-            @ApiResponse(code = 402, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어에 참가하는 투어리스트 리스트를 조회 성공"),
+            @ApiResponse(responseCode = "402", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("/participants/{tourId}/{tourDate}")
     public SuperResponse getTourApplicationParticipants(
@@ -165,14 +164,14 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 가이드가 시작 버튼을 누릅니다.")
+    @Operation(description = "TourApplication - 가이드가 시작 버튼을 누릅니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 가이드 시작 버튼 클릭 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 가이드 시작 버튼 클릭 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/start/guide/{tourId}/{today}")
     public SuperResponse guidePressTourStart(
@@ -193,14 +192,14 @@ public class TourApplicationController {
         return guidePressTourStartResponse;
     }
 
-    @ApiOperation("TourApplication - 투어리스트가 시작 버튼을 누릅니다.")
+    @Operation(description = "TourApplication - 투어리스트가 시작 버튼을 누릅니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어리스트 시작 버튼 클릭 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어리스트 시작 버튼 클릭 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/start/tourist/{tourId}/{tourDate}/{touristId}")
     public SuperResponse touristPressTourStart(
@@ -222,14 +221,14 @@ public class TourApplicationController {
         return touristPressTourStartResponse;
     }
 
-    @ApiOperation("TourApplication - 투어를 시작 합니다.")
+    @Operation(description = "TourApplication - 투어를 시작 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어 시작 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어 시작 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/start/tour/{tourId}/{tourDate}")
     public SuperResponse checkTourStart(
@@ -251,14 +250,14 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 가이드가 종료 버튼을 누릅니다.")
+    @Operation(description = "TourApplication - 가이드가 종료 버튼을 누릅니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 가이드 종료 버튼 클릭 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 가이드 종료 버튼 클릭 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/end/guide/{tourId}")
     public SuperResponse guidePressTourEnd(
@@ -279,14 +278,14 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 투어리스트가 종료 버튼을 누릅니다.")
+    @Operation(description = "TourApplication - 투어리스트가 종료 버튼을 누릅니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어리스트 시작 버튼 클릭 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어리스트 시작 버튼 클릭 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/end/tourist/{tourId}/{tourDate}/{touristId}")
     public SuperResponse touristPressTourEnd(
@@ -309,14 +308,14 @@ public class TourApplicationController {
     }
 
 
-    @ApiOperation("TourApplication - 투어를 종료 합니다.")
+    @Operation(description = "TourApplication - 투어를 종료 합니다.")
     @ApiResponses(value = {
-            @ApiResponse(code = 201, message = "TourApplication - 투어 종료 성공"),
-            @ApiResponse(code = 402, message = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
-            @ApiResponse(code = 404, message = "해당 투어를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "해당 투어 신청서를 찾을 수 없습니다."),
-            @ApiResponse(code = 404, message = "탈퇴했거나 존재하지 않는 유저입니다."),
-            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+            @ApiResponse(responseCode = "201", description = "TourApplication - 투어 종료 성공"),
+            @ApiResponse(responseCode = "402", description = "투어 신청서 업데이트 과정에서 오류가 발생했습니다. 다시 시도해 주세요."),
+            @ApiResponse(responseCode = "404", description = "해당 투어를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "해당 투어 신청서를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "404", description = "탈퇴했거나 존재하지 않는 유저입니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @PatchMapping("/end/tour/{tourId}/{tourDate}")
     public SuperResponse checkTourEnd(
