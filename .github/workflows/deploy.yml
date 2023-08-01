@@ -24,7 +24,7 @@ jobs:
           java-version: 11
 
       - run: touch ./src/main/resources/application.yml
-      - run: echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+      - run: echo "${{ secrets.APPLICATION2 }}" > ./src/main/resources/application.yml
       - run: cat ./src/main/resources/application.yml
 
       - name: Grant execute permission for gradlew
@@ -55,11 +55,4 @@ jobs:
                 --deployment-config-name CodeDeployDefault.AllAtOnce
                 --deployment-group-name $DEPLOYMENT_GROUP_NAME 
                 --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.KOING_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.KOING_AWS_PRIVATE_ACCESS_KEY }}
-          aws-region: ap-northeast-2
 # --------------------------추가
