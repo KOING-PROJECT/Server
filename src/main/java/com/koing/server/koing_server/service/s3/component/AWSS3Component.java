@@ -24,19 +24,10 @@ public class AWSS3Component {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${cloud.aws.credentials.access-key}")
-    private String accessKey;
-
-    @Value("${cloud.aws.credentials.secret-key}")
-    private String secretKey;
-
     private final AmazonS3Client amazonS3Client;
     private final Logger LOGGER = LoggerFactory.getLogger(AWSS3Component.class);
 
     public String convertAndUploadFiles(MultipartFile multipartFile, String s3DirName) throws IOException {
-        System.out.println("bucketbucketbucketbucketbucket" + bucket);
-        System.out.println("bucketbucketbucketbucketbucket" + accessKey);
-        System.out.println("bucketbucketbucketbucketbucket" + secretKey);
         File uploadFile = convertFile(multipartFile)
                 .orElseThrow(() -> new FileConvertException("파일 변환과정에서 오류가 발생했습니다."));
 //                .orElseThrow();
