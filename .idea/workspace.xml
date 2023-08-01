@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c4e9905d-89d0-46bd-a303-ca5550330416" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/scripts/deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/deploy.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/s3/component/AWSS3Component.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/service/s3/component/AWSS3Component.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -261,7 +262,7 @@
       <workItem from="1690713254563" duration="326000" />
       <workItem from="1690714452174" duration="2897000" />
       <workItem from="1690852172500" duration="29000" />
-      <workItem from="1690869967518" duration="12771000" />
+      <workItem from="1690869967518" duration="13530000" />
     </task>
     <servers />
   </component>
