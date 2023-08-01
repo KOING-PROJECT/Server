@@ -49,15 +49,17 @@ jobs:
       - name: Upload to S3
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
-      - name: Unset AWS creds
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          persist-credentials: false
-
       - name: Code Deploy To EC2 instance
         run: aws deploy create-deployment 
                 --application-name $CODE_DEPLOY_APP_NAME 
                 --deployment-config-name CodeDeployDefault.AllAtOnce
                 --deployment-group-name $DEPLOYMENT_GROUP_NAME 
                 --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.KOING_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.KOING_AWS_PRIVATE_ACCESS_KEY }}
+          aws-region: ap-northeast-2
 # --------------------------추가
