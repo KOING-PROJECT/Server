@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/koing_server
-PROJECT_NAME=KOING_server-0.0.1-SNAPSHOT-boot.jar
+PROJECT_NAME=KOING_server-0.0.1-SNAPSHOT-boot
 
 echo "> Build 파일 복사"
 cp $REPOSITORY/build/libs/$PROJECT_NAME $REPOSITORY/
