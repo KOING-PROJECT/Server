@@ -25,5 +25,6 @@ echo "> Jar Name: $JAR_NAME"
 echo "> $JAR_NAME에 실행권한 추가"
 chmod +x $JAR_NAME
 
-echo "> $JAR_NAME 실행"
-nohup java -jar -Dspring.profiles.active=dev $JAR_NAME /dev/null 2> /dev/null < /dev/null &
+cd /home/ec2-user/koing_server
+echo "> $PROJECT_NAME 실행"
+nohup java -jar $PROJECT_NAME.jar /dev/null 2> /dev/null < /dev/null &
