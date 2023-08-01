@@ -653,6 +653,8 @@ public class TourService {
                     }
 //                    thumbnails.add(awss3Component.convertAndUploadFiles(multipartFile, "tour/thumbnail"));
                 } catch (IOException ioException) {
+                    System.out.println(ioException.getMessage());
+                    System.out.println(ioException.getStackTrace());
                     throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
                 }
             }
