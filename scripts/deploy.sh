@@ -4,7 +4,7 @@ REPOSITORY=/home/ec2-user/koing_server
 PROJECT_NAME=KOING_server-0.0.1-SNAPSHOT-boot
 
 echo "> Build 파일 복사"
-cp $REPOSITORY/build/libs/$PROJECT_NAME $REPOSITORY/
+cp $REPOSITORY/build/libs/$PROJECT_NAME.jar $REPOSITORY/
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 CURRENT_PID=$(pgrep -fl $PROJECT_NAME | awk '{print $1}')
@@ -26,4 +26,4 @@ echo "> $JAR_NAME에 실행권한 추가"
 chmod +x $JAR_NAME
 
 echo "> $JAR_NAME 실행"
-nohup java -jar $JAR_NAME &
+nohup java -jar $JAR_NAME /dev/null 2> /dev/null < /dev/null &
