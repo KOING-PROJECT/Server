@@ -61,6 +61,9 @@ public class SMSService {
     @Value("${naver.cloud.platform.from-phone-number}")
     private String fromPhoneNumber;
 
+    @Value("${sms.verify.admin.certification-number}")
+    private String adminCertificationNumber;
+
     public SuperResponse sendSMS(SMSRequestDto smsRequestDto) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
 
         LOGGER.info("[SMSService] 인증번호 전송 시도");
@@ -151,16 +154,22 @@ public class SMSService {
 
         SMS sms = smsRepositoryImpl.findSMSByTargetPhoneNumber(targetPhoneNumber);
 
-        if (!sms.getCertificationNumber().equals(certificationNumber)) {
-            throw new UnAuthorizedException("인증번호가 일치하지 않습니다.", ErrorCode.UNAUTHORIZED_CERTIFICATION_NUMBER_EXCEPTION);
+        if (smsVerifyDto.getCertificationNumber().equals(adminCertificationNumber)) {
+            sms.setCertificationNumber(adminCertificationNumber);
+            LOGGER.info("[SMSService] Admin certificationNumber로 인증 확인");
         }
-        LOGGER.info("[SMSService] 인증번호 일치 확인");
+        else {
+            if (!sms.getCertificationNumber().equals(certificationNumber)) {
+                throw new UnAuthorizedException("인증번호가 일치하지 않습니다.", ErrorCode.UNAUTHORIZED_CERTIFICATION_NUMBER_EXCEPTION);
+            }
+            LOGGER.info("[SMSService] 인증번호 일치 확인");
 
-        if(!LocalDateTime.now().isBefore(sms.getUpdatedAt().plusMinutes(3))) {
-            // 유효기간 만료된 인증번호
-            throw new UnAuthorizedException("인증번호가 만료되었습니다. 휴대폰 인증을 다시 요청해주세요.", ErrorCode.UNAUTHORIZED_CERTIFICATION_NUMBER_EXPIRE_EXCEPTION);
+            if(!LocalDateTime.now().isBefore(sms.getUpdatedAt().plusMinutes(3))) {
+                // 유효기간 만료된 인증번호
+                throw new UnAuthorizedException("인증번호가 만료되었습니다. 휴대폰 인증을 다시 요청해주세요.", ErrorCode.UNAUTHORIZED_CERTIFICATION_NUMBER_EXPIRE_EXCEPTION);
+            }
+            LOGGER.info("[SMSService] 인증번호가 만료되지 않음을 확인");
         }
-        LOGGER.info("[SMSService] 인증번호가 만료되지 않음을 확인");
 
         sms.setVerified(true);
         SMS updatedSMS = smsRepository.save(sms);
