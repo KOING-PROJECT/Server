@@ -16,6 +16,9 @@ if [ -z $IS_GREEN  ];then # blue라면
   echo "1. make green container and run"
   sudo docker run -d --name koing-green -p 8080:8080 winners192/koing
 
+  echo "2. reload nginx"
+  sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
+  sudo nginx -s rel
 
   while [ 1 = 1 ]; do
   echo "3. green health check..."
@@ -27,10 +30,6 @@ if [ -z $IS_GREEN  ];then # blue라면
             break ;
             fi
   done;
-
-  echo "4. reload nginx"
-  sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
-  sudo nginx -s rel
 
   echo "5. stop blue container"
 #  docker-compose stop blue
@@ -51,6 +50,10 @@ else
   echo "1. make blue container and run"
   sudo docker run -d --name koing-blue -p 8081:8080 winners192/koing
 
+  echo "2. reload nginx"
+  sudo cp /etc/nginx/nginx.blue.conf /etc/nginx/nginx.conf
+  sudo nginx -s reload
+
   while [ 1 = 1 ]; do
     echo "3. blue health check..."
     sleep 3
@@ -61,10 +64,6 @@ else
       break ;
     fi
   done;
-
-  echo "4. reload nginx"
-  sudo cp /etc/nginx/nginx.blue.conf /etc/nginx/nginx.conf
-  sudo nginx -s reload
 
   echo "5. stop green container"
 #  docker-compose stop blue
