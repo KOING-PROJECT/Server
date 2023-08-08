@@ -106,6 +106,7 @@ jobs:
         key: ${{ secrets.KOING_PRIVATE_KEY }}
         script: |
           sudo docker pull ${{ secrets.DOCKER_USERNAME }}/koing
+          cd script
           chmod 777 ./deploy.sh
           ./deploy.sh
           docker image prune -f
