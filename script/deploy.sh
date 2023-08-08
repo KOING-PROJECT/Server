@@ -54,7 +54,7 @@ else
   while [ 1 = 1 ]; do
     echo "3. blue health check..."
     sleep 3
-    REQUEST=$(curl http://3.34.182.215:8081) # blue로 request
+    REQUEST=$(curl http://3.34.182.215:8080) # blue로 request
 
     if [ -n "$REQUEST" ]; then # 서비스 가능하면 health check 중지
       echo "health check success"
