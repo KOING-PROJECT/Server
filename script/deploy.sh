@@ -14,11 +14,13 @@ if [ -z $IS_GREEN  ];then # blue라면
 #  echo "2. green container up"
 #  docker-compose up -d green # green 컨테이너 실행
 
-  echo "1. get green image"
-  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml pull green
+#  echo "1. get green image"
+#  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml pull green
+#
+#  echo "2. green container up"
+#  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml up -d green
 
-  echo "2. green container up"
-  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml up -d green
+  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml up -d --build
 
   while [ 1 = 1 ]; do
   echo "3. green health check..."
@@ -36,7 +38,10 @@ if [ -z $IS_GREEN  ];then # blue라면
   sudo nginx -s rel
 
   echo "5. blue container down"
-  docker-compose stop blue
+#  docker-compose stop blue
+  sudo docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yml down
+  sudo docker image prune -af
+
 else
   echo "### GREEN => BLUE ###"
 
@@ -46,11 +51,13 @@ else
 #  echo "2. blue container up"
 #  docker-compose up -d blue
 
-  echo "1. get green image"
-  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.blue.yml pull blue
+#  echo "1. get green image"
+#  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.blue.yml pull blue
+#
+#  echo "2. green container up"
+#  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.blue.yml up -d blue
 
-  echo "2. green container up"
-  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.blue.yml up -d blue
+  sudo docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yml up -d --build
 
   while [ 1 = 1 ]; do
     echo "3. blue health check..."
@@ -68,5 +75,7 @@ else
   sudo nginx -s reload
 
   echo "5. green container down"
-  docker-compose stop green
+#  docker-compose stop green
+  sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml down
+  sudo docker image prune -af
 fi
