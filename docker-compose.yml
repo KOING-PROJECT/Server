@@ -1,0 +1,17 @@
+version: '3'
+
+  green:
+    container_name: koing_green
+    image: winners192/koing
+    ports:
+      - "8080:8080"  # green은 8080 포트를 열어줍니다.
+    environment:
+      - TZ=Asia/Seoul
+
+  blue:
+    container_name: koing_blue
+    image: winners192/koing
+    ports:
+      - "8081:8080"  #blue는 8081 포트를 열어줍니다.
+    environment:
+      - TZ=Asia/Seoul
