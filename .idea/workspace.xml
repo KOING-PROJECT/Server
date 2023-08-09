@@ -5,11 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c4e9905d-89d0-46bd-a303-ca5550330416" name="Changes" comment="">
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/config/swagger/Swagger3Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/config/swagger/Swagger3Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/payment/PaymentV2Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/koing/server/koing_server/controller/payment/PaymentV2Controller.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+>>>>>>> master
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,6 +54,12 @@
                 <item name="KOING_server" type="f1a62948:ProjectNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="build setup" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="KOING_server" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="documentation" type="c8890929:TasksNode$1" />
               </path>
             </expand>
             <select />
@@ -115,8 +125,10 @@
   "keyToString": {
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelOrder2": "2",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+    "RequestMappingsPanelWidth2": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -124,6 +136,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "spring.configuration.checksum": "29d4185d2cbb667880bed5d56723ee48",
     "vue.rearranger.settings.migration": "true"
@@ -131,8 +144,8 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\SonMinGyu\KOING\Server\src" />
       <recent name="C:\Users\SonMinGyu\KOING\Server" />
+      <recent name="C:\Users\SonMinGyu\KOING\Server\src" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\SonMinGyu\KOING\Server\src\main\resources" />
@@ -236,8 +249,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.Server [wrapper]" />
         <item itemvalue="Gradle.Server [bootJar]" />
+        <item itemvalue="Gradle.Server [wrapper]" />
         <item itemvalue="Gradle.Server [compileQuerydsl]" />
         <item itemvalue="Gradle.Server [querydslClasses]" />
       </list>
@@ -261,9 +274,25 @@
       <workItem from="1670172156803" duration="14443000" />
       <workItem from="1670310756050" duration="5491000" />
       <workItem from="1690713254563" duration="326000" />
+<<<<<<< HEAD
       <workItem from="1690714452174" duration="3385000" />
       <workItem from="1690777964321" duration="815000" />
       <workItem from="1690784300268" duration="11472000" />
+=======
+      <workItem from="1690714452174" duration="2897000" />
+      <workItem from="1690852172500" duration="29000" />
+      <workItem from="1690869967518" duration="15294000" />
+      <workItem from="1690887799786" duration="4578000" />
+      <workItem from="1690894206180" duration="650000" />
+      <workItem from="1691127826904" duration="2270000" />
+      <workItem from="1691131699813" duration="2452000" />
+      <workItem from="1691329213121" duration="1484000" />
+      <workItem from="1691390400183" duration="19000" />
+      <workItem from="1691403823400" duration="2028000" />
+      <workItem from="1691406104770" duration="791000" />
+      <workItem from="1691467169716" duration="15648000" />
+      <workItem from="1691559674157" duration="887000" />
+>>>>>>> master
     </task>
     <servers />
   </component>

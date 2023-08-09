@@ -58,6 +58,9 @@ public class TourSetController {
         try {
             temporaryTourSetCreateResponse = tourSetService.createTemporaryTourSet(tourSetCreateDto, thumbnails);
         } catch (BoilerplateException boilerplateException) {
+            System.out.println(boilerplateException.getStackTrace());
+            System.out.println(boilerplateException.getMessage());
+            System.out.println(boilerplateException.getLocalizedMessage());
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
