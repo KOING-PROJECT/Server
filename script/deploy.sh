@@ -18,7 +18,7 @@ if [ -z $IS_GREEN  ];then # blue라면
 
   echo "2. reload nginx"
   sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
-  sudo nginx -s rel
+  sudo nginx -s reload
 
   while [ 1 = 1 ]; do
   echo "3. green health check..."
@@ -37,6 +37,8 @@ if [ -z $IS_GREEN  ];then # blue라면
 
   echo "6. remove blue container"
   sudo docker rm koing-blue
+
+  echo
 
 else
   echo "### GREEN => BLUE ###"
