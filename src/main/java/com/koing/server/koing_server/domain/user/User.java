@@ -34,11 +34,10 @@ import java.util.stream.Collectors;
 public class User extends AuditingTimeEntity {
 
     @Builder
-    public User(String email, String password
-            , String phoneNumber, String name, String birthDate
-            , String country, GenderType gender, int age,
-                boolean enabled, double attachment,
-                Set<String> roles,
+    public User(String email, String password,
+                String phoneNumber, String name,
+                String country, boolean enabled,
+                double attachment, Set<String> roles,
                 UserOptionalInfo userOptionalInfo,
                 Set<TourParticipant> tourParticipants,
                 Set<Tour> createTours,
@@ -49,16 +48,13 @@ public class User extends AuditingTimeEntity {
                 Set<Post> createPosts,
                 Set<Post> likePosts,
                 Set<Comment> createComments
-                ) {
+    ) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.name = name;
-        this.birthDate = birthDate;
         this.country = country;
         this.roles = roles;
-        this.gender = gender;
-        this.age = age;
         this.enabled = enabled;
         this.attachment = attachment;
         this.guideGrade = null;
@@ -103,23 +99,13 @@ public class User extends AuditingTimeEntity {
     @Column(length = 30, nullable = false)
     private String name;
 
-    @Column(length = 20, nullable = false)
-    private String birthDate;
-
     @Column(length = 50, nullable = false)
     private String country;
 
-//    @Builder.Default
+    //    @Builder.Default
     @ElementCollection(fetch = FetchType.LAZY)
     @Column(length = 20, nullable = false, name = "roles")
     private Set<String> roles;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender")
-    private GenderType gender;
-
-    @Column
-    private int age;
 
     @Column
     private boolean enabled;
@@ -225,8 +211,7 @@ public class User extends AuditingTimeEntity {
     public void pressFollow(User targetUser) {
         if (this.following == null || !(this.following.contains(targetUser))) {
             addFollow(targetUser);
-        }
-        else {
+        } else {
             deleteFollow(targetUser);
         }
     }

@@ -54,6 +54,8 @@ public class SignSetController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
+            System.out.println(exception);
+            System.out.println(exception.getMessage());
             return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
         }
         LOGGER.info("[SignController] 회원가입 성공");

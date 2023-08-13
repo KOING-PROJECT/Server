@@ -30,11 +30,7 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> accumulatedReportedCount = createNumber("accumulatedReportedCount", Integer.class);
 
-    public final NumberPath<Integer> age = createNumber("age", Integer.class);
-
     public final NumberPath<Double> attachment = createNumber("attachment", Double.class);
-
-    public final StringPath birthDate = createString("birthDate");
 
     public final SetPath<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment> buyPayments = this.<com.koing.server.koing_server.domain.payment.Payment, com.koing.server.koing_server.domain.payment.QPayment>createSet("buyPayments", com.koing.server.koing_server.domain.payment.Payment.class, com.koing.server.koing_server.domain.payment.QPayment.class, PathInits.DIRECT2);
 
@@ -62,8 +58,6 @@ public class QUser extends EntityPathBase<User> {
     public final SetPath<User, QUser> follower = this.<User, QUser>createSet("follower", User.class, QUser.class, PathInits.DIRECT2);
 
     public final SetPath<User, QUser> following = this.<User, QUser>createSet("following", User.class, QUser.class, PathInits.DIRECT2);
-
-    public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
 
     public final EnumPath<com.koing.server.koing_server.common.enums.GuideGrade> guideGrade = createEnum("guideGrade", com.koing.server.koing_server.common.enums.GuideGrade.class);
 

@@ -29,14 +29,14 @@ public class UserGuideDetailInfoDto {
             this.language = guide.getUserOptionalInfo().getLanguages();
             this.area = guide.getUserOptionalInfo().getAreas();
             setJobAndUnivAndCompany(guide);
+            this.ageRange = guide.getUserOptionalInfo().getAgeRange();
+            this.gender = guide.getUserOptionalInfo().getGender().getGender();
         }
         this.attachment = guide.getAttachment();
         this.isFollowing = checkFollowing(guide, loginUser);
         this.otherTours = createOtherTours(guide, tour);
         this.guideGrade = guide.getGuideGrade();
         this.country = guide.getCountry();
-        this.age = calculateAge(guide.getBirthDate());
-        this.gender = guide.getGender().getGender();
     }
 
     private String guideName;
@@ -49,11 +49,11 @@ public class UserGuideDetailInfoDto {
     private Set<String> area;
     private GuideGrade guideGrade;
     private Set<TourLikeDto> otherTours;
+    private String ageRange;
     private String job;
     private String universityName;
     private String company;
     private String country;
-    private int age;
     private String gender;
 
     private boolean checkFollowing(User guide, User loginUser) {

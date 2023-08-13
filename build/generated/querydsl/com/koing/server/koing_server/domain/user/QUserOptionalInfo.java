@@ -22,11 +22,15 @@ public class QUserOptionalInfo extends EntityPathBase<UserOptionalInfo> {
 
     public static final QUserOptionalInfo userOptionalInfo = new QUserOptionalInfo("userOptionalInfo");
 
+    public final StringPath ageRange = createString("ageRange");
+
     public final SetPath<String, StringPath> areas = this.<String, StringPath>createSet("areas", String.class, StringPath.class, PathInits.DIRECT2);
 
     public final StringPath company = createString("company");
 
     public final StringPath description = createString("description");
+
+    public final EnumPath<GenderType> gender = createEnum("gender", GenderType.class);
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 

@@ -63,6 +63,8 @@ public class UserOptionalInfoService {
                 } catch (IOException ioException) {
                     throw new IOFailException("이미지 저장 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPLOAD_IMAGE_FAIL_EXCEPTION);
                 } catch (Exception exception) {
+                    System.out.println(exception);
+                    System.out.println(exception.getMessage());
                     throw new InternalServerException("예상치 못한 서버 에러가 발생하였습니다.", ErrorCode.INTERNAL_SERVER_EXCEPTION);
                 }
             }

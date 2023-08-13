@@ -4,11 +4,8 @@ import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
-import com.koing.server.koing_server.common.error.ErrorCode;
-import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
-import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.tour.dto.TourMyEndTourDto;
 import com.koing.server.koing_server.service.tour.dto.TourMyTourDto;
@@ -31,6 +28,8 @@ public class UserGuideMyPageDto {
                 user.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
             setJobAndUnivAndCompany(user);
+            this.ageRange = user.getUserOptionalInfo().getAgeRange();
+            this.gender = user.getUserOptionalInfo().getGender().getGender();
         }
         this.myTours = createMyTours(user, today);
         this.creatingTours = createCreatingTours(user, today);
@@ -42,8 +41,6 @@ public class UserGuideMyPageDto {
         this.currentRemainAmount = user.getCurrentRemainAmount();
         this.totalTourists = user.getTotalTourists();
         this.country = user.getCountry();
-        this.age = calculateAge(user.getBirthDate());
-        this.gender = user.getGender().getGender();
     }
 
     private String guideName;
@@ -55,6 +52,7 @@ public class UserGuideMyPageDto {
     private List<TourMyTourDto> recruitmentTours;
     private List<TourMyEndTourDto> myEndTours;
     private GuideGrade guideGrade;
+    private String ageRange;
     private String job;
     private String universityName;
     private String company;
@@ -62,7 +60,6 @@ public class UserGuideMyPageDto {
     private int currentRemainAmount;
     private int totalTourists;
     private String country;
-    private int age;
     private String gender;
 
     private List<TourMyTourDto> createMyTours(User user, String today) {

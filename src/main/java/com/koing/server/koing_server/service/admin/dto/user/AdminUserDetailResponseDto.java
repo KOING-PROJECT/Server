@@ -28,14 +28,14 @@ public class AdminUserDetailResponseDto {
             this.job = user.getUserOptionalInfo().getJob();
             this.universityEmail = user.getUserOptionalInfo().getUniversityEmail();
             this.areas = user.getUserOptionalInfo().getAreas();
+            this.ageRange = user.getUserOptionalInfo().getAgeRange();
+            this.gender = user.getUserOptionalInfo().getGender().getGender();
             this.languages = user.getUserOptionalInfo().getLanguages();
         }
         getRoleAndGrade(user);
         this.userStatus = user.getUserStatus().getStatus();
         this.accumulatedReportedCount = user.getAccumulatedReportedCount();
         this.attachment = user.getAttachment();
-        this.gender = user.getGender().getGender();
-        this.birthDate = user.getBirthDate();
         this.tourProgressCount = user.getTourProgressCount();
         getCreateToursAndCreateTourCount(user.getCreateTours());
         this.joinDate = createdAtFormatting(user.getCreatedAt());
@@ -51,7 +51,7 @@ public class AdminUserDetailResponseDto {
     private int accumulatedReportedCount;
     private double attachment;
     private String gender;
-    private String birthDate;
+    private String ageRange;
     private String job;
     private String universityEmail;
     private int tourProgressCount;
