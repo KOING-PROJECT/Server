@@ -16,12 +16,8 @@ if [ -z $IS_GREEN  ];then # blue라면
   echo "1. make green container and run"
   sudo docker run -d --name koing-green -p 8080:8080 winners192/koing
 
-  echo "2. reload nginx"
-  sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
-  sudo nginx -s reload
-
   while [ 1 = 1 ]; do
-  echo "3. green health check..."
+  echo "2. green health check..."
   sleep 3
 
   REQUEST=$(curl http://3.34.182.215:8080) # green으로 request
@@ -31,11 +27,15 @@ if [ -z $IS_GREEN  ];then # blue라면
             fi
   done;
 
-  echo "5. stop blue container"
+  echo "3. reload nginx"
+  sudo cp /etc/nginx/nginx.green.conf /etc/nginx/nginx.conf
+  sudo nginx -s reload
+
+  echo "4. stop blue container"
 #  docker-compose stop blue
   sudo docker stop koing-blue
 
-  echo "6. remove blue container"
+  echo "5. remove blue container"
   sudo docker rm koing-blue
 
   echo
@@ -52,12 +52,8 @@ else
   echo "1. make blue container and run"
   sudo docker run -d --name koing-blue -p 8081:8080 winners192/koing
 
-  echo "2. reload nginx"
-  sudo cp /etc/nginx/nginx.blue.conf /etc/nginx/nginx.conf
-  sudo nginx -s reload
-
   while [ 1 = 1 ]; do
-    echo "3. blue health check..."
+    echo "2. blue health check..."
     sleep 3
     REQUEST=$(curl http://3.34.182.215:8081) # blue로 request
 
@@ -67,10 +63,14 @@ else
     fi
   done;
 
-  echo "5. stop green container"
+  echo "3. reload nginx"
+  sudo cp /etc/nginx/nginx.blue.conf /etc/nginx/nginx.conf
+  sudo nginx -s reload
+
+  echo "4. stop green container"
 #  docker-compose stop blue
   sudo docker stop koing-green
 
-  echo "6. remove green container"
+  echo "5. remove green container"
   sudo docker rm koing-green
 fi
