@@ -1,7 +1,6 @@
 package com.koing.server.koing_server.service.account.component;
 
 import com.koing.server.koing_server.common.encryption.KISA_SEED_CBC;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -10,16 +9,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Component
-@RequiredArgsConstructor
 public class SEED_CBC {
 
     private final Charset UTF_8 = StandardCharsets.UTF_8;
 
-    @Value("${account.privacy.secret}")
     private byte[] accountSecret;
 
-    @Value("${account.privacy.vector}")
     private byte[] accountVector;
+
+    public SEED_CBC(@Value("${account.privacy.secret}") String accountSecretString, @Value("${account.privacy.vector}") String accountVectorString) {
+        this.accountSecret = accountSecretString.getBytes();
+        this.accountVector = accountVectorString.getBytes();
+    }
 
     public String encrypt(String messageData) {
         Base64.Encoder encoder = Base64.getEncoder();
