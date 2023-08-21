@@ -45,11 +45,18 @@ public class AccountService {
         User user = getUser(accountCreateDto.getUserId());
         LOGGER.info("[AccountService] 계좌 주인 조회 성공");
 
+//        Account account = Account.builder()
+//                .bankName(accountCreateDto.getBankName())
+//                .accountNumber(seedCbc.encrypt(accountCreateDto.getAccountNumber()))
+//                .birthDate(seedCbc.encrypt(accountCreateDto.getBirthDate()))
+//                .registrationNumber(seedCbc.encrypt(accountCreateDto.getRegistrationNumber()))
+//                .build();
+
         Account account = Account.builder()
                 .bankName(accountCreateDto.getBankName())
-                .accountNumber(seedCbc.encrypt(accountCreateDto.getAccountNumber()))
-                .birthDate(seedCbc.encrypt(accountCreateDto.getBirthDate()))
-                .registrationNumber(seedCbc.encrypt(accountCreateDto.getRegistrationNumber()))
+                .accountNumber(accountCreateDto.getAccountNumber())
+                .birthDate(accountCreateDto.getBirthDate())
+                .registrationNumber(accountCreateDto.getRegistrationNumber())
                 .build();
 
         account.setOwner(user);
