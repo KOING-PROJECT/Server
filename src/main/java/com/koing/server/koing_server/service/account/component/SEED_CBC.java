@@ -18,8 +18,8 @@ public class SEED_CBC {
     private byte[] accountVector;
 
     public SEED_CBC(@Value("${account.privacy.secret}") String accountSecretString, @Value("${account.privacy.vector}") String accountVectorString) {
-        this.accountSecret = accountSecretString.getBytes();
-        this.accountVector = accountVectorString.getBytes();
+        this.accountSecret = accountSecretString.getBytes(StandardCharsets.UTF_8);
+        this.accountVector = accountVectorString.getBytes(StandardCharsets.UTF_8);
     }
 
     public String encrypt(String messageData) {
