@@ -28,6 +28,8 @@ public class UserDetailInfoFromMyPageDto {
             this.area = user.getUserOptionalInfo().getAreas();
             this.job = user.getUserOptionalInfo().getJob();
             setJobAndUnivAndCompany(user);
+            this.ageRange = user.getUserOptionalInfo().getAgeRange();
+            this.gender = user.getUserOptionalInfo().getGender().getGender();
         }
         this.attachment = user.getAttachment();
 
@@ -39,8 +41,6 @@ public class UserDetailInfoFromMyPageDto {
             this.touristGrade = user.getTouristGrade();
         }
         this.country = user.getCountry();
-        this.age = calculateAge(user.getBirthDate());
-        this.gender = user.getGender().getGender();
     }
 
     private String userName;
@@ -53,11 +53,11 @@ public class UserDetailInfoFromMyPageDto {
     private Set<TourLikeDto> tours;
     private GuideGrade guideGrade;
     private TouristGrade touristGrade;
+    private String ageRange;
     private String job;
     private String universityName;
     private String company;
     private String country;
-    private int age;
     private String gender;
 
     private Set<TourLikeDto> createTours(User user) {

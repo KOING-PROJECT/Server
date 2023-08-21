@@ -53,7 +53,6 @@ public class SignService {
         LOGGER.info("[signUp] 회원가입 요청");
 
         String role = "ROLE_" + signUpRequestDto.getRole().toUpperCase(Locale.ROOT);
-        GenderType genderType = GenderType.UNKNOWN;
         String email = signUpRequestDto.getEmail();
 
         Set<String> roles = new HashSet<>();
@@ -64,23 +63,13 @@ public class SignService {
             throw new ConflictEmailException("이미 존재하는 이메일 입니다.", ErrorCode.CONFLICT_EMAIL_EXCEPTION);
         }
 
-        if (signUpRequestDto.getGender().equalsIgnoreCase("MAN")) {
-            genderType = GenderType.MAN;
-        }
-        else if (signUpRequestDto.getGender().equalsIgnoreCase("WOMAN")) {
-            genderType = GenderType.WOMAN;
-        }
-
         User user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
                 .name(signUpRequestDto.getName())
                 .phoneNumber(signUpRequestDto.getPhoneNumber())
-                .birthDate(signUpRequestDto.getBirthDate())
                 .country(signUpRequestDto.getCountry())
                 .roles(roles)
-                .gender(genderType)
-                .age(signUpRequestDto.getAge())
                 .enabled(true)
                 .attachment(37.0)
                 .userOptionalInfo(null)

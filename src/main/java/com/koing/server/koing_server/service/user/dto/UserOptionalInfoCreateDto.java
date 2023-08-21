@@ -21,6 +21,8 @@ public class UserOptionalInfoCreateDto {
         this.description = signUpSetCreateDto.getDescription();
         this.languages = signUpSetCreateDto.getLanguages();
         this.areas = signUpSetCreateDto.getAreas();
+        this.ageRange = signUpSetCreateDto.getAgeRange();
+        this.gender = signUpSetCreateDto.getGender();
         this.job = signUpSetCreateDto.getJob();
         this.universityEmail = signUpSetCreateDto.getUniversityEmail();
         this.company = signUpSetCreateDto.getCompany();
@@ -32,8 +34,9 @@ public class UserOptionalInfoCreateDto {
     private String description;
     private Set<String> languages;
     private Set<String> areas;
+    private String ageRange;
+    private String gender;
     private String job;
     private String universityEmail;
     private String company;
-
 }

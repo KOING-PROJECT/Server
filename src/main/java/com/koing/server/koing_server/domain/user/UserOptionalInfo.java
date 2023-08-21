@@ -20,6 +20,8 @@ public class UserOptionalInfo {
         this.description = userOptionalInfoCreateDto.getDescription();
         this.languages = userOptionalInfoCreateDto.getLanguages();
         this.areas = userOptionalInfoCreateDto.getAreas();
+        this.ageRange = userOptionalInfoCreateDto.getAgeRange();
+        this.gender = getGender(userOptionalInfoCreateDto.getGender());
         this.job = userOptionalInfoCreateDto.getJob();
         this.universityEmail = userOptionalInfoCreateDto.getUniversityEmail();
         this.company = userOptionalInfoCreateDto.getCompany();
@@ -50,6 +52,13 @@ public class UserOptionalInfo {
     private Set<String> areas;
 
     @Column(length = 20)
+    private String ageRange;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "gender")
+    private GenderType gender;
+
+    @Column(length = 20)
     private String job;
 
     @Column(length = 50)
@@ -60,4 +69,14 @@ public class UserOptionalInfo {
 
     private boolean isCertified;
 
+    private GenderType getGender(String gender) {
+        if (gender.equalsIgnoreCase("MAN")) {
+            return GenderType.MAN;
+        }
+        else if (gender.equalsIgnoreCase("WOMAN")) {
+            return GenderType.WOMAN;
+        }
+
+        return GenderType.UNKNOWN;
+    }
 }

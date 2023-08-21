@@ -16,12 +16,10 @@ public class SignUpSetCreateDto {
     private String password;
     private String name;
     private String phoneNumber;
-    private String birthDate;
+    private String ageRange;
     private String country;
     private String role;
     private String gender;
-    private int age;
-//    private String imageUrl;
     private List<MultipartFile> imageFiles;
     private String description;
     private Set<String> languages;

@@ -1,6 +1,5 @@
 package com.koing.server.koing_server.service.user.dto;
 
-import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TouristGrade;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
@@ -8,12 +7,10 @@ import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.tour.dto.TourHistoryDto;
 import com.koing.server.koing_server.service.tour.dto.TourLikeDto;
-import com.koing.server.koing_server.service.tour.dto.TourMyTourDto;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,14 +25,14 @@ public class UserTouristMyPageDto {
                 user.getUserOptionalInfo().getImageUrls().size() > 0) {
             this.imageUrl = user.getUserOptionalInfo().getImageUrls().get(0);
             setJobAndUnivAndCompany(user);
+            this.ageRange = user.getUserOptionalInfo().getAgeRange();
+            this.gender = user.getUserOptionalInfo().getGender().getGender();
         }
         this.following = createUserFollowDtos(user);
         this.likeTours = createTourLikeDtos(user);
         this.tourHistories = createTourHistoryDtos(user, today);
         this.touristGrade = user.getTouristGrade();
         this.country = user.getCountry();
-        this.age = calculateAge(user.getBirthDate());
-        this.gender = user.getGender().getGender();
     }
 
     private String touristName;
@@ -45,11 +42,11 @@ public class UserTouristMyPageDto {
     private List<TourLikeDto> likeTours;
     private List<TourHistoryDto> tourHistories;
     private TouristGrade touristGrade;
+    private String ageRange;
     private String job;
     private String universityName;
     private String company;
     private String country;
-    private int age;
     private String gender;
 
     private List<UserFollowDto> createUserFollowDtos(User user) {
@@ -115,27 +112,5 @@ public class UserTouristMyPageDto {
             this.company = user.getUserOptionalInfo().getCompany();
             this.universityName = "";
         }
-    }
-
-    private int calculateAge(String brithDay) {
-        String[] yearMonthDay = brithDay.split("/");
-
-        LocalDate today = LocalDate.now();
-        int year = today.getYear();
-        int month = today.getMonthValue();
-        int day = today.getDayOfMonth();
-
-        int age = year - Integer.parseInt(yearMonthDay[0]);
-
-        if (Integer.parseInt(yearMonthDay[1]) > month) {
-            age -= 1;
-        }
-        else if (Integer.parseInt(yearMonthDay[1]) == month) {
-            if (Integer.parseInt(yearMonthDay[2]) >=  day) {
-                age -= 1;
-            }
-        }
-
-        return age;
     }
 }
