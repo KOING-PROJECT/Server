@@ -66,7 +66,7 @@ public class AccountController {
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
-            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION, exception.getMessage());
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION, exception.getCause().toString());
         }
         LOGGER.info("[AccountController] 계좌 정보 조회 성공");
 

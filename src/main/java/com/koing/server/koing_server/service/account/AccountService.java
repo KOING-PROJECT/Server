@@ -77,6 +77,15 @@ public class AccountService {
         Account account = getAccount(userId);
         LOGGER.info("[AccountService] 계좌 정보 조회 성공");
 
+        LOGGER.info("[AccountService] 111111111");
+        LOGGER.info("[AccountService] " + account.getBankName());
+        LOGGER.info("[AccountService] 222222222");
+        LOGGER.info("[AccountService] " + seedCbc.decrypt(account.getAccountNumber()));
+        LOGGER.info("[AccountService] 333333333");
+        LOGGER.info("[AccountService] " + seedCbc.decrypt(account.getBirthDate()));
+        LOGGER.info("[AccountService] 44444444");
+        LOGGER.info("[AccountService] " + seedCbc.decrypt(account.getRegistrationNumber()));
+        LOGGER.info("[AccountService] 55555555");
         AccountResponseDto accountResponseDto = new AccountResponseDto(
                 account.getBankName(),
                 seedCbc.decrypt(account.getAccountNumber()),
