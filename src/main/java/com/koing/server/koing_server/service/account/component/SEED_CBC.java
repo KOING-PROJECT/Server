@@ -26,16 +26,7 @@ public class SEED_CBC {
         Base64.Encoder encoder = Base64.getEncoder();
 
         byte[] byteDate = messageData.getBytes(UTF_8);
-        byte[] pbData = new byte[32];
-
-        for(int i = 0; i < pbData.length; i++) {
-            if(i < byteDate.length)
-                pbData[i] = byteDate[i];
-            else
-                pbData[i] = 0x00;
-        }
-
-        byte[] encryptedData = KISA_SEED_CBC.SEED_CBC_Encrypt(accountSecret, accountVector, pbData, 0, pbData.length);
+        byte[] encryptedData = KISA_SEED_CBC.SEED_CBC_Encrypt(accountSecret, accountVector, byteDate, 0, byteDate.length);
 
         return new String(encoder.encode(encryptedData), UTF_8);
     }
