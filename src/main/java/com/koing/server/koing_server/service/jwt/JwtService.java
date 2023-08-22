@@ -4,9 +4,11 @@ import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.domain.jwt.JwtToken;
+import com.koing.server.koing_server.domain.jwt.RefreshToken;
 import com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepository;
 import com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepositoryImpl;
 import com.koing.server.koing_server.domain.user.User;
@@ -28,6 +30,7 @@ public class JwtService {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserRepositoryImpl userRepositoryImpl;
     private final JwtTokenRepository jwtTokenRepository;
+    private final RefreshTokenManager refreshTokenManager;
 
     public JwtToken findJwtTokenByUserEmail(String userEmail) {
         JwtToken jwtToken = jwtTokenRepositoryImpl.findJwtTokenByUserEmail(userEmail);
@@ -47,6 +50,13 @@ public class JwtService {
         LOGGER.info("[JwtService] refreshToken = " + refreshToken);
 
         String userEmail = jwtTokenUtil.getUserEmailFromJwt(accessToken);
+
+        User user = userRepositoryImpl.loadUserByUserEmail(userEmail, true);
+
+        if (user == null) {
+            throw new NotFoundException("탈퇴했거나 존재하지 않는 유저입니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
         JwtToken serverJwtToken = findJwtTokenByUserEmail(userEmail);
 
         if (serverJwtToken == null) {
@@ -56,35 +66,31 @@ public class JwtService {
 
         LOGGER.info("[JwtService] 서버 토큰 가져오기 성공");
         String serverAccessToken = serverJwtToken.getAccessToken();
-        String serverRefreshToken = serverJwtToken.getRefreshToken();
 
         LOGGER.info("[JwtService] serverAccessToken = " + serverAccessToken);
-        LOGGER.info("[JwtService] serverRefreshToken = " + serverRefreshToken);
 
         LOGGER.info("[JwtService] 서버 토큰과 비교 시작");
-        if (!serverAccessToken.equals(accessToken) || !serverRefreshToken.equals(refreshToken)) {
+        if (!serverAccessToken.equals(accessToken) || refreshTokenManager.checkExistRefreshToken(refreshToken, user.getId())) {
             LOGGER.info("[JwtService] 서버 토큰과 불일치!");
             return ErrorResponse.error(ErrorCode.UNAUTHORIZED_TOKEN_NOT_MATCH_WITH_SERVER_EXCEPTION);
         }
 
         LOGGER.info("[JwtService] 서버 토큰과 일치!");
-        User user = userRepositoryImpl.loadUserByUserEmail(userEmail, true);
         String newAccessToken = jwtTokenUtil.createJwtToken(user.getEmail(), user.getRoles(), user.getId());
-        String newRefreshToken = jwtTokenUtil.createJwtRefreshToken();
 
         LOGGER.info("[JwtService] newAccessToken = " + newAccessToken);
-        LOGGER.info("[JwtService] newRefreshToken = " + newRefreshToken);
 
         serverJwtToken.setAccessToken(newAccessToken);
-        serverJwtToken.setRefreshToken(newRefreshToken);
         JwtToken updatedJwtToken = jwtTokenRepository.save(serverJwtToken);
+        String newRefreshToken = refreshTokenManager.rotation(refreshToken).getRefreshToken();
         LOGGER.info("[JwtService] 토큰 재발급 성공");
 
         return SuccessResponse.success(SuccessCode.RE_ISSUE_TOKEN_SUCCESS,
                 new JwtResponseDto(
                         JwtDto.builder()
                         .accessToken(updatedJwtToken.getAccessToken())
-                                .refreshToken(updatedJwtToken.getRefreshToken()).build()));
+                        .refreshToken(newRefreshToken).build()
+                ));
     }
 
 }

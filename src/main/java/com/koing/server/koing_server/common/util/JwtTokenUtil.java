@@ -29,7 +29,6 @@ public class JwtTokenUtil {
 
 //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 6; // 1000 ms = 1초, 1시간 * 6
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24; // 1000 ms = 1초, 1시간 * 24 = 1일
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7; // 1시간 * 24 * 7 = 7일 / refresh token
 
 
     @Value("${springboot.jwt.secret}")
@@ -65,23 +64,23 @@ public class JwtTokenUtil {
         return jwtToken;
     }
 
-    public String createJwtRefreshToken() {
-        LOGGER.info("[init] JwtTokenUtil Refresh 토큰 생성 시작");
-
-        Date now = new Date();
-
-//        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
-
-        String jwtRefreshToken = Jwts.builder()
-                .setIssuedAt(now) // 토큰 발행일자
-                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
-                .compact();
-
-        LOGGER.info("[init] JwtTokenUtil RefreshToken 토큰 생성 완료");
-
-        return jwtRefreshToken;
-    }
+//    public String createJwtRefreshToken() {
+//        LOGGER.info("[init] JwtTokenUtil Refresh 토큰 생성 시작");
+//
+//        Date now = new Date();
+//
+////        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+//
+//        String jwtRefreshToken = Jwts.builder()
+//                .setIssuedAt(now) // 토큰 발행일자
+//                .setExpiration(new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
+//                .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
+//                .compact();
+//
+//        LOGGER.info("[init] JwtTokenUtil RefreshToken 토큰 생성 완료");
+//
+//        return jwtRefreshToken;
+//    }
 
     public Authentication getAuthentication(String token) {
         LOGGER.info("[init] JwtTokenUtil getAuthentication 토큰 인증 정보 조회 시작");

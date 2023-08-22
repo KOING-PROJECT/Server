@@ -13,12 +13,16 @@ import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.domain.jwt.JwtToken;
+import com.koing.server.koing_server.domain.jwt.RefreshToken;
+import com.koing.server.koing_server.domain.jwt.repository.JwtTokenProvider;
 import com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepository;
 import com.koing.server.koing_server.domain.jwt.repository.JwtTokenRepositoryImpl;
+import com.koing.server.koing_server.domain.jwt.repository.RefreshTokenRepository;
 import com.koing.server.koing_server.domain.user.GenderType;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.jwt.RefreshTokenManager;
 import com.koing.server.koing_server.service.jwt.dto.JwtDto;
 import com.koing.server.koing_server.service.jwt.dto.JwtResponseDto;
 import com.koing.server.koing_server.service.sign.dto.SignInRequestDto;
@@ -46,6 +50,7 @@ public class SignService {
     private final JwtTokenRepositoryImpl jwtTokenRepositoryImpl;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenUtil jwtTokenUtil;
+    private final RefreshTokenManager refreshTokenManager;
 
     @Transactional
     public SuperResponse signUp(SignUpRequestDto signUpRequestDto) {
@@ -137,7 +142,6 @@ public class SignService {
         LOGGER.info("[signIn] Password 일치");
 
         String accessToken = jwtTokenUtil.createJwtToken(userEmail, user.getRoles(), user.getId());
-        String refreshToken = jwtTokenUtil.createJwtRefreshToken();
         LOGGER.info(String.format("[signIn] JWT 토큰 생성 성공, Token = %s", accessToken));
 
         JwtToken jwtToken;
@@ -150,12 +154,15 @@ public class SignService {
             jwtToken = jwtTokenRepository.save(initJwtToken);
         }
         jwtToken.setAccessToken(accessToken);
-        jwtToken.setRefreshToken(refreshToken);
 
         JwtToken savedJwtToken = jwtTokenRepository.save(jwtToken);
+        RefreshToken refreshToken = refreshTokenManager.create(user.getId());
         LOGGER.info(String.format("[signIn] JWT 토큰 업데이트 성공, jwtToken = %s", savedJwtToken));
 
-        JwtDto jwtDto = JwtDto.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        JwtDto jwtDto = JwtDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken.getRefreshToken())
+                .build();
 
         return SuccessResponse.success(SuccessCode.LOGIN_SUCCESS, new JwtResponseDto(jwtDto));
     }

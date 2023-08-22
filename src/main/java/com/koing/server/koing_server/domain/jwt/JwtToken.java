@@ -16,10 +16,9 @@ import javax.persistence.*;
 public class JwtToken extends AuditingTimeEntity {
 
     @Builder
-    public JwtToken(String userEmail, String accessToken, String refreshToken) {
+    public JwtToken(String userEmail, String accessToken) {
         this.userEmail = userEmail;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
     }
 
     @Builder(builderMethodName = "InitBuilder")
@@ -35,7 +34,4 @@ public class JwtToken extends AuditingTimeEntity {
     private String userEmail;
 
     private String accessToken;
-
-    private String refreshToken;
-
 }
