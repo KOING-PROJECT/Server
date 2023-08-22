@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Component
@@ -35,7 +36,7 @@ public class SEED_CBC {
                 pbData[i] = 0x00;
         }
 
-        byte[] encryptedData = KISA_SEED_CBC.SEED_CBC_Encrypt(accountSecret, accountVector, pbData, 0, pbData.length);
+        byte[] encryptedData = KISA_SEED_CBC.SEED_CBC_Encrypt(getPublicUserKey(accountSecret), getPublicIV(accountVector), pbData, 0, pbData.length);
 
         return new String(encoder.encode(encryptedData), UTF_8);
     }
@@ -44,9 +45,16 @@ public class SEED_CBC {
         Base64.Decoder decoder = Base64.getDecoder();
 
         byte[] decryptedData = decoder.decode(encryptedData);
-        byte[] messageData = KISA_SEED_CBC.SEED_CBC_Decrypt(accountSecret, accountVector, decryptedData, 0, decryptedData.length);
+        byte[] messageData = KISA_SEED_CBC.SEED_CBC_Decrypt(getPublicUserKey(accountSecret), getPublicIV(accountVector), decryptedData, 0, decryptedData.length);
 
         return new String(messageData, UTF_8);
     }
 
+    private static byte[] getPublicIV(byte[] seedKey) {
+        return Arrays.copyOfRange(seedKey, 16, 32);
+    }
+
+    private static byte[] getPublicUserKey(byte[] seedKey) {
+        return Arrays.copyOfRange(seedKey, 0, 16);
+    }
 }
