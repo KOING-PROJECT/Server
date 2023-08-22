@@ -81,7 +81,7 @@ public class AES_Encryption {
         int encryptedSize = encryptedIvTextBytes.length - IV_SIZE;
         byte[] encryptedBytes = new byte[encryptedSize];
         System.arraycopy(encryptedIvTextBytes, IV_SIZE, encryptedBytes, 0, encryptedSize);
-        
+
         // Decryption
         Cipher cipher = Cipher.getInstance(alg);
         SecretKey keyspec = new SecretKeySpec(key.getBytes("UTF-8"), "AES");
