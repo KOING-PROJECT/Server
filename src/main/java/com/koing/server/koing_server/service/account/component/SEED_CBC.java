@@ -35,12 +35,7 @@ public class SEED_CBC {
                 pbData[i] = 0x00;
         }
 
-        byte[] encryptedData;
-        try {
-            encryptedData = KISA_SEED_CBC.SEED_CBC_Encrypt(accountSecret, accountVector, pbData, 0, pbData.length);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        byte[] encryptedData = KISA_SEED_CBC.SEED_CBC_Encrypt(accountSecret, accountVector, pbData, 0, pbData.length);
 
         return new String(encoder.encode(encryptedData), UTF_8);
     }
