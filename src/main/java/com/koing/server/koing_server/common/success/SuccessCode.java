@@ -64,6 +64,8 @@ public enum SuccessCode {
     GET_COMMENTS_SUCCESS(OK, "post : 댓글 리스트 조회 성공입니다."),
     GET_CREATE_POSTS_SUCCESS(OK, "post : 유저가 작성한 게시글 리스트 조회 성공입니다."),
     GET_LIKE_POSTS_SUCCESS(OK, "post : 유저가 좋아요 누른 게시글 리스트 조회 성공입니다."),
+    DELETE_POST_SUCCESS(OK, "post : 게시글 삭제 성공입니다."),
+    DELETE_COMMENT_SUCCESS(OK, "Comment : 댓글 삭제 성공입니다."),
 
     // 인증
 //    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),

@@ -1,16 +1,14 @@
 package com.koing.server.koing_server.domain.chat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.MessageType;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.chat.dto.ChatMessageSendDto;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Entity
@@ -19,7 +17,7 @@ import java.util.ArrayList;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "CHAT_MESSAGE_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChatMessage extends AuditingTimeEntity {
+public class ChatMessage extends AbstractRootEntity {
 
     public ChatMessage(ChatRoom chatRoom, User writer, ChatMessageSendDto chatMessageSendDto, MessageType messageType) {
         this.chatRoom = chatRoom;

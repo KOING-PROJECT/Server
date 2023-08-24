@@ -153,7 +153,6 @@ public class PostService {
 
     @Transactional
     public SuperResponse getLikePosts(Long userId) {
-
         LOGGER.info("[PostService] 좋아요 누른 post 리스트 조회 시도");
 
         User user = userRepositoryImpl.findLikePostByUserLikedPost(userId);
@@ -169,6 +168,24 @@ public class PostService {
         LOGGER.info("[PostService] 좋아요 누른 post 리스트 조회 성공");
 
         return SuccessResponse.success(SuccessCode.GET_LIKE_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
+    }
+
+    public SuperResponse deletePost(final Long userId, final Long postId) {
+        LOGGER.info("[PostService] post 삭제 시도");
+        final Post post = postRepositoryImpl.findPostByPostId(postId);
+
+        if (post == null) {
+            throw new NotFoundException("해당 게시글을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_POST_EXCEPTION);
+        }
+
+        if (post.getCreateUser().getId() != userId) {
+            throw new NotAcceptableException("게시글을 작성한 유저가 아닙니다.", ErrorCode.NOT_ACCEPTABLE_NOT_POSTED_USER_EXCEPTION);
+        }
+
+        post.delete();
+        LOGGER.info("[PostService] post 삭제 성공");
+
+        return SuccessResponse.success(SuccessCode.DELETE_POST_SUCCESS, null);
     }
 
 
@@ -255,6 +272,4 @@ public class PostService {
 
         return post;
     }
-
-
 }

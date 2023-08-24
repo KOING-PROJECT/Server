@@ -8,7 +8,7 @@ import com.koing.server.koing_server.common.enums.GuideGrade;
 import com.koing.server.koing_server.common.enums.TouristGrade;
 import com.koing.server.koing_server.common.enums.UserStatus;
 import com.koing.server.koing_server.domain.account.Account;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.post.Comment;
 import com.koing.server.koing_server.domain.post.Post;
@@ -21,7 +21,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,7 +30,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class User extends AuditingTimeEntity {
+public class User extends AbstractRootEntity {
 
     @Builder
     public User(String email, String password,

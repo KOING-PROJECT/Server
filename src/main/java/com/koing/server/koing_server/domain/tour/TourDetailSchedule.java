@@ -3,7 +3,7 @@ package com.koing.server.koing_server.domain.tour;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_DETAIL_SCHEDULE_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourDetailSchedule extends AuditingTimeEntity {
+public class TourDetailSchedule extends AbstractRootEntity {
 
     public TourDetailSchedule(Map.Entry<String, HashMap<String, String>> tourDetailSchedule) {
         String[] timeKey = tourDetailSchedule.getKey().split("~");

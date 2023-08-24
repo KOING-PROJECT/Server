@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.service.tour.dto.TourScheduleCreateDto;
 import lombok.*;
 
@@ -18,7 +18,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_SCHEDULE_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourSchedule extends AuditingTimeEntity {
+public class TourSchedule extends AbstractRootEntity {
 
     public TourSchedule(TourScheduleCreateDto tourScheduleCreateDto, CreateStatus createStatus) {
         this.tour = null;

@@ -2,7 +2,7 @@ package com.koing.server.koing_server.domain.payment;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.payment.dto.PaymentCreateDto;
@@ -21,7 +21,7 @@ import java.util.HashSet;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "PAYMENT_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Payment extends AuditingTimeEntity {
+public class Payment extends AbstractRootEntity {
 
     public Payment(PaymentCreateDto paymentCreateDto, PaymentInquiryResultDto paymentInquiryResultDto) {
         this.imp_uid = paymentCreateDto.getTxId();

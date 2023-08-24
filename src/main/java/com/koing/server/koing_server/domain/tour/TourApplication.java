@@ -4,8 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.ProgressStatus;
 import com.koing.server.koing_server.common.enums.TourApplicationStatus;
-import com.koing.server.koing_server.common.enums.TourStatus;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
 import lombok.*;
@@ -22,7 +21,7 @@ import java.util.Set;
 @Table(name = "TOUR_APPLICATION_TABLE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourApplication extends AuditingTimeEntity {
+public class TourApplication extends AbstractRootEntity {
 
     public TourApplication(String tourDate, int maxParticipant) {
         this.tour = null;

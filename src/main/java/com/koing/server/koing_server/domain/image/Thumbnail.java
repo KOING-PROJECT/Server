@@ -1,6 +1,6 @@
 package com.koing.server.koing_server.domain.image;
 
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.tour.Tour;
 import lombok.*;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @Builder
 @Entity
 @Table(name = "TOUR_THUMBNAIL_TABLE")
-public class Thumbnail extends AuditingTimeEntity {
+public class Thumbnail extends AbstractRootEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

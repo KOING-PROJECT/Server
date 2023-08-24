@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.domain.post.repository;
 
 import com.koing.server.koing_server.domain.post.Post;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +28,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetchJoin()
 //                .leftJoin(post.photos, postPhoto)
 //                .fetchJoin()
+                .where(
+                        isNotDeleted()
+                )
                 .distinct()
                 .fetch();
     }
@@ -35,10 +39,13 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     public Post findPostByPostId(Long postId) {
         return jpqlQueryFactory
                 .selectFrom(post)
+                .leftJoin(post.createUser, user)
+                .fetchJoin()
                 .leftJoin(post.comments, comment1)
                 .fetchJoin()
                 .where(
-                        post.id.eq(postId)
+                        post.id.eq(postId),
+                        isNotDeleted()
                 )
                 .distinct()
                 .fetchOne();
@@ -49,7 +56,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
         return jpqlQueryFactory
                 .selectFrom(post)
                 .where(
-                        post.id.eq(postId)
+                        post.id.eq(postId),
+                        isNotDeleted()
                 )
                 .distinct()
                 .fetchOne() != null;
@@ -64,9 +72,14 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .leftJoin(post.comments, comment1)
                 .fetchJoin()
                 .where(
-                        post.createUser.id.eq(userId)
+                        post.createUser.id.eq(userId),
+                        isNotDeleted()
                 )
                 .distinct()
                 .fetch();
+    }
+
+    private BooleanExpression isNotDeleted() {
+        return post.isDeleted.eq(Boolean.FALSE);
     }
 }

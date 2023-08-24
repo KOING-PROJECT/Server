@@ -1,6 +1,6 @@
 package com.koing.server.koing_server.domain.review;
 
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.review.dto.ReviewToGuideCreateDto;
@@ -19,7 +19,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "REVIEW_TO_GUIDE_TABLE")
-public class ReviewToGuide extends AuditingTimeEntity {
+public class ReviewToGuide extends AbstractRootEntity {
 
     public ReviewToGuide(ReviewToGuideCreateDto reviewToGuideCreateDto, User writeTourist, List<String> reviewPhotos) {
         this.writeTourist = writeTourist;

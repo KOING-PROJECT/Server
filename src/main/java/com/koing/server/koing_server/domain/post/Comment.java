@@ -3,7 +3,7 @@ package com.koing.server.koing_server.domain.post;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.post.dto.comment.CommentCreateDto;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import java.util.HashSet;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "COMMENT_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Comment extends AuditingTimeEntity {
+public class Comment extends AbstractRootEntity {
 
     public Comment(CommentCreateDto commentCreateDto) {
         this.commendUser = null;

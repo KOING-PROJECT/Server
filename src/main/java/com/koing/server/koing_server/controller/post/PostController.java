@@ -145,4 +145,22 @@ public class PostController {
         return getLikedPostResponse;
     }
 
+    @DeleteMapping("/{userId}/{postId}")
+    public SuperResponse deletePost(
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId
+    ) {
+        LOGGER.info("[PostController] post 삭제 시도");
+        SuperResponse deletePostResponse;
+        try {
+            deletePostResponse = postService.deletePost(userId, postId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] post 삭제 성공");
+
+        return deletePostResponse;
+    }
 }
