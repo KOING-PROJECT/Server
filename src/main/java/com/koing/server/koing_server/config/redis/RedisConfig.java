@@ -20,7 +20,7 @@ import java.time.Duration;
 @Configuration
 @RequiredArgsConstructor
 @EnableTransactionManagement
-@Profile(value = "dev")
+@Profile(value = "local")
 public class RedisConfig {
 
     @Value("${spring.redis.host}")
@@ -29,9 +29,13 @@ public class RedisConfig {
     @Value("${spring.redis.port}")
     public int port;
 
+    @Value("${spring.redis.password}")
+    public String password;
+
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration(host, port);
+        redisStandaloneConfiguration.setPassword(password);
         LettuceClientConfiguration lettuceClientConfiguration = LettuceClientConfiguration.builder()
                 .commandTimeout(Duration.ofSeconds(5))
                 .build();
