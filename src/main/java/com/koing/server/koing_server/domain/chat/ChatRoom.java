@@ -2,10 +2,7 @@ package com.koing.server.koing_server.domain.chat;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import com.koing.server.koing_server.domain.tour.Tour;
-import com.koing.server.koing_server.domain.tour.TourApplication;
-import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.service.chat.dto.ChatRoomCreateDto;
 import lombok.*;
 
@@ -18,7 +15,7 @@ import java.util.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "CHAT_ROOM_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class ChatRoom extends AuditingTimeEntity {
+public class ChatRoom extends AbstractRootEntity {
     // db에서 chatRoom의 chattingUserIds안에 로그인한 유저의 id가 있는지 확인하여 chatRoom 조회
     // roomUnuqueId는 chatting room을 구독할 때 사용
     // chatting list 가져올 때 relatedTourId와 tourDate로 tourApplication을 조회하고

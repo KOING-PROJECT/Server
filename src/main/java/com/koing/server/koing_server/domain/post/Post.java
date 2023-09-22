@@ -3,7 +3,7 @@ package com.koing.server.koing_server.domain.post;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.image.PostPhoto;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.post.dto.post.PostCreateDto;
@@ -24,7 +24,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "POST_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Post extends AuditingTimeEntity {
+public class Post extends AbstractRootEntity {
 
     public Post(PostCreateDto postCreateDto) {
         this.createUser = null;

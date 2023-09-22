@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.service.tour.dto.TourSurveyCreateDto;
 import lombok.*;
 
@@ -16,7 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_SURVEY_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourSurvey extends AuditingTimeEntity {
+public class TourSurvey extends AbstractRootEntity {
 
     public TourSurvey(TourSurveyCreateDto tourSurveyCreateDto, CreateStatus createStatus) {
         this.style = tourSurveyCreateDto.getStyle();

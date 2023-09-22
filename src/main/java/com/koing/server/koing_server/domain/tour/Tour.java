@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.common.enums.CreateStatus;
 import com.koing.server.koing_server.common.enums.TourStatus;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.image.Thumbnail;
 import com.koing.server.koing_server.domain.user.User;
 import lombok.*;
@@ -19,7 +19,7 @@ import java.util.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Tour extends AuditingTimeEntity {
+public class Tour extends AbstractRootEntity {
 
     @Builder
     public Tour(String title, User createUser, String description,

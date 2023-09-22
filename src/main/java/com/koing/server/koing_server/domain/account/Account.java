@@ -2,9 +2,8 @@ package com.koing.server.koing_server.domain.account;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.user.User;
-import com.koing.server.koing_server.service.account.dto.AccountCreateDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -17,7 +16,7 @@ import javax.persistence.*;
 @Builder
 @Table(name = "ACCOUNT_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class Account extends AuditingTimeEntity {
+public class Account extends AbstractRootEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

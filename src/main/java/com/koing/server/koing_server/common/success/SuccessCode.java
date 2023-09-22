@@ -126,6 +126,7 @@ public enum SuccessCode {
     POST_CREATE_SUCCESS(CREATED, "post : 게시글 작성 성공입니다."),
     COMMENT_CREATE_SUCCESS(CREATED, "post : 댓글 작성 성공입니다."),
     POST_PRESS_LIKE_SUCCESS(CREATED, "post : 게시글 좋아요 수정 성공입니다."),
+    PAYMENT_INFO_CREATE_SUCCESS(CREATED, "payment-info : 결제 정보 생성 성공입니다."),
 
     /**
      * 202 ACCEPTED

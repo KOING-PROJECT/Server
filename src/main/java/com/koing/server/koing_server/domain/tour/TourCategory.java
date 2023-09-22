@@ -2,7 +2,7 @@ package com.koing.server.koing_server.domain.tour;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
 import lombok.*;
 
@@ -15,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "TOUR_CATEGORY_TABLE")
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class TourCategory extends AuditingTimeEntity {
+public class TourCategory extends AbstractRootEntity {
 
     public TourCategory(TourCategoryCreateDto tourCategoryCreateDto) {
         this.categoryName = tourCategoryCreateDto.getCategoryName();

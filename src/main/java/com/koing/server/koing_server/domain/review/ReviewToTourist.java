@@ -1,7 +1,6 @@
 package com.koing.server.koing_server.domain.review;
 
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
-import com.koing.server.koing_server.domain.tour.Tour;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.review.dto.ReviewToTouristCreateDto;
@@ -18,7 +17,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "REVIEW_TO_TOURIST_TABLE")
-public class ReviewToTourist extends AuditingTimeEntity {
+public class ReviewToTourist extends AbstractRootEntity {
 
     public ReviewToTourist(ReviewToTouristCreateDto reviewToTouristCreateDto, User writeGuide) {
         this.writeGuide = writeGuide;

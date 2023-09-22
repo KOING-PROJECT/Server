@@ -1,13 +1,11 @@
 package com.koing.server.koing_server.domain.image;
 
-import com.koing.server.koing_server.domain.common.AuditingTimeEntity;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.post.Post;
-import com.koing.server.koing_server.domain.tour.Tour;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 @Getter
 @Setter
@@ -16,7 +14,7 @@ import java.util.HashSet;
 @Builder
 @Entity
 @Table(name = "POST_PHOTO_TABLE")
-public class PostPhoto extends AuditingTimeEntity {
+public class PostPhoto extends AbstractRootEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
