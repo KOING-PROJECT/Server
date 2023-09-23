@@ -17,7 +17,7 @@ import javax.annotation.PreDestroy;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Profile(value = "test")
+@Profile(value = "local")
 public class EmbeddedRedisConfig {
 
     @Value("${spring.redis.host}")

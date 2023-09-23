@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.payment.application;
+package com.koing.server.koing_server.paymentInfo.application;
 
 
 import com.koing.server.koing_server.common.dto.SuccessResponse;
@@ -6,11 +6,12 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.PaymentServerException;
 import com.koing.server.koing_server.common.success.SuccessCode;
-import com.koing.server.koing_server.payment.application.component.IamportClientComponent;
-import com.koing.server.koing_server.payment.application.dto.PaymentInfoRequestCommand;
-import com.koing.server.koing_server.payment.domain.PaymentInfo;
-import com.koing.server.koing_server.payment.domain.repository.PaymentInfoRepository;
-import com.koing.server.koing_server.payment.ui.dto.PaymentInfoResponseDto;
+import com.koing.server.koing_server.paymentInfo.application.component.IamportClientComponent;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCreateCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoDto;
+import com.koing.server.koing_server.paymentInfo.application.exception.NotFoundPaymentInfoException;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
+import com.koing.server.koing_server.paymentInfo.domain.repository.PaymentInfoRepository;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +38,20 @@ public class PaymentInfoService {
         }
     }
 
-    public SuperResponse<PaymentInfoResponseDto> createPaymentInfo(final PaymentInfoRequestCommand command) {
+    public SuperResponse createPaymentInfo(final PaymentInfoCreateCommand command) {
         final PaymentInfo paymentInfo = command.toEntity();
         final PaymentInfo savedPaymentInfo = paymentInfoRepository.save(paymentInfo);
 
         return SuccessResponse.success(SuccessCode.PAYMENT_INFO_CREATE_SUCCESS, savedPaymentInfo.getOrderId());
+    }
+
+    public SuperResponse getPaymentInfo(final String orderId) {
+        final PaymentInfo paymentInfo = paymentInfoRepository.findPaymentInfoByOrderId(orderId);
+
+        if(paymentInfo == null) {
+            throw new NotFoundPaymentInfoException(orderId);
+        }
+
+        return SuccessResponse.success(SuccessCode.PAYMENT_INFO_CREATE_SUCCESS, PaymentInfoDto.from(paymentInfo));
     }
 }

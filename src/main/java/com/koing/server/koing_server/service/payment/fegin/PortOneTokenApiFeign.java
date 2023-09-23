@@ -2,7 +2,7 @@ package com.koing.server.koing_server.service.payment.fegin;
 
 
 import com.koing.server.koing_server.common.dto.PortOneResponse;
-import com.koing.server.koing_server.payment.application.dto.PortOneTokenResponse;
+import com.koing.server.koing_server.paymentInfo.application.dto.PortOneTokenResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

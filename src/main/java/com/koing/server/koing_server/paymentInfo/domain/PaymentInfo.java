@@ -1,7 +1,9 @@
-package com.koing.server.koing_server.payment.domain;
+package com.koing.server.koing_server.paymentInfo.domain;
 
 import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,18 +33,23 @@ public class PaymentInfo extends AbstractRootEntity {
 
     private String orderId;
 
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus;
+
     @Builder
     public PaymentInfo(
             final Long guestId,
             final Long touristId,
             final Long tourId,
             final String tourDate,
-            final String orderId)
-    {
+            final String orderId,
+            final PaymentStatus paymentStatus
+    ) {
         this.guestId = guestId;
         this.touristId = touristId;
         this.tourId = tourId;
         this.tourDate = tourDate;
         this.orderId = orderId;
+        this.paymentStatus = paymentStatus;
     }
 }

@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.payment.application.component;
+package com.koing.server.koing_server.paymentInfo.application.component;
 
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;

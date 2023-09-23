@@ -1,13 +1,14 @@
-package com.koing.server.koing_server.payment.application.dto;
+package com.koing.server.koing_server.paymentInfo.application.dto;
 
-import com.koing.server.koing_server.payment.domain.PaymentInfo;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentStatus;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PaymentInfoRequestCommand {
+public class PaymentInfoCreateCommand {
 
     private Long guestId;
     private Long touristId;
@@ -21,6 +22,7 @@ public class PaymentInfoRequestCommand {
                 .tourId(tourId)
                 .tourDate(tourDate)
                 .orderId(createOrderId(guestId, touristId, tourId, tourDate))
+                .paymentStatus(PaymentStatus.READY)
                 .build();
     }
 

@@ -1,6 +1,6 @@
-package com.koing.server.koing_server.payment.ui.dto;
+package com.koing.server.koing_server.paymentInfo.ui.dto;
 
-import com.koing.server.koing_server.payment.domain.PaymentInfo;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

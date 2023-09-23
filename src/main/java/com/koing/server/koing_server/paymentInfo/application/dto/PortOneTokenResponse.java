@@ -1,4 +1,4 @@
-package com.koing.server.koing_server.payment.application.dto;
+package com.koing.server.koing_server.paymentInfo.application.dto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
