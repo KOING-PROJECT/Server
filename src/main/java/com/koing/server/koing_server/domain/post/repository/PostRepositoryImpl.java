@@ -1,5 +1,6 @@
 package com.koing.server.koing_server.domain.post.repository;
 
+import com.koing.server.koing_server.common.enums.UserRole;
 import com.koing.server.koing_server.domain.post.Post;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQueryFactory;
@@ -30,6 +31,22 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 //                .fetchJoin()
                 .where(
                         isNotDeleted()
+                )
+                .distinct()
+                .fetch();
+    }
+
+    @Override
+    public List<Post> findAdminPosts() {
+        return jpqlQueryFactory
+                .selectFrom(post)
+                .leftJoin(post.createUser, user)
+                .fetchJoin()
+                .leftJoin(post.comments, comment1)
+                .fetchJoin()
+                .where(
+                        isNotDeleted(),
+                        user.roles.contains(UserRole.ROLE_ADMIN.getRole())
                 )
                 .distinct()
                 .fetch();

@@ -8,6 +8,8 @@ public interface PostRepositoryCustom {
 
     List<Post> findAllPosts();
 
+    List<Post> findAdminPosts();
+
     Post findPostByPostId(Long postId);
 
     boolean checkExistPostByPostId(Long postId);
