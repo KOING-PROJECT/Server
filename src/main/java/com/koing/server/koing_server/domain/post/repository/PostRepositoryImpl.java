@@ -30,7 +30,8 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 //                .leftJoin(post.photos, postPhoto)
 //                .fetchJoin()
                 .where(
-                        isNotDeleted()
+                        isNotDeleted(),
+                        isNotAdminPost()
                 )
                 .distinct()
                 .fetch();
@@ -46,7 +47,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .fetchJoin()
                 .where(
                         isNotDeleted(),
-                        user.roles.contains(UserRole.ROLE_ADMIN.getRole())
+                        isAdminPost()
                 )
                 .distinct()
                 .fetch();
@@ -98,5 +99,17 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
     private BooleanExpression isNotDeleted() {
         return post.isDeleted.eq(Boolean.FALSE);
+    }
+
+    private BooleanExpression isNotAdminPost() {
+        return post.createUser
+                .roles
+                .contains(UserRole.ROLE_ADMIN.getRole()).not();
+    }
+
+    private BooleanExpression isAdminPost() {
+        return post.createUser
+                .roles
+                .contains(UserRole.ROLE_ADMIN.getRole());
     }
 }
