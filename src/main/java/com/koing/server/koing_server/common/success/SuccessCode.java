@@ -61,6 +61,7 @@ public enum SuccessCode {
     ADMIN_GET_USER_DETAIL_SUCCESS(OK, "admin : 관리자 페이지 유저 세부내용 조회 성공입니다."),
     ADMIN_GET_DEACTIVATE_USERS_SUCCESS(OK, "admin : 관리자 페이지 탈퇴 유저 조회 성공입니다."),
     GET_POSTS_SUCCESS(OK, "post : 게시글 리스트 조회 성공입니다."),
+    GET_ADMIN_POSTS_SUCCESS(OK, "post : Admin 게시글 리스트 조회 성공입니다."),
     GET_COMMENTS_SUCCESS(OK, "post : 댓글 리스트 조회 성공입니다."),
     GET_CREATE_POSTS_SUCCESS(OK, "post : 유저가 작성한 게시글 리스트 조회 성공입니다."),
     GET_LIKE_POSTS_SUCCESS(OK, "post : 유저가 좋아요 누른 게시글 리스트 조회 성공입니다."),
