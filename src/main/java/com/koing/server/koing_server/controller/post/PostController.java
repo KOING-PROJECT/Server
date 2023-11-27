@@ -78,6 +78,27 @@ public class PostController {
         return postsGetResponse;
     }
 
+    @ApiOperation("Post - Admin Post 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Post - Admin Post 리스트 조회 성공"),
+            @ApiResponse(code = 500, message = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/admin/{userId}")
+    public SuperResponse getAdminPosts(@PathVariable("userId") Long userId) {
+        LOGGER.info("[PostController] Admin Post 리스트 조회 시도");
+        SuperResponse getAdminPostsResponse;
+        try {
+            getAdminPostsResponse = postService.getAdminPosts(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] Admin Post 리스트 조회 성공");
+
+        return getAdminPostsResponse;
+    }
+
     @ApiOperation("Post - Post 좋아요를 수정합니다.")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Post - Post 좋아요 수정 성공"),

@@ -112,7 +112,7 @@ public class PostService {
     public SuperResponse getAdminPosts(Long userId) {
         LOGGER.info("[PostService] Admin Post 조회 시도");
 
-        List<Post> posts = postRepositoryImpl.findAllPosts();
+        List<Post> posts = postRepositoryImpl.findAdminPosts();
 
         User loginUser = getUser(userId);
 
