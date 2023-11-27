@@ -109,6 +109,38 @@ public class PostService {
     }
 
     @Transactional
+    public SuperResponse getAdminPosts(Long userId) {
+        LOGGER.info("[PostService] Admin Post 조회 시도");
+
+        List<Post> posts = postRepositoryImpl.findAllPosts();
+
+        User loginUser = getUser(userId);
+
+        List<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        for (Post post : posts) {
+            postResponseDtos.add(new PostResponseDto(post, loginUser));
+        }
+
+        LOGGER.info("[PostService] Admin Post 조회 성공");
+
+        if (loginUser.getUserOptionalInfo() != null) {
+            if (loginUser.getUserOptionalInfo().getImageUrls() != null && loginUser.getUserOptionalInfo().getImageUrls().size() > 0) {
+
+                return SuccessResponse.success(
+                        SuccessCode.GET_ADMIN_POSTS_SUCCESS,
+                        new PostListResponseDto(
+                                loginUser.getUserOptionalInfo().getImageUrls().get(0),
+                                postResponseDtos
+                        )
+                );
+            }
+        }
+
+        return SuccessResponse.success(SuccessCode.GET_ADMIN_POSTS_SUCCESS, new PostListResponseDto(postResponseDtos));
+    }
+
+    @Transactional
     public SuperResponse pressLikePost(PostLikeRequestDto postLikeRequestDto) {
 
         LOGGER.info("[PostService] Post 좋아요 수정 시도");
