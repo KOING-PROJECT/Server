@@ -46,7 +46,7 @@ public class PaymentInfoController {
         LOGGER.info("[PaymentInfoController] 결제 정보 생성 시도");
         SuperResponse paymentInfoCreateResponse;
         try {
-            paymentInfoCreateResponse = paymentInfoServiceFacade.proceedPayment(paymentInfoCreateCommand);
+            paymentInfoCreateResponse = paymentInfoService.createPaymentInfo(paymentInfoCreateCommand);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
