@@ -6,6 +6,7 @@ import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.paymentInfo.application.PaymentInfoService;
+import com.koing.server.koing_server.paymentInfo.application.PaymentInfoServiceFacade;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCreateCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentInfoController {
 
     private final PaymentInfoService paymentInfoService;
+    private final PaymentInfoServiceFacade paymentInfoServiceFacade;
 
     private final Logger LOGGER = LoggerFactory.getLogger(PaymentInfoService.class);
 
@@ -44,7 +46,7 @@ public class PaymentInfoController {
         LOGGER.info("[PaymentInfoController] 결제 정보 생성 시도");
         SuperResponse paymentInfoCreateResponse;
         try {
-            paymentInfoCreateResponse = paymentInfoService.createPaymentInfo(paymentInfoCreateCommand);
+            paymentInfoCreateResponse = paymentInfoServiceFacade.proceedPayment(paymentInfoCreateCommand);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
@@ -61,7 +63,7 @@ public class PaymentInfoController {
             @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
     })
     @GetMapping("")
-    public SuperResponse createPaymentInfo(
+    public SuperResponse getPaymentInfo(
             @RequestParam String orderId
     ) {
         LOGGER.info("[PaymentInfoController] 결제 정보 조회 시도");
