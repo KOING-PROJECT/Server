@@ -7,7 +7,11 @@ import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.BoilerplateException;
 import com.koing.server.koing_server.paymentInfo.application.PaymentInfoService;
 import com.koing.server.koing_server.paymentInfo.application.PaymentInfoServiceFacade;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCancelPaymentCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCreateCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoGetCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoSuccessPaymentCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoWebhookCommand;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentInfoController {
 
     private final PaymentInfoService paymentInfoService;
-    private final PaymentInfoServiceFacade paymentInfoServiceFacade;
 
     private final Logger LOGGER = LoggerFactory.getLogger(PaymentInfoService.class);
 
@@ -64,12 +67,12 @@ public class PaymentInfoController {
     })
     @GetMapping("")
     public SuperResponse getPaymentInfo(
-            @RequestParam String orderId
+            @RequestBody PaymentInfoGetCommand paymentInfoGetCommand
     ) {
         LOGGER.info("[PaymentInfoController] 결제 정보 조회 시도");
         SuperResponse paymentInfoGetResponse;
         try {
-            paymentInfoGetResponse = paymentInfoService.getPaymentInfo(orderId);
+            paymentInfoGetResponse = paymentInfoService.getPaymentInfo(paymentInfoGetCommand);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
@@ -78,5 +81,80 @@ public class PaymentInfoController {
         LOGGER.info("[PaymentInfoController] 결제 정보 조회 성공");
 
         return paymentInfoGetResponse;
+    }
+
+    @Operation(description = "PaymentInfo : 결제 성공 시 결제 정보를 업데이트 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PaymentInfo : 결제 성공 정보 업데이트 성공"),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/client/success")
+    public SuperResponse successPaymentByClient(
+            @RequestBody PaymentInfoSuccessPaymentCommand paymentInfoSuccessPaymentCommand
+    ) {
+        LOGGER.info("[PaymentInfoController] 결제 성공 정보 업데이트 시도");
+
+        SuperResponse paymentInfoSuccessPaymentResponse;
+        try {
+            paymentInfoSuccessPaymentResponse = paymentInfoService.successPaymentByClient(paymentInfoSuccessPaymentCommand);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PaymentInfoController] 결제 성공 정보 업데이트 성공");
+
+        return paymentInfoSuccessPaymentResponse;
+    }
+
+    // 결제 취소 by client
+    @Operation(description = "PaymentInfo : 결제 취소 시 결제 정보를 업데이트 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PaymentInfo : 결제 취소 정보 업데이트 성공"),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/client/cancel")
+    public SuperResponse cancelPaymentByClient(
+            @RequestBody PaymentInfoCancelPaymentCommand paymentInfoCancelPaymentCommand
+    ) {
+        LOGGER.info("[PaymentInfoController] 결제 취소 정보 업데이트 시도");
+
+        SuperResponse paymentInfoCancelPaymentResponse;
+        try {
+            paymentInfoCancelPaymentResponse = paymentInfoService.cancelPaymentByClient(paymentInfoCancelPaymentCommand);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+
+        LOGGER.info("[PaymentInfoController] 결제 취소 정보 업데이트 성공");
+
+        return paymentInfoCancelPaymentResponse;
+    }
+
+    // 결제 성공 by webhook
+    @Operation(description = "PaymentInfo : 포트원 Webhook으로 결제 정보를 업데이트 합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "PaymentInfo : 포트원 Webhook으로 결제 정보 업데이트 성공"),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @PostMapping("/port-one/success")
+    public SuperResponse successPaymentByPortOneWebhook(
+            @RequestBody PaymentInfoWebhookCommand paymentInfoWebhookCommand
+    ) {
+        LOGGER.info("[PaymentInfoController] 포트원 Webhook으로 결제 정보 업데이트 시도");
+
+        SuperResponse paymentInfoWebhookResponse;
+        try {
+            paymentInfoWebhookResponse = paymentInfoService.successPaymentByPortOneWebhookAndUpdatePaymentInfo(paymentInfoWebhookCommand);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PaymentInfoController] 포트원 Webhook으로 결제 정보 업데이트 성공");
+
+        return paymentInfoWebhookResponse;
     }
 }

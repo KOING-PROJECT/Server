@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.visitor.CommandAcceptor;
 import com.koing.server.koing_server.common.visitor.CommandVisitor;
 import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import com.koing.server.koing_server.paymentInfo.domain.PaymentStatus;
+import com.koing.server.koing_server.paymentInfo.domain.PortOneWebhookStatus;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@ public class PaymentInfoCreateCommand implements CommandAcceptor {
                 .tourDate(tourDate)
                 .orderId(createOrderId(guestId, touristId, tourId, tourDate))
                 .paymentStatus(PaymentStatus.READY)
+                .portOneWebhookStatus(PortOneWebhookStatus.STANDBY)
                 .build();
     }
 

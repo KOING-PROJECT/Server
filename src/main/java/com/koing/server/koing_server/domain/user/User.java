@@ -14,6 +14,7 @@ import com.koing.server.koing_server.domain.post.Comment;
 import com.koing.server.koing_server.domain.post.Post;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourParticipant;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -163,10 +164,10 @@ public class User extends AbstractRootEntity {
     private String withdrawalReason;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "guide")
-    private Set<Payment> earnPayments;
+    private Set<PaymentInfo> earnPayments;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "tourist")
-    private Set<Payment> buyPayments;
+    private Set<PaymentInfo> buyPayments;
 
     private int totalEarnAmount;
 

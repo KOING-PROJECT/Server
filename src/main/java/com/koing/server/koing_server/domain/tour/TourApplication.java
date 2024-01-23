@@ -7,6 +7,7 @@ import com.koing.server.koing_server.common.enums.TourApplicationStatus;
 import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.review.ReviewToGuide;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import lombok.*;
 
 import javax.persistence.*;
@@ -76,7 +77,7 @@ public class TourApplication extends AbstractRootEntity {
     private boolean isExceed;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "paymentProduct")
-    private Set<Payment> payments;
+    private Set<PaymentInfo> payments;
 
     public void setTour(Tour tour) {
         this.tour = tour;

@@ -9,6 +9,7 @@ import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.tour.Tour;
 import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.user.UserOptionalInfo;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -66,11 +67,11 @@ public class TourHistoryDto {
     }
 
     private void setImpUid(TourApplication tourApplication, Long touristId) {
-        Set<Payment> payments = tourApplication.getPayments();
+        Set<PaymentInfo> payments = tourApplication.getPayments();
 
-        for (Payment payment : payments) {
-            if (payment.getTourist().getId() == touristId) {
-                this.impUid = payment.getImp_uid();
+        for (PaymentInfo paymentInfo : payments) {
+            if (paymentInfo.getTourist().getId() == touristId) {
+                this.impUid = paymentInfo.getImpUid();
             }
         }
     }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Repository;
 
 import static com.koing.server.koing_server.domain.payment.QPayment.payment;
 import static com.koing.server.koing_server.domain.post.QComment.comment1;
@@ -18,7 +19,9 @@ import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApp
 import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
 import static com.koing.server.koing_server.domain.user.QUser.user;
 import static com.koing.server.koing_server.domain.user.QUserOptionalInfo.userOptionalInfo;
+import static com.koing.server.koing_server.paymentInfo.domain.QPaymentInfo.paymentInfo;
 
+@Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepositoryCustom {
 
@@ -38,9 +41,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
-                .leftJoin(user.earnPayments, payment)
+                .leftJoin(user.earnPayments, paymentInfo)
                 .fetchJoin()
-                .leftJoin(user.buyPayments, payment)
+                .leftJoin(user.buyPayments, paymentInfo)
                 .fetchJoin()
                 .where(
                         user.enabled.eq(true)
@@ -63,9 +66,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
-                .leftJoin(user.earnPayments, payment)
+                .leftJoin(user.earnPayments, paymentInfo)
                 .fetchJoin()
-                .leftJoin(user.buyPayments, payment)
+                .leftJoin(user.buyPayments, paymentInfo)
                 .fetchJoin()
                 .where(
                         user.email.eq(email),
@@ -124,9 +127,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
-                .leftJoin(user.earnPayments, payment)
+                .leftJoin(user.earnPayments, paymentInfo)
                 .fetchJoin()
-                .leftJoin(user.buyPayments, payment)
+                .leftJoin(user.buyPayments, paymentInfo)
                 .fetchJoin()
                 .leftJoin(user.createComments, comment1)
                 .fetchJoin()
@@ -151,9 +154,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
-                .leftJoin(user.earnPayments, payment)
+                .leftJoin(user.earnPayments, paymentInfo)
                 .fetchJoin()
-                .leftJoin(user.buyPayments, payment)
+                .leftJoin(user.buyPayments, paymentInfo)
                 .fetchJoin()
                 .where(
                         user.userStatus.eq(UserStatus.ACTIVATE),
@@ -191,9 +194,9 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(user.pressLikeTours, tour)
                 .fetchJoin()
-                .leftJoin(user.earnPayments, payment)
+                .leftJoin(user.earnPayments, paymentInfo)
                 .fetchJoin()
-                .leftJoin(user.buyPayments, payment)
+                .leftJoin(user.buyPayments, paymentInfo)
                 .fetchJoin()
                 .where(
                         user.userStatus.eq(UserStatus.REQUEST_WITHDRAWAL).or(user.userStatus.eq(UserStatus.WITHDRAWAL))

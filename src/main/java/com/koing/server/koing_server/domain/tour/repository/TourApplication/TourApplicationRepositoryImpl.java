@@ -6,6 +6,7 @@ import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
 import static com.koing.server.koing_server.domain.payment.QPayment.payment;
 import static com.koing.server.koing_server.domain.review.QReviewToGuide.reviewToGuide;
@@ -13,7 +14,9 @@ import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourParticipant.tourParticipant;
 import static com.koing.server.koing_server.domain.user.QUser.user;
+import static com.koing.server.koing_server.paymentInfo.domain.QPaymentInfo.paymentInfo;
 
+@Repository
 @RequiredArgsConstructor
 public class TourApplicationRepositoryImpl implements TourApplicationRepositoryCustom {
 
@@ -29,7 +32,7 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                 .fetchJoin()
                 .leftJoin(tourApplication.reviewsToGuide, reviewToGuide)
                 .fetchJoin()
-                .leftJoin(tourApplication.payments, payment)
+                .leftJoin(tourApplication.payments, paymentInfo)
                 .fetchJoin()
                 .distinct()
                 .where(
@@ -48,7 +51,7 @@ public class TourApplicationRepositoryImpl implements TourApplicationRepositoryC
                 .fetchJoin()
                 .leftJoin(tourApplication.reviewsToGuide, reviewToGuide)
                 .fetchJoin()
-                .leftJoin(tourApplication.payments, payment)
+                .leftJoin(tourApplication.payments, paymentInfo)
                 .fetchJoin()
                 .distinct()
                 .where(

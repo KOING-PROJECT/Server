@@ -1,21 +1,35 @@
 package com.koing.server.koing_server.paymentInfo.application;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.koing.server.koing_server.common.dto.ErrorResponse;
 import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
+import com.koing.server.koing_server.common.exception.DBFailException;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
+import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.exception.PaymentServerException;
 import com.koing.server.koing_server.common.redisson.RedissonLock;
 import com.koing.server.koing_server.common.success.SuccessCode;
+import com.koing.server.koing_server.domain.payment.Payment;
+import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.tour.repository.TourApplication.TourApplicationRepositoryImpl;
+import com.koing.server.koing_server.domain.user.User;
+import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.paymentInfo.application.component.IamportClientComponent;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCancelPaymentCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCreateCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoDto;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoGetCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoSuccessPaymentCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoWebhookCommand;
 import com.koing.server.koing_server.paymentInfo.application.exception.NotFoundPaymentInfoException;
+import com.koing.server.koing_server.paymentInfo.application.exception.PaymentFailException;
+import com.koing.server.koing_server.paymentInfo.application.utils.PortOneUtils;
 import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import com.koing.server.koing_server.paymentInfo.domain.repository.PaymentInfoRepository;
+import com.koing.server.koing_server.service.payment.dto.PaymentInquiryResultDto;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -31,20 +45,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PaymentInfoService {
 
-    private final IamportClientComponent iamportClientComponent;
     private final PaymentInfoRepository paymentInfoRepository;
+    private final PortOneUtils portOneUtils;
+    private final UserRepositoryImpl userRepositoryImpl;
+    private final TourApplicationRepositoryImpl tourApplicationRepositoryImpl;
 
     private final Logger LOGGER = LoggerFactory.getLogger(PaymentInfoService.class);
-
-    private String getPortOneAccessToken() {
-        LOGGER.info("[PaymentV2Service] 포트원 accessToken 요청 시도");
-        try {
-            LOGGER.info("[PaymentV2Service] 포트원 accessToken 요청 성공");
-            return iamportClientComponent.getAuth().getResponse().getToken();
-        } catch (IamportResponseException | IOException e) {
-            throw new PaymentServerException("결제 서버와의 통신에서 오류가 발생했습니다.", ErrorCode.PAYMENT_SERVER_CONNECT_ERROR);
-        }
-    }
 
     @RedissonLock()
     public SuperResponse createPaymentInfo(final PaymentInfoCreateCommand command) {
@@ -65,16 +71,98 @@ public class PaymentInfoService {
         return SuccessResponse.success(SuccessCode.PAYMENT_INFO_CREATE_SUCCESS, savedPaymentInfo.getOrderId());
     }
 
-    public SuperResponse getPaymentInfo(final String orderId) {
-        final PaymentInfo paymentInfo = findPaymentInfoByOrderId(orderId);
+    public SuperResponse getPaymentInfo(final PaymentInfoGetCommand command) {
+        final PaymentInfo paymentInfo = findPaymentInfoByOrderId(command.getOrderId());
 
         return SuccessResponse.success(SuccessCode.PAYMENT_INFO_CREATE_SUCCESS, PaymentInfoDto.from(paymentInfo));
     }
 
+    @RedissonLock()
+    public SuperResponse successPaymentByClient(final PaymentInfoSuccessPaymentCommand command) {
+        LOGGER.info("[PaymentV2Service] 결제 성공 정보 업데이트 시도");
+
+        final String orderId = command.getMerchantUid();
+
+        final PaymentInfo paymentInfo = findPaymentInfoByOrderId(orderId);
+
+        paymentInfo.successPaymentByClient();
+
+        final PaymentInfo savedPaymentInfo = paymentInfoRepository.save(paymentInfo);
+
+        LOGGER.info("[PaymentV2Service] 결제 성공 정보 업데이트 성공");
+
+        return SuccessResponse.success(SuccessCode.UPDATE_PAYMENT_INFO_TO_SUCCESS, null);
+    }
+
+    // PortOneWebhook endPoint
+    @RedissonLock()
+    public SuperResponse successPaymentByPortOneWebhookAndUpdatePaymentInfo(final PaymentInfoWebhookCommand command)
+            throws JsonProcessingException {
+
+        if (!command.getStatus().equals("paid")) {
+            throw new PaymentFailException();
+        }
+
+        PaymentInfoSuccessPaymentCommand paymentInfoSuccessPaymentCommand = command.toPaymentInfoSuccessPaymentCommand();
+
+        PaymentInfo paymentInfo = successPaymentByPortOneWebhook(paymentInfoSuccessPaymentCommand);
+
+        LOGGER.info("[PaymentV2Service] 결제 정보 업데이트 시도");
+
+        PaymentInquiryResultDto paymentInquiryResultDto = portOneUtils.getPaymentInfoAtPortOne(command.getImp_uid());
+
+        paymentInfo.updatePaymentInfo(paymentInquiryResultDto);
+
+        User tourist = getUser(paymentInquiryResultDto.getTouristId());
+
+        TourApplication tourApplication = getTourApplication(paymentInquiryResultDto.getTourId(), paymentInquiryResultDto.getTourDate());
+
+        Long guideId = tourApplication.getTour().getCreateUser().getId();
+
+        User guide = getUser(guideId);
+
+        paymentInfo.setPaymentProduct(tourApplication);
+        paymentInfo.setGuide(guide);
+        paymentInfo.setTourist(tourist);
+
+        paymentInfoRepository.save(paymentInfo);
+
+        LOGGER.info("[PaymentV2Service] 결제 정보 업데이트 성공");
+
+        return SuccessResponse.success(SuccessCode.UPDATE_PAYMENT_INFO_SUCCESS, null);
+    }
+
+    // successPaymentByPortOneWebhook
+    private PaymentInfo successPaymentByPortOneWebhook(final PaymentInfoSuccessPaymentCommand command) {
+        LOGGER.info("[PaymentV2Service] 포트원 결제 상태 정보 성공으로 업데이트 시도");
+
+        final String orderId = command.getMerchantUid();
+
+        final PaymentInfo paymentInfo = findPaymentInfoByOrderId(orderId);
+
+        paymentInfo.successPaymentByPortOne();
+
+        LOGGER.info("[PaymentV2Service] 포트원 결제 상태 정보 성공으로 업데이트 성공");
+
+        return paymentInfo;
+    }
+
     // 결제 도중에 취소 하는 경우 해당 paymentInfo 의 paymentStatus 를 CANCEL 로 수정 해야함.
-//    public SuperResponse cancelPayment(final String orderId) {
-//
-//    }
+    public SuperResponse cancelPaymentByClient(final PaymentInfoCancelPaymentCommand command) {
+        LOGGER.info("[PaymentV2Service] 결제 취소 정보 업데이트 시도");
+
+        final String orderId = command.getOrderId();
+
+        final PaymentInfo paymentInfo = findPaymentInfoByOrderId(orderId);
+
+        paymentInfo.cancelPaymentByClient();
+
+        final PaymentInfo savedPaymentInfo = paymentInfoRepository.save(paymentInfo);
+
+        LOGGER.info("[PaymentV2Service] 결제 취소 정보 업데이트 성공");
+
+        return SuccessResponse.success(SuccessCode.UPDATE_PAYMENT_INFO_TO_CANCEL, null);
+    }
 
     private PaymentInfo findPaymentInfoByOrderId(final String orderId) {
         final PaymentInfo paymentInfo = paymentInfoRepository.findPaymentInfoByOrderId(orderId);
@@ -90,5 +178,23 @@ public class PaymentInfoService {
         final PaymentInfo paymentInfo = paymentInfoRepository.findPaymentInfoByTourIdAndTourDate(newPaymentInfo.getTourId(), newPaymentInfo.getTourDate());
 
         return paymentInfo;
+    }
+
+    private User getUser(Long userId) {
+        User user = userRepositoryImpl.loadUserByUserId(userId, true);
+        if (user == null) {
+            throw new NotFoundException("해당 유저를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        return user;
+    }
+
+    private TourApplication getTourApplication(Long tourId, String tourDate) {
+        TourApplication tourApplication = tourApplicationRepositoryImpl.findTourApplicationByTourIdAndTourDate(tourId, tourDate);
+        if (tourApplication == null) {
+            throw new NotFoundException("해당 투어 신청서를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_TOUR_APPLICATION_EXCEPTION);
+        }
+
+        return tourApplication;
     }
 }

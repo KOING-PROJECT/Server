@@ -64,6 +64,9 @@ public enum SuccessCode {
     GET_COMMENTS_SUCCESS(OK, "post : 댓글 리스트 조회 성공입니다."),
     GET_CREATE_POSTS_SUCCESS(OK, "post : 유저가 작성한 게시글 리스트 조회 성공입니다."),
     GET_LIKE_POSTS_SUCCESS(OK, "post : 유저가 좋아요 누른 게시글 리스트 조회 성공입니다."),
+    UPDATE_PAYMENT_INFO_TO_SUCCESS(OK, "payment-info : 결제 상태 PAID 업데이트 성공입니다."),
+    UPDATE_PAYMENT_INFO_TO_CANCEL(OK, "payment-info : 결제 상태 CANCELED 업데이트 성공입니다."),
+    UPDATE_PAYMENT_INFO_SUCCESS(OK, "payment-info : 결제 정보 업데이트 성공입니다.."),
 
     // 인증
 //    LOGIN_SUCCESS(OK, "signIn : 로그인 성공입니다."),
