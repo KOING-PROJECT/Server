@@ -31,6 +31,6 @@ public class LockNameVisitor implements CommandVisitor {
 
     @Override
     public void visit(final PaymentInfoWebhookCommand command) {
-        lockName = REDISSON_LOCK_NAME_PAYMENT_INFO_UPDATE_PREFIX + "/" +command.getImpUid();
+        lockName = REDISSON_LOCK_NAME_PAYMENT_INFO_UPDATE_PREFIX + "/" +command.getImp_uid();
     }
 }
