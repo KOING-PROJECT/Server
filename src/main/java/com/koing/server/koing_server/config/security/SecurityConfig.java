@@ -51,17 +51,17 @@ public class SecurityConfig {
                 .httpBasic().disable()
 //                .cors().configurationSource(corsConfigurationSource())
 //                .and()
-                .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/swagger-ui.html").permitAll()
-                .and()
-//                .authorizeRequests((requests) -> requests
-////                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
-//                        .antMatchers("/swagger-ui.html").permitAll()
-////                        .antMatchers("/jwt/reIssue").authenticated()
-////                        .antMatchers("/user/**").authenticated()
-//                )
+                .authorizeRequests((requests) -> requests
+//                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
+                        .antMatchers("/swagger-ui.html", "/sign/**", "/mail/**").permitAll()
+//                        .antMatchers("/jwt/reIssue").authenticated()
+//                        .antMatchers("/user/**").authenticated()
+                        .antMatchers("/user/**").permitAll()
+                        .antMatchers("/guide/**").hasRole("GUIDE")
+                        .antMatchers("/tourist/**").hasRole("TOURIST")
+                )
                 .formLogin().disable()
 //                .cors().disable()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
@@ -69,7 +69,9 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .and().build();
+                .and()
+                .csrf().disable()
+                .build();
 //                .authenticationEntryPoint(((request, response, authException) -> {
 //                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
