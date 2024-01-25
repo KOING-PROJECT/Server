@@ -57,13 +57,8 @@ public class SecurityConfig {
                 .authorizeRequests((requests) -> requests
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                         .antMatchers("/swagger-ui.html").permitAll()
-                        .antMatchers("/sign/**").permitAll()
-                        .antMatchers("/mail/**").permitAll()
 //                        .antMatchers("/jwt/reIssue").authenticated()
 //                        .antMatchers("/user/**").authenticated()
-                        .antMatchers("/user/**").permitAll()
-                        .antMatchers("/guide/**").hasRole("GUIDE")
-                        .antMatchers("/tourist/**").hasRole("TOURIST")
                 )
                 .formLogin().disable()
 //                .cors().disable()
