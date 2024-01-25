@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -49,13 +51,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        return httpSecurity
-                .httpBasic().disable()
+                httpSecurity.csrf(AbstractHttpConfigurer::disable);
+                httpSecurity.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 //                .cors().configurationSource(corsConfigurationSource())
 //                .and()
-                .csrf((csrf) -> csrf.ignoringAntMatchers("/**"))
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                httpSecurity
                 .authorizeRequests((requests) -> requests
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                         .antMatchers("/swagger-ui.html", "/sign/**", "/mail/**").permitAll()
@@ -64,16 +64,24 @@ public class SecurityConfig {
                         .antMatchers("/user/**").permitAll()
                         .antMatchers("/guide/**").hasRole("GUIDE")
                         .antMatchers("/tourist/**").hasRole("TOURIST")
-                )
-                .formLogin().disable()
+                );
+
+                httpSecurity.formLogin().disable();
 //                .cors().disable()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
-                        , UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling()
-                .accessDeniedHandler(new CustomAccessDeniedHandler())
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .and()
-                .build();
+                httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
+                        , UsernamePasswordAuthenticationFilter.class);
+
+                httpSecurity.exceptionHandling()
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+
+                httpSecurity.sessionManagement(
+                        httpSecuritySessionManagementConfigurer ->
+                                httpSecuritySessionManagementConfigurer
+                                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+
+                return httpSecurity.build();
 //                .authenticationEntryPoint(((request, response, authException) -> {
 //                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
