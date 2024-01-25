@@ -23,7 +23,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 // WebSecurityConfigurerAdapter 어떤 필터를 적용하여 필터체인을 구성할건지
-//@Order(1) // 두개 이상의 security 필터를 사용할때 순서 정해주기
+//@Order(1) //
 @Configuration
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -58,12 +58,7 @@ public class SecurityConfig {
                 httpSecurity
                 .authorizeRequests((requests) -> requests
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
-                        .antMatchers("/swagger-ui.html", "/sign/**", "/mail/**").permitAll()
-//                        .antMatchers("/jwt/reIssue").authenticated()
-//                        .antMatchers("/user/**").authenticated()
-                        .antMatchers("/user/**").permitAll()
-                        .antMatchers("/guide/**").hasRole("GUIDE")
-                        .antMatchers("/tourist/**").hasRole("TOURIST")
+                                .anyRequest().permitAll()
                 );
 
                 httpSecurity.formLogin().disable();
