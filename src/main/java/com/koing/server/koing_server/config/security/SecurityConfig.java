@@ -61,6 +61,9 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
                 );
 
+                httpSecurity
+                        .authorizeHttpRequests((request) -> request.requestMatchers().permitAll());
+
                 httpSecurity.formLogin().disable();
 //                .cors().disable()
                 httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
