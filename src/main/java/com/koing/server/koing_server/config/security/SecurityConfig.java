@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .httpBasic().disable()
 //                .cors().configurationSource(corsConfigurationSource())
 //                .and()
-                .csrf((csrfconfig) -> csrfconfig.disable())
+                .csrf((csrf) -> csrf.ignoringAntMatchers("/**"))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests((requests) -> requests
@@ -72,7 +72,8 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .and().build();
+                .and()
+                .build();
 //                .authenticationEntryPoint(((request, response, authException) -> {
 //                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
