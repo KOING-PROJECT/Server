@@ -5,7 +5,6 @@ import com.koing.server.koing_server.common.util.JwtTokenUtil;
 import com.koing.server.koing_server.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,7 +24,6 @@ import java.util.List;
 @EnableWebSecurity(debug = true)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
-@Configuration
 public class SecurityConfig {
 
     private final JwtTokenUtil jwtTokenUtil;
@@ -53,6 +51,7 @@ public class SecurityConfig {
                 .httpBasic().disable()
 //                .cors().configurationSource(corsConfigurationSource())
 //                .and()
+                .csrf((csrfconfig) -> csrfconfig.disable())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests((requests) -> requests
@@ -71,9 +70,7 @@ public class SecurityConfig {
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-                .and()
-                .csrf().disable()
-                .build();
+                .and().build();
 //                .authenticationEntryPoint(((request, response, authException) -> {
 //                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
 //                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
