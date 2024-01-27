@@ -61,17 +61,14 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
                 );
 
-                httpSecurity
-                        .authorizeHttpRequests((request) -> request.requestMatchers().permitAll());
-
                 httpSecurity.formLogin().disable();
-//                .cors().disable()
-                httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
-                        , UsernamePasswordAuthenticationFilter.class);
 
-                httpSecurity.exceptionHandling()
-                        .accessDeniedHandler(new CustomAccessDeniedHandler())
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+//                httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
+//                        , UsernamePasswordAuthenticationFilter.class);
+//
+//                httpSecurity.exceptionHandling()
+//                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+//                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
                 httpSecurity.sessionManagement(
                         httpSecuritySessionManagementConfigurer ->
