@@ -57,8 +57,8 @@ public class SecurityConfig {
 //                .and()
                 httpSecurity
                 .authorizeRequests((requests) -> requests
+                                .antMatchers("/swagger-ui.html", "/sign/**", "/mail/**", "/user/**").permitAll()
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
-                                .anyRequest().permitAll()
                 );
 
                 httpSecurity.formLogin().disable();
