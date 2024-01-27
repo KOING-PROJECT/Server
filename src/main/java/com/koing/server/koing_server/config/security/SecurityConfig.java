@@ -63,12 +63,12 @@ public class SecurityConfig {
 
                 httpSecurity.formLogin().disable();
 
-//                httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
-//                        , UsernamePasswordAuthenticationFilter.class);
-//
-//                httpSecurity.exceptionHandling()
-//                        .accessDeniedHandler(new CustomAccessDeniedHandler())
-//                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
+                httpSecurity.addFilterBefore(new JwtAuthenticationFilter(jwtTokenUtil, jwtService)
+                        , UsernamePasswordAuthenticationFilter.class);
+
+                httpSecurity.exceptionHandling()
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
                 httpSecurity.sessionManagement(
                         httpSecuritySessionManagementConfigurer ->
