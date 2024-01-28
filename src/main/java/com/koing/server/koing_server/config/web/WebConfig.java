@@ -9,7 +9,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://koing-project.github.io", "https://koing.store")
+                .allowedOrigins("https://koing-project.github.io")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .maxAge(3600);
