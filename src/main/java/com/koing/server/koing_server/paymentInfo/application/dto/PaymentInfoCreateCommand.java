@@ -13,14 +13,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentInfoCreateCommand implements CommandAcceptor {
 
-    private Long guestId;
+    private Long guideId;
     private Long touristId;
     private Long tourId;
     private String tourDate;
 
-    public PaymentInfoCreateCommand(final Long guestId, final Long touristId, final Long tourId,
+    public PaymentInfoCreateCommand(final Long guideId, final Long touristId, final Long tourId,
             final String tourDate) {
-        this.guestId = guestId;
+        this.guideId = guideId;
         this.touristId = touristId;
         this.tourId = tourId;
         this.tourDate = tourDate;
@@ -28,24 +28,24 @@ public class PaymentInfoCreateCommand implements CommandAcceptor {
 
     public PaymentInfo toEntity() {
         return PaymentInfo.builder()
-                .guestId(guestId)
+                .guideId(guideId)
                 .touristId(touristId)
                 .tourId(tourId)
                 .tourDate(tourDate)
-                .orderId(createOrderId(guestId, touristId, tourId, tourDate))
+                .orderId(createOrderId(guideId, touristId, tourId, tourDate))
                 .paymentStatus(PaymentStatus.READY)
                 .portOneWebhookStatus(PortOneWebhookStatus.STANDBY)
                 .build();
     }
 
     private String createOrderId(
-            final Long guestId,
+            final Long guideId,
             final Long touristId,
             final Long tourId,
             final String tourDate)
     {
         return UUID.randomUUID()
-                + "/" + guestId
+                + "/" + guideId
                 + "/" + touristId
                 + "/" + tourId
                 + "/" + tourDate;

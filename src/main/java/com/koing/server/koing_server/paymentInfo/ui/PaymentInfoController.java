@@ -9,6 +9,7 @@ import com.koing.server.koing_server.paymentInfo.application.PaymentInfoService;
 import com.koing.server.koing_server.paymentInfo.application.PaymentInfoServiceFacade;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCancelPaymentCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoCreateCommand;
+import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoFacadeSuccessPaymentCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoGetCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoSuccessPaymentCommand;
 import com.koing.server.koing_server.paymentInfo.application.dto.PaymentInfoWebhookCommand;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentInfoController {
 
     private final PaymentInfoService paymentInfoService;
+    private final PaymentInfoServiceFacade paymentInfoServiceFacade;
 
     private final Logger LOGGER = LoggerFactory.getLogger(PaymentInfoService.class);
 
@@ -90,13 +92,13 @@ public class PaymentInfoController {
     })
     @PostMapping("/client/success")
     public SuperResponse successPaymentByClient(
-            @RequestBody PaymentInfoSuccessPaymentCommand paymentInfoSuccessPaymentCommand
+            @RequestBody PaymentInfoFacadeSuccessPaymentCommand paymentInfoFacadeSuccessPaymentCommand
     ) {
         LOGGER.info("[PaymentInfoController] 결제 성공 정보 업데이트 시도");
 
         SuperResponse paymentInfoSuccessPaymentResponse;
         try {
-            paymentInfoSuccessPaymentResponse = paymentInfoService.successPaymentByClient(paymentInfoSuccessPaymentCommand);
+            paymentInfoSuccessPaymentResponse = paymentInfoServiceFacade.paymentSuccessByClient(paymentInfoFacadeSuccessPaymentCommand);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {
@@ -147,7 +149,7 @@ public class PaymentInfoController {
 
         SuperResponse paymentInfoWebhookResponse;
         try {
-            paymentInfoWebhookResponse = paymentInfoService.successPaymentByPortOneWebhookAndUpdatePaymentInfo(paymentInfoWebhookCommand);
+            paymentInfoWebhookResponse = paymentInfoServiceFacade.successPaymentByPortOneWebhook(paymentInfoWebhookCommand);
         } catch (BoilerplateException boilerplateException) {
             return ErrorResponse.error(boilerplateException.getErrorCode());
         } catch (Exception exception) {

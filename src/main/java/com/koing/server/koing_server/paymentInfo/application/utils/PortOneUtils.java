@@ -34,8 +34,7 @@ public class PortOneUtils {
     private String impKey;
 
     private final Logger LOGGER = LoggerFactory.getLogger(PortOneUtils.class);
-    public PaymentInquiryResultDto getPaymentInfoAtPortOne(String imp_uid)
-            throws JsonProcessingException {
+    public PaymentInquiryResultDto getPaymentInfoAtPortOne(String imp_uid) {
         LOGGER.info("[PortOneUtils] 결제 정보 조회 시도");
 
         String accessToken = getPortOneAccessToken();
@@ -79,7 +78,7 @@ public class PortOneUtils {
         return new PaymentInquiryResultDto(responseEntity);
     }
 
-    private String getPortOneAccessToken() throws JsonProcessingException {
+    private String getPortOneAccessToken() {
         LOGGER.info("[PortOneUtils] AccessToken 획득 시도");
 
         String path = String.format("/users/getToken");
@@ -97,7 +96,12 @@ public class PortOneUtils {
         PaymentAccessTokenRequestDto paymentAccessTokenRequestDto = new PaymentAccessTokenRequestDto(impKey, impSecret);
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonBody = objectMapper.writeValueAsString(paymentAccessTokenRequestDto);
+        String jsonBody = "";
+        try {
+            jsonBody = objectMapper.writeValueAsString(paymentAccessTokenRequestDto);
+        } catch (JsonProcessingException e) {
+            throw new InternalServerException("PortOne AccessToken을 가져오는 중에 오류가 발생했습니다.");
+        }
 
         RequestEntity<String> requestEntity = RequestEntity
                 .post(uri)

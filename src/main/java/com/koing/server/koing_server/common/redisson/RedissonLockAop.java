@@ -26,6 +26,7 @@ public class RedissonLockAop {
 
     private final RedissonClient redissonClient;
     private final RedissonCallTransaction redissonCallTransaction;
+    private final RedissonCallWithNoTransaction redissonCallWithNoTransaction;
     private final Logger LOGGER = LoggerFactory.getLogger(RedissonLockAop.class);
 
     @Around("@annotation(com.koing.server.koing_server.common.redisson.RedissonLock) && args(acceptor)")
@@ -56,6 +57,42 @@ public class RedissonLockAop {
             /* service call */
 //            return joinPoint.proceed();
             return redissonCallTransaction.proceed(joinPoint);
+        } catch (Exception e) {
+            throw new InterruptedException();
+        } finally {
+            rLock.unlock();
+            System.out.println(Thread.currentThread().getName() + " " + lockName + " " + "releaseLock");
+        }
+    }
+
+    @Around("@annotation(com.koing.server.koing_server.common.redisson.RedissonLockWithNoTransaction) && args(acceptor)")
+    public Object lockWithNoTransaction(final ProceedingJoinPoint joinPoint, CommandAcceptor acceptor) throws Throwable {
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        RedissonLockWithNoTransaction redissonLockWithNoTransaction = method.getAnnotation(RedissonLockWithNoTransaction.class);
+
+        LockNameVisitor lockNameVisitor = new LockNameVisitor();
+        acceptor.accept(lockNameVisitor);
+
+        String lockName = lockNameVisitor.getLockName();
+
+        /* get rLock 객체 */
+        RLock rLock = redissonClient.getLock(lockName);
+
+        try {
+            /* get lock */
+            System.out.println(Thread.currentThread().getName() + " " + lockName + " " + "tryLock");
+            boolean available = rLock.tryLock(redissonLockWithNoTransaction.waitTime(), redissonLockWithNoTransaction.leaseTime(), redissonLockWithNoTransaction.timeUnit());
+            System.out.println(Thread.currentThread().getName() + " " + lockName + " " + "getLock");
+            if (!available) {
+                return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_DURING_PAYMENT_EXCEPTION);
+            }
+
+            LOGGER.info("Redisson Lock Key : {}", lockName);
+
+            /* service call */
+//            return joinPoint.proceed();
+            return redissonCallWithNoTransaction.proceed(joinPoint);
         } catch (Exception e) {
             throw new InterruptedException();
         } finally {

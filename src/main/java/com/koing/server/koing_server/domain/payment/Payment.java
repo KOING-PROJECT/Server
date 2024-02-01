@@ -63,7 +63,7 @@ public class Payment extends AbstractRootEntity {
             guide.setEarnPayments(new HashSet<>());
         }
 
-        guide.getEarnPayments().add(this);
+//        guide.getEarnPayments().add(this);
     }
 
     public void setTourist(User tourist) {
@@ -73,7 +73,7 @@ public class Payment extends AbstractRootEntity {
             tourist.setBuyPayments(new HashSet<>());
         }
 
-        tourist.getBuyPayments().add(this);
+//        tourist.getBuyPayments().add(this);
     }
 
     public void setPaymentProduct(TourApplication tourApplication) {
@@ -83,6 +83,6 @@ public class Payment extends AbstractRootEntity {
             tourApplication.setPayments(new HashSet<>());
         }
 
-        tourApplication.getPayments().add(this);
+//        tourApplication.getPayments().add(this);
     }
 }

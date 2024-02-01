@@ -70,6 +70,6 @@ class PaymentInfoServiceFacadeTest {
         countDownLatch.await();
         int paymentInfoCount = paymentInfoRepository.findAll().size();
 
-        assertThat(paymentInfoCount).isEqualTo(2);
+        assertThat(paymentInfoCount).isEqualTo(1);
     }
 }

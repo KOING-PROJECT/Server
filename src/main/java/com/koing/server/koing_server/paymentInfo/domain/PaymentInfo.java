@@ -5,6 +5,7 @@ import com.koing.server.koing_server.domain.tour.TourApplication;
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.service.payment.dto.PaymentInquiryResultDto;
 import java.util.HashSet;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,8 +30,10 @@ public class PaymentInfo extends AbstractRootEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long guestId;
+    @Column(name = "g_id")
+    private Long guideId;
 
+    @Column(name = "t_id")
     private Long touristId;
 
     private Long tourId;
@@ -68,7 +71,7 @@ public class PaymentInfo extends AbstractRootEntity {
 
     @Builder
     public PaymentInfo(
-            final Long guestId,
+            final Long guideId,
             final Long touristId,
             final Long tourId,
             final String tourDate,
@@ -85,7 +88,7 @@ public class PaymentInfo extends AbstractRootEntity {
             final String paymentUnit,
             final String paymentTime
     ) {
-        this.guestId = guestId;
+        this.guideId = guideId;
         this.touristId = touristId;
         this.tourId = tourId;
         this.tourDate = tourDate;
@@ -103,16 +106,18 @@ public class PaymentInfo extends AbstractRootEntity {
         this.paymentTime = paymentTime;
     }
 
-    public void successPaymentByClient() {
+    public void successPaymentByClient(String impUid) {
         this.paymentStatus = PaymentStatus.PAID;
+        this.impUid = impUid;
     }
 
     public void cancelPaymentByClient() {
         this.paymentStatus = PaymentStatus.CANCELLED;
     }
 
-    public void successPaymentByPortOne() {
+    public void successPaymentByPortOne(String impUid) {
         this.portOneWebhookStatus = PortOneWebhookStatus.PAID;
+        this.impUid = impUid;
     }
 
     public void setGuide(User guide) {

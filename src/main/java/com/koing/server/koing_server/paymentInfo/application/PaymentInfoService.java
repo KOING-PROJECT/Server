@@ -11,6 +11,7 @@ import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.exception.PaymentServerException;
 import com.koing.server.koing_server.common.redisson.RedissonLock;
+import com.koing.server.koing_server.common.redisson.RedissonLockWithNoTransaction;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.payment.Payment;
 import com.koing.server.koing_server.domain.tour.TourApplication;
@@ -77,35 +78,24 @@ public class PaymentInfoService {
         return SuccessResponse.success(SuccessCode.PAYMENT_INFO_CREATE_SUCCESS, PaymentInfoDto.from(paymentInfo));
     }
 
-    @RedissonLock()
-    public SuperResponse successPaymentByClient(final PaymentInfoSuccessPaymentCommand command) {
+    @RedissonLock
+    public void successPaymentByClient(final PaymentInfoSuccessPaymentCommand command) {
         LOGGER.info("[PaymentV2Service] 결제 성공 정보 업데이트 시도");
 
         final String orderId = command.getMerchantUid();
 
         final PaymentInfo paymentInfo = findPaymentInfoByOrderId(orderId);
 
-        paymentInfo.successPaymentByClient();
+        paymentInfo.successPaymentByClient(command.getImpUid());
 
-        final PaymentInfo savedPaymentInfo = paymentInfoRepository.save(paymentInfo);
+        paymentInfoRepository.save(paymentInfo);
 
         LOGGER.info("[PaymentV2Service] 결제 성공 정보 업데이트 성공");
-
-        return SuccessResponse.success(SuccessCode.UPDATE_PAYMENT_INFO_TO_SUCCESS, null);
     }
 
     // PortOneWebhook endPoint
-    @RedissonLock()
-    public SuperResponse successPaymentByPortOneWebhookAndUpdatePaymentInfo(final PaymentInfoWebhookCommand command)
-            throws JsonProcessingException {
-
-        if (!command.getStatus().equals("paid")) {
-            throw new PaymentFailException();
-        }
-
-        PaymentInfoSuccessPaymentCommand paymentInfoSuccessPaymentCommand = command.toPaymentInfoSuccessPaymentCommand();
-
-        PaymentInfo paymentInfo = successPaymentByPortOneWebhook(paymentInfoSuccessPaymentCommand);
+    @RedissonLock
+    public SuperResponse updatePaymentInfoByPortOne(final PaymentInfoWebhookCommand command, final PaymentInfo paymentInfo) {
 
         LOGGER.info("[PaymentV2Service] 결제 정보 업데이트 시도");
 
@@ -132,19 +122,23 @@ public class PaymentInfoService {
         return SuccessResponse.success(SuccessCode.UPDATE_PAYMENT_INFO_SUCCESS, null);
     }
 
+
     // successPaymentByPortOneWebhook
-    private PaymentInfo successPaymentByPortOneWebhook(final PaymentInfoSuccessPaymentCommand command) {
+    @RedissonLock() //
+    public PaymentInfo successPaymentByPortOneWebhook(final PaymentInfoSuccessPaymentCommand command) {
         LOGGER.info("[PaymentV2Service] 포트원 결제 상태 정보 성공으로 업데이트 시도");
 
         final String orderId = command.getMerchantUid();
 
         final PaymentInfo paymentInfo = findPaymentInfoByOrderId(orderId);
 
-        paymentInfo.successPaymentByPortOne();
+        paymentInfo.successPaymentByPortOne(command.getImpUid());
+
+        final PaymentInfo savedPaymentInfo = paymentInfoRepository.save(paymentInfo);
 
         LOGGER.info("[PaymentV2Service] 포트원 결제 상태 정보 성공으로 업데이트 성공");
 
-        return paymentInfo;
+        return savedPaymentInfo;
     }
 
     // 결제 도중에 취소 하는 경우 해당 paymentInfo 의 paymentStatus 를 CANCEL 로 수정 해야함.
@@ -168,7 +162,7 @@ public class PaymentInfoService {
         final PaymentInfo paymentInfo = paymentInfoRepository.findPaymentInfoByOrderId(orderId);
 
         if(paymentInfo == null) {
-            throw new NotFoundPaymentInfoException(orderId);
+            throw new NotFoundException("해당 결제 정보를 찾을 수 없습니다.", ErrorCode.NOT_FOUND_PAYMENT_INFO_EXCEPTION);
         }
 
         return paymentInfo;

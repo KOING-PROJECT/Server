@@ -27,6 +27,7 @@ import com.koing.server.koing_server.domain.tour.repository.TourSchedule.TourSch
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
 import com.koing.server.koing_server.service.tour.dto.*;
 import com.koing.server.koing_server.service.user.dto.UserTourParticipantDto;
 import com.koing.server.koing_server.service.user.dto.UserTourParticipantListDto;
@@ -684,12 +685,12 @@ public class TourApplicationService {
 
             Long guideId = tour.getCreateUser().getId();
             User guide = getUser(guideId);
-            for (Payment payment : tourApplication.getPayments()) {
-                if (payment.getGuide().getId() == guideId) {
+            for (PaymentInfo paymentInfo : tourApplication.getPayments()) {
+                if (paymentInfo.getGuide().getId() == guideId) {
 
                     int previousTotalEarnAmount = guide.getTotalEarnAmount();
                     int previousCurrentRemainAmount = guide.getCurrentRemainAmount();
-                    int paymentAmount = payment.getPaymentAmount();
+                    int paymentAmount = paymentInfo.getPaymentAmount();
                     int previousTotalTourists = guide.getTotalTourists();
 
                     guide.setTotalEarnAmount(previousTotalEarnAmount + paymentAmount);

@@ -138,6 +138,7 @@ public enum ErrorCode {
     NOT_FOUND_KEYWORD_EXCEPTION(NOT_FOUND, "존재하지 않는 키워드 입니다."),
     NOT_FOUND_POST_PHOTO_EXCEPTION(NOT_FOUND, "해당 게시글 사진을 찾을 수 없습니다."),
     NOT_FOUND_POST_EXCEPTION(NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
+    NOT_FOUND_PAYMENT_INFO_EXCEPTION(NOT_FOUND, "해당 결제 정보를 찾을 수 없습니다."),
 
 
     /**
