@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
+import com.koing.server.koing_server.common.exception.InternalServerException;
 import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
@@ -13,6 +14,7 @@ import com.koing.server.koing_server.domain.account.repository.AccountRepository
 import com.koing.server.koing_server.domain.user.User;
 import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
+import com.koing.server.koing_server.service.account.component.AES_Encryption;
 import com.koing.server.koing_server.service.account.component.SEED_CBC;
 import com.koing.server.koing_server.service.account.dto.AccountCreateDto;
 import com.koing.server.koing_server.service.account.dto.AccountResponseDto;
@@ -32,7 +34,7 @@ public class AccountService {
     private final AccountRepositoryImpl accountRepositoryImpl;
     private final UserRepositoryImpl userRepositoryImpl;
     private final UserRepository userRepository;
-    private final SEED_CBC seedCbc;
+    private final AES_Encryption aesEncryption;
 
     @Transactional
     public SuperResponse createAccount(AccountCreateDto accountCreateDto) {
@@ -45,12 +47,17 @@ public class AccountService {
         User user = getUser(accountCreateDto.getUserId());
         LOGGER.info("[AccountService] 계좌 주인 조회 성공");
 
-        Account account = Account.builder()
-                .bankName(accountCreateDto.getBankName())
-                .accountNumber(seedCbc.encrypt(accountCreateDto.getAccountNumber()))
-                .birthDate(seedCbc.encrypt(accountCreateDto.getBirthDate()))
-                .registrationNumber(seedCbc.encrypt(accountCreateDto.getRegistrationNumber()))
-                .build();
+        Account account;
+        try {
+            account = Account.builder()
+                    .bankName(aesEncryption.encrypt(accountCreateDto.getBankName()))
+                    .accountNumber(aesEncryption.encrypt(accountCreateDto.getAccountNumber()))
+                    .birthDate(aesEncryption.encrypt(accountCreateDto.getBirthDate()))
+                    .registrationNumber(aesEncryption.encrypt(accountCreateDto.getRegistrationNumber()))
+                    .build();
+        } catch (Exception e) {
+            throw new InternalServerException(e.getMessage());
+        }
 
         account.setOwner(user);
         LOGGER.info("[AccountService] 계좌 entity 생성 성공");
@@ -77,12 +84,18 @@ public class AccountService {
         Account account = getAccount(userId);
         LOGGER.info("[AccountService] 계좌 정보 조회 성공");
 
-        AccountResponseDto accountResponseDto = new AccountResponseDto(
-                account.getBankName(),
-                seedCbc.decrypt(account.getAccountNumber()),
-                seedCbc.decrypt(account.getBirthDate()),
-                seedCbc.decrypt(account.getRegistrationNumber())
-        );
+        AccountResponseDto accountResponseDto;
+        try {
+            accountResponseDto = new AccountResponseDto(
+                    aesEncryption.decrypt(account.getBankName()),
+                    aesEncryption.decrypt(account.getAccountNumber()),
+                    aesEncryption.decrypt(account.getBirthDate()),
+                    aesEncryption.decrypt(account.getRegistrationNumber())
+            );
+        } catch (Exception e) {
+            throw new InternalServerException(e.getMessage());
+        }
+
 
         return SuccessResponse.success(SuccessCode.GET_ACCOUNT_SUCCESS, accountResponseDto);
     }
@@ -94,32 +107,41 @@ public class AccountService {
         Account account = getAccount(accountCreateDto.getUserId());
         LOGGER.info("[AccountService] 업데이트 할 계좌 정보 조회 성공");
 
-        String previousBankName = account.getBankName();
-        String previousAccountNumber = account.getAccountNumber();
-        String previousBirthDate = account.getBirthDate();
-        String previousRegistrationNumber = account.getRegistrationNumber();
+        try {
+            String previousBankName = aesEncryption.decrypt(account.getBankName());
+            String previousAccountNumber = aesEncryption.decrypt(account.getAccountNumber());
+            String previousBirthDate = aesEncryption.decrypt(account.getBirthDate());
+            String previousRegistrationNumber = aesEncryption.decrypt(account.getRegistrationNumber());
 
-        if (accountCreateDto.getBankName().equals(previousBankName)
-                && accountCreateDto.getAccountNumber().equals(seedCbc.decrypt(previousAccountNumber))
-                && accountCreateDto.getBirthDate().equals(seedCbc.decrypt(previousBirthDate))
-                && accountCreateDto.getRegistrationNumber().equals(seedCbc.decrypt(previousRegistrationNumber))
-        ) {
+            if (accountCreateDto.getBankName().equals(previousBankName)
+                    && accountCreateDto.getAccountNumber().equals(previousAccountNumber)
+                    && accountCreateDto.getBirthDate().equals(previousBirthDate)
+                    && accountCreateDto.getRegistrationNumber().equals(previousRegistrationNumber)
+            ) {
+                throw new NotAcceptableException("수정할 계좌 정보가 없습니다.", ErrorCode.NOT_ACCEPTABLE_SAME_ACCOUNT_EXCEPTION);
+            }
+
+            account.setBankName(aesEncryption.encrypt(accountCreateDto.getBankName()));
+            account.setAccountNumber(aesEncryption.encrypt(accountCreateDto.getAccountNumber()));
+            account.setBirthDate(aesEncryption.encrypt(accountCreateDto.getBirthDate()));
+            account.setRegistrationNumber(aesEncryption.encrypt(accountCreateDto.getRegistrationNumber()));
+
+            Account updatedAccount = accountRepository.save(account);
+
+            if (previousBankName.equals(aesEncryption.decrypt(updatedAccount.getBankName()))
+                    && previousAccountNumber.equals(aesEncryption.decrypt(updatedAccount.getAccountNumber()))
+                    && previousBirthDate.equals(aesEncryption.decrypt(updatedAccount.getBirthDate()))
+                    && previousRegistrationNumber.equals(aesEncryption.decrypt(updatedAccount.getRegistrationNumber()))
+            ) {
+                throw new DBFailException("계좌 정보 업데이트 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_ACCOUNT_EXCEPTION);
+            }
+
+        } catch (NotAcceptableException e) {
             throw new NotAcceptableException("수정할 계좌 정보가 없습니다.", ErrorCode.NOT_ACCEPTABLE_SAME_ACCOUNT_EXCEPTION);
-        }
-
-        account.setBankName(accountCreateDto.getBankName());
-        account.setAccountNumber(seedCbc.encrypt(accountCreateDto.getAccountNumber()));
-        account.setBirthDate(seedCbc.encrypt(accountCreateDto.getBirthDate()));
-        account.setRegistrationNumber(seedCbc.encrypt(accountCreateDto.getRegistrationNumber()));
-
-        Account updatedAccount = accountRepository.save(account);
-
-        if (previousBankName.equals(updatedAccount.getBankName())
-                && seedCbc.decrypt(previousAccountNumber).equals(seedCbc.decrypt(updatedAccount.getAccountNumber()))
-                && seedCbc.decrypt(previousBirthDate).equals(seedCbc.decrypt(updatedAccount.getBirthDate()))
-                && seedCbc.decrypt(previousRegistrationNumber).equals(seedCbc.decrypt(updatedAccount.getRegistrationNumber()))
-        ) {
+        } catch (DBFailException e) {
             throw new DBFailException("계좌 정보 업데이트 과정에서 오류가 발생했습니다.", ErrorCode.DB_FAIL_UPDATE_ACCOUNT_EXCEPTION);
+        } catch (Exception e) {
+            throw new InternalServerException(e.getMessage());
         }
 
         return SuccessResponse.success(SuccessCode.ACCOUNT_UPDATE_SUCCESS, null);

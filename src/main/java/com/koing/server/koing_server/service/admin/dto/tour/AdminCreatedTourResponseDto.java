@@ -32,6 +32,11 @@ public class AdminCreatedTourResponseDto {
     private int guideAccumulatedApprovalNumber;
 
     private String getThumbnail(List<Thumbnail> thumbnails) {
+        if (thumbnails.size() < 1) {
+            return "NO THUMBNAIL";
+        }
+
+        System.out.println(thumbnails.size());
         List<Thumbnail> tempThumbnails = thumbnails
                 .stream()
                 .sorted(Comparator.comparing((Thumbnail t) -> t.getThumbnailOrder()))
@@ -45,5 +50,4 @@ public class AdminCreatedTourResponseDto {
 
         return thumbnailUrls.get(0);
     }
-
 }

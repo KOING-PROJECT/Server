@@ -8,4 +8,5 @@ public interface CommentRepositoryCustom {
 
     List<Comment> findCommentByPostId(Long postId);
 
+    Comment findCommentById(Long commentId);
 }

@@ -139,6 +139,7 @@ public enum ErrorCode {
     NOT_FOUND_POST_PHOTO_EXCEPTION(NOT_FOUND, "해당 게시글 사진을 찾을 수 없습니다."),
     NOT_FOUND_POST_EXCEPTION(NOT_FOUND, "해당 게시글을 찾을 수 없습니다."),
     NOT_FOUND_PAYMENT_INFO_EXCEPTION(NOT_FOUND, "해당 결제 정보를 찾을 수 없습니다."),
+    NOT_FOUND_COMMENT_EXCEPTION(NOT_FOUND, "해당 댓글을 찾을 수 없습니다."),
 
 
     /**
@@ -170,6 +171,8 @@ public enum ErrorCode {
     NOT_ACCEPTABLE_ACCOUNT_ALREADY_EXIST_EXCEPTION(NOT_ACCEPTABLE, "해당 유저의 계좌 정보가 이미 존재합니다."),
     NOT_ACCEPTABLE_ALREADY_EXIST_KEYWORD_EXCEPTION(NOT_ACCEPTABLE, "이미 존재하는 키워드 입니다."),
     NOT_ACCEPTABLE_TOUR_NOT_APPROVAL_EXCEPTION(NOT_ACCEPTABLE, "승인되지 않은 투어는 시작할 수 없습니다."),
+    NOT_ACCEPTABLE_NOT_POSTED_USER_EXCEPTION(NOT_ACCEPTABLE, "게시글을 작성한 유저가 아닙니다."),
+    NOT_ACCEPTABLE_NOT_COMMENTED_USER_EXCEPTION(NOT_ACCEPTABLE, "댓글을 단 유저가 아닙니다."),
 
     /**
      * 407 PAYMENT_SERVER_ERROR

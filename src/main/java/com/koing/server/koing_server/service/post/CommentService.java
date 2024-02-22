@@ -4,6 +4,7 @@ import com.koing.server.koing_server.common.dto.SuccessResponse;
 import com.koing.server.koing_server.common.dto.SuperResponse;
 import com.koing.server.koing_server.common.error.ErrorCode;
 import com.koing.server.koing_server.common.exception.DBFailException;
+import com.koing.server.koing_server.common.exception.NotAcceptableException;
 import com.koing.server.koing_server.common.exception.NotFoundException;
 import com.koing.server.koing_server.common.success.SuccessCode;
 import com.koing.server.koing_server.domain.post.Comment;
@@ -87,6 +88,24 @@ public class CommentService {
         return SuccessResponse.success(SuccessCode.GET_COMMENTS_SUCCESS, new CommentListResponseDto(commentResponseDtos));
     }
 
+    public SuperResponse deleteComment(final Long userId, final Long commentId) {
+        LOGGER.info("[CommentService] comment 삭제 시도");
+        final Comment comment = commentRepositoryImpl.findCommentById(commentId);
+
+        if (comment == null) {
+            throw new NotFoundException("해당 댓글을 찾을 수 없습니다.", ErrorCode.NOT_FOUND_COMMENT_EXCEPTION);
+        }
+
+        if (comment.getCommendUser().getId() != userId) {
+            throw new NotAcceptableException("댓글을 단 유저가 아닙니다.", ErrorCode.NOT_ACCEPTABLE_NOT_COMMENTED_USER_EXCEPTION);
+        }
+
+        comment.delete();
+        LOGGER.info("[CommentService] comment 삭제 성공");
+
+        return SuccessResponse.success(SuccessCode.DELETE_COMMENT_SUCCESS, null);
+    }
+
     private User getUser(Long userId) {
         User user = userRepositoryImpl.loadUserByUserId(userId, true);
         if (user == null) {
@@ -105,6 +124,4 @@ public class CommentService {
 
         return post;
     }
-
-
 }

@@ -179,5 +179,4 @@ public class AdminTourController {
 
         return rejectionTourResponse;
     }
-
 }

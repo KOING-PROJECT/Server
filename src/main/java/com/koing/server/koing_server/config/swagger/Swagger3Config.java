@@ -22,21 +22,26 @@ public class Swagger3Config {
 
     @Bean
     public GroupedOpenApi api() {
-        String[] paths = {"/**"};
-
         return GroupedOpenApi.builder()
-                .group("API")
-                .pathsToMatch(paths)
+                .group("USER API")
+                .pathsToMatch("/**")
+                .pathsToExclude("/admin/**")
                 .build();
     }
 
-    @Bean
-    public GroupedOpenApi openApiV2() {
-        String[] paths = {"/v2/**"};
+//    @Bean
+//    public GroupedOpenApi openApiV2() {
+//        return GroupedOpenApi.builder()
+//                .group("V2 API")
+//                .pathsToMatch("/v2/**")
+//                .build();
+//    }
 
+    @Bean
+    public GroupedOpenApi adminApi() {
         return GroupedOpenApi.builder()
-                .group("V2 API")
-                .pathsToMatch(paths)
+                .group("ADMIN API")
+                .pathsToMatch("/admin/**")
                 .build();
     }
 

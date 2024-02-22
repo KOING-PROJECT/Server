@@ -74,4 +74,22 @@ public class CommentController {
         return commentGetResponse;
     }
 
+    @DeleteMapping("/{userId}/{commentId}")
+    public SuperResponse deleteComment(
+            @PathVariable("userId") Long userId,
+            @PathVariable("commentId") Long commendId
+    ) {
+        LOGGER.info("[CommentController] Comment 삭제 시도");
+        SuperResponse deleteCommentResponse;
+        try {
+            deleteCommentResponse = commentService.deleteComment(userId, commendId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[CommentController] Comment 삭제 성공");
+
+        return deleteCommentResponse;
+    }
 }
