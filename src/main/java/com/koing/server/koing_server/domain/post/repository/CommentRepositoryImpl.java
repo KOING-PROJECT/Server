@@ -1,6 +1,7 @@
 package com.koing.server.koing_server.domain.post.repository;
 
 import com.koing.server.koing_server.domain.post.Comment;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -25,8 +26,26 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .fetchJoin()
                 .distinct()
                 .where(
-                        comment1.commendedPost.id.eq(postId)
+                        comment1.commendedPost.id.eq(postId),
+                        isNotDeleted()
                 )
                 .fetch();
+    }
+
+    @Override
+    public Comment findCommentById(Long commentId) {
+        return jpqlQueryFactory
+                .selectFrom(comment1)
+                .leftJoin(comment1.commendUser, user)
+                .fetchJoin()
+                .where(
+                        comment1.id.eq(commentId),
+                        isNotDeleted()
+                )
+                .fetchOne();
+    }
+
+    private BooleanExpression isNotDeleted() {
+        return comment1.isDeleted.eq(Boolean.FALSE);
     }
 }

@@ -12,7 +12,11 @@ public class UserListDto {
     public UserListDto(User user) {
         this.id = user.getId();
 
-        if (user.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
+        if (user.getRoles().contains(UserRole.ROLE_ADMIN.getRole())) {
+            this.role = UserRole.ROLE_ADMIN.getRole();
+            this.guideGrade = user.getGuideGrade().getGrade();
+        }
+        else if (user.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
             this.role = UserRole.ROLE_GUIDE.getRole();
             this.guideGrade = user.getGuideGrade().getGrade();
         }

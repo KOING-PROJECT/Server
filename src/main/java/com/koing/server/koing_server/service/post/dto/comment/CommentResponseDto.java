@@ -15,7 +15,7 @@ public class CommentResponseDto {
 
     public CommentResponseDto(Comment comment) {
         this.writeUserName = comment.getCommendUser().getName();
-        this.writeUserGrade = getUserGrade(comment.getCommendUser());
+        getUserRoleAndGrade(comment.getCommendUser());
 
         if (comment.getCommendUser().getUserOptionalInfo() != null) {
             if (comment.getCommendUser().getUserOptionalInfo().getImageUrls() != null && comment.getCommendUser().getUserOptionalInfo().getImageUrls().size() > 0) {
@@ -27,6 +27,7 @@ public class CommentResponseDto {
     }
 
     private String writeUserGrade;
+    private String writeUserRole;
     private String writeUserName;
     private String writeUserImage;
     private String content;
@@ -37,12 +38,14 @@ public class CommentResponseDto {
         return createdAt.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
     }
 
-    private String getUserGrade(User createUser) {
+    private void getUserRoleAndGrade(User createUser) {
         if (createUser.getRoles().contains(UserRole.ROLE_GUIDE.getRole())) {
-            return createUser.getGuideGrade().getGrade();
+            this.writeUserRole = UserRole.ROLE_GUIDE.getRole();
+            this.writeUserGrade = createUser.getGuideGrade().getGrade();
         }
         else {
-            return createUser.getTouristGrade().getGrade();
+            this.writeUserRole = UserRole.ROLE_TOURIST.getRole();
+            this.writeUserGrade =  createUser.getTouristGrade().getGrade();
         }
     }
 
