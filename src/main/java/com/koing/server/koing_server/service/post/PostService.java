@@ -21,6 +21,7 @@ import com.koing.server.koing_server.service.post.dto.post.PostLikeRequestDto;
 import com.koing.server.koing_server.service.post.dto.post.PostListResponseDto;
 import com.koing.server.koing_server.service.post.dto.post.PostResponseDto;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
+import com.koing.server.koing_server.service.tour.dto.TourDto;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,6 +91,10 @@ public class PostService {
             postResponseDtos.add(new PostResponseDto(post, loginUser));
         }
 
+        postResponseDtos = postResponseDtos.stream()
+                .sorted(Comparator.comparing(PostResponseDto::getCreatedDate).reversed())
+                .collect(Collectors.toList());
+
         LOGGER.info("[PostService] Post 조회 성공");
 
         if (loginUser.getUserOptionalInfo() != null) {
@@ -121,6 +126,10 @@ public class PostService {
         for (Post post : posts) {
             postResponseDtos.add(new PostResponseDto(post, loginUser));
         }
+
+        postResponseDtos = postResponseDtos.stream()
+                .sorted(Comparator.comparing(PostResponseDto::getCreatedDate).reversed())
+                .collect(Collectors.toList());
 
         LOGGER.info("[PostService] Admin Post 조회 성공");
 
@@ -215,6 +224,8 @@ public class PostService {
         }
 
         post.delete();
+
+        postRepository.save(post);
         LOGGER.info("[PostService] post 삭제 성공");
 
         return SuccessResponse.success(SuccessCode.DELETE_POST_SUCCESS, null);
