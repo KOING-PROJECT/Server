@@ -3,6 +3,8 @@ package com.koing.server.koing_server.domain.tour;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import com.koing.server.koing_server.domain.common.AbstractRootEntity;
+import com.google.common.collect.Sets;
+import com.koing.server.koing_server.domain.common.AbstractRootEntity;
 import com.koing.server.koing_server.service.tour.dto.TourCategoryCreateDto;
 import lombok.*;
 

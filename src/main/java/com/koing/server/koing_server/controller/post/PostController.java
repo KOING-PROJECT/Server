@@ -145,4 +145,50 @@ public class PostController {
         return getLikedPostResponse;
     }
 
+    @Operation(description = "Post - Post를 삭제합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Post - Post 삭제 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @DeleteMapping("/{userId}/{postId}")
+    public SuperResponse deletePost(
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId
+    ) {
+        LOGGER.info("[PostController] post 삭제 시도");
+        SuperResponse deletePostResponse;
+        try {
+            deletePostResponse = postService.deletePost(userId, postId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] post 삭제 성공");
+
+        return deletePostResponse;
+    }
+
+    @Operation(description = "Post - Admin Post 리스트를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Post - Admin Post 리스트 조회 성공"),
+            @ApiResponse(responseCode = "404", description = "해당 유저를 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "예상치 못한 서버 에러가 발생했습니다.")
+    })
+    @GetMapping("/admin/{userId}")
+    public SuperResponse getAdminPosts(@PathVariable("userId") Long userId) {
+        LOGGER.info("[PostController] Admin Post 리스트 조회 시도");
+        SuperResponse getAdminPostsResponse;
+        try {
+            getAdminPostsResponse = postService.getAdminPosts(userId);
+        } catch (BoilerplateException boilerplateException) {
+            return ErrorResponse.error(boilerplateException.getErrorCode());
+        } catch (Exception exception) {
+            return ErrorResponse.error(ErrorCode.INTERNAL_SERVER_EXCEPTION);
+        }
+        LOGGER.info("[PostController] Admin Post 리스트 조회 성공");
+
+        return getAdminPostsResponse;
+    }
 }
