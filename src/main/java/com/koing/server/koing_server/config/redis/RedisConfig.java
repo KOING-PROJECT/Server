@@ -20,7 +20,7 @@ import java.time.Duration;
 @Configuration
 @RequiredArgsConstructor
 @EnableTransactionManagement
-@Profile(value = "test")
+@Profile(value = "local")
 public class RedisConfig {
 
     @Value("${spring.redis.host}")

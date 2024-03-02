@@ -13,7 +13,7 @@ import java.util.Set;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-@Profile(value = "local")
+@Profile(value = "test")
 public class EmbeddedRedisInitConfig {
 
     private final RedisTemplate<String, String> redisTemplate;

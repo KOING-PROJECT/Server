@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 @Aspect
 @Component
 @RequiredArgsConstructor
-@DependsOn("embeddedRedisConfig")
+//@DependsOn("embeddedRedisConfig")
 public class RedissonLockAop {
 
     private final RedissonClient redissonClient;
