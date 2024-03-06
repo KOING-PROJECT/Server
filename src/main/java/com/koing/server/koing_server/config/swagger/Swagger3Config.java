@@ -2,6 +2,7 @@ package com.koing.server.koing_server.config.swagger;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
@@ -15,7 +16,11 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(title = "KOING API",
                 description = "KOING API 문서입니다"
-        ))
+        ),
+        servers = {
+                @Server(url = "https://koing.store", description = "Default Server Url")
+        }
+)
 @RequiredArgsConstructor
 @Configuration
 public class Swagger3Config {
