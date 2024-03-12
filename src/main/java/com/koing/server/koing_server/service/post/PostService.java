@@ -198,7 +198,14 @@ public class PostService {
 
         User user = userRepositoryImpl.findLikePostByUserLikedPost(userId);
 
-        List<Post> likedPost = user.getLikePosts().stream().sorted((p1, p2) -> p1.getCreatedAt().compareTo(p2.getCreatedAt())).collect(Collectors.toList());
+        if (user == null) {
+            throw new NotFoundException("존재하지 않는 유저입니다.", ErrorCode.NOT_FOUND_USER_EXCEPTION);
+        }
+
+        List<Post> likedPost = user.getLikePosts()
+                .stream()
+                .filter(post -> post.getIsDeleted().equals(Boolean.FALSE))
+                .sorted((p1, p2) -> p1.getCreatedAt().compareTo(p2.getCreatedAt())).collect(Collectors.toList());
 
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
