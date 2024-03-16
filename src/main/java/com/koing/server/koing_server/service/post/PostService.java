@@ -85,15 +85,17 @@ public class PostService {
 
         User loginUser = getUser(userId);
 
+        posts = posts.stream().sorted(Comparator.comparing(Post::getCreatedAt)).collect(Collectors.toList());
+
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
         for (Post post : posts) {
             postResponseDtos.add(new PostResponseDto(post, loginUser));
         }
 
-        postResponseDtos = postResponseDtos.stream()
-                .sorted(Comparator.comparing(PostResponseDto::getCreatedDate).reversed())
-                .collect(Collectors.toList());
+//        postResponseDtos = postResponseDtos.stream()
+//                .sorted(Comparator.comparing(PostResponseDto::getCreatedDate).reversed())
+//                .collect(Collectors.toList());
 
         LOGGER.info("[PostService] Post 조회 성공");
 
@@ -123,13 +125,15 @@ public class PostService {
 
         List<PostResponseDto> postResponseDtos = new ArrayList<>();
 
+        posts = posts.stream().sorted(Comparator.comparing(Post::getCreatedAt)).collect(Collectors.toList());
+
         for (Post post : posts) {
             postResponseDtos.add(new PostResponseDto(post, loginUser));
         }
 
-        postResponseDtos = postResponseDtos.stream()
-                .sorted(Comparator.comparing(PostResponseDto::getCreatedDate).reversed())
-                .collect(Collectors.toList());
+//        postResponseDtos = postResponseDtos.stream()
+//                .sorted(Comparator.comparing(PostResponseDto::getCreatedDate).reversed())
+//                .collect(Collectors.toList());
 
         LOGGER.info("[PostService] Admin Post 조회 성공");
 
