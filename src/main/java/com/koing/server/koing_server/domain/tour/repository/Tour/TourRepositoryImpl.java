@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import static com.koing.server.koing_server.domain.image.QThumbnail.thumbnail;
 import static com.koing.server.koing_server.domain.tour.QTour.tour;
 import static com.koing.server.koing_server.domain.tour.QTourApplication.tourApplication;
 import static com.koing.server.koing_server.domain.tour.QTourCategory.tourCategory;
@@ -63,6 +64,12 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .fetchJoin()
                 .leftJoin(tour.tourSurvey, tourSurvey)
                 .fetchJoin()
+                .leftJoin(tour.thumbnails, thumbnail)
+                .fetchJoin()
+                .leftJoin(tour.exceedTourDate)
+                .fetchJoin()
+                .leftJoin(tour.tourDetailTypes)
+                .fetchJoin()
                 .where(
                         tour.tourStatus.eq(TourStatus.RECRUITMENT),
                         tour.createStatus.eq(CreateStatus.COMPLETE)
@@ -70,6 +77,44 @@ public class TourRepositoryImpl implements TourRepositoryCustom {
                 .distinct()
                 .fetch();
     }
+
+    @Override
+    public List<Tour> findTourByStatusRecruitmentAndTourCategory(String tourCategoryName) {
+        return jpqlQueryFactory
+                .selectFrom(tour)
+                .leftJoin(tour.createUser, user)
+                .fetchJoin()
+                .leftJoin(tour.tourCategories, tourCategory)
+                .fetchJoin()
+                .leftJoin(tour.additionalPrice)
+                .fetchJoin()
+                .leftJoin(tour.tourApplications, tourApplication)
+                .fetchJoin()
+                .leftJoin(tour.pressLikeUsers, user)
+                .fetchJoin()
+                .leftJoin(tour.tourSchedule, tourSchedule)
+                .fetchJoin()
+                .leftJoin(tour.tourSurvey, tourSurvey)
+                .fetchJoin()
+                .leftJoin(tour.thumbnails, thumbnail)
+                .fetchJoin()
+                .leftJoin(tour.exceedTourDate)
+                .fetchJoin()
+                .leftJoin(tour.tourDetailTypes)
+                .fetchJoin()
+                .where(
+                        tour.tourStatus.eq(TourStatus.RECRUITMENT),
+                        tour.createStatus.eq(CreateStatus.COMPLETE),
+                        tourCategory.in(
+                                jpqlQueryFactory.selectFrom(tourCategory)
+                                        .where(tourCategory.categoryName.eq(tourCategoryName))
+                        )
+                )
+                .distinct()
+                .fetch();
+    }
+
+
 
     @Override
     public List<Tour> findLikeTourByUser(Long userId) {

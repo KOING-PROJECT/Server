@@ -12,6 +12,8 @@ public interface TourRepositoryCustom {
 
     List<Tour> findTourByStatusRecruitment();
 
+    List<Tour> findTourByStatusRecruitmentAndTourCategory(String tourCategoryName);
+
     List<Tour> findLikeTourByUser(Long userId);
 
     Tour findTemporaryTourByTourId(Long tourId);

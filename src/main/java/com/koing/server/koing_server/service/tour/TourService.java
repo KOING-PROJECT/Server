@@ -478,10 +478,7 @@ public class TourService {
 
         String categoryName = getCategoryName(categoryIndex);
 
-        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitment()
-                .stream()
-                .filter(tour -> tour.checkCategories(Arrays.asList(categoryName)))
-                .collect(Collectors.toList());
+        List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndTourCategory(categoryName);
 
         LOGGER.info("[TourService] Home화면 Tour list 조회 성공");
 
