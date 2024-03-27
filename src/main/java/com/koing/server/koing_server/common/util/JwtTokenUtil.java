@@ -28,10 +28,10 @@ public class JwtTokenUtil {
     private final UserService userService;
 
 //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 6; // 1000 ms = 1초, 1시간 * 6
-//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L; // 1000 ms = 1초, 1시간 * 24 = 1일, 1일 * 3정
+//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L; // 1000 ms = 1초, 1시간 * 24 = 1일, 1일 * 3
 
     @Value("${springboot.jwt.expire-time}")
-    private String accessTokenExpireTime = "1000";
+    private String accessTokenExpireTime = "10000";
 
     @Value("${springboot.jwt.secret}")
     private String secretKey = "BaseSecretKey"; // springboot.jwt.secret에서 key를 가져오지 못하면 기본키 적용
