@@ -28,8 +28,10 @@ public class JwtTokenUtil {
     private final UserService userService;
 
 //    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 6; // 1000 ms = 1초, 1시간 * 6
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24; // 1000 ms = 1초, 1시간 * 24 = 1일
+//    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L; // 1000 ms = 1초, 1시간 * 24 = 1일, 1일 * 3일
 
+    @Value("${springboot.jwt.expire-time}")
+    private String accessTokenExpireTime = "1000";
 
     @Value("${springboot.jwt.secret}")
     private String secretKey = "BaseSecretKey"; // springboot.jwt.secret에서 key를 가져오지 못하면 기본키 적용
@@ -51,11 +53,12 @@ public class JwtTokenUtil {
         Date now = new Date();
 
 //        Key SECRET_KEY = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        long tokenExpireTime = Long.parseLong(accessTokenExpireTime);
 
         String jwtToken = Jwts.builder()
                 .setClaims(claims) // 데이터
                 .setIssuedAt(now) // 토큰 발행일자
-                .setExpiration(new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME)) // 토큰 만료시간
+                .setExpiration(new Date(now.getTime() + tokenExpireTime)) // 토큰 만료시간
                 .signWith(SECRET_KEY, SignatureAlgorithm.HS256) // 암호화
                 .compact();
 
@@ -94,7 +97,20 @@ public class JwtTokenUtil {
     }
 
     public String getTokenInHeader(HttpServletRequest request) {
-        return request.getHeader("Authorization");
+        String tokenHeader = request.getHeader("Authorization");
+
+        if (tokenHeader == null) {
+            return null;
+        }
+
+        String[] token = tokenHeader.split(" ");
+
+        if (token.length > 1) {
+            return token[1];
+        }
+        else {
+            return token[0];
+        }
     }
 
     public Boolean validationToken(String token, HttpServletRequest httpServletRequest) {

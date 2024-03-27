@@ -55,9 +55,11 @@ public class SecurityConfig {
                 httpSecurity.headers((headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 //                .cors().configurationSource(corsConfigurationSource())
 //                .and()
+
                 httpSecurity
                 .authorizeRequests((requests) -> requests
-                                .antMatchers("/swagger-ui.html", "/sign/**", "/mail/**", "/user/**").permitAll()
+                                .antMatchers("/api-docs/**", "/swagger-ui/**", "/sign/**", "/mail/**", "/sign-set/**", "/home/**").permitAll()
+                                .anyRequest().authenticated()
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                 );
 
