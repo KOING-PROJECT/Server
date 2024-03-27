@@ -64,7 +64,7 @@ public class SecurityConfig {
                                         "/swagger-ui/**", "/sign/**", "/mail/**",
                                         "/sign-set/**", "/home/**"
                                 ).permitAll()
-                                .anyRequest().authenticated()
+//                                .anyRequest().authenticated()
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                 );
 
