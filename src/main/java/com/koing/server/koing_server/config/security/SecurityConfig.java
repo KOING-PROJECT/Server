@@ -58,7 +58,7 @@ public class SecurityConfig {
 
                 httpSecurity
                 .authorizeRequests((requests) -> requests
-                                .antMatchers("/api-docs/**", "/swagger-ui/**", "/sign/**", "/mail/**", "/sign-set/**", "/home/**").permitAll()
+                                .antMatchers("/swagger-ui.html/**", "/api-docs/**", "/swagger-ui/**", "/sign/**", "/mail/**", "/sign-set/**", "/home/**").permitAll()
                                 .anyRequest().authenticated()
 //                        .antMatchers("/users", "/swagger-ui.html", "/sign-in", "/sign-up").permitAll()
                 );
