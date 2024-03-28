@@ -29,6 +29,7 @@ import com.koing.server.koing_server.domain.user.repository.UserRepository;
 import com.koing.server.koing_server.domain.user.repository.UserRepositoryImpl;
 import com.koing.server.koing_server.service.s3.component.AWSS3Component;
 import com.koing.server.koing_server.service.tour.dto.*;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +77,22 @@ public class TourService {
                     .collect(Collectors.toList());
         }
         LOGGER.info("[TourService] Tour list 요청 완료");
+
+        LocalDateTime now = LocalDateTime.now();
+        String todayDate = now.getYear() + String.format("%02d", now.getMonthValue()) + now.getDayOfMonth();
+
+        tours = tours.stream()
+                .filter(tour -> !tour.getTourSchedule().getTourDates().isEmpty())
+                .filter(tour -> {
+                    String lastTourDate = tour.getTourSchedule().getTourDates()
+                            .stream()
+                            .sorted(Comparator.reverseOrder())
+                            .collect(Collectors.toList())
+                            .get(0);
+
+                    return Integer.parseInt(lastTourDate) >= Integer.parseInt(todayDate);
+                })
+                .collect(Collectors.toList());
 
         List<TourDto> tourDtos = new ArrayList<>();
         for (Tour tour : tours) {
