@@ -78,21 +78,7 @@ public class TourService {
         }
         LOGGER.info("[TourService] Tour list 요청 완료");
 
-        LocalDateTime now = LocalDateTime.now();
-        String todayDate = now.getYear() + String.format("%02d", now.getMonthValue()) + now.getDayOfMonth();
-
-        tours = tours.stream()
-                .filter(tour -> !tour.getTourSchedule().getTourDates().isEmpty())
-                .filter(tour -> {
-                    String lastTourDate = tour.getTourSchedule().getTourDates()
-                            .stream()
-                            .sorted(Comparator.reverseOrder())
-                            .collect(Collectors.toList())
-                            .get(0);
-
-                    return Integer.parseInt(lastTourDate) >= Integer.parseInt(todayDate);
-                })
-                .collect(Collectors.toList());
+        tours = filterUndatedTours(tours);
 
         List<TourDto> tourDtos = new ArrayList<>();
         for (Tour tour : tours) {
@@ -497,6 +483,8 @@ public class TourService {
 
         List<Tour> tours = tourRepositoryImpl.findTourByStatusRecruitmentAndTourCategory(categoryName);
 
+        tours = filterUndatedTours(tours);
+
         LOGGER.info("[TourService] Home화면 Tour list 조회 성공");
 
         List<TourHomeToursDto> tourHomeToursDtos = new ArrayList<>();
@@ -518,6 +506,27 @@ public class TourService {
         LOGGER.info("[TourService] tourTemporaryTourDto 생성 성공");
 
         return SuccessResponse.success(SuccessCode.GET_TEMPORARY_TOUR_SUCCESS, tourTemporaryTourDto);
+    }
+
+    private String getTodayDate() {
+        LocalDateTime now = LocalDateTime.now();
+        return now.getYear() + String.format("%02d", now.getMonthValue()) + now.getDayOfMonth();
+    }
+
+    private List<Tour> filterUndatedTours(List<Tour> tours) {
+        String todayDate = getTodayDate();
+        return tours.stream()
+                .filter(tour -> !tour.getTourSchedule().getTourDates().isEmpty())
+                .filter(tour -> {
+                    String lastTourDate = tour.getTourSchedule().getTourDates()
+                            .stream()
+                            .sorted(Comparator.reverseOrder())
+                            .collect(Collectors.toList())
+                            .get(0);
+
+                    return Integer.parseInt(lastTourDate) >= Integer.parseInt(todayDate);
+                })
+                .collect(Collectors.toList());
     }
 
     private Tour getTourAtDB(Long temporaryTourId) {
