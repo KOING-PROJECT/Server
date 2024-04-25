@@ -29,6 +29,8 @@ import com.koing.server.koing_server.paymentInfo.application.exception.NotFoundP
 import com.koing.server.koing_server.paymentInfo.application.exception.PaymentFailException;
 import com.koing.server.koing_server.paymentInfo.application.utils.PortOneUtils;
 import com.koing.server.koing_server.paymentInfo.domain.PaymentInfo;
+import com.koing.server.koing_server.paymentInfo.domain.PaymentStatus;
+import com.koing.server.koing_server.paymentInfo.domain.PortOneWebhookStatus;
 import com.koing.server.koing_server.paymentInfo.domain.repository.PaymentInfoRepository;
 import com.koing.server.koing_server.service.payment.dto.PaymentInquiryResultDto;
 import com.siot.IamportRestClient.exception.IamportResponseException;
@@ -62,7 +64,17 @@ public class PaymentInfoService {
         final PaymentInfo getPaymentInfo = findPaymentInfoByTourIdAndTourDate(paymentInfo);
 
         if (getPaymentInfo != null) {
-            return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_ALREADY_SOLD_OUT_EXCEPTION);
+            // 취소한 결제는 조회 하지 않음
+            // 따라서 조회된 결제는 원래 정상적으로 결제가 되었어야 함.
+            // 따라서 아래에서 PaymentStatus가 READY 상태가 아니거나, PortOneWebhookStatus가 STANDBY 상태가 아니면 결제 완료된 것으로 판단
+            if (!getPaymentInfo.getPaymentStatus().equals(PaymentStatus.READY)
+                    || !getPaymentInfo.getPortOneWebhookStatus().equals(PortOneWebhookStatus.STANDBY)) {
+                return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_ALREADY_SOLD_OUT_EXCEPTION);
+            }
+            else {
+                getPaymentInfo.delete();
+                paymentInfoRepository.save(getPaymentInfo);
+            }
         }
 
         final PaymentInfo savedPaymentInfo = paymentInfoRepository.save(paymentInfo);
