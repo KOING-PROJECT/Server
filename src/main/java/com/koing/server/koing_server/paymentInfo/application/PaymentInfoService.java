@@ -35,6 +35,7 @@ import com.koing.server.koing_server.paymentInfo.domain.repository.PaymentInfoRe
 import com.koing.server.koing_server.service.payment.dto.PaymentInquiryResultDto;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
@@ -72,8 +73,18 @@ public class PaymentInfoService {
                 return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_ALREADY_SOLD_OUT_EXCEPTION);
             }
             else {
-                getPaymentInfo.delete();
-                paymentInfoRepository.save(getPaymentInfo);
+                if (getPaymentInfo.getTouristId().equals(command.getTouristId())) {
+                    return SuccessResponse.success(SuccessCode.PAYMENT_INFO_CREATE_SUCCESS, getPaymentInfo.getOrderId());
+                }
+                else {
+                    if (checkUpdatedAt(getPaymentInfo)) {
+                        getPaymentInfo.delete();
+                        paymentInfoRepository.save(getPaymentInfo);
+                    }
+                    else {
+                        return ErrorResponse.error(ErrorCode.NOT_ACCEPTABLE_ALREADY_SOLD_OUT_EXCEPTION);
+                    }
+                }
             }
         }
 
@@ -202,5 +213,11 @@ public class PaymentInfoService {
         }
 
         return tourApplication;
+    }
+
+    private boolean checkUpdatedAt(PaymentInfo paymentInfo) {
+        LocalDateTime now = LocalDateTime.now();
+
+        return now.isAfter(paymentInfo.getUpdatedAt().plusMinutes(1));
     }
 }

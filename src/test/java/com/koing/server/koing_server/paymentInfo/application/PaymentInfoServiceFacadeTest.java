@@ -55,9 +55,8 @@ class PaymentInfoServiceFacadeTest {
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         CountDownLatch countDownLatch = new CountDownLatch(10);
 
-        PaymentInfoCreateCommand paymentInfoCreateCommand = new PaymentInfoCreateCommand(1L, 1L, 1L, "20240102");
-
         for (int i = 0; i < 10; i++) {
+            PaymentInfoCreateCommand paymentInfoCreateCommand = new PaymentInfoCreateCommand(1L, Long.parseLong(Integer.toString(i)), 1L, "20240102");
             executorService.submit(() -> {
                 try {
                     paymentInfoService.createPaymentInfo(paymentInfoCreateCommand);
@@ -70,6 +69,6 @@ class PaymentInfoServiceFacadeTest {
         countDownLatch.await();
         int paymentInfoCount = paymentInfoRepository.findAll().size();
 
-        assertThat(paymentInfoCount).isEqualTo(1);
+        assertThat(paymentInfoCount).isEqualTo(2);
     }
 }
